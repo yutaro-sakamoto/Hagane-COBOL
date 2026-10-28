@@ -148,6 +148,15 @@ Specifies the terminal encoding used by DISPLAY and ACCEPT statements.
 - **Example**: `COB_TERMINAL_ENCODING=UTF-8`
 - **Purpose**: Used for terminal I/O in UTF-8 environments.
 
+#### COB_CHARSET
+
+Specifies the character set the runtime uses to convert between Java strings and the bytes of COBOL data items.
+
+- **Value**: A Java character set name such as `SHIFT-JIS` or `UTF-8` (default is `SHIFT-JIS`)
+- **Example**: `COB_CHARSET=UTF-8`
+- **Purpose**: Used when the data handled by a program is encoded in a character set other than Shift_JIS.
+- **Note**: The value is read once when the runtime library is loaded. A name that Java does not recognize makes the runtime fail to start.
+
 #### COB_SWITCH_1 through COB_SWITCH_8
 
 Sets the initial values of switches that can be referenced within COBOL programs.
