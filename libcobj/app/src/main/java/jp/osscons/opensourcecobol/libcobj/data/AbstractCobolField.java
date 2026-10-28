@@ -38,8 +38,11 @@ public abstract class AbstractCobolField {
     /** 変数に関する様々な情報を保持するオブジェクト(符号付か,COMP-3指定かなど) */
     protected CobolFieldAttribute attribute;
 
-    /** 文字データの符号化に使用するShift_JIS文字セット */
-    public static final Charset charSetSJIS = Charset.forName("SHIFT-JIS");
+    /**
+     * 文字データの符号化に使用する文字セット。環境変数COB_CHARSETで変更でき、未設定の場合は後方互換のためShift_JISを使用する。
+     */
+    public static final Charset charSetSJIS =
+            Charset.forName(System.getenv().getOrDefault("COB_CHARSET", "SHIFT-JIS"));
 
     static final int[] cobExp10 = {
         1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
