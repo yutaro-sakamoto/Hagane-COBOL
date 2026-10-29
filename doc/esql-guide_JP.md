@@ -315,7 +315,7 @@ OCCURS を使った配列取得（OCCURS ホスト変数への `SELECT ... INTO`
 | `PIC 9(n)` / `PIC S9(n)` | DISPLAY（ゾーン10進）数値。符号の有無・位置（LEADING/TRAILING、SEPARATE/結合）に対応 |
 | `PIC 9(n)V9(m)` | 固定小数点数 |
 | `USAGE COMP-3`（パック10進） | パック10進数 |
-| `PIC N(n)` | 日本語、Shift-JIS |
+| `PIC N(n)` | 日本語（全角空白による埋め草は Shift-JIS 前提） |
 | 集団項目 | 英数字として扱われる |
 | VARYING 項目 | 可変長の英数字／日本語文字列 |
 
@@ -376,6 +376,7 @@ dbname@host:port
 | `OCDB_DB_USER` | デフォルトのデータベースユーザー |
 | `OCDB_DB_PASS` | デフォルトのデータベースパスワード |
 | `OCDB_DB_CHAR` | データベース接続の文字エンコーディング。未設定の場合は `UTF-8` が既定値として使用される。 |
+| `COB_CHARSET` | ホスト変数・SQLCA の項目・取り出した値を COBOL のバイト列と Java の文字列の間で変換するときの文字セット。既定は `SHIFT-JIS`。[environment_variables_JP.md](environment_variables_JP.md#cob_charset) で説明しているランタイム全体の設定であり、データベース接続自体の文字エンコーディングを指定する `OCDB_DB_CHAR` とは独立している。 |
 | `OCESQL4J_FETCH_RECORDS` | カーソルの先読み（バルクフェッチ）件数。1 回の `FETCH FORWARD` でまとめて取得する行数を指定する。既定値は 1（1 行ずつ取得）。0 以下や数値でない値は 1 として扱う。プロセス起動時に一度だけ読み取られる。 |
 
 `OCDB_DB_NAME`、`OCDB_DB_USER`、`OCDB_DB_PASS` は、対応する `CONNECT` のホスト変数が空のときの
