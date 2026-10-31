@@ -143,9 +143,28 @@ libcobj: END OF SORT/MERGE, RECORD=3.
 
 DISPLAY文およびACCEPT文で使用するターミナルのエンコーディングを指定します。
 
-- **値**: `UTF-8` または `UTF8`（デフォルトは Shift_JIS）
+- **値**: `UTF-8` または `UTF8`（それ以外の値または未設定の場合は変換しない）
 - **例**: `COB_TERMINAL_ENCODING=UTF-8`
 - **用途**: UTF-8環境でのターミナル入出力に使用します。
+- **動作**:
+  - `UTF-8` の場合: DISPLAY文はランタイムの文字セット（`COB_CHARSET` を参照）からUTF-8に変換して出力し、ACCEPT文は標準入力をUTF-8として読み込みます。
+  - デフォルト（それ以外の値）: 変換を行いません。DISPLAY文はバイト列をそのまま出力し、ACCEPT文は標準入力を `COB_CHARSET` で指定した文字セット（`COB_CHARSET` 未設定時はShift_JIS）として読み込みます。
+
+#### COB_CHARSET
+
+ランタイムがJavaの文字列とCOBOLのデータ項目のバイト列を相互に変換するときに使用する文字セットを指定します。
+
+- **値**: `SHIFT-JIS` や `UTF-8` などのJavaの文字セット名（デフォルトは `SHIFT-JIS`。空文字列は未設定と同じ扱い）
+- **例**: `COB_CHARSET=UTF-8`
+- **用途**: プログラムが扱うデータがShift_JIS以外の文字セットで符号化されている場合に使用します。
+- **適用範囲**: 以下のすべてにこの文字セットが使われます。
+  - COBOLのデータ項目とJavaの文字列の相互変換全般
+  - 埋め込みSQL（`EXEC SQL`）のホスト変数、SQLCAの項目（SQLSTATE / SQLERRMC）、`ResultSet` から取り出した値
+  - `COB_TERMINAL_ENCODING` が `UTF-8` 以外の場合のACCEPT文の標準入力の読み込み、および `UTF-8` の場合にDISPLAY文がUTF-8へ変換する際の変換元（`COB_TERMINAL_ENCODING` を参照）
+- **注意**:
+  - 値はランタイムライブラリの読み込み時に1回だけ読み込まれます。Javaが認識できない文字セット名や、`UTF-16` のようにASCIIと互換でない文字セットを指定すると、ランタイムの初期化時にエラーになります。
+  - `PIC N`（日本語項目）のバイト表現（埋め草に使う全角空白など）は引き続きShift_JISを前提としています。
+  - この環境変数が影響するのはランタイムだけです。コンパイラ（`cobj`）が受け付けるCOBOLソースの文字コードはビルド時の `configure --enable-utf8` で決まり、`COB_CHARSET` とは無関係です。
 
 #### COB_SWITCH_1 〜 COB_SWITCH_8
 

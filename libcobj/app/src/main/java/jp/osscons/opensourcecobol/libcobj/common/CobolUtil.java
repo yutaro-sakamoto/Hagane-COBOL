@@ -280,7 +280,7 @@ public class CobolUtil {
     }
 
     /**
-     * 参照修飾の境界チェックを行う。バイト配列の名前をSHIFT_JISの文字列に変換して処理する。
+     * 参照修飾の境界チェックを行う。バイト配列の名前をランタイムの文字セット({@link CobolCharset#CHARSET})で文字列に変換して処理する。
      *
      * @param offset 参照修飾の開始位置(1始まり)
      * @param length 参照修飾の長さ
@@ -646,7 +646,7 @@ public class CobolUtil {
     /**
      * ランタイムエラーメッセージを出力する。<br>
      * ソースファイル名と行番号(判明している場合)を前置して、先頭に"libcobj: "を付けたメッセージを<br>
-     * SHIFT_JISエンコードで標準エラー出力へ書き込む。
+     * ランタイムの文字セット({@link CobolCharset#CHARSET})で標準エラー出力へ書き込む。
      *
      * @param s 出力するエラーメッセージ
      */
@@ -883,10 +883,10 @@ public class CobolUtil {
     }
 
     /**
-     * 文字列をSHIFT_JISエンコードのバイト配列に変換する。
+     * 文字列をランタイムの文字セット({@link CobolCharset#CHARSET})のバイト配列に変換する。
      *
      * @param s 変換する文字列
-     * @return SHIFT_JISでエンコードしたバイト配列
+     * @return ランタイムの文字セットでエンコードしたバイト配列
      */
     public static byte[] stringToBytes(String s) {
         return s.getBytes(AbstractCobolField.charSetSJIS);
