@@ -399,6 +399,14 @@ char *cb_encode_program_id(const char *name) {
       *p++ = '_';
       *p++ = '_';
     } else if ((n = COB_U8BYTE_1(*s))) {
+      /* A truncated or malformed sequence must not consume the bytes after
+         it, which could include the terminating NUL. Encode only the lead
+         byte in that case. */
+      for (i = 1; i < n && COB_U8BYTE_N(s[i]); i++) {
+      }
+      if (i < n) {
+        n = 1;
+      }
       if (p + 1 + n * 2 >= buff_end) {
         cb_error("PROGRAM-ID '%s' too long to encode", name);
         break;
