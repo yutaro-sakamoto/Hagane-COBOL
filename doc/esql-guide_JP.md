@@ -315,7 +315,7 @@ OCCURS を使った配列取得（OCCURS ホスト変数への `SELECT ... INTO`
 | `PIC 9(n)` / `PIC S9(n)` | DISPLAY（ゾーン10進）数値。符号の有無・位置（LEADING/TRAILING、SEPARATE/結合）に対応 |
 | `PIC 9(n)V9(m)` | 固定小数点数 |
 | `USAGE COMP-3`（パック10進） | パック10進数 |
-| `PIC N(n)` | 日本語（全角空白による埋め草は Shift-JIS 前提） |
+| `PIC N(n)` | 日本語（余った桁を全角空白で埋める処理は Shift-JIS 前提） |
 | 集団項目 | 英数字として扱われる |
 | VARYING 項目 | 可変長の英数字／日本語文字列 |
 
