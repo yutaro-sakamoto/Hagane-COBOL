@@ -561,7 +561,12 @@ Specifies the directory for temporary files used by sort operations and similar 
 
 #### COB_LOAD_CASE
 
-Under preparation.
+Converts the letter case of the program name of a dynamic CALL or CANCEL before searching for the class.
+
+- **Value**: `LOWER` (to lowercase) or `UPPER` (to uppercase), case-insensitive. Any other value or unset leaves the name unchanged.
+- **Example**: `COB_LOAD_CASE=LOWER`
+- **Purpose**: Calls a program whose PROGRAM-ID differs in letter case from the name given to CALL.
+- **Note**: The runtime converts the program name to a Java class name with the same rule as `cobj` (a leading digit and characters other than ASCII letters, digits, `_` and `-` are encoded as `_XX` hexadecimal, `-` becomes `__`), so names that start with a digit or contain Japanese characters can be called dynamically. Because the runtime does not know whether `cobj` was built for Shift_JIS or UTF-8, it tries the class names produced by both rules. `COB_LOAD_CASE` changes only the ASCII letters of the name; the hexadecimal escapes and the bytes of Japanese characters are not changed.
 
 #### COB_LIBRARY_PATH
 

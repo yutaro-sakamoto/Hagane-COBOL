@@ -46,3 +46,44 @@ AT_CHECK([java TEST18], [0],
 ])
 
 AT_CLEANUP
+
+AT_SETUP([CALL and CANCEL program whose PROGRAM-ID starts with a digit])
+
+AT_DATA([callee.cbl], [
+       IDENTIFICATION              DIVISION.
+       PROGRAM-ID.                 1SUB-A.
+       DATA                        DIVISION.
+       WORKING-STORAGE             SECTION.
+       01  CNT          PIC 9 VALUE 0.
+       PROCEDURE                   DIVISION.
+           ADD 1 TO CNT.
+           DISPLAY "IN 1SUB-A " CNT.
+           GOBACK.
+])
+
+AT_DATA([caller.cbl], [
+       IDENTIFICATION              DIVISION.
+       PROGRAM-ID.                 CALLER.
+       DATA                        DIVISION.
+       WORKING-STORAGE             SECTION.
+       01  WS-NAME      PIC X(10) VALUE "1SUB-A".
+       PROCEDURE                   DIVISION.
+           CALL "1SUB-A".
+           CALL WS-NAME.
+           CANCEL WS-NAME.
+           CALL "1SUB-A".
+           CANCEL "1SUB-A".
+           CALL WS-NAME.
+           STOP RUN.
+])
+
+AT_CHECK([${COBJ} callee.cbl])
+AT_CHECK([${COBJ} caller.cbl])
+AT_CHECK([java CALLER], [0],
+[IN 1SUB-A 1
+IN 1SUB-A 2
+IN 1SUB-A 1
+IN 1SUB-A 1
+])
+
+AT_CLEANUP
