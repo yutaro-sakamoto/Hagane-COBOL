@@ -99,7 +99,7 @@ tests/以下の構成:
 
 ### CIの既知のフレーク
 
-LinuxのテストはOS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで`local-ci`を呼ぶジョブに集約されており、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形になる(AlmaLinux 9のジョブはpull_requestでのみ走る)。失敗したジョブは失敗タスクのログを折りたたみグループで出力し、`.local-ci/logs/`とautotestの`.dir/`を`local-ci-ubuntu-26.04-sjis-1-2`のような名前のアーティファクトにアップロードする。
+LinuxのテストはOS × 文字コード(sjis, utf8) × シャード(1/3, 2/3, 3/3)のmatrixで`local-ci`を呼ぶジョブに集約されており、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形になる(AlmaLinux 9のジョブはpull_requestでのみ走る)。失敗したジョブは失敗タスクのログを折りたたみグループで出力し、`.local-ci/logs/`とautotestの`.dir/`を`local-ci-ubuntu-26.04-sjis-1-2`のような名前のアーティファクトにアップロードする。
 
 AlmaLinux 9のfile-lock系スイート(`local-ci (almalinux:9, ...)`ジョブ内の`test:*:file-lock*`タスク)が`COB4J_REAL_JAVA does not point at a real java`を大量に出して落ちることがある。コード変更なしの再実行で成功するリポジトリ全体の既存問題。自分の変更を疑う前に失敗ログ(またはアーティファクトを`gh run download`したもの)で確認し、該当すれば`gh run rerun <run-id> --failed`する。なお`local-ci`のmatrixは`fail-fast: false`なので、1ジョブが落ちても他のジョブはcancelされない。
 

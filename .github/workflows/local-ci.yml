@@ -46,10 +46,11 @@ jobs:
           apt-get update -y
           # local-ci starts its own PostgreSQL server. Keep the package from
           # creating a default cluster: esql-sqlca expects nothing on 5432.
-          apt-get install -y postgresql-common
+          apt-get install -y --no-install-recommends postgresql-common
           echo 'create_main_cluster = false' >> /etc/postgresql-common/createcluster.conf
-          apt-get install -y build-essential gettext autoconf bison flex git \
-            unzip nkf curl python3 procps locales postgresql
+          apt-get install -y --no-install-recommends build-essential gettext \
+            autoconf bison flex git ca-certificates unzip nkf curl python3 procps \
+            locales postgresql
           # local-ci initializes the database with en_US.utf8 if it exists,
           # the locale of the postgres images
           locale-gen en_US.UTF-8

@@ -12,7 +12,7 @@ color: yellow
 
 - **リモート名は環境によって異なる**(`origin`が存在しない構成もある)。上流は opensourcecobol/opensourcecobol4j。`gh`を使う前に必ず`git remote -v`で宛先と対象ブランチを確認する。
 - ワークフローは`.github/workflows/`にある。`push.yml`と`pull-request.yml`で走るジョブが違い、**AlmaLinux 9の`local-ci`ジョブはpull_requestでしか走らない**。
-- Linuxのビルドとテスト(autotest、NIST、ESQL、libcobjの単体テスト、Spring Bootのsmoke test)は、リポジトリルートの`./local-ci`を呼ぶ`.github/workflows/local-ci.yml`にまとまっている。OS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形。1ジョブの中で多数のタスク(`test:sjis:run`、`nist:utf8:NC`、`esql:sjis:esql-basic`など)が並列に走る。
+- Linuxのビルドとテスト(autotest、NIST、ESQL、libcobjの単体テスト、Spring Bootのsmoke test)は、リポジトリルートの`./local-ci`を呼ぶ`.github/workflows/local-ci.yml`にまとまっている。OS × 文字コード(sjis, utf8) × シャード(1/3, 2/3, 3/3)のmatrixで、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形。1ジョブの中で多数のタスク(`test:sjis:run`、`nist:utf8:NC`、`esql:sjis:esql-basic`など)が並列に走る。
 - `local-ci`ジョブが落ちると、ログ末尾のsummaryに`FAIL  <タスク名>`が並び、失敗タスクのログが`log of <タスク名>`という折りたたみグループで出力される。アーティファクトは`local-ci-<OS>-<文字コード>-<K>-<N>`(例: `local-ci-ubuntu-26.04-sjis-1-2`)で、`.local-ci/logs/<タスク名の:を_に置換>.log`とautotestの`.local-ci/tree-{sjis,utf8}/tests/<スイート>.dir/`を含む。
 - 失敗したタスクは、ユーザの手元で`./local-ci <タスク名>`(sandbox無効)を実行すれば同じ手順で再現を試せる。
 
