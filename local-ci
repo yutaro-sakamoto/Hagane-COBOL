@@ -1,0 +1,950 @@
+#!/bin/bash
+#
+# local-ci: CI(.github/workflows/)のLinux向けのビルド・全テスト・静的解析・linterを
+# 1つのLinux環境で並列に実行する。手元での確認と、CIのテストジョブの両方で使う。
+#
+# 使い方: ./local-ci [オプション] [タスク名のパターン...]
+#
+#   -j N        同時に走らせるタスク数 (既定: nproc)
+#   -t N        autotestの各スイートに渡す -j の値 (既定: 2)
+#   -x PATTERN  パターンに一致するタスクを除外する (複数指定可)
+#   -s K/N, --shard K/N
+#               選択したタスクを所要時間の見積もりでN個に分け、K番目(1始まり)だけを
+#               実行する。ビルドとDB起動は分割せず、必要な組すべてで実行する。
+#               CIで複数のジョブに分けて流すためのもの
+#   -l, --list  タスクの一覧を表示して終了する
+#   --clean     作業ディレクトリ(.local-ci/)を削除して終了する
+#   -h, --help  このヘルプを表示する
+#
+#   パターンはbashのglob (例: 'lint:*' 'test:sjis:*' '*:run')。
+#   指定したタスクが依存するビルドやDB起動は自動的に追加される。
+#   パターンを省略すると全タスクを実行する。
+#
+# 作業ツリーの内容(未コミットの変更と、無視されていない未追跡ファイルを含む)を
+# .local-ci/ 以下に複製してからビルドするので、リポジトリ自体のビルド結果
+# (local/ や in-tree の configure 結果) には触れない。実行中にソースを編集しても
+# 結果には影響しない。
+#
+# 環境変数:
+#   LOCAL_CI_DIR        作業ディレクトリ (既定: <リポジトリ>/.local-ci)
+#   LOCAL_CI_TIMEOUT    1タスクあたりの制限時間(秒) (既定: 3600)
+#   LOCAL_CI_PG_BIN     initdb/pg_ctlのあるディレクトリ (既定: PATHか/usr/lib/postgresql/*/bin)
+#   LOCAL_CI_PG_PORT    ESQLテスト用PostgreSQLのポート (既定: 55432から空きを探す)
+#   LOCAL_CI_PG_USER    rootで実行したときにPostgreSQLを動かすユーザ (既定: postgres)
+#   LOCAL_CI_TEST_JAVA_HOME  テスト(test/nist/esql)だけを別のJDKで動かす。
+#                       CIはテストをJava 11で動かしているので、11のJDKを指定すると近くなる
+
+set -u
+
+SELF=$(readlink -f "$0")
+TOP=$(cd "$(dirname "$SELF")" && pwd)
+WORK=${LOCAL_CI_DIR:-$TOP/.local-ci}
+LOGDIR=$WORK/logs
+STATEDIR=$WORK/state
+DURATIONS=$WORK/durations
+
+JOBS=$(nproc 2> /dev/null || echo 4)
+AT_JOBS=2
+TASK_TIMEOUT=${LOCAL_CI_TIMEOUT:-3600}
+
+# CIの各ワークフロー(.github/workflows/)に対応するテストの一覧
+OTHER_TESTS_COMMON="command-line-options data-rep jp-compat run syntax cobj-idx misc
+  file-lock file-lock2 file-lock3 file-lock4 file-lock5 multithread"
+OTHER_TESTS_SJIS="i18n_sjis $OTHER_TESTS_COMMON"
+OTHER_TESTS_UTF8="cobol_utf8 $OTHER_TESTS_COMMON"
+NIST_MODULES="NC SM IC SQ IX ST SG OB IF RL"
+NIST_EXTRA_MODULES="CM DB RW"
+ESQL_TESTS="esql-basic esql-sqlca esql-cobol-data esql-misc esql-sql-data esql-multithread"
+
+# ---------------------------------------------------------------------------
+# タスク定義
+#
+# add_task 名前 "依存" コマンド...
+#   依存は空白区切り。先頭に~を付けた依存は「終わるまで待つが成否は問わない」
+#   (同じGradleプロジェクトを使うタスクを直列にするため)。
+#   コマンドは終了コード0で成功、77でスキップ、それ以外で失敗とみなす。
+# ---------------------------------------------------------------------------
+
+TASKS=()
+declare -A TASK_DEPS TASK_CMD
+
+add_task() {
+  local name=$1 deps=$2
+  shift 2
+  TASKS+=("$name")
+  TASK_DEPS[$name]=$deps
+  TASK_CMD[$name]=$(printf '%q ' "$@")
+}
+
+define_tasks() {
+  local t m
+
+  add_task build:sjis "" do_build sjis
+  add_task build:utf8 "" do_build utf8
+  add_task pg:start "" do_pg_start
+
+  # 静的解析とlinter (static-analysis.yml, javadoc.yml, check-missing-javadoc.yml)
+  # lintツリーのGradleを使うものは~依存で直列にする。
+  add_task lint:clang-format "" do_lint_clang_format
+  add_task lint:cppcheck "" do_lint_cppcheck
+  add_task lint:spotless "" do_gradle_lint spotlessCheck
+  add_task lint:spotbugs "~lint:spotless" do_gradle_lint spotbugsMain
+  add_task lint:pmd "~lint:spotbugs" do_gradle_lint pmdMain
+  add_task lint:javadoc "~lint:pmd" do_lint_javadoc
+  add_task lint:missing-javadoc "build:sjis ~lint:javadoc" do_lint_missing_javadoc
+
+  # libcobjの単体テスト (unit-test.yml。test-cobj-api.ymlの`make test-cobj-api`も
+  # 中身は同じ`gradlew test`なのでこれで兼ねる)
+  add_task unit:libcobj "" do_unit_test
+
+  # autotest (test-other.yml)
+  for t in $OTHER_TESTS_SJIS; do
+    add_task "test:sjis:$t" build:sjis do_autotest sjis "$t"
+  done
+  for t in $OTHER_TESTS_UTF8; do
+    add_task "test:utf8:$t" build:utf8 do_autotest utf8 "$t"
+  done
+
+  # NIST COBOL85 (test-nist.yml)
+  for m in $NIST_MODULES; do
+    add_task "nist:sjis:$m" build:sjis do_nist sjis "$m" check
+    add_task "nist:utf8:$m" build:utf8 do_nist utf8 "$m" check
+  done
+  for m in $NIST_EXTRA_MODULES; do
+    add_task "nist:sjis:$m" build:sjis do_nist sjis "$m" nocheck
+  done
+
+  # ESQL (test-esql.yml, test-esql-utf8.yml, test-esql-examples.yml)
+  for t in $ESQL_TESTS; do
+    add_task "esql:sjis:$t" "build:sjis pg:start" do_esql sjis "$t"
+  done
+  add_task esql:utf8:esql-utf8 "build:utf8 pg:start" do_esql utf8 esql-utf8
+  add_task esql:examples "build:sjis pg:start" do_esql_examples
+
+  # spring-boot-smoke.yml
+  add_task smoke:spring-boot build:sjis do_spring_boot_smoke
+}
+
+# ---------------------------------------------------------------------------
+# タスクの中身 (子プロセスで実行される)
+# ---------------------------------------------------------------------------
+
+tree_dir() { echo "$WORK/tree-$1"; }
+
+# ビルド済みツリーのcobjとlibcobj.jarを使う環境にする (CIの`make install`と
+# CLASSPATH=":/usr/lib/opensourcecobol4j/libcobj.jar"に相当)
+use_tree() {
+  local tree
+  tree=$(tree_dir "$1")
+  export PATH="$tree/inst/bin:$PATH"
+  export CLASSPATH=":$tree/inst/lib/opensourcecobol4j/libcobj.jar"
+}
+
+# テストの期待出力に余計な行が混ざらないよう、JVMが標準エラーに
+# "Picked up ..."を出す原因になる変数を外す
+clean_java_env() {
+  unset JAVA_TOOL_OPTIONS _JAVA_OPTIONS JDK_JAVA_OPTIONS
+}
+
+# テストを動かすJDKを切り替える (LOCAL_CI_TEST_JAVA_HOME)
+use_test_java() {
+  if [ -n "$TEST_JAVA_HOME" ]; then
+    export JAVA_HOME=$TEST_JAVA_HOME
+    export PATH="$TEST_JAVA_HOME/bin:$PATH"
+  fi
+  clean_java_env
+  java -version 2>&1 | head -n 1
+}
+
+do_build() {
+  local kind=$1 tree
+  tree=$(tree_dir "$kind")
+  cd "$tree" || return 1
+  if [ "$kind" = utf8 ]; then
+    ./configure --prefix="$tree/inst" CFLAGS=-Werror --enable-utf8 || return 1
+  else
+    ./configure --prefix="$tree/inst" CFLAGS=-Werror || return 1
+  fi
+  # scanner.l/pplex.lはm4生成物だがgitに入っている。作業ツリーで最後に
+  # ビルドした文字コード版のまま残っていることがあるので、必ず作り直す
+  touch cobj/*.m4
+  make -j"$JOBS" && make install
+}
+
+do_lint_clang_format() {
+  command -v clang-format > /dev/null || {
+    echo "clang-format not found"
+    return 77
+  }
+  clang-format --version
+  cd "$(tree_dir lint)/cobj" && ./check-format
+}
+
+do_lint_cppcheck() {
+  command -v cppcheck > /dev/null || {
+    echo "cppcheck not found"
+    return 77
+  }
+  cppcheck --version
+  cd "$(tree_dir lint)/cobj" && ./cpp-check
+}
+
+do_gradle_lint() {
+  cd "$(tree_dir lint)/libcobj" && ./gradlew "$@"
+}
+
+do_lint_javadoc() {
+  local log=$STATEDIR/javadoc-gradle.log
+  cd "$(tree_dir lint)/libcobj" || return 1
+  ./gradlew javadoc 2>&1 | tee "$log"
+  [ "${PIPESTATUS[0]}" -eq 0 ] || return 1
+  if grep '[1-9][0-9]* warning' "$log"; then
+    echo "javadoc reported warnings"
+    return 1
+  fi
+}
+
+do_lint_missing_javadoc() {
+  # CIと同じく、インストールしたlibcobj.jar(依存ライブラリ同梱)をCLASSPATHに置く
+  use_tree sjis
+  cd "$(tree_dir lint)/libcobj" && sh check-missing-javadoc.sh
+}
+
+# Testcontainersでpostgres:15のコンテナを起動するテストクラス
+TESTCONTAINERS_TESTS="CobolDataConverterTest CobolEsqlTest CobolEsqlLoggingTest"
+
+do_unit_test() {
+  local init c
+  cd "$(tree_dir unit)/libcobj" || return 1
+  if docker info > /dev/null 2>&1; then
+    ./gradlew test jacocoTestCoverageVerification
+    return
+  fi
+  # Dockerが無ければTestcontainersを使うクラスを除いて回す。
+  # カバレッジの基準はそれらのクラスが前提なので検証しない
+  echo "warning: docker is not available; excluding $TESTCONTAINERS_TESTS" \
+    "and skipping jacocoTestCoverageVerification"
+  init=$STATEDIR/exclude-testcontainers.gradle
+  {
+    echo 'allprojects { tasks.withType(Test).configureEach { filter {'
+    for c in $TESTCONTAINERS_TESTS; do
+      echo "  excludeTestsMatching '*.$c'"
+    done
+    echo '} } }'
+  } > "$init"
+  ./gradlew --init-script "$init" test
+}
+
+do_autotest() {
+  local kind=$1 name=$2
+  # cobol_utf8は期待値をnkfでShift_JISに変換して作るので、無いと大半が落ちる
+  if [ "$name" = cobol_utf8 ] && ! command -v nkf > /dev/null; then
+    echo "nkf not found"
+    return 77
+  fi
+  use_tree "$kind"
+  use_test_java
+  cd "$(tree_dir "$kind")/tests" || return 1
+  echo "log directory: $PWD/$name.dir"
+  "./$name" -j"$AT_JOBS"
+}
+
+do_nist() {
+  local kind=$1 module=$2 check=$3 result
+  use_tree "$kind"
+  use_test_java
+  cd "$(tree_dir "$kind")/tests/cobol85/$module" || return 1
+  make test || return 1
+  [ "$check" = check ] || return 0
+  result=$(tail -n 3 < report.txt | head -n 1 | awk '{print $4}')
+  echo "result: $result"
+  [ "$result" = '(100.00%)' ]
+}
+
+pg_run() {
+  if [ "$(id -u)" -eq 0 ]; then
+    runuser -u "${LOCAL_CI_PG_USER:-postgres}" -- "$@"
+  else
+    "$@"
+  fi
+}
+
+do_pg_start() {
+  local pgdir=$WORK/pg locale
+  if [ -z "$PG_BIN" ]; then
+    echo "PostgreSQL (initdb/pg_ctl) not found. Set LOCAL_CI_PG_BIN to run the ESQL tests."
+    return 77
+  fi
+  stop_leftover_pg
+  rm -rf "$pgdir"
+  mkdir -p "$pgdir" "$PG_SOCK"
+  if [ "$(id -u)" -eq 0 ]; then
+    chown "${LOCAL_CI_PG_USER:-postgres}" "$pgdir" "$PG_SOCK" || return 1
+  fi
+  # CIのpostgres:15イメージに近いロケールを選ぶ
+  locale=C
+  for l in en_US.utf8 C.utf8; do
+    if locale -a 2> /dev/null | grep -qix "$l"; then
+      locale=$l
+      break
+    fi
+  done
+  pg_run "$PG_BIN/initdb" -D "$pgdir/data" -U main_user --auth=trust -E UTF8 --locale="$locale" ||
+    return 1
+  pg_run "$PG_BIN/pg_ctl" -D "$pgdir/data" -l "$pgdir/server.log" -w \
+    -o "-p $PG_PORT -k $PG_SOCK -c listen_addresses=localhost -c max_connections=300" start
+  # max_connections: スイートを1つずつ流すなら既定の100で足りるが、
+  # ここでは全スイートを同時に流すため増やしている
+}
+
+# スイート間でテーブル名が衝突しないよう、スイートごとに別のDBを使う。
+# テストは"DB名@ホスト:ポート"をPIC X(30)に入れるので、DB名は短くする
+# (esql-cobol-data -> t_cobol_da)。
+esql_db_name() {
+  echo "t_$(echo "${1#esql-}" | tr '-' '_' | cut -c1-8)"
+}
+
+create_db() {
+  local db=$1
+  "$PG_BIN/dropdb" -h localhost -p "$PG_PORT" -U main_user --if-exists "$db" &&
+    "$PG_BIN/createdb" -h localhost -p "$PG_PORT" -U main_user "$db"
+}
+
+do_esql() {
+  local kind=$1 name=$2 db
+  if [ "$name" = esql-sqlca ] && port_in_use 5432; then
+    echo "warning: $SQLCA_PORT_WARNING"
+  fi
+  db=$(esql_db_name "$name")
+  create_db "$db" || return 1
+  use_tree "$kind"
+  use_test_java
+  cd "$(tree_dir "$kind")/tests" || return 1
+  echo "log directory: $PWD/$name.dir"
+  LOCAL_CI_DB_NAME=$db "./$name" -j"$AT_JOBS"
+}
+
+do_esql_examples() {
+  create_db t_example || return 1
+  use_tree sjis
+  use_test_java
+  cd "$(tree_dir sjis)/example/esql" || return 1
+  printf '%s\n' DB_NAME=t_example DB_HOST=localhost "DB_PORT=$PG_PORT" \
+    DB_USER=main_user DB_PASSWORD=password > db-config.sh
+  make all
+}
+
+do_spring_boot_smoke() {
+  local tree app_pid status=0
+  tree=$(tree_dir sjis)
+  use_tree sjis
+  cd "$tree/samples/spring-boot-smoke" || return 1
+  ../../libcobj/gradlew -p . bootJar \
+    -PcobjBin="$tree/inst/bin/cobj" \
+    -PlibcobjJar="$tree/inst/lib/opensourcecobol4j/libcobj.jar" || return 1
+
+  clean_java_env
+  java -jar build/libs/spring-boot-smoke.jar --server.port="$SPRING_PORT" > app.log 2>&1 &
+  app_pid=$!
+  for _ in $(seq 1 90); do
+    curl -sf "http://localhost:$SPRING_PORT/calc?num=1&txt=probe" > /dev/null && break
+    if ! kill -0 $app_pid 2> /dev/null; then
+      echo "the application exited"
+      cat app.log
+      return 1
+    fi
+    sleep 1
+  done
+  seq 1 500 | xargs -P 32 -I{} curl -sf --max-time 30 \
+    "http://localhost:$SPRING_PORT/calc?num={}&txt=banana" > responses.txt
+  python3 check-responses.py responses.txt 500 || status=1
+  curl -sf "http://localhost:$SPRING_PORT/end" || status=1
+  if ! kill -0 $app_pid 2> /dev/null; then
+    echo "the application died during the test"
+    status=1
+  fi
+  kill $app_pid 2> /dev/null
+  wait $app_pid 2> /dev/null
+  if grep -E "Exception|^\s+at " app.log; then
+    echo "exceptions were logged"
+    status=1
+  fi
+  [ $status -eq 0 ] || cat app.log
+  return $status
+}
+
+# ---------------------------------------------------------------------------
+# 準備
+# ---------------------------------------------------------------------------
+
+find_pg_bin() {
+  local d
+  if [ -n "${LOCAL_CI_PG_BIN:-}" ]; then
+    echo "$LOCAL_CI_PG_BIN"
+    return
+  fi
+  if command -v initdb > /dev/null && command -v pg_ctl > /dev/null; then
+    dirname "$(command -v initdb)"
+    return
+  fi
+  for d in $(printf '%s\n' /usr/lib/postgresql/*/bin /usr/pgsql-*/bin | sort -V -r); do
+    if [ -x "$d/initdb" ]; then
+      echo "$d"
+      return
+    fi
+  done
+}
+
+# esql-sqlcaのconnect-disconnectは、ホストを省いたDB名で既定のlocalhost:5432に接続し、
+# 誰も待ち受けていないことによる08001を期待している
+SQLCA_PORT_WARNING="localhost:5432 is in use; esql-sqlca's connect-disconnect will fail with 28P01 instead of 08001"
+
+port_in_use() {
+  (exec 3<> "/dev/tcp/127.0.0.1/$1") 2> /dev/null
+}
+
+find_free_port() {
+  local p=$1
+  while port_in_use "$p"; do
+    p=$((p + 1))
+  done
+  echo "$p"
+}
+
+# 作業ツリーの内容を各ツリーに複製する
+#   tree-sjis / tree-utf8: それぞれのビルドとテスト
+#   tree-lint: 静的解析 (lint:*のGradleはここで直列に動く)
+#   tree-unit: libcobjの単体テスト
+prepare_trees() {
+  local src=$WORK/src kind
+  rm -rf "$src" "$WORK"/tree-*
+  mkdir -p "$src"
+  (cd "$TOP" && git ls-files -z -co --exclude-standard |
+    while IFS= read -r -d '' f; do
+      # 削除済みでまだコミットしていないファイルはgit ls-filesに残るので除く
+      [ -e "$f" ] || [ -L "$f" ] && printf '%s\0' "$f"
+    done | tar --null -T - -cf -) | tar -xf - -C "$src" || return 1
+
+  # ESQLテスト用のDB接続先。DB名はタスクごとに環境変数で切り替える
+  sed -i -e 's/^DB_NAME=.*/DB_NAME=${LOCAL_CI_DB_NAME:-testdb}/' \
+    -e "s/^DB_PORT=.*/DB_PORT=$PG_PORT/" \
+    -e 's/^DB_HOST=.*/DB_HOST=localhost/' \
+    -e 's/^DB_USER=.*/DB_USER=main_user/' \
+    "$src/tests/embed_db_info.sh"
+
+  for kind in sjis utf8 lint unit; do
+    cp -a --reflink=auto "$src" "$(tree_dir "$kind")" || return 1
+  done
+  rm -rf "$src"
+}
+
+# ---------------------------------------------------------------------------
+# スケジューラ
+# ---------------------------------------------------------------------------
+
+declare -A STATE START_TIME PID
+
+now() { date +%s; }
+stamp() { date +%H:%M:%S; }
+
+fmt_duration() {
+  local s=$1
+  if [ "$s" -ge 60 ]; then
+    printf '%dm%02ds' $((s / 60)) $((s % 60))
+  else
+    printf '%ds' "$s"
+  fi
+}
+
+# 前回の所要時間 (長いタスクから先に始めて全体の待ち時間を短くするため)
+# --shardの分割には使わない。ジョブごとに中身が違うと分け方が食い違うため
+declare -A PREV_DURATION
+load_durations() {
+  local name sec
+  [ -f "$DURATIONS" ] || return 0
+  while read -r name sec; do
+    PREV_DURATION[$name]=$sec
+  done < "$DURATIONS"
+}
+
+guess_duration() {
+  local name=$1
+  if [ -n "${PREV_DURATION[$name]:-}" ]; then
+    echo "${PREV_DURATION[$name]}"
+    return
+  fi
+  static_duration "$name"
+}
+
+# 所要時間の固定の見積もり(秒)。GitHub Actionsの4コアのrunnerで
+# スイートを単独で流したときの実測を元にしている。
+# どの環境でも同じ値になるので、--shardはこれで分ける
+static_duration() {
+  case $1 in
+  build:*) echo 150 ;;
+  test:*:run) echo 400 ;;
+  test:*:file-lock*) echo 200 ;;
+  test:*:cobj-idx) echo 160 ;;
+  test:*:jp-compat | test:*:command-line-options | test:*:misc | test:*:i18n_sjis | \
+    test:*:cobol_utf8) echo 110 ;;
+  test:*) echo 30 ;;
+  nist:*:NC) echo 90 ;;
+  nist:*:SQ) echo 70 ;;
+  nist:*:IX) echo 60 ;;
+  nist:*) echo 30 ;;
+  esql:*) echo 25 ;;
+  unit:*) echo 150 ;;
+  smoke:*) echo 60 ;;
+  *) echo 100 ;;
+  esac
+}
+
+start_task() {
+  local name=$1 log
+  log=$LOGDIR/$(echo "$name" | tr ':' '_').log
+  rm -f "$STATEDIR/$name.rc"
+  # ロック(fd 9)はタスクに引き継がない。強制終了で残ったタスクが
+  # 次のrunを締め出さないように
+  setsid "$SELF" __task "$name" > "$log" 2>&1 < /dev/null 9>&- &
+  PID[$name]=$!
+  echo "${PID[$name]}" >> "$WORK/pgids"
+  START_TIME[$name]=$(now)
+  STATE[$name]=running
+  echo "[$(stamp)] START $name"
+}
+
+finish_task() {
+  local name=$1 rc=$2 dur log
+  dur=$(($(now) - START_TIME[$name]))
+  log=$LOGDIR/$(echo "$name" | tr ':' '_').log
+  case $rc in
+  0)
+    STATE[$name]=pass
+    echo "[$(stamp)] PASS  $name ($(fmt_duration "$dur"))"
+    ;;
+  77)
+    STATE[$name]=skip
+    echo "[$(stamp)] SKIP  $name: $(tail -n 1 "$log")"
+    ;;
+  *)
+    STATE[$name]=fail
+    echo "[$(stamp)] FAIL  $name ($(fmt_duration "$dur")) log: $log"
+    ;;
+  esac
+  [ "$rc" -ne 77 ] && echo "$name $dur" >> "$DURATIONS.new"
+}
+
+# 依存の状態を見て ready / wait / blocked(依存が失敗) のどれかを返す
+deps_state() {
+  local d dep s result=ready
+  for d in ${TASK_DEPS[$1]}; do
+    dep=${d#\~}
+    s=${STATE[$dep]:-}
+    case $s in
+    "" | excluded) ;;
+    pending | running) result="wait" ;;
+    pass) ;;
+    *) [ "$d" = "$dep" ] && {
+      echo "blocked:$dep"
+      return
+    } ;;
+    esac
+  done
+  echo "$result"
+}
+
+kill_running() {
+  local name
+  for name in "${!STATE[@]}"; do
+    if [ "${STATE[$name]}" = running ]; then
+      kill -TERM -- "-${PID[$name]}" 2> /dev/null
+    fi
+  done
+}
+
+# 中断したタスクが片付くのを最大$1秒待つ
+wait_running() {
+  local i name alive
+  for ((i = 0; i < $1; i++)); do
+    alive=0
+    for name in "${!STATE[@]}"; do
+      [ "${STATE[$name]}" = running ] && kill -0 -- "-${PID[$name]}" 2> /dev/null && alive=1
+    done
+    [ $alive -eq 0 ] && return
+    sleep 1
+  done
+}
+
+# 前回のrunが強制終了されてPostgreSQLが残っていたら止める
+stop_leftover_pg() {
+  if [ -n "$PG_BIN" ] && [ -f "$WORK/pg/data/postmaster.pid" ]; then
+    pg_run "$PG_BIN/pg_ctl" -D "$WORK/pg/data" -m immediate stop > /dev/null 2>&1
+  fi
+}
+
+stop_pg() {
+  if [ -n "$PG_BIN" ] && [ -f "$WORK/pg/data/postmaster.pid" ]; then
+    pg_run "$PG_BIN/pg_ctl" -D "$WORK/pg/data" -m fast stop > /dev/null 2>&1
+  fi
+  [ -n "${PG_SOCK:-}" ] && rm -rf "$PG_SOCK"
+}
+
+on_interrupt() {
+  echo
+  echo "interrupted; stopping running tasks"
+  kill_running
+  wait_running 10
+  stop_pg
+  exit 130
+}
+
+run_scheduler() {
+  local name running ds started order
+  # 実行順: 前回の所要時間が長いものから
+  order=$(for name in "${TASKS[@]}"; do
+    [ "${STATE[$name]}" = pending ] && echo "$(guess_duration "$name") $name"
+  done | sort -k1,1nr | awk '{print $2}')
+
+  while :; do
+    running=0
+    for name in "${!STATE[@]}"; do
+      [ "${STATE[$name]}" = running ] || continue
+      if [ -f "$STATEDIR/$name.rc" ]; then
+        wait "${PID[$name]}" 2> /dev/null
+        finish_task "$name" "$(cat "$STATEDIR/$name.rc")"
+      elif ! kill -0 "${PID[$name]}" 2> /dev/null; then
+        finish_task "$name" 1
+      else
+        running=$((running + 1))
+      fi
+    done
+
+    started=0
+    for name in $order; do
+      [ "${STATE[$name]}" = pending ] || continue
+      ds=$(deps_state "$name")
+      case $ds in
+      blocked:*)
+        STATE[$name]=skip
+        echo "[$(stamp)] SKIP  $name: ${ds#blocked:} did not pass"
+        started=1
+        ;;
+      ready)
+        [ $running -lt "$JOBS" ] || continue
+        start_task "$name"
+        running=$((running + 1))
+        started=1
+        ;;
+      esac
+    done
+
+    if [ $running -eq 0 ] && [ $started -eq 0 ]; then
+      break
+    fi
+    sleep 1
+  done
+}
+
+print_summary() {
+  local name pass=0 fail=0 skip=0 total
+  total=$(($(now) - RUN_START))
+  echo
+  echo "==================== summary ===================="
+  for name in "${TASKS[@]}"; do
+    case ${STATE[$name]} in
+    pass) pass=$((pass + 1)) ;;
+    fail)
+      fail=$((fail + 1))
+      printf '  FAIL  %-32s %s\n' "$name" "$LOGDIR/$(echo "$name" | tr ':' '_').log"
+      ;;
+    skip)
+      skip=$((skip + 1))
+      printf '  SKIP  %s\n' "$name"
+      ;;
+    esac
+  done
+  echo "pass: $pass  fail: $fail  skip: $skip  (total $(fmt_duration "$total"))"
+  echo "logs: $LOGDIR"
+  # GitHub Actionsでは、失敗したタスクのログを折りたたんでジョブのログに出す
+  if [ "${GITHUB_ACTIONS:-}" = true ]; then
+    for name in "${TASKS[@]}"; do
+      [ "${STATE[$name]}" = fail ] || continue
+      echo "::group::log of $name"
+      tail -n 500 "$LOGDIR/$(echo "$name" | tr ':' '_').log"
+      echo "::endgroup::"
+      echo "::error title=local-ci::$name failed"
+    done
+  fi
+  [ $fail -eq 0 ]
+}
+
+# ---------------------------------------------------------------------------
+# 子プロセスとして1つのタスクを実行する
+# ---------------------------------------------------------------------------
+
+load_env() {
+  # shellcheck disable=SC1091
+  . "$WORK/env"
+}
+
+if [ "${1:-}" = __task ]; then
+  name=$2
+  load_env
+  # timeoutは自分のプロセスグループを作るので、中断時は明示的に転送する
+  tpid=
+  trap '[ -n "$tpid" ] && kill -TERM $tpid 2> /dev/null; wait; exit 143' TERM HUP
+  timeout --kill-after=30 "$TASK_TIMEOUT" "$SELF" __exec "$name" &
+  tpid=$!
+  wait $tpid
+  rc=$?
+  [ $rc -eq 124 ] && echo "timed out after ${TASK_TIMEOUT}s"
+  echo "$rc" > "$STATEDIR/$name.rc"
+  exit 0
+fi
+
+if [ "${1:-}" = __exec ]; then
+  load_env
+  define_tasks
+  # CIのコンテナと同じくロケール未設定で動かす。
+  # 外側でatlocalを読み込んでいるとjvm-wrapperが自分自身を呼ぶので外す。
+  unset LANG LANGUAGE COB4J_REAL_JAVA COB4J_REAL_JAVAC COB4J_REAL_JAVAP COB4J_REAL_JAR
+  for v in ${!LC_@}; do unset "$v"; done
+  eval "${TASK_CMD[$2]}"
+  exit $?
+fi
+
+# ---------------------------------------------------------------------------
+# main
+# ---------------------------------------------------------------------------
+
+usage() {
+  sed -n '3,/^$/p' "$SELF" | sed -e 's/^# \{0,1\}//'
+}
+
+INCLUDE=()
+EXCLUDE=()
+LIST=0
+CLEAN=0
+SHARD=
+while [ $# -gt 0 ]; do
+  case $1 in
+  -j | -t | -x | -s | --shard)
+    [ $# -ge 2 ] || {
+      echo "$1 needs a value" >&2
+      exit 2
+    }
+    ;;&
+  -j)
+    JOBS=$2
+    shift
+    ;;
+  -t)
+    AT_JOBS=$2
+    shift
+    ;;
+  -x)
+    EXCLUDE+=("$2")
+    shift
+    ;;
+  -s | --shard)
+    SHARD=$2
+    shift
+    ;;
+  -l | --list) LIST=1 ;;
+  --clean)
+    CLEAN=1
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  -*)
+    echo "unknown option: $1" >&2
+    usage >&2
+    exit 2
+    ;;
+  *) INCLUDE+=("$1") ;;
+  esac
+  shift
+done
+
+if [ -n "$SHARD" ]; then
+  if ! [[ $SHARD =~ ^([1-9][0-9]*)/([1-9][0-9]*)$ ]] ||
+    [ "${BASH_REMATCH[1]}" -gt "${BASH_REMATCH[2]}" ]; then
+    echo "--shard needs K/N with 1 <= K <= N: $SHARD" >&2
+    exit 2
+  fi
+  SHARD_INDEX=${BASH_REMATCH[1]}
+  SHARD_COUNT=${BASH_REMATCH[2]}
+fi
+
+define_tasks
+PG_BIN=$(find_pg_bin)
+
+matches() {
+  local name=$1 p
+  shift
+  for p in "$@"; do
+    # shellcheck disable=SC2053
+    [[ $name == $p ]] && return 0
+  done
+  return 1
+}
+
+# 選択されたタスクと、その依存を有効にする
+declare -A SELECTED
+select_task() {
+  local d
+  [ -n "${SELECTED[$1]:-}" ] && return
+  SELECTED[$1]=1
+  for d in ${TASK_DEPS[$1]}; do
+    # ~依存は順序だけなので、依存先を追加で選ぶことはしない
+    [ "${d:0:1}" = "~" ] || select_task "$d"
+  done
+}
+for p in "${INCLUDE[@]}"; do
+  found=0
+  for name in "${TASKS[@]}"; do
+    # shellcheck disable=SC2053
+    [[ $name == $p ]] && found=1
+  done
+  [ $found -eq 1 ] || echo "warning: no task matches '$p'" >&2
+done
+CANDIDATES=()
+for name in "${TASKS[@]}"; do
+  if [ ${#INCLUDE[@]} -eq 0 ] || matches "$name" "${INCLUDE[@]}"; then
+    if [ ${#EXCLUDE[@]} -eq 0 ] || ! matches "$name" "${EXCLUDE[@]}"; then
+      CANDIDATES+=("$name")
+    fi
+  fi
+done
+
+# --shard: ビルドとDB起動以外を、見積もりの長い順に一番空いている組へ
+# 割り当てる(LPT)。どのジョブでも同じ割り当てになるよう、
+# 見積もりは固定値を使い、同じ値の間はタスク名順にする
+if [ -n "$SHARD" ]; then
+  declare -a SHARD_LOAD
+  for ((i = 1; i <= SHARD_COUNT; i++)); do
+    SHARD_LOAD[i]=0
+  done
+  SHARDED=()
+  while read -r sec name; do
+    best=1
+    for ((i = 2; i <= SHARD_COUNT; i++)); do
+      [ "${SHARD_LOAD[i]}" -lt "${SHARD_LOAD[best]}" ] && best=$i
+    done
+    SHARD_LOAD[best]=$((SHARD_LOAD[best] + sec))
+    [ $best -eq "$SHARD_INDEX" ] && SHARDED+=("$name")
+  done < <(for name in "${CANDIDATES[@]}"; do
+    case $name in
+    build:* | pg:*) ;;
+    *) echo "$(static_duration "$name") $name" ;;
+    esac
+  done | LC_ALL=C sort -k1,1nr -k2,2)
+  CANDIDATES=("${SHARDED[@]}")
+fi
+
+for name in "${CANDIDATES[@]}"; do
+  select_task "$name"
+done
+# -l: パターンや--shardを指定したときは、実行されるタスクだけを表示する
+if [ $LIST -eq 1 ]; then
+  for name in "${TASKS[@]}"; do
+    if [ ${#INCLUDE[@]} -eq 0 ] && [ ${#EXCLUDE[@]} -eq 0 ] && [ -z "$SHARD" ] ||
+      [ -n "${SELECTED[$name]:-}" ]; then
+      printf '%-32s %s\n' "$name" "${TASK_DEPS[$name]}"
+    fi
+  done
+  exit 0
+fi
+
+mkdir -p "$WORK"
+exec 9> "$WORK/lock"
+if ! flock -n 9; then
+  echo "another local-ci is running in $WORK" >&2
+  exit 1
+fi
+# 前回のrunがSIGKILLなどで片付けられずに終わっていたら、残ったタスクとDBを止める
+if [ -f "$WORK/pgids" ]; then
+  while read -r pgid; do
+    # PIDが再利用されている可能性があるので、グループの先頭がlocal-ciのタスクのときだけ
+    case $(ps -o args= -p "$pgid" 2> /dev/null) in
+    *"local-ci __task "*) kill -KILL -- "-$pgid" 2> /dev/null ;;
+    esac
+  done < "$WORK/pgids"
+fi
+: > "$WORK/pgids"
+stop_leftover_pg
+if [ $CLEAN -eq 1 ]; then
+  rm -rf "$WORK"
+  exit 0
+fi
+
+if [ ${#SELECTED[@]} -eq 0 ]; then
+  echo "no task matches" >&2
+  exit 2
+fi
+for name in "${TASKS[@]}"; do
+  if [ -n "${SELECTED[$name]:-}" ]; then
+    STATE[$name]=pending
+  else
+    STATE[$name]=excluded
+  fi
+done
+
+for cmd in git tar gcc make autoconf m4 bison flex java javac timeout setsid flock \
+  unzip curl python3; do
+  command -v $cmd > /dev/null || echo "warning: $cmd not found" >&2
+done
+if [ -n "${SELECTED[test:utf8:cobol_utf8]:-}" ] && ! command -v nkf > /dev/null; then
+  echo "warning: nkf not found; test:utf8:cobol_utf8 will be skipped" >&2
+fi
+if [ -n "${SELECTED[esql:sjis:esql-sqlca]:-}" ] && port_in_use 5432; then
+  echo "warning: $SQLCA_PORT_WARNING" >&2
+fi
+
+RUN_START=$(now)
+rm -rf "$LOGDIR" "$STATEDIR"
+mkdir -p "$LOGDIR" "$STATEDIR"
+
+PG_PORT=${LOCAL_CI_PG_PORT:-$(find_free_port 55432)}
+# Unix socketのパスは107バイトまでなので短い場所に置く
+PG_SOCK=$(mktemp -d /tmp/local-ci-pg.XXXXXX)
+SPRING_PORT=$(find_free_port 18080)
+cat > "$WORK/env" << EOF
+WORK=$(printf '%q' "$WORK")
+LOGDIR=$(printf '%q' "$LOGDIR")
+STATEDIR=$(printf '%q' "$STATEDIR")
+JOBS=$JOBS
+AT_JOBS=$AT_JOBS
+TASK_TIMEOUT=$TASK_TIMEOUT
+PG_BIN=$(printf '%q' "$PG_BIN")
+PG_PORT=$PG_PORT
+PG_SOCK=$(printf '%q' "$PG_SOCK")
+SPRING_PORT=$SPRING_PORT
+TEST_JAVA_HOME=$(printf '%q' "${LOCAL_CI_TEST_JAVA_HOME:-}")
+EOF
+
+trap on_interrupt INT TERM HUP
+trap stop_pg EXIT
+
+echo "[$(stamp)] preparing source trees in $WORK"
+prepare_trees || {
+  echo "failed to copy the source tree" >&2
+  exit 1
+}
+echo "[$(stamp)] running ${#SELECTED[@]} tasks (-j $JOBS, autotest -j $AT_JOBS)"
+
+load_durations
+rm -f "$DURATIONS.new"
+run_scheduler
+
+# 今回走らなかったタスクの所要時間は前回の値を残す
+if [ -f "$DURATIONS.new" ]; then
+  for name in "${!PREV_DURATION[@]}"; do
+    grep -q "^$name " "$DURATIONS.new" || echo "$name ${PREV_DURATION[$name]}" >> "$DURATIONS.new"
+  done
+  mv "$DURATIONS.new" "$DURATIONS"
+fi
+
+print_summary
