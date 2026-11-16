@@ -9,7 +9,7 @@ plugins {
     id("java")
     id("maven-publish")
     pmd
-    id("com.github.spotbugs") version "6.5.11"
+    id("com.github.spotbugs") version "6.5.13"
     jacoco
     id("org.cyclonedx.bom") version "3.4.1"
 }
@@ -35,8 +35,8 @@ tasks {
 }
 
 dependencies {
-    implementation("com.google.guava:guava:33.7.1-jre")
-    implementation("org.xerial:sqlite-jdbc:3.53.4.0")
+    implementation("com.google.guava:guava:33.8.0-jre")
+    implementation("org.xerial:sqlite-jdbc:3.54.1.0")
     implementation("commons-cli:commons-cli:1.11.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.14.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -44,12 +44,12 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:1.21.4")
     testImplementation("org.testcontainers:postgresql:1.21.4")
     implementation("org.json:json:20260814")
-    spotbugs("com.github.spotbugs:spotbugs:4.10.4")
+    spotbugs("com.github.spotbugs:spotbugs:4.10.5")
 
-    implementation("org.slf4j:slf4j-api:2.0.19")
-    runtimeOnly("org.slf4j:slf4j-simple:2.0.19")
+    implementation("org.slf4j:slf4j-api:2.0.20")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.20")
     testImplementation("com.github.valfirst:slf4j-test:3.0.3")
-    implementation("org.postgresql:postgresql:42.7.13")
+    implementation("org.postgresql:postgresql:42.7.14")
 }
 
 configurations {
