@@ -481,25 +481,34 @@ guess_duration() {
   static_duration "$name"
 }
 
-# 所要時間の固定の見積もり(秒)。GitHub Actionsの4コアのrunnerで
-# スイートを単独で流したときの実測を元にしている。
+# 所要時間の固定の見積もり(秒)。GitHub Actionsの4コアのrunnerで、
+# 3つのシャードに分けて流したときの実測の平均を丸めたもの。
 # どの環境でも同じ値になるので、--shardはこれで分ける
 static_duration() {
   case $1 in
-  build:*) echo 150 ;;
-  test:*:run) echo 400 ;;
-  test:*:file-lock*) echo 200 ;;
-  test:*:cobj-idx) echo 160 ;;
-  test:*:jp-compat | test:*:command-line-options | test:*:misc | test:*:i18n_sjis | \
-    test:*:cobol_utf8) echo 110 ;;
-  test:*) echo 30 ;;
-  nist:*:NC) echo 90 ;;
-  nist:*:SQ) echo 70 ;;
-  nist:*:IX) echo 60 ;;
+  build:*) echo 40 ;;
+  test:*:run) echo 420 ;;
+  test:*:file-lock5) echo 350 ;;
+  test:*:file-lock) echo 320 ;;
+  test:*:cobj-idx) echo 260 ;;
+  test:*:cobol_utf8) echo 250 ;;
+  test:*:file-lock2) echo 240 ;;
+  test:*:file-lock3 | test:*:file-lock4 | test:*:jp-compat) echo 220 ;;
+  test:*:i18n_sjis) echo 200 ;;
+  test:*:misc | test:*:command-line-options) echo 180 ;;
+  test:*:data-rep) echo 45 ;;
+  test:*) echo 35 ;;
+  nist:*:SQ) echo 160 ;;
+  nist:*:NC) echo 130 ;;
+  nist:*:IX) echo 115 ;;
+  nist:*:IF | nist:*:ST) echo 70 ;;
+  nist:*:RL) echo 60 ;;
+  nist:*:CM | nist:*:DB | nist:*:RW) echo 2 ;;
   nist:*) echo 30 ;;
+  esql:*:esql-misc) echo 50 ;;
   esql:*) echo 25 ;;
-  unit:*) echo 150 ;;
-  smoke:*) echo 60 ;;
+  unit:*) echo 90 ;;
+  smoke:*) echo 25 ;;
   *) echo 100 ;;
   esac
 }
