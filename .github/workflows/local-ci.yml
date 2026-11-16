@@ -35,6 +35,10 @@ jobs:
       image: ${{ inputs.os }}
     env:
       DEBIAN_FRONTEND: noninteractive
+    defaults:
+      run:
+        # Steps in a container job run with sh unless told otherwise
+        shell: bash
     steps:
       - name: Install dependencies on Ubuntu 26.04
         if: inputs.os == 'ubuntu:26.04'
@@ -45,15 +49,18 @@ jobs:
           apt-get install -y postgresql-common
           echo 'create_main_cluster = false' >> /etc/postgresql-common/createcluster.conf
           apt-get install -y build-essential gettext autoconf bison flex git \
-            unzip nkf curl python3 procps postgresql
+            unzip nkf curl python3 procps locales postgresql
+          # local-ci initializes the database with en_US.utf8 if it exists,
+          # the locale of the postgres images
+          locale-gen en_US.UTF-8
 
       - name: Install dependencies on AlmaLinux 9
         if: inputs.os == 'almalinux:9'
         run: |
           dnf module enable -y postgresql:15
           dnf install -y gcc make autoconf diffutils gettext bison flex git \
-            unzip glibc-gconv-extra python3 procps-ng util-linux findutils tar \
-            postgresql postgresql-server
+            unzip glibc-gconv-extra glibc-langpack-en python3 procps-ng util-linux \
+            findutils tar postgresql postgresql-server
           curl -fsSL "https://github.com/nurse/nkf/archive/refs/tags/v2_1_3.tar.gz" -o nkf-2.1.3.tar.gz
           tar zxf nkf-2.1.3.tar.gz
           make -C nkf-2_1_3
@@ -88,6 +95,11 @@ jobs:
           CHARSET: ${{ inputs.charset }}
           SHARD: ${{ inputs.shard }}
           OS: ${{ inputs.os }}
+          # A task that hangs must time out before the job does, so that the
+          # logs are printed and uploaded
+          LOCAL_CI_TIMEOUT: 2400
+          # A skipped task means a missing tool here, not an expected skip
+          LOCAL_CI_STRICT: 1
         run: |
           # local-ci copies the work tree with git ls-files. The checkout is
           # owned by another user than the container's root.
@@ -118,6 +130,11 @@ jobs:
           path: |
             .local-ci/logs/
             .local-ci/tree-*/tests/*.dir/
+            .local-ci/tree-*/tests/cobol85/*/report.txt
             .local-ci/tree-*/samples/spring-boot-smoke/app.log
+            .local-ci/tree-*/samples/spring-boot-smoke/responses.txt
+            .local-ci/tree-unit/libcobj/app/build/reports/tests/
             .local-ci/pg/server.log
-          if-no-files-found: ignore
+          # Everything is under .local-ci/, which upload-artifact skips by default
+          include-hidden-files: true
+          if-no-files-found: warn

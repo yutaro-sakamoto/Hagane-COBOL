@@ -29,6 +29,31 @@ Pull Request提出時には、./formatを実行してリポジトリ内のコー
 1. （オプション）[gitの認証情報を設定](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials)します。
 
 
+## テストの実行
+
+CIはトップディレクトリの[`./local-ci`](local-ci)でHagane COBOLをビルドしてLinux向けのテストを実行しています。手元のLinux環境でも同じテストを実行できます。
+作業ツリーの内容(未コミットの変更と、無視されていない未追跡ファイルを含む)を`.local-ci/`以下に複製し、そこでShift_JIS版とUTF-8版のコンパイラをビルドして、選択したタスクを並列に実行します。そのため作業ツリー内のビルド結果や`local/`には影響しません。
+タスクには、autotestの各スイート(`test:sjis:*`、`test:utf8:*`)、NIST COBOL85(`nist:*`)、ESQLのテスト(`esql:*`)、libcobjの単体テスト(`unit:libcobj`)、Spring Bootのsmoke test(`smoke:spring-boot`)、linter(`lint:*`)があります。
+
+```
+./local-ci -l                        # タスクの一覧を表示する
+./local-ci 'test:sjis:run' 'lint:*'  # パターンに一致するタスクを実行する
+./local-ci -x 'nist:*'               # パターンに一致するタスクを除いて実行する
+./local-ci --clean                   # .local-ci/ を削除する
+```
+
+全タスクの実行には時間がかかるため、push前には変更に関係するタスクだけを実行し、全体はCIに任せるのが現実的です。
+`-j`、`-t`、`--shard`などすべてのオプションはスクリプト冒頭のコメント(`./local-ci -h`)を参照してください。
+各タスクのログは`.local-ci/logs/<タスク名の':'を'_'に置き換えた名前>.log`に出力され、失敗したautotestの詳細は`.local-ci/tree-{sjis,utf8}/tests/<スイート名>.dir/`に残ります。
+
+注意点:
+
+* ESQLのテストは`initdb`と`pg_ctl`で専用のPostgreSQLサーバを起動するため、PostgreSQLのサーバのバイナリが必要です。自動で見つからない場合は`LOCAL_CI_PG_BIN`で場所を指定してください。
+* Dockerが無い環境では、`unit:libcobj`はTestcontainersを使うテストクラスとカバレッジの検証を省略します。
+* `nkf`がインストールされていない場合、`test:utf8:cobol_utf8`はスキップされます。
+* `localhost:5432`で何かが待ち受けていると、`esql:sjis:esql-sqlca`は失敗します。
+* `lint:cppcheck`の結果はcppcheckのバージョンによって変わり(CIはAlmaLinux 9のEPELのcppcheckを使用)、`lint:javadoc`はjavadocの警告が1件でもあると失敗します。そのため、この2つは変更に問題が無くても手元では失敗することがあります。
+
 ## 静的解析の実行
 
 > [!CAUTION]
@@ -38,6 +63,8 @@ Pull Request提出時には、./formatを実行してリポジトリ内のコー
 
 Hagane COBOLのトップディレクトリで`./format`を実行してください。
 `./check-format`を実行することで、フォーマットが完了したかを確認できます。
+
+`./local-ci 'lint:*'`を実行すると、CIが行う静的解析(clang-format、cppcheck、spotless、SpotBugs、PMD、javadoc、javadocの記述漏れの検査)をまとめて実行できます。
 
 ### PMD
 

@@ -31,6 +31,8 @@
 #   LOCAL_CI_PG_BIN     initdb/pg_ctlのあるディレクトリ (既定: PATHか/usr/lib/postgresql/*/bin)
 #   LOCAL_CI_PG_PORT    ESQLテスト用PostgreSQLのポート (既定: 55432から空きを探す)
 #   LOCAL_CI_PG_USER    rootで実行したときにPostgreSQLを動かすユーザ (既定: postgres)
+#   LOCAL_CI_STRICT     1にすると、SKIPになったタスクも失敗として数える。
+#                       CIで、ツールの入れ忘れなどで検証が抜け落ちたまま緑になるのを防ぐ
 #   LOCAL_CI_TEST_JAVA_HOME  テスト(test/nist/esql)だけを別のJDKで動かす。
 #                       CIはテストをJava 11で動かしているので、11のJDKを指定すると近くなる
 
@@ -215,8 +217,11 @@ TESTCONTAINERS_TESTS="CobolDataConverterTest CobolEsqlTest CobolEsqlLoggingTest"
 
 do_unit_test() {
   local init c
+  # make test-cobj-apiと同じく、テスト用のJDKで動かす
+  use_test_java
   cd "$(tree_dir unit)/libcobj" || return 1
-  if docker info > /dev/null 2>&1; then
+  # GitHub Actionsのコンテナジョブにはdocker CLIが無いが、ソケットは渡される
+  if docker info > /dev/null 2>&1 || [ -S /var/run/docker.sock ] || [ -n "${DOCKER_HOST:-}" ]; then
     ./gradlew test jacocoTestCoverageVerification
     return
   fi
@@ -646,7 +651,7 @@ run_scheduler() {
 }
 
 print_summary() {
-  local name pass=0 fail=0 skip=0 total
+  local name pass=0 fail=0 skip=0 total strict=${LOCAL_CI_STRICT:-0}
   total=$(($(now) - RUN_START))
   echo
   echo "==================== summary ===================="
@@ -665,12 +670,17 @@ print_summary() {
   done
   echo "pass: $pass  fail: $fail  skip: $skip  (total $(fmt_duration "$total"))"
   echo "logs: $LOGDIR"
+  if [ "$strict" = 1 ] && [ $skip -gt 0 ]; then
+    echo "LOCAL_CI_STRICT=1: skipped tasks count as failures"
+    fail=$((fail + skip))
+  fi
   # GitHub Actionsでは、失敗したタスクのログを折りたたんでジョブのログに出す
   if [ "${GITHUB_ACTIONS:-}" = true ]; then
     for name in "${TASKS[@]}"; do
       [ "${STATE[$name]}" = fail ] || continue
       echo "::group::log of $name"
-      tail -n 500 "$LOGDIR/$(echo "$name" | tr ':' '_').log"
+      # 行頭の::はワークフローコマンドとして解釈されるのでずらす
+      tail -n 500 "$LOGDIR/$(echo "$name" | tr ':' '_').log" | sed 's/^::/ ::/'
       echo "::endgroup::"
       echo "::error title=local-ci::$name failed"
     done
@@ -880,7 +890,12 @@ if [ $CLEAN -eq 1 ]; then
   exit 0
 fi
 
-if [ ${#SELECTED[@]} -eq 0 ]; then
+# 空の連想配列の${#SELECTED[@]}はset -uでエラーになるので、CANDIDATESで判定する
+if [ ${#CANDIDATES[@]} -eq 0 ]; then
+  if [ -n "$SHARD" ]; then
+    echo "shard $SHARD has no tasks"
+    exit 0
+  fi
   echo "no task matches" >&2
   exit 2
 fi
