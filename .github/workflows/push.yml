@@ -87,58 +87,27 @@ jobs:
     with:
       upload-artifacts: true
 
-  windows-test:
-    needs: windows-build
-    strategy:
-       matrix:
-         test_name: ["IC", "IF", "IX", "NC", "OB", "RL", "SG", "SM", "SQ", "ST"]
-    uses: ./.github/workflows/windows-test.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-
   windows-generate-test-scripts:
     needs: check-workflows
     uses: ./.github/workflows/windows-generate-test-scripts.yml
 
-  windows-test-other:
+  # Each group runs in one job with win/run-tests.sh, two items at a time.
+  # The groups take about the same time; within a group the long items come
+  # first. The ESQL suites share one database, so they run one after another
+  # (joined with +). esql-utf8 is missing on purpose: it needs a compiler
+  # configured with --enable-utf8, and the Windows build is Shift_JIS only.
+  windows-test:
     needs: [windows-build, windows-generate-test-scripts]
     strategy:
       fail-fast: false
       matrix:
-        test_name:
-          - "command-line-options"
-          - "data-rep"
-          - "jp-compat"
-          - "run"
-          - "syntax"
-          - "file-lock"
-          - "file-lock2"
-          - "file-lock3"
-          - "file-lock4"
-          - "file-lock5"
-          - "misc"
-          - "multithread"
-    uses: ./.github/workflows/windows-test-other.yml
+        tests:
+          - "run misc file-lock3 command-line-options data-rep multithread syntax"
+          - "file-lock file-lock5 file-lock4 jp-compat file-lock2"
+          - "esql-misc+esql-basic+esql-cobol-data+esql-sqlca+esql-multithread+esql-sql-data nist:NC nist:SQ nist:IX nist:IF nist:ST nist:RL nist:IC nist:SM nist:SG nist:OB"
+    uses: ./.github/workflows/windows-test.yml
     with:
-      test-name: ${{ matrix.test_name }}
-
-  # esql-utf8 is missing on purpose: it needs a compiler configured with
-  # --enable-utf8, and the Windows build is Shift_JIS only.
-  windows-test-esql:
-    needs: [windows-build, windows-generate-test-scripts]
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name:
-          - "esql-basic"
-          - "esql-sqlca"
-          - "esql-cobol-data"
-          - "esql-misc"
-          - "esql-sql-data"
-          - "esql-multithread"
-    uses: ./.github/workflows/windows-test-esql.yml
-    with:
-      test-name: ${{ matrix.test_name }}
+      tests: ${{ matrix.tests }}
 
   static-analysis:
     needs: check-workflows

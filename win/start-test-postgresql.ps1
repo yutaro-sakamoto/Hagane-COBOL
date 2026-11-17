@@ -8,7 +8,7 @@
     there is none, so this script initialises a cluster of its own from an
     existing PostgreSQL installation and starts it.
 
-    It is used by .github/workflows/windows-test-esql.yml and is meant to work
+    It is used by .github/workflows/windows-test.yml and is meant to work
     the same way on a developer's own Windows machine.  Run it, then run the
     suites from tests/ as usual.
 

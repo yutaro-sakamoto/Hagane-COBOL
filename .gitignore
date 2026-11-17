@@ -108,3 +108,6 @@ report.html
 website/node_modules/
 website/.vitepress/cache/
 website/.vitepress/dist/
+
+# win/run-tests.sh のログ
+/tests/win-logs/
