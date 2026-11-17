@@ -1489,12 +1489,10 @@ public class CobolIndexedFile extends CobolFile {
                 return COB_STATUS_51_RECORD_LOCKED;
             }
             if (!lockRecord(currentKey)) {
-                // 主キーに一致する行が無くロック用のUPDATEが0行だった場合は、
-                // 恒久エラー(30)ではなく「キーが存在しない」(23)を返す。
                 p.connection.rollback();
                 unlockPreviousRecord();
                 p.connection.commit();
-                return COB_STATUS_23_KEY_NOT_EXISTS;
+                return COB_STATUS_30_PERMANENT_ERROR;
             }
         } catch (SQLException e) {
             try {
@@ -1627,12 +1625,10 @@ public class CobolIndexedFile extends CobolFile {
                 return COB_STATUS_51_RECORD_LOCKED;
             }
             if (!lockRecord(currentKey)) {
-                // 主キーに一致する行が無くロック用のUPDATEが0行だった場合は、
-                // 恒久エラー(30)ではなく「キーが存在しない」(23)を返す。
                 p.connection.rollback();
                 unlockPreviousRecord();
                 p.connection.commit();
-                return COB_STATUS_23_KEY_NOT_EXISTS;
+                return COB_STATUS_30_PERMANENT_ERROR;
             }
         } catch (SQLException e) {
             try {
