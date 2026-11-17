@@ -74,12 +74,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests:
-          - "run misc file-lock3 command-line-options data-rep multithread syntax"
-          - "file-lock file-lock5 file-lock4 jp-compat file-lock2"
-          - "esql-misc+esql-basic+esql-cobol-data+esql-sqlca+esql-multithread+esql-sql-data nist:NC nist:SQ nist:IX nist:IF nist:ST nist:RL nist:IC nist:SM nist:SG nist:OB"
+        include:
+          - group: other-1
+            tests: "run misc file-lock3 command-line-options data-rep multithread syntax"
+          - group: other-2
+            tests: "file-lock file-lock5 file-lock4 jp-compat file-lock2"
+          # Same order as the old Linux ESQL job, which also shared one database
+          - group: nist-esql
+            tests: "esql-basic+esql-sqlca+esql-cobol-data+esql-misc+esql-sql-data+esql-multithread nist:NC nist:SQ nist:IX nist:IF nist:ST nist:RL nist:IC nist:SM nist:SG nist:OB"
+    name: windows-test (${{ matrix.group }})
     uses: ./.github/workflows/windows-test.yml
     with:
+      group: ${{ matrix.group }}
       tests: ${{ matrix.tests }}
 
   static-analysis:

@@ -19,7 +19,11 @@
 #
 # Before running it, install Hagane COBOL (win/make-install.ps1), put the
 # generated test scripts, atconfig and atlocal in tests/ and set CLASSPATH,
-# as .github/workflows/windows-test.yml does.
+# as .github/workflows/windows-test.yml does. The script puts the installed
+# bin directory (COB4J_INSTALL_DIR, default C:/opensourcecobol4j) on PATH,
+# because the NIST tests run cobj from PATH.
+#
+# A slot that runs several items reports each failed item on its own line.
 #
 # The output of each item goes to tests/win-logs/<item>.log. In GitHub
 # Actions the logs of the failed items are also printed in collapsible groups.
@@ -52,6 +56,11 @@ printf '%s\n' '#!/bin/bash' 'exec /usr/bin/diff --strip-trailing-cr "$@"' \
   > "$LOGDIR/diff-wrapper/diff"
 chmod +x "$LOGDIR/diff-wrapper/diff"
 export PATH="$LOGDIR/diff-wrapper:$PATH"
+# tests/cobol85/report.sh runs cobj from PATH (autotest uses COBJ in atlocal)
+INSTALL_DIR=${COB4J_INSTALL_DIR:-C:/opensourcecobol4j}
+if [ -d "$INSTALL_DIR/bin" ]; then
+  export PATH="$PATH:$(cd "$INSTALL_DIR/bin" && pwd):$(cd "$INSTALL_DIR/config" 2> /dev/null && pwd)"
+fi
 
 stamp() { date +%H:%M:%S; }
 log_of() { echo "$LOGDIR/$(echo "$1" | tr ':+' '_-').log"; }
@@ -81,7 +90,10 @@ run_slot() {
   IFS=+ read -r -a items <<< "$slot"
   for item in "${items[@]}"; do
     echo "=== $item" >> "$log"
-    run_item "$item" >> "$log" 2>&1 || rc=1
+    if ! run_item "$item" >> "$log" 2>&1; then
+      rc=1
+      [ "$item" = "$slot" ] || echo "[$(stamp)] FAIL  $item (in $slot)"
+    fi
   done
   echo "$rc" > "$log.rc"
   if [ $rc -eq 0 ]; then

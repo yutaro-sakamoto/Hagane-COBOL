@@ -7,6 +7,10 @@ name: Windows tests
 on:
   workflow_call:
     inputs:
+      group:
+        description: "Name of the group, used for the artifact name"
+        required: true
+        type: string
       tests:
         description: "Items for win/run-tests.sh, separated by spaces"
         required: true
@@ -84,25 +88,20 @@ jobs:
         read -r -a items <<< "$TESTS"
         win/run-tests.sh -P 2 -j 4 "${items[@]}"
 
+    # cancelled() as well: a job that hits timeout-minutes is cancelled, and
+    # that is when the logs are needed most
     - name: Show the PostgreSQL log if tests fail
-      if: failure() && contains(inputs.tests, 'esql')
+      if: (failure() || cancelled()) && contains(inputs.tests, 'esql')
       shell: pwsh
       run: |
         $log = "$env:RUNNER_TEMP/$env:PG_LOG"
         if (Test-Path $log) { Get-Content $log }
 
-    - name: Get the artifact name
-      if: failure()
-      shell: bash
-      env:
-        TESTS: ${{ inputs.tests }}
-      run: echo "ARTIFACT_NAME=windows-test-$(echo "$TESTS" | cut -d' ' -f1 | tr ':+' '--')-log" >> "$GITHUB_ENV"
-
     - name: Upload log files if tests fail
-      if: failure()
+      if: failure() || cancelled()
       uses: actions/upload-artifact@v7
       with:
-        name: ${{ env.ARTIFACT_NAME }}
+        name: windows-test-${{ inputs.group }}-log
         path: |
           tests/win-logs/*.log
           tests/*.dir/

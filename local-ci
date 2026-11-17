@@ -391,7 +391,7 @@ find_pg_bin() {
   if [ -n "${LOCAL_CI_PG_BIN:-}" ]; then
     if [ -x "$LOCAL_CI_PG_BIN/initdb" ] && [ -x "$LOCAL_CI_PG_BIN/pg_ctl" ]; then
       echo "$LOCAL_CI_PG_BIN"
-    else
+    elif [ "$LOCAL_CI_PG_BIN" != none ]; then
       echo "warning: no initdb/pg_ctl in LOCAL_CI_PG_BIN=$LOCAL_CI_PG_BIN" >&2
     fi
     return
