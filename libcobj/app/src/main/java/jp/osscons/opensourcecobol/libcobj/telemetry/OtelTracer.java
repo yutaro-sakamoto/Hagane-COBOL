@@ -19,9 +19,9 @@
 package jp.osscons.opensourcecobol.libcobj.telemetry;
 
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
@@ -30,12 +30,18 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapGetter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-/** OpenTelemetry APIを使ってスパンを作る実装。{@link CobolTelemetry}からのみ使用する。 */
+/**
+ * OpenTelemetry APIを使ってスパンを作る実装。{@link CobolTelemetry}からのみ使用する。
+ *
+ * <p>プログラムのスパンはOpenTelemetryのスレッドローカルなコンテキスト({@link Context#current()})に 登録せず、自前のスタックで管理して親を明示する。
+ * COBOLプログラムが例外で抜けて後始末が行われなかった場合でも、 スレッドプールのスレッドにコンテキストが残り、ホストアプリケーションの無関係なスパンが
+ * COBOLのスパンの子になってしまうことを防ぐためである。 埋め込みSQLの実行中だけは{@link #activate()}で現在のプログラムのスパンをコンテキストに登録し、
+ * JDBCの計装(OpenTelemetry Java agentなど)が作るスパンをその子にする。
+ */
 final class OtelTracer {
 
     /** 計装ライブラリ名 */
@@ -49,15 +55,26 @@ final class OtelTracer {
             AttributeKey.stringKey("cobol.file.operation");
     static final AttributeKey<String> FILE_STATUS = AttributeKey.stringKey("cobol.file.status");
 
-    /** 実行中のプログラム1つ分のスパンとスコープ */
+    /** 実行中のプログラム1つ分のスパンと、それを含むコンテキスト */
     private static final class Frame {
         final Span span;
-        final Scope scope;
+        final Context context;
 
-        Frame(Span span, Scope scope) {
+        Frame(Span span, Context context) {
             this.span = span;
-            this.scope = scope;
+            this.context = context;
         }
+    }
+
+    /** スレッドごとのトレースの状態 */
+    private static final class ThreadState {
+        /** 実行中のプログラムのスタック */
+        final Deque<Frame> frames = new ArrayDeque<>();
+
+        /**
+         * 最後に終了した実行単位のルートのプログラムのコンテキスト。 ルートのプログラムが復帰した後に行われる暗黙のCLOSEなどのスパンを同じトレースに含めるために使う。
+         */
+        Context lastRoot;
     }
 
     private static final TextMapGetter<Map<String, String>> MAP_GETTER =
@@ -73,54 +90,112 @@ final class OtelTracer {
                 }
             };
 
-    private final Tracer tracer;
-    private final ThreadLocal<Deque<Frame>> frames =
-            new ThreadLocal<Deque<Frame>>() {
-                @Override
-                protected Deque<Frame> initialValue() {
-                    return new ArrayDeque<>();
-                }
-            };
+    /** テストなどで明示的に指定されたTracer。nullならGlobalOpenTelemetryから取得する */
+    private final Tracer fixedTracer;
 
-    /** GlobalOpenTelemetryからTracerを取得して作成する。 */
+    /** GlobalOpenTelemetryが設定された後に取得したTracer */
+    private Tracer globalTracer;
+
+    /**
+     * 環境変数TRACEPARENT/TRACESTATEから取り出した親コンテキスト。無ければnull。<br>
+     * COBOLのランタイム設定ではなくプロセスの起動元が渡すものなので、SET ENVIRONMENTの影響を受けない System.getenvで読む。
+     */
+    private final Context environmentParent;
+
+    private final ThreadLocal<ThreadState> state = ThreadLocal.withInitial(ThreadState::new);
+
+    /** GlobalOpenTelemetryを使い、環境変数TRACEPARENT/TRACESTATEを親コンテキストとして作成する。 */
     OtelTracer() {
-        this(GlobalOpenTelemetry.getTracer(INSTRUMENTATION_NAME));
+        this(null, parentFromEnvironment());
     }
 
     /**
-     * 指定したTracerを使って作成する。テストで使用する。
+     * 指定したTracerと親コンテキストを使って作成する。テストで使用する。
      *
-     * @param tracer スパンを作るTracer
+     * @param tracer スパンを作るTracer。nullならGlobalOpenTelemetryから取得する
+     * @param environmentParent 外部から引き継ぐ親コンテキスト。無ければnull
      */
-    OtelTracer(Tracer tracer) {
-        this.tracer = tracer;
+    OtelTracer(Tracer tracer, Context environmentParent) {
+        this.fixedTracer = tracer;
+        this.environmentParent = environmentParent;
+    }
+
+    /**
+     * スパンを作るTracerを返す。<br>
+     * GlobalOpenTelemetryが未設定の間は{@link GlobalOpenTelemetry#get()}を呼ばない。
+     * 呼ぶとnoopの実装が登録されてしまい、ホストアプリケーションが後からSDKを登録できなくなるためである。
+     */
+    private Tracer tracer() {
+        if (fixedTracer != null) {
+            return fixedTracer;
+        }
+        Tracer t = globalTracer;
+        if (t != null) {
+            return t;
+        }
+        if (!GlobalOpenTelemetry.isSet()) {
+            return OpenTelemetry.noop().getTracer(INSTRUMENTATION_NAME);
+        }
+        t = GlobalOpenTelemetry.getTracer(INSTRUMENTATION_NAME);
+        globalTracer = t;
+        return t;
+    }
+
+    /**
+     * 新しいスパンの親にするコンテキストを返す。
+     *
+     * @param st 現在のスレッドの状態
+     * @return 実行中のプログラムがあればそのコンテキスト、無ければ呼び出し元の現在のコンテキスト。
+     *     呼び出し元に有効なスパンが無く環境変数TRACEPARENTがあれば、そのコンテキスト
+     */
+    private Context parentContext(ThreadState st) {
+        Frame top = st.frames.peek();
+        if (top != null) {
+            return top.context;
+        }
+        Context current = Context.current();
+        if (Span.fromContext(current).getSpanContext().isValid()) {
+            return current;
+        }
+        if (st.lastRoot != null) {
+            return st.lastRoot;
+        }
+        return environmentParent != null ? environmentParent : current;
     }
 
     void programEnter(String programId) {
-        Deque<Frame> stack = frames.get();
-        SpanBuilder builder =
-                tracer.spanBuilder(programId == null ? "COBOL program" : programId)
-                        .setAttribute(PROGRAM_ID, programId == null ? "" : programId);
-        if (stack.isEmpty()) {
-            Context parent = parentFromEnvironment();
-            if (parent != null) {
-                builder.setParent(parent);
-            }
+        ThreadState st = state.get();
+        Context parent;
+        Frame top = st.frames.peek();
+        if (top != null) {
+            parent = top.context;
+        } else {
+            // 新しい実行単位のルートなので、前の実行単位のコンテキストは使わない
+            st.lastRoot = null;
+            parent = parentContext(st);
         }
-        Span span = builder.startSpan();
-        stack.push(new Frame(span, span.makeCurrent()));
+        String id = programId == null ? "" : programId;
+        Span span =
+                tracer().spanBuilder(id.isEmpty() ? "COBOL program" : id)
+                        .setParent(parent)
+                        .setAttribute(PROGRAM_ID, id)
+                        .startSpan();
+        st.frames.push(new Frame(span, parent.with(span)));
     }
 
     void programExit() {
-        Frame f = frames.get().poll();
+        ThreadState st = state.get();
+        Frame f = st.frames.poll();
         if (f != null) {
-            f.scope.close();
             f.span.end();
+            if (st.frames.isEmpty()) {
+                st.lastRoot = f.context;
+            }
         }
     }
 
     void stopRun(int returnCode) {
-        Frame f = frames.get().peek();
+        Frame f = state.get().frames.peek();
         if (f != null) {
             f.span.setAttribute(STOP_RUN, true);
             f.span.setAttribute(RETURN_CODE, (long) returnCode);
@@ -129,7 +204,8 @@ final class OtelTracer {
 
     Object fileStart(String operation, String fileName) {
         String name = fileName == null ? "" : fileName;
-        return tracer.spanBuilder(operation + " " + name)
+        return tracer().spanBuilder(operation + " " + name)
+                .setParent(parentContext(state.get()))
                 .setAttribute(FILE_OPERATION, operation)
                 .setAttribute(FILE_NAME, name)
                 .startSpan();
@@ -153,15 +229,28 @@ final class OtelTracer {
         span.end();
     }
 
+    /**
+     * 実行中のプログラムのスパンを現在のコンテキストにする。
+     *
+     * @return 元のコンテキストに戻すためのスコープ。実行中のプログラムが無ければnull
+     */
+    CobolTelemetry.Activation activate() {
+        Frame f = state.get().frames.peek();
+        if (f == null) {
+            return null;
+        }
+        Scope scope = f.context.makeCurrent();
+        return scope::close;
+    }
+
     void resetThreadState() {
-        Deque<Frame> stack = frames.get();
+        ThreadState st = state.get();
         Frame f;
-        while ((f = stack.poll()) != null) {
+        while ((f = st.frames.poll()) != null) {
             f.span.setStatus(StatusCode.ERROR, "run unit ended before the program returned");
-            f.scope.close();
             f.span.end();
         }
-        frames.remove();
+        state.remove();
     }
 
     /**
@@ -180,7 +269,7 @@ final class OtelTracer {
         if (tracestate != null && !tracestate.isEmpty()) {
             carrier.put("tracestate", tracestate);
         }
-        return extract(Collections.unmodifiableMap(carrier));
+        return extract(carrier);
     }
 
     /**

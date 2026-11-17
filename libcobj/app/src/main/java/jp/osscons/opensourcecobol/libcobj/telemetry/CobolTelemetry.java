@@ -193,6 +193,32 @@ public final class CobolTelemetry {
         }
     }
 
+    /** {@link #activate()}が返すスコープ。try-with-resourcesで閉じる。 */
+    public interface Activation extends AutoCloseable {
+        /** 元のコンテキストに戻す。 */
+        @Override
+        void close();
+    }
+
+    /** 何もしないスコープ */
+    private static final Activation NOOP_ACTIVATION = () -> {};
+
+    /**
+     * 実行中のプログラムのスパンをOpenTelemetryの現在のコンテキストにする。<br>
+     * 埋め込みSQLの実行中に呼び出し、JDBCの計装が作るスパンをプログラムのスパンの子にする。
+     * 返り値は必ずtry-with-resourcesで閉じること。
+     *
+     * @return 元のコンテキストに戻すためのスコープ
+     */
+    public static Activation activate() {
+        OtelTracer t = TRACER.get();
+        if (t == null) {
+            return NOOP_ACTIVATION;
+        }
+        Activation a = t.activate();
+        return a == null ? NOOP_ACTIVATION : a;
+    }
+
     /** 現在のスレッドで終了していないプログラムのスパンを全て終了し、状態を破棄する。実行単位の終了時に呼び出す。 */
     public static void resetThreadState() {
         OtelTracer t = TRACER.get();
