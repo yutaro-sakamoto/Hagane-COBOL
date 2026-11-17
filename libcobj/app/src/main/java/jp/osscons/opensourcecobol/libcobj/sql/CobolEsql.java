@@ -2,7 +2,6 @@ package jp.osscons.opensourcecobol.libcobj.sql;
 
 import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
 import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
-import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 
 /**
  * COBOL の埋め込み SQL 操作（CONNECT、EXEC SQL、カーソル、トランザクション）のエントリポイント。
@@ -71,9 +70,7 @@ public final class CobolEsql {
             AbstractCobolField user,
             AbstractCobolField passwd,
             AbstractCobolField dbname) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().connect(sqlca, user, passwd, dbname);
-        }
+        backend().connect(sqlca, user, passwd, dbname);
     }
 
     /**
@@ -82,9 +79,7 @@ public final class CobolEsql {
      * @param sqlca ステータス報告用の SQLCA データストレージ
      */
     public static void disconnect(CobolDataStorage sqlca) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().disconnect(sqlca);
-        }
+        backend().disconnect(sqlca);
     }
 
     // -------------------------------------------------------
@@ -97,9 +92,7 @@ public final class CobolEsql {
      * @param query SQL クエリ文字列
      */
     public static void exec(CobolDataStorage sqlca, String query) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().exec(sqlca, query);
-        }
+        backend().exec(sqlca, query);
     }
 
     // -------------------------------------------------------
@@ -114,9 +107,7 @@ public final class CobolEsql {
      */
     public static void execWithParams(
             CobolDataStorage sqlca, String query, AbstractCobolField... params) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().execWithParams(sqlca, query, params);
-        }
+        backend().execWithParams(sqlca, query, params);
     }
 
     // -------------------------------------------------------
@@ -130,9 +121,7 @@ public final class CobolEsql {
      * @param cursorName 位置付け対象の（修飾済み）カーソル名
      */
     public static void execWhereCurrentOf(CobolDataStorage sqlca, String query, String cursorName) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().execWhereCurrentOf(sqlca, query, cursorName);
-        }
+        backend().execWhereCurrentOf(sqlca, query, cursorName);
     }
 
     /**
@@ -145,9 +134,7 @@ public final class CobolEsql {
      */
     public static void execWithParamsWhereCurrentOf(
             CobolDataStorage sqlca, String query, String cursorName, AbstractCobolField... params) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().execWithParamsWhereCurrentOf(sqlca, query, cursorName, params);
-        }
+        backend().execWithParamsWhereCurrentOf(sqlca, query, cursorName, params);
     }
 
     // -------------------------------------------------------
@@ -166,9 +153,7 @@ public final class CobolEsql {
             String query,
             AbstractCobolField[] inputParams,
             AbstractCobolField[] resultParams) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().selectInto(sqlca, query, inputParams, resultParams);
-        }
+        backend().selectInto(sqlca, query, inputParams, resultParams);
     }
 
     /**
@@ -188,11 +173,7 @@ public final class CobolEsql {
             String query,
             AbstractCobolField[] inputParams,
             AbstractCobolField[] resultParams) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend()
-                    .selectIntoOccurs(
-                            sqlca, occursSize, occursMax, query, inputParams, resultParams);
-        }
+        backend().selectIntoOccurs(sqlca, occursSize, occursMax, query, inputParams, resultParams);
     }
 
     // -------------------------------------------------------
@@ -206,9 +187,7 @@ public final class CobolEsql {
      * @param query カーソル用の SQL クエリ
      */
     public static void declareCursor(CobolDataStorage sqlca, String cursorName, String query) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().declareCursor(sqlca, cursorName, query);
-        }
+        backend().declareCursor(sqlca, cursorName, query);
     }
 
     /**
@@ -221,9 +200,7 @@ public final class CobolEsql {
      */
     public static void declareCursorWithParams(
             CobolDataStorage sqlca, String cursorName, String query, AbstractCobolField... params) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().declareCursorWithParams(sqlca, cursorName, query, params);
-        }
+        backend().declareCursorWithParams(sqlca, cursorName, query, params);
     }
 
     /**
@@ -233,9 +210,7 @@ public final class CobolEsql {
      * @param cursorName オープンするカーソル名
      */
     public static void openCursor(CobolDataStorage sqlca, String cursorName) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().openCursor(sqlca, cursorName);
-        }
+        backend().openCursor(sqlca, cursorName);
     }
 
     /**
@@ -247,9 +222,7 @@ public final class CobolEsql {
      */
     public static void openCursorWithParams(
             CobolDataStorage sqlca, String cursorName, AbstractCobolField... params) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().openCursorWithParams(sqlca, cursorName, params);
-        }
+        backend().openCursorWithParams(sqlca, cursorName, params);
     }
 
     /**
@@ -261,9 +234,7 @@ public final class CobolEsql {
      */
     public static void fetchCursor(
             CobolDataStorage sqlca, String cursorName, AbstractCobolField... resultParams) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().fetchCursor(sqlca, cursorName, resultParams);
-        }
+        backend().fetchCursor(sqlca, cursorName, resultParams);
     }
 
     /**
@@ -281,9 +252,7 @@ public final class CobolEsql {
             int occursSize,
             int occursMax,
             AbstractCobolField... resultParams) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().fetchCursorOccurs(sqlca, cursorName, occursSize, occursMax, resultParams);
-        }
+        backend().fetchCursorOccurs(sqlca, cursorName, occursSize, occursMax, resultParams);
     }
 
     /**
@@ -293,9 +262,7 @@ public final class CobolEsql {
      * @param cursorName クローズするカーソル名
      */
     public static void closeCursor(CobolDataStorage sqlca, String cursorName) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().closeCursor(sqlca, cursorName);
-        }
+        backend().closeCursor(sqlca, cursorName);
     }
 
     // -------------------------------------------------------
@@ -310,9 +277,7 @@ public final class CobolEsql {
      */
     public static void prepare(
             CobolDataStorage sqlca, String stmtName, AbstractCobolField queryField) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().prepare(sqlca, stmtName, queryField);
-        }
+        backend().prepare(sqlca, stmtName, queryField);
     }
 
     /**
@@ -324,9 +289,7 @@ public final class CobolEsql {
      */
     public static void executePrepared(
             CobolDataStorage sqlca, String stmtName, AbstractCobolField... params) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().executePrepared(sqlca, stmtName, params);
-        }
+        backend().executePrepared(sqlca, stmtName, params);
     }
 
     // -------------------------------------------------------
@@ -338,9 +301,7 @@ public final class CobolEsql {
      * @param sqlca ステータス報告用の SQLCA データストレージ
      */
     public static void commit(CobolDataStorage sqlca) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().commit(sqlca);
-        }
+        backend().commit(sqlca);
     }
 
     /**
@@ -349,8 +310,6 @@ public final class CobolEsql {
      * @param sqlca ステータス報告用の SQLCA データストレージ
      */
     public static void rollback(CobolDataStorage sqlca) {
-        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
-            backend().rollback(sqlca);
-        }
+        backend().rollback(sqlca);
     }
 }

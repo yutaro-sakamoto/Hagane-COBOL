@@ -50,12 +50,6 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-simple:2.0.19")
     testImplementation("com.github.valfirst:slf4j-test:3.0.3")
     implementation("org.postgresql:postgresql:42.7.13")
-
-    // OpenTelemetry tracing (enabled at run time with COB_OTEL_ENABLED=Y).
-    // Only the API is bundled. The SDK and exporters are provided by the
-    // OpenTelemetry Java agent or by the host application.
-    implementation("io.opentelemetry:opentelemetry-api:1.68.0")
-    testImplementation("io.opentelemetry:opentelemetry-sdk-testing:1.68.0")
 }
 
 configurations {

@@ -22,7 +22,6 @@ import jp.osscons.opensourcecobol.libcobj.call.CobolResolve;
 import jp.osscons.opensourcecobol.libcobj.common.CobolModule;
 import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
 import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
-import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 
 /** STOP RUNの呼び出し時にスローされる例外。返り値を保持する。 */
 public final class CobolStopRunException extends Exception {
@@ -119,7 +118,6 @@ public final class CobolStopRunException extends Exception {
      * @throws CobolStopRunSignal 実行単位のルートでない場合
      */
     public static int handleAtFrame(int returnCode) {
-        CobolTelemetry.stopRun(returnCode);
         CobolResolve.popCallStackList();
         CobolModule.pop();
         if (CobolModule.getStackDepth() > 0) {
