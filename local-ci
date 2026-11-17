@@ -12,6 +12,8 @@
 #               選択したタスクを所要時間の見積もりでN個に分け、K番目(1始まり)だけを
 #               実行する。ビルドとDB起動は分割せず、必要な組すべてで実行する。
 #               CIで複数のジョブに分けて流すためのもの
+#   --no-esql   ESQLのタスク(esql:*)とPostgreSQLの起動を行わない。
+#               PostgreSQLが見つからないときは指定しなくても自動でSKIPになる
 #   -l, --list  タスクの一覧を表示して終了する
 #   --clean     作業ディレクトリ(.local-ci/)を削除して終了する
 #   -h, --help  このヘルプを表示する
@@ -28,7 +30,8 @@
 # 環境変数:
 #   LOCAL_CI_DIR        作業ディレクトリ (既定: <リポジトリ>/.local-ci)
 #   LOCAL_CI_TIMEOUT    1タスクあたりの制限時間(秒) (既定: 3600)
-#   LOCAL_CI_PG_BIN     initdb/pg_ctlのあるディレクトリ (既定: PATHか/usr/lib/postgresql/*/bin)
+#   LOCAL_CI_PG_BIN     initdb/pg_ctlのあるディレクトリ (既定: PATHか/usr/lib/postgresql/*/bin)。
+#                       initdbが無いディレクトリ(例: none)を指定すると、PostgreSQLが無いものとして扱う
 #   LOCAL_CI_PG_PORT    ESQLテスト用PostgreSQLのポート (既定: 55432から空きを探す)
 #   LOCAL_CI_PG_USER    rootで実行したときにPostgreSQLを動かすユーザ (既定: postgres)
 #   LOCAL_CI_STRICT     1にすると、SKIPになったタスクも失敗として数える。
@@ -277,7 +280,8 @@ pg_run() {
 do_pg_start() {
   local pgdir=$WORK/pg locale
   if [ -z "$PG_BIN" ]; then
-    echo "PostgreSQL (initdb/pg_ctl) not found. Set LOCAL_CI_PG_BIN to run the ESQL tests."
+    echo "PostgreSQL (initdb/pg_ctl) not found; the ESQL tasks are skipped." \
+      "Install the PostgreSQL server or set LOCAL_CI_PG_BIN to run them."
     return 77
   fi
   stop_leftover_pg
@@ -385,7 +389,11 @@ do_spring_boot_smoke() {
 find_pg_bin() {
   local d
   if [ -n "${LOCAL_CI_PG_BIN:-}" ]; then
-    echo "$LOCAL_CI_PG_BIN"
+    if [ -x "$LOCAL_CI_PG_BIN/initdb" ] && [ -x "$LOCAL_CI_PG_BIN/pg_ctl" ]; then
+      echo "$LOCAL_CI_PG_BIN"
+    else
+      echo "warning: no initdb/pg_ctl in LOCAL_CI_PG_BIN=$LOCAL_CI_PG_BIN" >&2
+    fi
     return
   fi
   if command -v initdb > /dev/null && command -v pg_ctl > /dev/null; then
@@ -393,7 +401,7 @@ find_pg_bin() {
     return
   fi
   for d in $(printf '%s\n' /usr/lib/postgresql/*/bin /usr/pgsql-*/bin | sort -V -r); do
-    if [ -x "$d/initdb" ]; then
+    if [ -x "$d/initdb" ] && [ -x "$d/pg_ctl" ]; then
       echo "$d"
       return
     fi
@@ -761,6 +769,7 @@ while [ $# -gt 0 ]; do
     AT_JOBS=$2
     shift
     ;;
+  --no-esql) EXCLUDE+=('esql:*' 'pg:start') ;;
   -x)
     EXCLUDE+=("$2")
     shift
@@ -920,6 +929,10 @@ for cmd in git tar gcc make autoconf m4 bison flex java javac timeout setsid flo
   unzip curl python3; do
   command -v $cmd > /dev/null || echo "warning: $cmd not found" >&2
 done
+if [ -n "${SELECTED[pg:start]:-}" ] && [ -z "$PG_BIN" ]; then
+  echo "warning: PostgreSQL (initdb/pg_ctl) not found; the esql:* tasks will be skipped." \
+    "Install the PostgreSQL server or set LOCAL_CI_PG_BIN to run them, or pass --no-esql." >&2
+fi
 if [ -n "${SELECTED[test:utf8:cobol_utf8]:-}" ] && ! command -v nkf > /dev/null; then
   echo "warning: nkf not found; test:utf8:cobol_utf8 will be skipped" >&2
 fi
