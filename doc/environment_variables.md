@@ -665,12 +665,15 @@ above to attach the agent when running a program with `cobjrun`.
 - **Program spans**: One span is created for each invocation of a COBOL program
   (the main program and each `CALL`). The span is named after the `PROGRAM-ID` and
   has the attribute `cobol.program.id`. When the program executes `STOP RUN`, the
-  attributes `cobol.stop_run=true` and `cobol.return_code` are added. A program
-  span becomes the current context while the program runs, so the spans created
-  inside it nest under it, including the spans that the Java agent's JDBC
-  instrumentation creates for the SQL executed by `EXEC SQL`. When a COBOL program
-  is called from a Java application (Spring Boot, for example), its span nests
-  under the application's current span.
+  attributes `cobol.stop_run=true` and `cobol.return_code` (when `STOP RUN` is
+  executed in a subprogram, the calling programs that are unwound get them too).
+  A `CALL`ed program's span and the file spans nest under the calling program's
+  span. While `EXEC SQL` runs, the program span is made the current context, so the
+  spans that the Java agent's JDBC instrumentation creates for the SQL nest under
+  it. Outside `EXEC SQL` the runtime does not change the OpenTelemetry current
+  context of the thread. When a COBOL program is called from a Java application
+  (Spring Boot, for example) while a span is current, its span nests under the
+  application's current span.
 - **File spans**: Named `<operation> <file name>`, for example `OPEN INFILE`, where
   the file name is the name given in the `SELECT` clause. They have the attributes
   `cobol.file.operation`, `cobol.file.name` and `cobol.file.status`. A span whose
@@ -678,9 +681,20 @@ above to attach the agent when running a program with `cobjrun`.
   end of file) and `2x` (such as invalid key) are results the program handles and
   are not errors. Which operations get a span is set by `COB_OTEL_FILE_TRACE`.
 
-**Limitation**: If a COBOL program ends with a Java exception that is not caught,
-its span is not ended at that point. It is ended, with the status `ERROR`, when the
-run unit ends (`CobolRunUnit.end()`).
+`CLOSE` spans for files left open, which the runtime closes implicitly after the
+main program has returned, are put in the same trace as children of the main
+program span.
+
+**Limitations**:
+
+- If a COBOL program ends with a Java exception that is not caught, its span is not
+  ended at that point. It is ended, with the status `ERROR`, when the run unit ends
+  (`CobolRunUnit.end()`). A standalone program that ends this way terminates the JVM
+  without ending the run unit, so its spans are not exported.
+- Because `libcobj.jar` bundles `opentelemetry-api`, an application that embeds
+  `libcobj.jar` and has its own `opentelemetry-api` should use the same version
+  (1.68.0) or a compatible newer one, so that only one copy is on the class path.
+  The published Maven artifact declares `opentelemetry-api` as a dependency.
 
 #### COB_OTEL_ENABLED
 
@@ -714,10 +728,11 @@ Specifies the parent trace context in the
 - **Example**: `TRACEPARENT=00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
 - **Purpose**: Continues a trace started by a job scheduler, a CI pipeline or another process, so that the COBOL program appears in that trace.
 
-When tracing is enabled and `TRACEPARENT` holds a valid value, a program span that
-starts while no other COBOL program is running on the thread (the first program of
-a run unit) becomes a child of that context, and `TRACESTATE`, if set, is carried
-along with it. This takes precedence over the current span of a calling Java
-application, so do not set `TRACEPARENT` for a server process that runs COBOL
-programs for many requests: every request would be put into the same trace. An
-invalid value is ignored, and the span is created as if the variable were not set.
+The variables are read once, when the runtime is initialized. When tracing is
+enabled and `TRACEPARENT` holds a valid value, a program span that starts while no
+other COBOL program is running on the thread and no span is current (typically the
+main program of a batch job) becomes a child of that context, and `TRACESTATE`, if
+set, is carried along with it. When a Java application calls a COBOL program while
+one of its spans is current, that span is the parent instead and `TRACEPARENT` is
+not used. An invalid value is ignored, and the span is created as if the variable
+were not set.
