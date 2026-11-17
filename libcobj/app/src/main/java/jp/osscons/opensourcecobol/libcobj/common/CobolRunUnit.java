@@ -29,6 +29,7 @@ import jp.osscons.opensourcecobol.libcobj.file.CobolFile;
 import jp.osscons.opensourcecobol.libcobj.file.CobolFileSort;
 import jp.osscons.opensourcecobol.libcobj.file.CobolIndexedFile;
 import jp.osscons.opensourcecobol.libcobj.sql.CobolEsql;
+import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 import jp.osscons.opensourcecobol.libcobj.termio.CobolTerminal;
 
 /**
@@ -81,5 +82,6 @@ public final class CobolRunUnit {
         CobolSystemRoutine.resetThreadState();
         CobolEsql.resetThreadState();
         CobolStopRunException.resetThreadState();
+        CobolTelemetry.resetThreadState();
     }
 }
