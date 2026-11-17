@@ -77,7 +77,10 @@ which takes a list of items and runs a few of them at a time:
 ```
 
 `-P` is the number of items that run at the same time and `-j` is passed to
-each autotest suite. The output of each item goes to
+each autotest suite. `-t SECONDS` is the time limit of each item (default
+1200, which CI also uses): an item that runs longer is stopped, reported as
+`TIMEOUT <item> (<n>s)` and counted as failed, its log ends with
+`=== <item> timed out after <n>s`, and the other items go on. The output of each item goes to
 `win-logs/<item>.log` (`:` and `+` in the name are replaced by `_` and `-`),
 and the failed items are listed at the end. In GitHub Actions their logs are
 also printed in collapsible groups, and a failed job uploads `win-logs/`,

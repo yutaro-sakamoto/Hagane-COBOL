@@ -99,11 +99,29 @@ tests/以下の構成:
   - `lint:cppcheck`はcppcheckのバージョンで結果が変わる(CIはAlmaLinux 9のEPELのcppcheckを使う)。
   - `lint:javadoc`はjavadocの警告が1件でもあると失敗するので、既存の警告で落ちることがある。
 
+### テストランナー自体のテスト(ci-tests/)
+
+`local-ci`と`win/run-tests.sh`はテストを回す側のスクリプトなので、不具合があると落ちたテストを見逃す。
+**どちらかを変更したら`ci-tests/`のテストを回し、変更した振る舞いのテストを追加すること。**
+本物のスクリプトを偽のタスク・スイートで動かすもので、ビルドは不要。両方で2分20秒ほどかかる。
+
+```bash
+bash ci-tests/local-ci.test.sh                 # local-ciのテスト(Linuxのみ。/tmpとsetsidを使うのでsandbox無効で実行)
+bash ci-tests/run-tests.test.sh                # win/run-tests.shのテスト(LinuxとWindowsのGit Bash)
+T_FILTER='l_shard*' bash ci-tests/local-ci.test.sh   # テスト関数名のパターンで一部だけ実行
+```
+
+`local-ci.test.sh`は一時的なgitリポジトリで`local-ci`を実行し、環境変数`LOCAL_CI_TASK_DEFS`で
+タスク定義を偽のものに差し替える(このテスト専用。説明はスクリプト冒頭のコメント)。
+CIでは`.github/workflows/test-runners.yml`(`pull-request.yml`/`push.yml`のジョブ`test-runners`)が、
+Linuxで`shellcheck --severity=error`(`local-ci`、`win/run-tests.sh`、`ci-tests/*.sh`)と両方のテストを、
+WindowsのGit Bashで`run-tests.test.sh`を実行する。
+
 ### CIの既知のフレーク
 
 LinuxのテストはOS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで`local-ci`を呼ぶジョブに集約されており、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形になる(AlmaLinux 9のジョブはpull_requestでのみ走る)。失敗したジョブは失敗タスクのログを折りたたみグループで出力し、`.local-ci/logs/`とautotestの`.dir/`を`local-ci-ubuntu-26.04-sjis-1-2`のような名前のアーティファクトにアップロードする。
 
-WindowsのテストはWindowsのビルドとテストスクリプト生成のあと、`.github/workflows/windows-test.yml`を3グループのmatrixで呼ぶジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)で走る。各ジョブは`win/run-tests.sh -P 2 -j 4 <項目...>`を実行する(項目はautotestのスイート名、`nist:<モジュール>`、DBを共有するESQLスイートを順に流す`A+B`形式。詳細はスクリプト冒頭のコメント)。項目ごとのログは`tests/win-logs/<項目>.log`、失敗した項目はログ末尾に`FAIL`で並び折りたたみグループでログが出る。失敗時のアーティファクトは`windows-test-<グループ>-log`(`tests/win-logs/`、`tests/*.dir/`、NISTの`report.txt`)。
+WindowsのテストはWindowsのビルドとテストスクリプト生成のあと、`.github/workflows/windows-test.yml`を3グループのmatrixで呼ぶジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)で走る。各ジョブは`win/run-tests.sh -P 2 -j 4 -t 1200 <項目...>`を実行する(項目はautotestのスイート名、`nist:<モジュール>`、DBを共有するESQLスイートを順に流す`A+B`形式。詳細はスクリプト冒頭のコメント)。項目ごとのログは`tests/win-logs/<項目>.log`、失敗した項目はログ末尾に`FAIL`で並び折りたたみグループでログが出る。`-t`は項目ごとの制限時間(秒)で、これを超えた項目は`TIMEOUT <項目> (1200s)`の行を出して失敗し(ログ末尾は`=== <項目> timed out after 1200s`)、他の項目はそのまま続く。失敗時のアーティファクトは`windows-test-<グループ>-log`(`tests/win-logs/`、`tests/*.dir/`、NISTの`report.txt`)。
 
 AlmaLinux 9のfile-lock系スイート(`local-ci (almalinux:9, ...)`ジョブ内の`test:*:file-lock*`タスク)が`COB4J_REAL_JAVA does not point at a real java`を大量に出して落ちることがある。コード変更なしの再実行で成功するリポジトリ全体の既存問題。自分の変更を疑う前に失敗ログ(またはアーティファクトを`gh run download`したもの)で確認し、該当すれば`gh run rerun <run-id> --failed`する。なお`local-ci`のmatrixは`fail-fast: false`なので、1ジョブが落ちても他のジョブはcancelされない。
 
@@ -154,6 +172,8 @@ AlmaLinux 9のfile-lock系スイート(`local-ci (almalinux:9, ...)`ジョブ内
 - libcobj/ - libcobj.jarのためのコードを格納する。libocobj.jarは、COBOLからJavaへの変換で生成されたJavaコードが依存するライブラリ
 - website/ - GitHub Pagesで公開するWebサイト(VitePress)のソース。英語版は直下、日本語版はja/以下。libcobjのJavadocはCIがビルド時に追加する
 - local-ci - CIのLinuxテスト一式をローカルで並列実行するスクリプト。CIのテストジョブもこれを使う。「local-ci: CIのテスト一式を手元で回す」の節を参照
+- win/run-tests.sh - WindowsのCIがテストの項目を並列に実行するスクリプト(Git Bash用)。使い方はスクリプト冒頭のコメントと`tests/README.md`の「Running tests on Windows」
+- ci-tests/ - `local-ci`と`win/run-tests.sh`自体のテスト。「テストランナー自体のテスト(ci-tests/)」の節を参照
 - .claude-work/ - Claudeの作業用ディレクトリ(git管理外)。「作業用ディレクトリ」の節を参照
 - .local-ci/ - `./local-ci`の作業ディレクトリ(git管理外)。複製したソースツリー、ログ、PostgreSQLのデータが入る。`./local-ci --clean`で消してよい
 - local/ - `make install`のインストール先(git管理外)

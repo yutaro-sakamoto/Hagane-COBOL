@@ -56,6 +56,8 @@ Notes:
 
 The Windows CI runs the tests in three jobs (`windows-test (other-1)`, `windows-test (other-2)` and `windows-test (nist-esql)`), each with [`win/run-tests.sh`](win/run-tests.sh). The same script runs the tests on your own Windows machine in Git Bash; see [tests/README.md](tests/README.md#running-tests-on-windows).
 
+If you change `local-ci` or `win/run-tests.sh`, run their tests in [`ci-tests/`](ci-tests) and add tests for the behavior you changed: `bash ci-tests/local-ci.test.sh` (Linux only) and `bash ci-tests/run-tests.test.sh` (Linux or Git Bash on Windows). They run the real scripts with fake tasks and suites, need no build and take about two and a half minutes; `T_FILTER='<pattern>'` runs only the test functions whose names match. CI runs them, together with `shellcheck --severity=error` on the scripts, in the `test-runners` jobs (`.github/workflows/test-runners.yml`).
+
 ## Run static analysis
 
 > [!CAUTION]

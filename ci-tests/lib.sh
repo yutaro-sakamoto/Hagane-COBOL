@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Small test helpers for the tests of the test runners (local-ci and
 # win/run-tests.sh). Sourced by the *.test.sh files.
 #

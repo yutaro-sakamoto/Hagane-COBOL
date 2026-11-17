@@ -57,6 +57,8 @@ CIはトップディレクトリの[`./local-ci`](local-ci)でHagane COBOLをビ
 
 WindowsのCIは3つのジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)でテストを実行し、各ジョブは[`win/run-tests.sh`](win/run-tests.sh)を使います。手元のWindows環境でも、Git Bashから同じスクリプトでテストを実行できます。手順は[tests/README_JP.md](tests/README_JP.md#windowsでテストを実行する)を参照してください。
 
+`local-ci`や`win/run-tests.sh`を変更した場合は、[`ci-tests/`](ci-tests)にあるそれらのテストを実行し、変更した振る舞いのテストを追加してください。`bash ci-tests/local-ci.test.sh`(Linuxのみ)と`bash ci-tests/run-tests.test.sh`(LinuxまたはWindowsのGit Bash)で実行できます。本物のスクリプトを偽のタスクやスイートで動かすもので、ビルドは不要で、2分半ほどで終わります。`T_FILTER='<パターン>'`を指定すると、名前が一致するテスト関数だけを実行します。CIでは`test-runners`ジョブ(`.github/workflows/test-runners.yml`)が、スクリプトへの`shellcheck --severity=error`とあわせてこれらを実行します。
+
 ## 静的解析の実行
 
 > [!CAUTION]
