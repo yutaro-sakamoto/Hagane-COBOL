@@ -36,6 +36,7 @@ import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolExceptionId;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolRuntimeException;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunException;
+import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 
 /** 動的にクラスファイルを読み込んでCALL文のような機能を実装するためのクラス */
 public class CobolResolve {
@@ -636,6 +637,7 @@ public class CobolResolve {
      * @param name プログラム名
      */
     public static void pushCallStackList(String name) {
+        CobolTelemetry.programEnter(name);
         CallStackState st = callStack.get();
         if (st.currentCallStackList == null) {
             initCallStackList();
@@ -676,6 +678,7 @@ public class CobolResolve {
      * コールスタックから一つ取り出す
      */
     public static void popCallStackList() {
+        CobolTelemetry.programExit();
         CallStackState st = callStack.get();
         if (st.currentCallStackList != null) {
             st.currentCallStackList = st.currentCallStackList.getParent();
