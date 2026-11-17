@@ -196,9 +196,9 @@ PostgreSQL サーバを使う autotest スイートを以下のディレクト�
 | `tests/esql-misc.src/` | カーソル / PREPARE / EXECUTE 等 |
 | `tests/esql-utf8.src/` | UTF-8 ビルド時の対応 |
 
-各スイートは `make <name>` で生成され、`./<name>` でローカル実行できます (起動済みの PostgreSQL サーバが必要)。Linux の CI では [`local-ci`](../local-ci) (`.github/workflows/local-ci.yml`) から、`esql:sjis:*` タスクと `esql:utf8:esql-utf8` タスク (`--enable-utf8` 付きでコンフィグアしたコンパイラが必要) として実行されます。`esql:examples` は `example/esql/` をビルドして実行します。`local-ci` はホストにインストールされた PostgreSQL サーバのパッケージ (CI ではコンテナではなくディストリビューションの PostgreSQL) の `initdb`/`pg_ctl` で専用のクラスタを 55432 番以降の空きポートに起動し、スイートごとに別のデータベースを使います。開発者の Linux マシンでも `./local-ci 'esql:*'` で同じテストを実行できます。
+各スイートは `make <name>` で生成され、`./<name>` でローカル実行できます (起動済みの PostgreSQL サーバが必要)。Linux の CI では [`local-ci`](../local-ci) (`.github/workflows/local-ci.yml`) から、`esql:sjis:*` タスクと `esql:utf8:esql-utf8` タスク (`--enable-utf8` 付きでコンフィグアしたコンパイラが必要) として実行されます。`esql:examples` は `example/esql/` をビルドして実行します。`local-ci` はホストにインストールされた PostgreSQL サーバのパッケージ (CI ではコンテナではなくディストリビューションの PostgreSQL) の `initdb`/`pg_ctl` で専用のクラスタを 55432 番以降の空きポートに起動し、スイートごとに別のデータベースを使います。開発者の Linux マシンでも `./local-ci 'esql:*'` で同じテストを実行できます。PostgreSQL のサーバのバイナリが無い場合、`local-ci` は起動時に警告を出して `esql:*` タスクを `SKIP` として扱い (失敗として数えるのは CI が設定している `LOCAL_CI_STRICT=1` のときだけ)、`./local-ci --no-esql` を指定すると明示的に省きます。
 
-Windows 版でも `.github/workflows/windows-test-esql.yml` により、スイートごとに 1 ジョブで同じテストを実行します。Windows ビルドは Shift_JIS 専用のため `esql-utf8` は対象外です。
+Windows 版でも `windows-test (nist-esql)` ジョブ (`.github/workflows/windows-test.yml`) で同じテストを実行します。各スイートは 1 つのデータベースを共有するため、[`win/run-tests.sh`](../win/run-tests.sh) に 1 つの項目 (`esql-basic+esql-sqlca+...`) として渡して順に実行し、同じジョブ内で NIST の各モジュールと並列に走らせます。Windows ビルドは Shift_JIS 専用のため `esql-utf8` は対象外です。
 
 Windows では [`win/start-test-postgresql.ps1`](../win/start-test-postgresql.ps1) を実行します。このスクリプトはランナーイメージ同梱の PostgreSQL を `initdb --encoding=UTF8 --no-locale` で初期化し、ポート 55432 で起動します。開発者自身の Windows マシンでも同じ手順で使え、既存のクラスタがあればそれを再利用します。`-Stop` で停止できます。`--no-locale` と既定以外のポートが必要な理由は、スクリプト冒頭のコメントに書いてあります。
 

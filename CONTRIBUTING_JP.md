@@ -49,10 +49,13 @@ CIはトップディレクトリの[`./local-ci`](local-ci)でHagane COBOLをビ
 注意点:
 
 * ESQLのテストは`initdb`と`pg_ctl`で専用のPostgreSQLサーバを起動するため、PostgreSQLのサーバのバイナリが必要です。自動で見つからない場合は`LOCAL_CI_PG_BIN`で場所を指定してください。
+  PostgreSQLが無い場合、`./local-ci`は起動時に警告を出し、`esql:*`タスクを`SKIP`として扱います(`LOCAL_CI_STRICT=1`のとき以外は全体の結果を失敗にしません。CIでは`LOCAL_CI_STRICT=1`を設定しています)。ESQLのタスクとPostgreSQLの起動を明示的に省くには`--no-esql`を指定してください(例: `./local-ci --no-esql -x 'nist:*'`)。`LOCAL_CI_PG_BIN=none`を指定しても、PostgreSQLが無いものとして扱われます。
 * Dockerが無い環境では、`unit:libcobj`はTestcontainersを使うテストクラスとカバレッジの検証を省略します。
 * `nkf`がインストールされていない場合、`test:utf8:cobol_utf8`はスキップされます。
 * `localhost:5432`で何かが待ち受けていると、`esql:sjis:esql-sqlca`は失敗します。
 * `lint:cppcheck`の結果はcppcheckのバージョンによって変わり(CIはAlmaLinux 9のEPELのcppcheckを使用)、`lint:javadoc`はjavadocの警告が1件でもあると失敗します。そのため、この2つは変更に問題が無くても手元では失敗することがあります。
+
+WindowsのCIは3つのジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)でテストを実行し、各ジョブは[`win/run-tests.sh`](win/run-tests.sh)を使います。手元のWindows環境でも、Git Bashから同じスクリプトでテストを実行できます。手順は[tests/README_JP.md](tests/README_JP.md#windowsでテストを実行する)を参照してください。
 
 ## 静的解析の実行
 

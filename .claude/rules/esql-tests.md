@@ -13,6 +13,8 @@ ESQLのautotestスイート（esql-basic等）はPostgreSQLが要るため通常
 55432番以降の空きポートに専用のPostgreSQLを起動し、複製側の`tests/embed_db_info.sh`をそこに向けて書き換えてから実行する。
 チェックイン済みの`embed_db_info.sh`は変更しない。`initdb`がPATHにも`/usr/lib/postgresql/*/bin`にも無ければ`LOCAL_CI_PG_BIN`で指定する。
 個別のスイートだけなら`./local-ci esql:sjis:esql-basic`、UTF-8版は`esql:utf8:esql-utf8`。
+PostgreSQLが見つからなければ起動時に警告が出て`esql:*`はSKIPになる(`LOCAL_CI_STRICT=1`でなければ失敗扱いにはならない)。ESQL以外だけを回したいときは`./local-ci --no-esql`。
+Windowsでは`win/start-test-postgresql.ps1`でクラスタを起動し、`win/run-tests.sh`に6スイートを`esql-basic+esql-sqlca+...`の1項目として渡して順に実行する(CIの`windows-test (nist-esql)`ジョブと同じ。手順は`tests/README.md`の「Running tests on Windows」)。
 
 in-treeのビルドで直接回したい場合は、sudoなしで私設クラスタを起動してローカル実行できる。バージョンやバイナリのパス、DBユーザ名は環境に合わせて読み替えること。
 

@@ -25,6 +25,11 @@ jobs:
     needs: check-workflows
     uses: ./.github/workflows/unit-test.yml
 
+  # Tests of local-ci and win/run-tests.sh, which run the tests below
+  test-runners:
+    needs: check-workflows
+    uses: ./.github/workflows/test-runners.yml
+
   website:
     needs: check-workflows
     uses: ./.github/workflows/website.yml

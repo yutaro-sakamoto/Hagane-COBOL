@@ -85,6 +85,7 @@ tests/以下の構成:
 ./local-ci 'test:sjis:run' 'lint:*'    # パターン(bashのglob)で選んで実行
 ./local-ci -x 'nist:*'                 # 除外して実行
 ./local-ci -j 8 -t 4 'test:utf8:*'     # 同時タスク数 / autotestの-j
+./local-ci --no-esql                   # ESQLタスクとPostgreSQLの起動を外す
 ./local-ci --clean                     # .local-ci/ を削除
 ```
 
@@ -93,6 +94,7 @@ tests/以下の構成:
 - 環境によって手元の結果がCIと変わるもの(コードの問題ではない):
   - Dockerが無いと、`unit:libcobj`はTestcontainersを使う3つのテストクラスとカバレッジ検証を飛ばす。
   - `nkf`が無いと`test:utf8:cobol_utf8`はskipになる。
+  - PostgreSQL(`initdb`/`pg_ctl`)が無いと、起動時に警告が出て`esql:*`はSKIPになる(rcは0のまま。CIが設定する`LOCAL_CI_STRICT=1`のときだけ失敗扱い)。PostgreSQLの無い環境では`./local-ci --no-esql`でESQLタスクとDB起動を明示的に外す。`LOCAL_CI_PG_BIN=none`もPostgreSQL無しとして扱われる。
   - localhost:5432で何かが待ち受けていると、`esql:sjis:esql-sqlca`のconnect-disconnectが落ちる(起動時に警告が出る)。
   - `lint:cppcheck`はcppcheckのバージョンで結果が変わる(CIはAlmaLinux 9のEPELのcppcheckを使う)。
   - `lint:javadoc`はjavadocの警告が1件でもあると失敗するので、既存の警告で落ちることがある。
@@ -100,6 +102,8 @@ tests/以下の構成:
 ### CIの既知のフレーク
 
 LinuxのテストはOS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで`local-ci`を呼ぶジョブに集約されており、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形になる(AlmaLinux 9のジョブはpull_requestでのみ走る)。失敗したジョブは失敗タスクのログを折りたたみグループで出力し、`.local-ci/logs/`とautotestの`.dir/`を`local-ci-ubuntu-26.04-sjis-1-2`のような名前のアーティファクトにアップロードする。
+
+WindowsのテストはWindowsのビルドとテストスクリプト生成のあと、`.github/workflows/windows-test.yml`を3グループのmatrixで呼ぶジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)で走る。各ジョブは`win/run-tests.sh -P 2 -j 4 <項目...>`を実行する(項目はautotestのスイート名、`nist:<モジュール>`、DBを共有するESQLスイートを順に流す`A+B`形式。詳細はスクリプト冒頭のコメント)。項目ごとのログは`tests/win-logs/<項目>.log`、失敗した項目はログ末尾に`FAIL`で並び折りたたみグループでログが出る。失敗時のアーティファクトは`windows-test-<グループ>-log`(`tests/win-logs/`、`tests/*.dir/`、NISTの`report.txt`)。
 
 AlmaLinux 9のfile-lock系スイート(`local-ci (almalinux:9, ...)`ジョブ内の`test:*:file-lock*`タスク)が`COB4J_REAL_JAVA does not point at a real java`を大量に出して落ちることがある。コード変更なしの再実行で成功するリポジトリ全体の既存問題。自分の変更を疑う前に失敗ログ(またはアーティファクトを`gh run download`したもの)で確認し、該当すれば`gh run rerun <run-id> --failed`する。なお`local-ci`のmatrixは`fail-fast: false`なので、1ジョブが落ちても他のジョブはcancelされない。
 

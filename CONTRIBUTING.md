@@ -48,10 +48,13 @@ The log of each task is written to `.local-ci/logs/<task name with ':' replaced 
 Notes:
 
 * The ESQL tests start a private PostgreSQL server with `initdb` and `pg_ctl`, so the PostgreSQL server binaries must be installed. Set `LOCAL_CI_PG_BIN` if they are not found automatically.
+  Without PostgreSQL, `./local-ci` warns at startup and reports the `esql:*` tasks as `SKIP` without failing the run (unless `LOCAL_CI_STRICT=1`, which CI sets). To leave out the ESQL tasks and the PostgreSQL startup on purpose, pass `--no-esql` (e.g. `./local-ci --no-esql -x 'nist:*'`); `LOCAL_CI_PG_BIN=none` also makes `./local-ci` treat PostgreSQL as missing.
 * Without Docker, `unit:libcobj` skips the test classes that use Testcontainers and the coverage verification.
 * `test:utf8:cobol_utf8` is skipped if `nkf` is not installed.
 * `esql:sjis:esql-sqlca` fails if something listens on `localhost:5432`.
 * The results of `lint:cppcheck` depend on the cppcheck version (CI uses the one from EPEL on AlmaLinux 9), and `lint:javadoc` fails on any javadoc warning, so these two may fail locally without a problem in your change.
+
+The Windows CI runs the tests in three jobs (`windows-test (other-1)`, `windows-test (other-2)` and `windows-test (nist-esql)`), each with [`win/run-tests.sh`](win/run-tests.sh). The same script runs the tests on your own Windows machine in Git Bash; see [tests/README.md](tests/README.md#running-tests-on-windows).
 
 ## Run static analysis
 

@@ -34,6 +34,8 @@
 #                       initdbが無いディレクトリ(例: none)を指定すると、PostgreSQLが無いものとして扱う
 #   LOCAL_CI_PG_PORT    ESQLテスト用PostgreSQLのポート (既定: 55432から空きを探す)
 #   LOCAL_CI_PG_USER    rootで実行したときにPostgreSQLを動かすユーザ (既定: postgres)
+#   LOCAL_CI_TASK_DEFS  タスク定義を差し替えるファイル。define_tasksの代わりにこれを読み込む
+#                       (ci-tests/のテストで、スケジューラを本物のビルドなしに動かすためのもの)
 #   LOCAL_CI_STRICT     1にすると、SKIPになったタスクも失敗として数える。
 #                       CIで、ツールの入れ忘れなどで検証が抜け落ちたまま緑になるのを防ぐ
 #   LOCAL_CI_TEST_JAVA_HOME  テスト(test/nist/esql)だけを別のJDKで動かす。
@@ -83,6 +85,11 @@ add_task() {
 
 define_tasks() {
   local t m
+  if [ -n "${LOCAL_CI_TASK_DEFS:-}" ]; then
+    # shellcheck disable=SC1090
+    . "$LOCAL_CI_TASK_DEFS"
+    return
+  fi
 
   add_task build:sjis "" do_build sjis
   add_task build:utf8 "" do_build utf8
@@ -722,6 +729,9 @@ if [ "${1:-}" = __task ]; then
   trap '[ -n "$tpid" ] && kill -TERM $tpid 2> /dev/null; wait; exit 143' TERM HUP
   timeout --kill-after=30 "$TASK_TIMEOUT" "$SELF" __exec "$name" &
   tpid=$!
+  # timeoutは別のプロセスグループを作るので、それも記録しておく。
+  # 強制終了されたrunの後始末(次のrunの開始時)で、タスク本体まで止めるため
+  echo "$tpid" >> "$WORK/pgids"
   wait $tpid
   rc=$?
   [ $rc -eq 124 ] && echo "timed out after ${TASK_TIMEOUT}s"
@@ -888,7 +898,9 @@ fi
 
 mkdir -p "$WORK"
 exec 9> "$WORK/lock"
-if ! flock -n 9; then
+# 少し待つ: 強制終了されたrunの短命な子プロセス(sleepなど)がfdを引き継いで、
+# 1秒ほどロックを持ったままになることがある
+if ! flock -w 3 9; then
   echo "another local-ci is running in $WORK" >&2
   exit 1
 fi
@@ -897,7 +909,7 @@ if [ -f "$WORK/pgids" ]; then
   while read -r pgid; do
     # PIDが再利用されている可能性があるので、グループの先頭がlocal-ciのタスクのときだけ
     case $(ps -o args= -p "$pgid" 2> /dev/null) in
-    *"local-ci __task "*) kill -KILL -- "-$pgid" 2> /dev/null ;;
+    *"local-ci __task "* | *"local-ci __exec "*) kill -KILL -- "-$pgid" 2> /dev/null ;;
     esac
   done < "$WORK/pgids"
 fi

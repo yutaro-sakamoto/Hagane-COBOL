@@ -84,9 +84,10 @@ jobs:
         TESTS: ${{ inputs.tests }}
       run: |
         # The runners have 4 cores. Two items at a time, each autotest suite
-        # with -j4: many tests wait on file locks or JVM start-up.
+        # with -j4: many tests wait on file locks or JVM start-up. An item
+        # that hangs fails after 20 minutes, well before timeout-minutes.
         read -r -a items <<< "$TESTS"
-        win/run-tests.sh -P 2 -j 4 "${items[@]}"
+        win/run-tests.sh -P 2 -j 4 -t 1200 "${items[@]}"
 
     # cancelled() as well: a job that hits timeout-minutes is cancelled, and
     # that is when the logs are needed most

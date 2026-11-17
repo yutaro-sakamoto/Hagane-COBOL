@@ -59,6 +59,40 @@ default back.
 `esql-utf8` needs a compiler configured with `--enable-utf8`, so it does not run
 against the Shift_JIS Windows build.
 
+## Running tests on Windows
+
+The Windows CI runs the tests in three jobs, `windows-test (other-1)`,
+`windows-test (other-2)` and `windows-test (nist-esql)`, defined by the matrix
+in `.github/workflows/pull-request.yml` and `push.yml` and run by
+`.github/workflows/windows-test.yml`. Each job calls `../win/run-tests.sh`,
+which takes a list of items and runs a few of them at a time:
+
+- `SUITE` -- an autotest suite of this directory (`run`, `misc`, `esql-basic`, ...)
+- `nist:MODULE` -- a NIST COBOL85 module in `cobol85/` (`nist:NC`, ...)
+- `A+B+...` -- items run one after another in the same slot. The ESQL suites
+  are run this way because they share one database.
+
+```
+../win/run-tests.sh -P 2 -j 4 run misc esql-basic+esql-sqlca nist:NC
+```
+
+`-P` is the number of items that run at the same time and `-j` is passed to
+each autotest suite. The output of each item goes to
+`win-logs/<item>.log` (`:` and `+` in the name are replaced by `_` and `-`),
+and the failed items are listed at the end. In GitHub Actions their logs are
+also printed in collapsible groups, and a failed job uploads `win-logs/`,
+the `*.dir/` directories and the NIST `report.txt` files as the artifact
+`windows-test-<group>-log`.
+
+The script also works on your own Windows machine in Git Bash. Install Hagane
+COBOL with `win/make-install.ps1`, put the generated test scripts and
+`atconfig` in this directory (they are made by `make` here on a Linux machine,
+see `.github/workflows/windows-generate-test-scripts.yml`), and set up the test
+environment as the "Set up test environment" step of
+`.github/workflows/windows-test.yml` does (`atlocal` from `atlocal-win.env`,
+the paths in `atconfig`, `CLASSPATH`, and `embed_db_info.sh` for the ESQL
+suites). For the ESQL suites, start PostgreSQL first as described above.
+
 ## Running the CI test set with local-ci
 
 `../local-ci` (in the top directory) is the script the Linux CI jobs run. It
@@ -73,7 +107,14 @@ cd ..
 ./local-ci -l                          # list the tasks
 ./local-ci 'test:sjis:*'               # all suites with the Shift_JIS compiler
 ./local-ci test:utf8:misc 'esql:*'     # select tasks by name or glob pattern
+./local-ci --no-esql                   # all tasks except the ESQL ones
 ```
+
+Without the PostgreSQL server binaries (`initdb`/`pg_ctl`), `local-ci` warns
+at startup and reports the `esql:*` tasks as `SKIP`, which does not fail the
+run unless `LOCAL_CI_STRICT=1` (CI sets it). `--no-esql` leaves out the ESQL
+tasks and the PostgreSQL startup on purpose, and `LOCAL_CI_PG_BIN=none` makes
+`local-ci` treat PostgreSQL as missing.
 
 The task names of the suites in this directory are `test:sjis:<suite>` and
 `test:utf8:<suite>`, and the ESQL suites are `esql:sjis:<suite>` and

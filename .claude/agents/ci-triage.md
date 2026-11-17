@@ -15,6 +15,8 @@ color: yellow
 - Linuxのビルドとテスト(autotest、NIST、ESQL、libcobjの単体テスト、Spring Bootのsmoke test)は、リポジトリルートの`./local-ci`を呼ぶ`.github/workflows/local-ci.yml`にまとまっている。OS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形。1ジョブの中で多数のタスク(`test:sjis:run`、`nist:utf8:NC`、`esql:sjis:esql-basic`など)が並列に走る。
 - `local-ci`ジョブが落ちると、ログ末尾のsummaryに`FAIL  <タスク名>`が並び、失敗タスクのログが`log of <タスク名>`という折りたたみグループで出力される。アーティファクトは`local-ci-<OS>-<文字コード>-<K>-<N>`(例: `local-ci-ubuntu-26.04-sjis-1-2`)で、`.local-ci/logs/<タスク名の:を_に置換>.log`とautotestの`.local-ci/tree-{sjis,utf8}/tests/<スイート>.dir/`を含む。
 - 失敗したタスクは、ユーザの手元で`./local-ci <タスク名>`(sandbox無効)を実行すれば同じ手順で再現を試せる。
+- Windowsのテストは`.github/workflows/windows-test.yml`を3グループのmatrixで呼ぶジョブにまとまっていて、ジョブ名は`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`(グループの中身は`pull-request.yml`/`push.yml`のmatrix)。各ジョブは`win/run-tests.sh -P 2 -j 4 <項目...>`で、autotestのスイート(`run`等)、NISTのモジュール(`nist:NC`等)、`A+B`形式の連続実行(ESQLの6スイートは1つのDBを共有するので1項目として順に走る)を並列に回す。matrixは`fail-fast: false`。
+- Windowsジョブが落ちると、ログ末尾に`pass: N  fail: M`と`FAIL  <項目>  <ログのパス>`が並び、失敗項目のログ末尾500行が`log of <項目>`という折りたたみグループで出る。`A+B`形式の項目では、中で落ちたスイートが`FAIL  <スイート> (in <項目>)`の行で個別に出る。アーティファクトは`windows-test-<グループ>-log`(例: `windows-test-nist-esql-log`)で、`tests/win-logs/<項目の:と+を_と-に置換>.log`、`tests/*.dir/`、`tests/cobol85/*/report.txt`を含む。ESQLを含むグループではPostgreSQLのログもジョブログに出る。timeout-minutes(60分)に達したジョブはcancelとして終わるが、その場合もログとアーティファクトは残る。
 
 ## 手順
 
