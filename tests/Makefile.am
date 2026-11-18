@@ -365,6 +365,7 @@ misc_DEPENDENCIES = \
 	misc.src/env.at \
 	misc.src/seq-read-buffer.at \
 	misc.src/indexed-output-commit-interval.at \
+	misc.src/indexed-rewrite-delete-not-exists.at \
 	misc.src/exit-perform.at \
 	misc.src/comp-overflow.at \
 	misc.src/compare-9.at \
