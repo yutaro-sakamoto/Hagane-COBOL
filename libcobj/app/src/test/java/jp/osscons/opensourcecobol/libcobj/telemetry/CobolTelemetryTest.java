@@ -308,8 +308,13 @@ class CobolTelemetryTest {
         } finally {
             System.setErr(err);
         }
+        // runtimeErrorの後はstopRunAndThrow(1)からhandleAtFrameで巻き戻る
+        CobolTelemetry.stopRun(1);
         CobolResolve.popCallStackList();
+        CobolTelemetry.stopRun(1);
         CobolResolve.popCallStackList();
+        assertNull(find("SUBPROG").getAttributes().get(OtelTracer.STOP_RUN), "not a STOP RUN");
+        assertEquals(1L, find("MAINPROG").getAttributes().get(OtelTracer.RETURN_CODE), "exit code");
 
         SpanData sub = find("SUBPROG");
         assertEquals(StatusCode.ERROR, sub.getStatus().getStatusCode(), "sub failed");
@@ -432,5 +437,25 @@ class CobolTelemetryTest {
         assertEquals("value", sc.getTraceState().get("vendor"), "tracestate");
         assertEquals(TraceFlags.getSampled(), sc.getTraceFlags(), "sampled flag");
         assertNotSame(TraceState.getDefault(), sc.getTraceState(), "not default");
+    }
+
+    @Test
+    void javaSpanInANewTraceDoesNotDiscardRunningPrograms() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        // ホストのスパンが無い状態でルートが始まる(cobjrunでの実行など)
+        CobolResolve.pushCallStackList("MAINPROG");
+        // MAINPROGから呼ばれたJavaのコードが、新しいトレースのスパンを作ってCOBOLを呼ぶ
+        Span java = provider.get("app").spanBuilder("java").setNoParent().startSpan();
+        try (Scope ignored = java.makeCurrent()) {
+            CobolResolve.pushCallStackList("SUBPROG");
+            CobolResolve.popCallStackList();
+        }
+        java.end();
+        CobolResolve.popCallStackList();
+
+        SpanData main = find("MAINPROG");
+        assertEquals(StatusCode.UNSET, main.getStatus().getStatusCode(), "caller is not discarded");
+        assertEquals(
+                main.getSpanContext().getSpanId(), find("SUBPROG").getParentSpanId(), "nested");
     }
 }

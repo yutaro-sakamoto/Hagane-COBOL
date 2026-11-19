@@ -85,9 +85,13 @@ final class OtelTracer {
         final Span span;
         final Context context;
 
-        Frame(Span span, Context context) {
+        /** 実行単位のルートで、開始時にホストアプリケーションの有効なスパンが親だったならtrue */
+        final boolean hostParented;
+
+        Frame(Span span, Context context, boolean hostParented) {
             this.span = span;
             this.context = context;
+            this.hostParented = hostParented;
         }
     }
 
@@ -215,7 +219,7 @@ final class OtelTracer {
     void programEnter(String programId) {
         ThreadState st = state.get();
         Frame top = st.frames.peek();
-        if (top != null && isFromAnotherTrace(top)) {
+        if (top != null && isFromAnotherTrace(st.frames.peekLast(), top)) {
             // 例外でrun_moduleを抜けたプログラムのフレームが、CobolRunUnit.end()を呼ばない
             // ホスト(スレッドプール)のスレッドに残っている。新しいリクエストを無関係な
             // 古いスパンの子にしないよう、残ったフレームを捨ててルートとして扱う。
@@ -223,12 +227,14 @@ final class OtelTracer {
             top = null;
         }
         Context parent;
+        boolean hostParented = false;
         if (top != null) {
             parent = top.context;
         } else {
             // 新しい実行単位のルートなので、前の実行単位の状態は使わない
             st.lastRoot = null;
             st.stopRunRecorded = false;
+            hostParented = Span.current().getSpanContext().isValid();
             parent = parentContext(st);
         }
         String id = programId == null ? "" : programId;
@@ -237,16 +243,22 @@ final class OtelTracer {
                         .setParent(parent)
                         .setAttribute(PROGRAM_ID, id)
                         .startSpan();
-        st.frames.push(new Frame(span, parent.with(span)));
+        st.frames.push(new Frame(span, parent.with(span), hostParented));
     }
 
     /**
-     * ホストアプリケーションの現在のスパンが、実行中のフレームとは別のトレースに属するかを返す。
+     * ホストアプリケーションの現在のスパンが、実行中のフレームとは別のトレースに属するかを返す。<br>
+     * 実行単位のルートがホストのスパンの下で開始した場合だけ判定する。 ホストのスパンが無い場合、COBOLから呼んだJavaが作るスパンは新しいトレースになるため、
+     * 実行中のフレームを誤って捨ててしまう。
      *
+     * @param root 実行単位のルートのフレーム
      * @param top 実行中の最も内側のフレーム
      * @return 別のトレースのスパンが現在のコンテキストにあればtrue
      */
-    private static boolean isFromAnotherTrace(Frame top) {
+    private static boolean isFromAnotherTrace(Frame root, Frame top) {
+        if (!root.hostParented) {
+            return false;
+        }
         SpanContext current = Span.current().getSpanContext();
         return current.isValid()
                 && !current.getTraceId().equals(top.span.getSpanContext().getTraceId());
@@ -310,6 +322,9 @@ final class OtelTracer {
             attrs.put(CODE_FILE_PATH, sourceFile).put(CODE_LINE_NUMBER, (long) sourceLine);
         }
         top.span.addEvent(RUNTIME_ERROR_EVENT, attrs.build());
+        // ランタイムエラーの後はSTOP RUNと同じ経路で実行単位が終了する。STOP RUN文を
+        // 実行したわけではないので、cobol.stop_runは記録しない(ルートの終了コードは記録する)。
+        st.stopRunRecorded = true;
         // ランタイムエラーは実行単位全体を終了させるので、実行中の全てのプログラムを失敗とする
         for (Frame f : st.frames) {
             f.span.setStatus(StatusCode.ERROR, message);
@@ -366,6 +381,8 @@ final class OtelTracer {
     CobolTelemetry.Activation activate() {
         ThreadState st = state.get();
         Frame f = st.frames.peek();
+        // 実行単位の終了時に行う埋め込みSQLの後始末は、ホストのスパンより実行単位のルートの
+        // スパンに属するので、ここではparentContext()と異なりlastRootを優先する
         Context ctx = f != null ? f.context : st.lastRoot;
         if (ctx == null) {
             return null;

@@ -701,7 +701,9 @@ Warning: COB_OTEL_ENABLED is set, but no OpenTelemetry SDK is registered, so the
   reported as `libcobj: ...` on standard error), the innermost program span gets an
   event `cobol.runtime_error` with the attributes `message`, `code.file.path` and
   `code.line.number` (the last two when the source location is known), and every
-  program span on the stack gets the status `ERROR`.
+  program span on the stack gets the status `ERROR`. The run unit then ends; the
+  failing program does not get `cobol.stop_run`, and the main program span gets
+  `cobol.return_code=1`.
 - **File spans**: Named `<operation> <file name>`, for example `OPEN INFILE`, where
   the file name is the name given in the `SELECT` clause. They have the attributes
   `cobol.file.operation`, `cobol.file.name` and `cobol.file.status`. A span whose
@@ -730,9 +732,12 @@ spans for `EXEC SQL`).
 **Embedding in thread pools**: An application that calls COBOL programs on pooled
 threads should call `CobolRunUnit.end()` after the calls, for example in a
 `finally` block. If a program ends with an uncaught exception and `end()` is not
-called, the span left on the thread is ended with the status `ERROR` when the next
-COBOL program on that thread starts while a span from a different trace is current,
-or when the run unit ends.
+called, the span left on the thread is ended with the status `ERROR` when the run
+unit ends, or, if the earlier program was itself called under a span of the
+application, when the next COBOL program on that thread starts while a span from a
+different trace is current. In other cases (no application span, or the
+application keeps using the same trace across calls) the leftover spans are not
+detected, so calling `end()` is the reliable way.
 
 **Limitations**:
 

@@ -1389,12 +1389,18 @@ public class CobolFile {
                 throw e;
             }
         }
-        CobolTelemetry.fileRecordCounts(
-                span,
-                this.recordsRead,
-                this.recordsWritten,
-                this.recordsRewritten,
-                this.recordsDeleted);
+        if (this.file_status[0] == '0') {
+            CobolTelemetry.fileRecordCounts(
+                    span,
+                    this.recordsRead,
+                    this.recordsWritten,
+                    this.recordsRewritten,
+                    this.recordsDeleted);
+            this.recordsRead = 0;
+            this.recordsWritten = 0;
+            this.recordsRewritten = 0;
+            this.recordsDeleted = 0;
+        }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
 
@@ -1756,11 +1762,8 @@ public class CobolFile {
         } else {
             try {
                 writeImpl(rec, opt, fnstatus);
-            } catch (CobolStopRunException e) {
-                // STOP RUNはファイル操作の失敗ではないので、エラーとして記録しない
-                CobolTelemetry.fileEnd(span, this.file_status, null);
-                throw e;
-            } catch (RuntimeException | Error e) {
+            } catch (CobolStopRunException | RuntimeException | Error e) {
+                // WRITE中のCobolStopRunExceptionはランタイムエラーによる異常終了なので、エラーとする
                 CobolTelemetry.fileEnd(span, null, e);
                 throw e;
             }
