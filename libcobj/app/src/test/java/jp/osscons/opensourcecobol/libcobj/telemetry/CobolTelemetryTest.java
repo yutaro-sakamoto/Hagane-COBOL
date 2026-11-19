@@ -3,14 +3,21 @@ package jp.osscons.opensourcecobol.libcobj.telemetry;
 import static org.junit.jupiter.api.Assertions.*;
 
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.TraceFlags;
+import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +27,7 @@ import java.util.concurrent.Future;
 import jp.osscons.opensourcecobol.libcobj.call.CobolResolve;
 import jp.osscons.opensourcecobol.libcobj.common.CobolModule;
 import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
+import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunException;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunSignal;
 import org.junit.jupiter.api.AfterEach;
@@ -199,7 +207,10 @@ class CobolTelemetryTest {
         SpanData main = find("MAINPROG");
         SpanData sub = find("SUBPROG");
         assertEquals(main.getSpanContext().getSpanId(), sub.getParentSpanId(), "SUB is child");
+        assertEquals(Boolean.TRUE, sub.getAttributes().get(OtelTracer.STOP_RUN), "sub stopped");
         assertEquals(3L, sub.getAttributes().get(OtelTracer.RETURN_CODE), "sub return code");
+        assertNull(main.getAttributes().get(OtelTracer.STOP_RUN), "only the program that stopped");
+        assertEquals(3L, main.getAttributes().get(OtelTracer.RETURN_CODE), "root exit code");
         assertEquals(StatusCode.UNSET, main.getStatus().getStatusCode(), "not an orphan");
     }
 
@@ -283,5 +294,143 @@ class CobolTelemetryTest {
         CobolResolve.pushCallStackList("MAINPROG");
         CobolResolve.popCallStackList();
         assertFalse(GlobalOpenTelemetry.isSet(), "host can still register its SDK");
+    }
+
+    @Test
+    void runtimeErrorMarksTheRunningProgramsAsFailed() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        CobolResolve.pushCallStackList("MAINPROG");
+        CobolResolve.pushCallStackList("SUBPROG");
+        PrintStream err = System.err;
+        System.setErr(new PrintStream(new ByteArrayOutputStream(), true));
+        try {
+            CobolUtil.runtimeError("Detected division by zero.");
+        } finally {
+            System.setErr(err);
+        }
+        CobolResolve.popCallStackList();
+        CobolResolve.popCallStackList();
+
+        SpanData sub = find("SUBPROG");
+        assertEquals(StatusCode.ERROR, sub.getStatus().getStatusCode(), "sub failed");
+        assertEquals(StatusCode.ERROR, find("MAINPROG").getStatus().getStatusCode(), "main too");
+        EventData event = sub.getEvents().get(0);
+        assertEquals(OtelTracer.RUNTIME_ERROR_EVENT, event.getName(), "event name");
+        assertEquals(
+                "Detected division by zero.",
+                event.getAttributes().get(OtelTracer.ERROR_MESSAGE),
+                "message");
+    }
+
+    @Test
+    void framesLeftByAnEarlierRequestAreDiscarded() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        Span first = provider.get("host").spanBuilder("request1").startSpan();
+        try (Scope ignored = first.makeCurrent()) {
+            // 例外でrun_moduleを抜け、popされなかったプログラム
+            CobolResolve.pushCallStackList("LEAKED");
+        }
+        first.end();
+        Span second = provider.get("host").spanBuilder("request2").startSpan();
+        try (Scope ignored = second.makeCurrent()) {
+            CobolResolve.pushCallStackList("NEXTPROG");
+            CobolResolve.popCallStackList();
+        }
+        second.end();
+
+        assertEquals(StatusCode.ERROR, find("LEAKED").getStatus().getStatusCode(), "abandoned");
+        assertEquals(
+                second.getSpanContext().getSpanId(),
+                find("NEXTPROG").getParentSpanId(),
+                "the new request is not a child of the leaked span");
+    }
+
+    @Test
+    void warnsOnceWhenNoSdkIsRegistered() {
+        GlobalOpenTelemetry.resetForTest();
+        CobolTelemetry.setTracer(new OtelTracer(null, null), CobolTelemetry.FILE_TRACE_ALL);
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        PrintStream err = System.err;
+        System.setErr(new PrintStream(buf, true));
+        try {
+            for (int i = 0; i < 2; i++) {
+                CobolResolve.pushCallStackList("MAINPROG");
+                CobolResolve.popCallStackList();
+            }
+        } finally {
+            System.setErr(err);
+        }
+        String out = buf.toString();
+        assertEquals(
+                out.indexOf(OtelTracer.NO_SDK_WARNING),
+                out.lastIndexOf(OtelTracer.NO_SDK_WARNING),
+                "printed once");
+        assertTrue(out.contains(OtelTracer.NO_SDK_WARNING), "printed");
+    }
+
+    @Test
+    void fileSpanIsCurrentDuringTheOperation() {
+        enable(CobolTelemetry.FILE_TRACE_ALL);
+        CobolResolve.pushCallStackList("MAINPROG");
+        Context before = Context.current();
+        Object read = CobolTelemetry.fileStart("READ", true, "IDXFILE");
+        String currentSpanId = Span.current().getSpanContext().getSpanId();
+        CobolTelemetry.fileEnd(read, "00".getBytes(StandardCharsets.US_ASCII), null);
+        assertSame(before, Context.current(), "restored after the operation");
+        CobolResolve.popCallStackList();
+        assertEquals(
+                find("READ IDXFILE").getSpanContext().getSpanId(),
+                currentSpanId,
+                "JDBC calls made by the operation nest under the file span");
+    }
+
+    @Test
+    void closeSpanCarriesRecordCounts() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        Object close = CobolTelemetry.fileStart("CLOSE", false, "F1");
+        CobolTelemetry.fileRecordCounts(close, 10, 3, 2, 1);
+        CobolTelemetry.fileEnd(close, "00".getBytes(StandardCharsets.US_ASCII), null);
+        Attributes attrs = find("CLOSE F1").getAttributes();
+        assertEquals(10L, attrs.get(OtelTracer.RECORDS_READ), "read");
+        assertEquals(3L, attrs.get(OtelTracer.RECORDS_WRITTEN), "written");
+        assertEquals(2L, attrs.get(OtelTracer.RECORDS_REWRITTEN), "rewritten");
+        assertEquals(1L, attrs.get(OtelTracer.RECORDS_DELETED), "deleted");
+    }
+
+    @Test
+    void exceptionInAFileOperationIsRecorded() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        Object open = CobolTelemetry.fileStart("OPEN", false, "F1");
+        CobolTelemetry.fileEnd(open, null, new IllegalStateException("boom"));
+        SpanData span = find("OPEN F1");
+        assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode(), "error");
+        assertEquals("exception", span.getEvents().get(0).getName(), "exception event");
+    }
+
+    @Test
+    void esqlCleanupAtRunUnitEndStaysInTheTrace() {
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE);
+        CobolResolve.pushCallStackList("MAINPROG");
+        CobolResolve.popCallStackList();
+        String currentTraceId;
+        try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
+            currentTraceId = Span.current().getSpanContext().getTraceId();
+        }
+        assertEquals(find("MAINPROG").getTraceId(), currentTraceId, "same trace as the root");
+    }
+
+    @Test
+    void tracestateIsCarriedAlong() {
+        Map<String, String> carrier = new HashMap<>();
+        carrier.put("traceparent", "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01");
+        carrier.put("tracestate", "vendor=value");
+        Context ctx = OtelTracer.extract(carrier);
+        enable(CobolTelemetry.FILE_TRACE_OPEN_CLOSE, ctx);
+        CobolResolve.pushCallStackList("MAINPROG");
+        CobolResolve.popCallStackList();
+        SpanContext sc = find("MAINPROG").getSpanContext();
+        assertEquals("value", sc.getTraceState().get("vendor"), "tracestate");
+        assertEquals(TraceFlags.getSampled(), sc.getTraceFlags(), "sampled flag");
+        assertNotSame(TraceState.getDefault(), sc.getTraceState(), "not default");
     }
 }

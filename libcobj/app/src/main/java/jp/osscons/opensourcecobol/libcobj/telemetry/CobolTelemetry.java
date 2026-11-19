@@ -78,9 +78,11 @@ public final class CobolTelemetry {
             try {
                 TRACER.set(new OtelTracer());
             } catch (LinkageError e) {
+                // APIが無い場合に加え、依存関係の解決で1.57より古いAPIが選ばれた場合も
+                // (GlobalOpenTelemetry.isSetが無いため)ここに来る
                 System.err.println(
-                        "Warning: COB_OTEL_ENABLED is set, but the OpenTelemetry API is not"
-                                + " available. Tracing is disabled.");
+                        "Warning: COB_OTEL_ENABLED is set, but OpenTelemetry API 1.57 or later is"
+                                + " not available. Tracing is disabled.");
             }
         }
     }
@@ -129,7 +131,7 @@ public final class CobolTelemetry {
     }
 
     /**
-     * COBOLプログラムの実行開始を記録する。プログラムのスパンを開始し、現在のコンテキストにする。
+     * COBOLプログラムの実行開始を記録する。プログラムのスパンを開始する。
      *
      * @param programId PROGRAM-ID
      */
@@ -157,6 +159,20 @@ public final class CobolTelemetry {
         OtelTracer t = TRACER.get();
         if (t != null) {
             t.stopRun(returnCode);
+        }
+    }
+
+    /**
+     * 現在のプログラムのスパンに、プログラムを異常終了させるランタイムエラーを記録する。
+     *
+     * @param message エラーメッセージ
+     * @param sourceFile エラーが発生したソースファイル名(不明ならnull)
+     * @param sourceLine エラーが発生した行番号
+     */
+    public static void programError(String message, String sourceFile, int sourceLine) {
+        OtelTracer t = TRACER.get();
+        if (t != null) {
+            t.programError(message, sourceFile, sourceLine);
         }
     }
 
@@ -190,6 +206,22 @@ public final class CobolTelemetry {
     public static void fileEnd(Object handle, byte[] fileStatus, Throwable error) {
         if (handle != null) {
             OtelTracer.fileEnd(handle, fileStatus, error);
+        }
+    }
+
+    /**
+     * CLOSEのスパンに、OPENしてから処理したレコード数を記録する。{@link #fileEnd}の前に呼び出す。
+     *
+     * @param handle {@link #fileStart}の返り値。nullなら何もしない
+     * @param read 正常に読み込んだレコード数
+     * @param written 正常に書き込んだレコード数
+     * @param rewritten 正常に書き換えたレコード数
+     * @param deleted 正常に削除したレコード数
+     */
+    public static void fileRecordCounts(
+            Object handle, long read, long written, long rewritten, long deleted) {
+        if (handle != null) {
+            OtelTracer.fileRecordCounts(handle, read, written, rewritten, deleted);
         }
     }
 

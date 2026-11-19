@@ -50,7 +50,9 @@ public final class CobolEsql {
     public static void resetThreadState() {
         CobolEsqlBackendInterface b = backend.get();
         if (b != null) {
-            b.endRunUnit();
+            try (CobolTelemetry.Activation ignored = CobolTelemetry.activate()) {
+                b.endRunUnit();
+            }
             backend.remove();
         }
     }

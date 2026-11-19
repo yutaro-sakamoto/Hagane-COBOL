@@ -446,6 +446,18 @@ public class CobolFile {
     /** TODO: 準備中 */
     public String select_name;
 
+    /** OPENしてから正常に読み込んだレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsRead;
+
+    /** OPENしてから正常に書き込んだレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsWritten;
+
+    /** OPENしてから正常に書き換えたレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsRewritten;
+
+    /** OPENしてから正常に削除したレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsDeleted;
+
     /** TODO: 準備中 */
     public byte[] file_status;
 
@@ -987,13 +999,19 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("OPEN", false, this.select_name);
         if (span == null) {
             openImpl(mode, sharing, fnstatus);
-            return;
+        } else {
+            try {
+                openImpl(mode, sharing, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            openImpl(mode, sharing, fnstatus);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        if (this.file_status[0] == '0') {
+            this.recordsRead = 0;
+            this.recordsWritten = 0;
+            this.recordsRewritten = 0;
+            this.recordsDeleted = 0;
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
@@ -1363,14 +1381,20 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("CLOSE", false, this.select_name);
         if (span == null) {
             closeImpl(opt, fnstatus);
-            return;
+        } else {
+            try {
+                closeImpl(opt, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            closeImpl(opt, fnstatus);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
-        }
+        CobolTelemetry.fileRecordCounts(
+                span,
+                this.recordsRead,
+                this.recordsWritten,
+                this.recordsRewritten,
+                this.recordsDeleted);
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
 
@@ -1467,13 +1491,13 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("START", true, this.select_name);
         if (span == null) {
             startImpl(cond, key, fnstatus);
-            return;
-        }
-        try {
-            startImpl(cond, key, fnstatus);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        } else {
+            try {
+                startImpl(cond, key, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
@@ -1552,13 +1576,16 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("READ", true, this.select_name);
         if (span == null) {
             readImpl(key, fnstatus, readOpts);
-            return;
+        } else {
+            try {
+                readImpl(key, fnstatus, readOpts);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            readImpl(key, fnstatus, readOpts);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        if (this.file_status[0] == '0') {
+            this.recordsRead++;
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
@@ -1726,13 +1753,20 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("WRITE", true, this.select_name);
         if (span == null) {
             writeImpl(rec, opt, fnstatus);
-            return;
+        } else {
+            try {
+                writeImpl(rec, opt, fnstatus);
+            } catch (CobolStopRunException e) {
+                // STOP RUNはファイル操作の失敗ではないので、エラーとして記録しない
+                CobolTelemetry.fileEnd(span, this.file_status, null);
+                throw e;
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            writeImpl(rec, opt, fnstatus);
-        } catch (CobolStopRunException | RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        if (this.file_status[0] == '0') {
+            this.recordsWritten++;
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
@@ -1750,7 +1784,8 @@ public class CobolFile {
         if (this.access_mode == COB_ACCESS_SEQUENTIAL
                 && this.last_open_mode == COB_OPEN_I_O
                 && CobolUtil.cob_io_rewwrite_assumed()) {
-            this.rewrite(rec, opt, fnstatus);
+            // 公開メソッドのrewriteを呼ぶと、トレースのスパンとレコード数が二重になる
+            this.rewriteImpl(rec, opt, fnstatus);
             return;
         }
 
@@ -1868,13 +1903,16 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("REWRITE", true, this.select_name);
         if (span == null) {
             rewriteImpl(rec, opt, fnstatus);
-            return;
+        } else {
+            try {
+                rewriteImpl(rec, opt, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            rewriteImpl(rec, opt, fnstatus);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        if (this.file_status[0] == '0') {
+            this.recordsRewritten++;
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }
@@ -1959,13 +1997,16 @@ public class CobolFile {
         Object span = CobolTelemetry.fileStart("DELETE", true, this.select_name);
         if (span == null) {
             deleteImpl(fnstatus);
-            return;
+        } else {
+            try {
+                deleteImpl(fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
         }
-        try {
-            deleteImpl(fnstatus);
-        } catch (RuntimeException | Error e) {
-            CobolTelemetry.fileEnd(span, null, e);
-            throw e;
+        if (this.file_status[0] == '0') {
+            this.recordsDeleted++;
         }
         CobolTelemetry.fileEnd(span, this.file_status, null);
     }

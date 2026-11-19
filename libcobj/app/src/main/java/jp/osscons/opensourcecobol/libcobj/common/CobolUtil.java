@@ -656,6 +656,7 @@ public class CobolUtil {
      */
     public static void runtimeError(String s) {
         RunUnitState st = runUnitState.get();
+        CobolTelemetry.programError(s, st.sourceFile, st.sourceLine);
         if (st.sourceFile != null) {
             System.err.print(String.format("%s:%d: ", st.sourceFile, st.sourceLine));
         }
