@@ -688,8 +688,6 @@ public abstract class AbstractCobolField {
      * @param number 代入元のデータ
      */
     public void moveFrom(double number) {
-        // Double.toString()は絶対値が1e7以上または1e-3未満で指数表記("1.0E7"など)になり、
-        // 指数部が無視されて桁がずれるため、BigDecimal経由で指数表記を含まない文字列に変換する
         String ss = BigDecimal.valueOf(Math.abs(number)).toPlainString();
         int scale;
         int pointIndex = ss.indexOf('.');
