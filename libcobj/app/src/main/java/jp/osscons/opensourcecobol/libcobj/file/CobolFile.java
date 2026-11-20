@@ -39,6 +39,7 @@ import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolExceptionId;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolRuntimeException;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunException;
+import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 
 /** INDEXED, RELATIVE, SEQUENTIAL, LINE SEQUENTIAL等のCOBOLの ファイルを実装するための基底クラス */
 public class CobolFile {
@@ -444,6 +445,18 @@ public class CobolFile {
 
     /** TODO: 準備中 */
     public String select_name;
+
+    /** OPENしてから正常に読み込んだレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsRead;
+
+    /** OPENしてから正常に書き込んだレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsWritten;
+
+    /** OPENしてから正常に書き換えたレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsRewritten;
+
+    /** OPENしてから正常に削除したレコード数(トレースでCLOSEのスパンに記録する) */
+    private long recordsDeleted;
 
     /** TODO: 準備中 */
     public byte[] file_status;
@@ -976,13 +989,41 @@ public class CobolFile {
     }
 
     /**
+     * OPEN文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param mode オープンモード
+     * @param sharing 共有モード
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     */
+    public void open(int mode, int sharing, AbstractCobolField fnstatus) {
+        Object span = CobolTelemetry.fileStart("OPEN", false, this.select_name);
+        if (span == null) {
+            openImpl(mode, sharing, fnstatus);
+        } else {
+            try {
+                openImpl(mode, sharing, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            this.recordsRead = 0;
+            this.recordsWritten = 0;
+            this.recordsRewritten = 0;
+            this.recordsDeleted = 0;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param mode TODO: 準備中
      * @param sharing TODO: 準備中
      * @param fnstatus TODO: 準備中
      */
-    public void open(int mode, int sharing, AbstractCobolField fnstatus) {
+    private void openImpl(int mode, int sharing, AbstractCobolField fnstatus) {
         String openMode = openModeToString(mode);
         if (invokeFun(COB_IO_OPEN, this, null, null, fnstatus, openMode, null, null) != 0) {
             this.last_open_mode = (char) Integer.parseInt(openMode);
@@ -1331,12 +1372,45 @@ public class CobolFile {
     }
 
     /**
+     * CLOSE文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param opt CLOSEのオプション
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     */
+    public void close(int opt, AbstractCobolField fnstatus) {
+        Object span = CobolTelemetry.fileStart("CLOSE", false, this.select_name);
+        if (span == null) {
+            closeImpl(opt, fnstatus);
+        } else {
+            try {
+                closeImpl(opt, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            CobolTelemetry.fileRecordCounts(
+                    span,
+                    this.recordsRead,
+                    this.recordsWritten,
+                    this.recordsRewritten,
+                    this.recordsDeleted);
+            this.recordsRead = 0;
+            this.recordsWritten = 0;
+            this.recordsRewritten = 0;
+            this.recordsDeleted = 0;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param opt TODO: 準備中
      * @param fnstatus TODO: 準備中
      */
-    public void close(int opt, AbstractCobolField fnstatus) {
+    private void closeImpl(int opt, AbstractCobolField fnstatus) {
         String openMode = openModeToString(this.last_open_mode);
         if (invokeFun(COB_IO_CLOSE, this, null, null, fnstatus, openMode, null, null) != 0) {
             this.last_open_mode = (char) Integer.parseInt(openMode);
@@ -1413,13 +1487,35 @@ public class CobolFile {
     }
 
     /**
+     * START文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param cond 位置付けの条件
+     * @param key キー項目
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     */
+    public void start(int cond, AbstractCobolField key, AbstractCobolField fnstatus) {
+        Object span = CobolTelemetry.fileStart("START", true, this.select_name);
+        if (span == null) {
+            startImpl(cond, key, fnstatus);
+        } else {
+            try {
+                startImpl(cond, key, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param cond TODO: 準備中
      * @param key TODO: 準備中
      * @param fnstatus TODO: 準備中
      */
-    public void start(int cond, AbstractCobolField key, AbstractCobolField fnstatus) {
+    private void startImpl(int cond, AbstractCobolField key, AbstractCobolField fnstatus) {
         String openMode = openModeToString(this.last_open_mode);
         String startCond = String.format("%01d", cond);
         if (invokeFun(COB_IO_START, this, null, null, fnstatus, openMode, startCond, null) != 0) {
@@ -1476,13 +1572,38 @@ public class CobolFile {
     }
 
     /**
+     * READ文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param key キー項目(無ければnull)
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     * @param readOpts READのオプション
+     */
+    public void read(AbstractCobolField key, AbstractCobolField fnstatus, int readOpts) {
+        Object span = CobolTelemetry.fileStart("READ", true, this.select_name);
+        if (span == null) {
+            readImpl(key, fnstatus, readOpts);
+        } else {
+            try {
+                readImpl(key, fnstatus, readOpts);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            this.recordsRead++;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param key TODO: 準備中
      * @param fnstatus TODO: 準備中
      * @param readOpts TODO: 準備中
      */
-    public void read(AbstractCobolField key, AbstractCobolField fnstatus, int readOpts) {
+    private void readImpl(AbstractCobolField key, AbstractCobolField fnstatus, int readOpts) {
         byte[] sbuff = new byte[3];
         String openMode = openModeToString(this.last_open_mode);
         String readOptStr = readOptsToString(readOpts);
@@ -1626,6 +1747,34 @@ public class CobolFile {
     }
 
     /**
+     * WRITE文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param rec レコード
+     * @param opt WRITEのオプション
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     * @throws CobolStopRunException STOP RUNが発生した場合
+     */
+    public void write(AbstractCobolField rec, int opt, AbstractCobolField fnstatus)
+            throws CobolStopRunException {
+        Object span = CobolTelemetry.fileStart("WRITE", true, this.select_name);
+        if (span == null) {
+            writeImpl(rec, opt, fnstatus);
+        } else {
+            try {
+                writeImpl(rec, opt, fnstatus);
+            } catch (CobolStopRunException | RuntimeException | Error e) {
+                // WRITE中のCobolStopRunExceptionはランタイムエラーによる異常終了なので、エラーとする
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            this.recordsWritten++;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param rec TODO: 準備中
@@ -1633,12 +1782,13 @@ public class CobolFile {
      * @param fnstatus TODO: 準備中
      * @throws CobolStopRunException TODO: 準備中
      */
-    public void write(AbstractCobolField rec, int opt, AbstractCobolField fnstatus)
+    private void writeImpl(AbstractCobolField rec, int opt, AbstractCobolField fnstatus)
             throws CobolStopRunException {
         if (this.access_mode == COB_ACCESS_SEQUENTIAL
                 && this.last_open_mode == COB_OPEN_I_O
                 && CobolUtil.cob_io_rewwrite_assumed()) {
-            this.rewrite(rec, opt, fnstatus);
+            // 公開メソッドのrewriteを呼ぶと、トレースのスパンとレコード数が二重になる
+            this.rewriteImpl(rec, opt, fnstatus);
             return;
         }
 
@@ -1746,13 +1896,38 @@ public class CobolFile {
     }
 
     /**
+     * REWRITE文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param rec レコード
+     * @param opt REWRITEのオプション
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     */
+    public void rewrite(AbstractCobolField rec, int opt, AbstractCobolField fnstatus) {
+        Object span = CobolTelemetry.fileStart("REWRITE", true, this.select_name);
+        if (span == null) {
+            rewriteImpl(rec, opt, fnstatus);
+        } else {
+            try {
+                rewriteImpl(rec, opt, fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            this.recordsRewritten++;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param rec TODO: 準備中
      * @param opt TODO: 準備中
      * @param fnstatus TODO: 準備中
      */
-    public void rewrite(AbstractCobolField rec, int opt, AbstractCobolField fnstatus) {
+    private void rewriteImpl(AbstractCobolField rec, int opt, AbstractCobolField fnstatus) {
         String openMode = openModeToString(this.last_open_mode);
         if (invokeFun(COB_IO_REWRITE, this, null, null, fnstatus, openMode, null, null) != 0) {
             this.last_open_mode = (char) Integer.parseInt(openMode);
@@ -1817,11 +1992,34 @@ public class CobolFile {
     }
 
     /**
+     * DELETE文を実行する。トレースが有効であれば、操作をOpenTelemetryのスパンとして記録する。
+     *
+     * @param fnstatus FILE STATUSに指定したデータ項目(無ければnull)
+     */
+    public void delete(AbstractCobolField fnstatus) {
+        Object span = CobolTelemetry.fileStart("DELETE", true, this.select_name);
+        if (span == null) {
+            deleteImpl(fnstatus);
+        } else {
+            try {
+                deleteImpl(fnstatus);
+            } catch (RuntimeException | Error e) {
+                CobolTelemetry.fileEnd(span, null, e);
+                throw e;
+            }
+        }
+        if (this.file_status[0] == '0') {
+            this.recordsDeleted++;
+        }
+        CobolTelemetry.fileEnd(span, this.file_status, null);
+    }
+
+    /**
      * TODO: 準備中
      *
      * @param fnstatus TODO: 準備中
      */
-    public void delete(AbstractCobolField fnstatus) {
+    private void deleteImpl(AbstractCobolField fnstatus) {
         String openMode = openModeToString(this.last_open_mode);
         if (invokeFun(COB_IO_DELETE, this, null, null, fnstatus, openMode, null, null) != 0) {
             return;

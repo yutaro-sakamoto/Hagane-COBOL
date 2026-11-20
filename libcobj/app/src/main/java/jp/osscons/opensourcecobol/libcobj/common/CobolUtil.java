@@ -32,6 +32,7 @@ import jp.osscons.opensourcecobol.libcobj.exceptions.CobolExceptionInfo;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolRuntimeException;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunException;
 import jp.osscons.opensourcecobol.libcobj.file.CobolFile;
+import jp.osscons.opensourcecobol.libcobj.telemetry.CobolTelemetry;
 
 /**
  * COBOLランタイムの各種ユーティリティ機能を提供するクラス。<br>
@@ -483,6 +484,9 @@ public class CobolUtil {
                 bufferSizeFromEnv("COB_FILE_SEQ_READ_BUFFER_SIZE", DEFAULT_FILE_SEQ_BUFFER_SIZE);
         readFileIdxCommitInterval("COB_FILE_IDX_COMMIT_INTERVAL");
 
+        CobolTelemetry.configure(
+                CobolUtil.getEnv("COB_OTEL_ENABLED"), CobolUtil.getEnv("COB_OTEL_FILE_TRACE"));
+
         s = System.getenv("COB_TERMINAL_ENCODING");
         // 他のスレッドが途中の値を観測しないよう、判定してから1回だけ代入する
         CobolEncoding encoding = CobolEncoding.SHIFT_JIS;
@@ -652,6 +656,7 @@ public class CobolUtil {
      */
     public static void runtimeError(String s) {
         RunUnitState st = runUnitState.get();
+        CobolTelemetry.programError(s, st.sourceFile, st.sourceLine);
         if (st.sourceFile != null) {
             System.err.print(String.format("%s:%d: ", st.sourceFile, st.sourceLine));
         }

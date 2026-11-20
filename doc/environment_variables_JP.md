@@ -635,3 +635,112 @@ $ COB_NIBBLE_C_UNSIGNED=Y java cobnibble
 Signed:   NUMERIC
 Unsigned: NUMERIC
 ```
+
+### トレース（OpenTelemetry）
+
+ランタイムは、COBOLプログラムの実行とファイル入出力を
+[OpenTelemetry](https://opentelemetry.io/)のトレースとして記録できます。トレースはデフォルトでは無効です。
+無効の間、ランタイムの動作はこの機能が無い場合と全く変わりません。
+
+`libcobj.jar`に同梱しているのはOpenTelemetry API（`opentelemetry-api` 1.68.0）だけで、SDKやエクスポーターは含みません。
+スパンの送信先は、`GlobalOpenTelemetry`として登録されたOpenTelemetryの実装が決めます。
+通常は[OpenTelemetry Java agent](https://opentelemetry.io/docs/zero-code/java/agent/)を付けてプログラムを実行し、
+標準の`OTEL_*`環境変数で設定します。
+
+```sh
+JAVA_TOOL_OPTIONS="-javaagent:/path/to/opentelemetry-javaagent.jar" \
+OTEL_SERVICE_NAME=myjob \
+COB_OTEL_ENABLED=Y \
+java MAINPROG
+```
+
+**動作要件と設定**
+
+- OpenTelemetry Java agentは2.23.0以降を使ってください。それより古いJava agentはSDKを登録済みとして報告しないため、スパンが作られません。
+- `libcobj.jar`を組み込むアプリケーションが自前の`opentelemetry-api`を持つ場合は、1.57以降を使い、クラスパス上に1つだけ載るようにしてください
+  （公開しているMavenアーティファクトは`opentelemetry-api`を依存関係として宣言しています）。
+  APIが1.57より古い場合や存在しない場合、ランタイムは標準エラー出力に
+  `Warning: COB_OTEL_ENABLED is set, but OpenTelemetry API 1.57 or later is not available. Tracing is disabled.`
+  と出力し、トレースなしで動作します。
+- `OTEL_SERVICE_NAME`を設定してください。設定しないと、全てのジョブが`unknown_service:java`として報告されます。
+- `cobjrun`にはJVMオプションを渡すオプションが無いため、`cobjrun`で実行する場合も上記のように`JAVA_TOOL_OPTIONS`でJava agentを指定してください。
+  なお、このときJVMは標準エラー出力に`Picked up JAVA_TOOL_OPTIONS: ...`と出力するため、標準エラー出力を比較するジョブやテストに影響することがあります。
+
+トレースが有効なのに、ルート（主）プログラムの復帰時にSDKが登録されていない場合、スパンは破棄され、
+ランタイムは標準エラー出力に次の警告を一度だけ出力します。
+
+```
+Warning: COB_OTEL_ENABLED is set, but no OpenTelemetry SDK is registered, so the spans are discarded. Attach the OpenTelemetry Java agent 2.23.0 or later, or register an SDK as GlobalOpenTelemetry.
+```
+
+**スパン**
+
+- **プログラムのスパン**: COBOLプログラムの呼び出し（主プログラムおよび各`CALL`）ごとに1つ作成されます。
+  スパン名は`PROGRAM-ID`で、属性`cobol.program.id`を持ちます。
+  `STOP RUN`を実行したプログラムのスパンには属性`cobol.stop_run=true`と`cobol.return_code`が追加され、
+  実行単位のルート（主）プログラムのスパンにも`cobol.return_code`（終了コード）が追加されます。
+  `CALL`したプログラムのスパンとファイルのスパンは、呼び出し元のプログラムのスパンの下にネストされます。
+  `EXEC SQL`の実行中はプログラムのスパンが現在のコンテキストになるため、そのSQLについてJava agentのJDBC計装が作るスパンもその下にネストされます。
+  `EXEC SQL`とファイル操作の実行中以外は、ランタイムはスレッドのOpenTelemetryの現在のコンテキストを変更しません。
+  そのため、COBOLプログラムから呼び出したJavaのコードからはプログラムのスパンが現在のスパンとして見えず、そのコードのスパンはプログラムのスパンの下にネストされません。
+  Javaアプリケーション（Spring Bootなど）がスパンを現在のコンテキストにした状態でCOBOLプログラムを呼び出した場合、プログラムのスパンはそのスパンの下にネストされます。
+- **ランタイムエラー**: ランタイムエラー（添字の範囲外、ゼロ除算、不正な数値データ、処理されないファイルエラーなど、
+  標準エラー出力に`libcobj: ...`と報告されるもの全て）が発生すると、最も内側のプログラムのスパンにイベント`cobol.runtime_error`が追加されます。
+  イベントは属性`message`、`code.file.path`、`code.line.number`（後の2つはソースの位置が判明している場合のみ）を持ちます。
+  また、スタック上の全てのプログラムのスパンのステータスが`ERROR`になります。
+  その後、実行単位は終了します。エラーを起こしたプログラムには`cobol.stop_run`は付かず、主プログラムのスパンに`cobol.return_code=1`が付きます。
+- **ファイルのスパン**: スパン名は`<操作> <ファイル名>`（例: `OPEN INFILE`）で、ファイル名は`SELECT`句で指定した名前です。
+  属性`cobol.file.operation`、`cobol.file.name`、`cobol.file.status`を持ちます。
+  ファイルステータスが`3`以上で始まる場合、スパンのステータスは`ERROR`になります。
+  `0x`、`1x`（ファイル終了など）、`2x`（キー不正など）はプログラムが処理する結果であり、エラーとはしません。
+  どの操作にスパンを作るかは`COB_OTEL_FILE_TRACE`で指定します。
+  `CLOSE`のスパンは、さらに属性`cobol.file.records_read`、`cobol.file.records_written`、`cobol.file.records_rewritten`、`cobol.file.records_deleted`を持ちます。
+  これらはファイルをオープンしてから成功した（ファイルステータスが`0x`の）操作の回数で、
+  デフォルトの`open-close`でも`all`を使わずに処理したレコード数がわかります。
+  `COB_IO_ASSUME_REWRITE`により書き換えとして実行された`WRITE`は、書き込みとして数えます。
+
+主プログラムの復帰後にランタイムが暗黙的にクローズする、開いたままのファイルの`CLOSE`のスパンは、主プログラムのスパンの子として同じトレースに入ります。
+
+ファイルのスパンは操作の実行中は現在のコンテキストになるため、`INDEXED`ファイルが使うSQLiteデータベースについてJava agentが作るJDBCのスパンはその下にネストされます。
+`open-close`では`READ`や`WRITE`などのレコード単位の操作にファイルのスパンが無いため、それらのSQLiteのJDBCスパンはCOBOLのトレースに入らず、別のトレースとして現れることがあります。
+問題になる場合は、`all`を使うか、Java agentのJDBC計装を無効にしてください（`OTEL_INSTRUMENTATION_JDBC_ENABLED=false`。`EXEC SQL`のスパンも作られなくなります）。
+
+**スレッドプールでの利用**: スレッドプールのスレッドでCOBOLプログラムを呼び出すアプリケーションは、呼び出しの後に
+（たとえば`finally`ブロックで）`CobolRunUnit.end()`を呼び出してください。
+プログラムが捕捉されない例外で終了し、`end()`が呼ばれなかった場合、スレッドに残ったスパンは、
+実行単位の終了時に、ステータス`ERROR`で終了します。残ったプログラム自体がアプリケーションのスパンの下で呼ばれていた場合は、
+そのスレッドで別のトレースのスパンが現在のコンテキストにある状態で次のCOBOLプログラムが開始したときにも終了します。
+それ以外の場合（アプリケーションのスパンが無い場合や、アプリケーションが呼び出しをまたいで同じトレースを使い続ける場合）は残ったスパンを検出できないため、確実に後始末するには`end()`を呼び出してください。
+
+**制限事項**:
+
+- COBOLプログラムが捕捉されないJava例外で終了した場合、そのスパンはその時点では終了しません。
+  実行単位の終了時（`CobolRunUnit.end()`）に、ステータス`ERROR`で終了します。
+  単体で実行したプログラムがこのように終了した場合は、実行単位を終了せずにJVMが終了するため、スパンは送信されません。
+
+#### COB_OTEL_ENABLED
+
+OpenTelemetryによるトレースを有効にします。
+
+- **値**: `Y`（`Y`または`y`で始まる値）でトレースが有効になります。それ以外の値または未設定の場合は無効です（デフォルト: 無効）。
+- **例**: `COB_OTEL_ENABLED=Y`
+- **用途**: プログラムの呼び出しとファイル入出力をOpenTelemetryのスパンとして記録できます。
+
+#### COB_OTEL_FILE_TRACE
+
+トレースが有効なとき、どのファイル操作にスパンを作るかを指定します。
+
+- **値**: `none`、`open-close`、`all` のいずれか（デフォルト: `open-close`）
+- **例**: `COB_OTEL_FILE_TRACE=all`
+- **用途**: トレースに含めるファイル入出力の詳細さを調整できます。
+
+`none` はファイルのスパンを作りません。`open-close` は `OPEN` と `CLOSE` にだけスパンを作ります。`all` は加えて `READ`、`WRITE`、`REWRITE`、`DELETE`、`START` のたびにスパンを作ります。大量のレコードを処理するバッチジョブではスパンが非常に多くなるため、日常の実行ではなく調査のために使用してください。値の大文字小文字は区別しません。それ以外の値を指定した場合は、標準エラー出力に `Warning: COB_OTEL_FILE_TRACE format invalid, ignored.` を出力して `open-close` を使用します。`COB_OTEL_ENABLED` を設定していない場合、この環境変数は効果がありません。
+
+#### TRACEPARENT / TRACESTATE
+
+[W3C Trace Context](https://www.w3.org/TR/trace-context/)形式で親のトレースコンテキストを指定します。
+
+- **例**: `TRACEPARENT=00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`
+- **用途**: ジョブスケジューラやCIパイプライン、他のプロセスが開始したトレースを引き継ぎ、COBOLプログラムをそのトレースの中に表示できます。
+
+これらの環境変数はランタイムの初期化時に1回だけ読み込まれます。トレースが有効で `TRACEPARENT` に正しい値が設定されている場合、そのスレッドで他のCOBOLプログラムが実行されておらず、現在のスパンも無いときに開始したプログラムのスパン（通常はバッチジョブの主プログラム）は、このコンテキストの子になります。`TRACESTATE` が設定されていれば、それも引き継がれます。Javaアプリケーションが自身のスパンを現在のコンテキストにした状態でCOBOLプログラムを呼び出した場合は、そのスパンが親になり、`TRACEPARENT` は使われません。不正な値は無視され、環境変数が無い場合と同じようにスパンが作られます。
