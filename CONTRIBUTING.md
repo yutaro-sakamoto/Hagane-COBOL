@@ -28,6 +28,36 @@ We strongly recommend using [Visual Studio Code with Dev Containers](https://cod
 1. (Optional) Press `Ctrl+Shift+@` to open a new terminal of Visual Studio code.
 1. (Optional) [Setup credentials for git](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials).
 
+## Run tests
+
+CI builds Hagane COBOL and runs the Linux tests with [`./local-ci`](local-ci) in the top directory, and you can run the same tests on your own Linux machine with it.
+It copies the work tree (including uncommitted changes and untracked files that are not ignored) to `.local-ci/`, builds the Shift_JIS and UTF-8 compilers there, and runs the selected tasks in parallel, so the build in your work tree and `local/` are left untouched.
+The tasks are the autotest suites (`test:sjis:*`, `test:utf8:*`), NIST COBOL85 (`nist:*`), the ESQL tests (`esql:*`), the unit tests of libcobj (`unit:libcobj`), the Spring Boot smoke test (`smoke:spring-boot`) and the linters (`lint:*`).
+
+```
+./local-ci -l                        # list the tasks
+./local-ci 'test:sjis:run' 'lint:*'  # run the tasks matching the patterns
+./local-ci -x 'nist:*'               # run all tasks except the matching ones
+./local-ci --clean                   # delete .local-ci/
+```
+
+Running all tasks takes a long time, so a practical flow is to run the tasks related to your change before pushing and leave the full set to CI.
+See the comment at the top of the script (`./local-ci -h`) for all options such as `-j`, `-t` and `--shard`.
+The log of each task is written to `.local-ci/logs/<task name with ':' replaced by '_'>.log`, and the details of failed autotest cases stay in `.local-ci/tree-{sjis,utf8}/tests/<suite>.dir/`.
+
+Notes:
+
+* The ESQL tests start a private PostgreSQL server with `initdb` and `pg_ctl`, so the PostgreSQL server binaries must be installed. Set `LOCAL_CI_PG_BIN` if they are not found automatically.
+  Without PostgreSQL, `./local-ci` warns at startup and reports the `esql:*` tasks as `SKIP` without failing the run (unless `LOCAL_CI_STRICT=1`, which CI sets). To leave out the ESQL tasks and the PostgreSQL startup on purpose, pass `--no-esql` (e.g. `./local-ci --no-esql -x 'nist:*'`); `LOCAL_CI_PG_BIN=none` also makes `./local-ci` treat PostgreSQL as missing.
+* Without Docker, `unit:libcobj` skips the test classes that use Testcontainers and the coverage verification.
+* `test:utf8:cobol_utf8` is skipped if `nkf` is not installed.
+* `esql:sjis:esql-sqlca` fails if something listens on `localhost:5432`.
+* The results of `lint:cppcheck` depend on the cppcheck version (CI uses the one from EPEL on AlmaLinux 9), and `lint:javadoc` fails on any javadoc warning, so these two may fail locally without a problem in your change.
+
+The Windows CI runs the tests in three jobs (`windows-test (other-1)`, `windows-test (other-2)` and `windows-test (nist-esql)`), each with [`win/run-tests.sh`](win/run-tests.sh). The same script runs the tests on your own Windows machine in Git Bash; see [tests/README.md](tests/README.md#running-tests-on-windows).
+
+If you change `local-ci` or `win/run-tests.sh`, run their tests in [`ci-tests/`](ci-tests) and add tests for the behavior you changed: `bash ci-tests/local-ci.test.sh` (Linux only) and `bash ci-tests/run-tests.test.sh` (Linux or Git Bash on Windows). They run the real scripts with fake tasks and suites, need no build and take about two and a half minutes; `T_FILTER='<pattern>'` runs only the test functions whose names match. CI runs them, together with `shellcheck --severity=error` on the scripts, in the `test-runners` jobs (`.github/workflows/test-runners.yml`).
+
 ## Run static analysis
 
 > [!CAUTION]
@@ -37,6 +67,8 @@ We strongly recommend using [Visual Studio Code with Dev Containers](https://cod
 
 Run `./format` in the top directory of Hagane COBOL.
 If you want to make sure all files are formatted, run `./check-format` in the top directory of Hagane COBOL.
+
+`./local-ci 'lint:*'` runs all the static analysis checks that CI runs (clang-format, cppcheck, spotless, SpotBugs, PMD, javadoc and the check for missing javadoc) at once.
 
 ### PMD
 

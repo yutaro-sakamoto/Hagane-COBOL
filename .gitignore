@@ -97,6 +97,9 @@ report.html
 # Claude Code の作業用ディレクトリ（中身は再生成可能な一時ファイル）
 /.claude-work/
 
+# ./local-ci の作業ディレクトリ(複製したソースツリー、ログ、PostgreSQLのデータ)
+/.local-ci/
+
 # ローカルビルドのインストール先と git worktree の置き場
 /local/
 /wt/
@@ -105,3 +108,6 @@ report.html
 website/node_modules/
 website/.vitepress/cache/
 website/.vitepress/dist/
+
+# win/run-tests.sh のログ
+/tests/win-logs/

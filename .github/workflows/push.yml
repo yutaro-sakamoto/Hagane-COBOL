@@ -25,6 +25,11 @@ jobs:
     needs: check-workflows
     uses: ./.github/workflows/unit-test.yml
 
+  # Tests of local-ci and win/run-tests.sh, which run the tests below
+  test-runners:
+    needs: check-workflows
+    uses: ./.github/workflows/test-runners.yml
+
   website:
     needs: check-workflows
     uses: ./.github/workflows/website.yml
@@ -52,167 +57,26 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
-  build:
+  # Builds and runs the Linux tests with ./local-ci. Each job builds one
+  # compiler (Shift_JIS or UTF-8) and runs half of its tests.
+  local-ci:
     needs: check-workflows
     strategy:
+      fail-fast: false
       matrix:
         os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/build.yml
+        charset: ["sjis", "utf8"]
+        shard: ["1/2", "2/2"]
+    uses: ./.github/workflows/local-ci.yml
     with:
       os: ${{ matrix.os }}
-
-  build-utf8:
-    needs: check-workflows
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/build.yml
-    with:
-      os: ${{ matrix.os }}
-      configure-args: --enable-utf8
+      charset: ${{ matrix.charset }}
+      shard: ${{ matrix.shard }}
 
   coverage:
     needs: check-workflows
     if: github.ref == 'refs/heads/develop'
     uses: ./.github/workflows/coverage.yml
-
-  run-test-other:
-    needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name:
-          - "command-line-options"
-          - "data-rep"
-          - "i18n_sjis"
-          - "jp-compat"
-          - "run"
-          - "syntax"
-          - "cobj-idx"
-          - "file-lock"
-          - "file-lock2"
-          - "file-lock3"
-          - "file-lock4"
-          - "file-lock5"
-          - "misc"
-          - "multithread"
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-other.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-      os: ${{ matrix.os }}
-  
-  run-test-other-utf8:
-    needs: build-utf8
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name:
-          - "command-line-options"
-          - "data-rep"
-          - "cobol_utf8"
-          #- "i18n_utf8"
-          - "jp-compat"
-          - "run"
-          - "syntax"
-          - "cobj-idx"
-          - "file-lock"
-          - "file-lock2"
-          - "file-lock3"
-          - "file-lock4"
-          - "file-lock5"
-          - "misc"
-          - "multithread"
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-other.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-      os: ${{ matrix.os }}
-      configure-args: --enable-utf8
-
-  run-test-esql:
-    needs: build
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-esql.yml
-    with:
-      os: ${{ matrix.os }}
-
-  run-test-esql-utf8:
-    needs: build-utf8
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-esql-utf8.yml
-    with:
-      os: ${{ matrix.os }}
-
-  run-test-esql-examples:
-    needs: build
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-esql-examples.yml
-    with:
-      os: ${{ matrix.os }}
-
-  run-test-cobj-api:
-    needs: build
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-cobj-api.yml
-    with:
-      os: ${{ matrix.os }}
-
-  run-spring-boot-smoke:
-    needs: build
-    strategy:
-      matrix:
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/spring-boot-smoke.yml
-    with:
-      os: ${{ matrix.os }}
-
-  run-test-nist:
-    needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name: ["IC", "IF", "IX", "NC", "OB", "RL", "SG", "SM", "SQ", "ST"]
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-nist.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-      check-result: true
-      os: ${{ matrix.os }}
-
-  run-test-nist-utf8:
-    needs: build-utf8
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name: ["IC", "IF", "IX", "NC", "OB", "RL", "SG", "SM", "SQ", "ST"]
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-nist.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-      check-result: true
-      os: ${{ matrix.os }}
-      configure-args: --enable-utf8
-
-  run-test-nist-extra:
-    needs: build
-    strategy:
-      matrix:
-        test_name: ["CM", "DB", "RW"]
-        os: ["ubuntu:26.04"]
-    uses: ./.github/workflows/test-nist.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-      check-result: false
-      os: ${{ matrix.os }}
 
   javadoc:
     needs: check-workflows
@@ -228,58 +92,33 @@ jobs:
     with:
       upload-artifacts: true
 
-  windows-test:
-    needs: windows-build
-    strategy:
-       matrix:
-         test_name: ["IC", "IF", "IX", "NC", "OB", "RL", "SG", "SM", "SQ", "ST"]
-    uses: ./.github/workflows/windows-test.yml
-    with:
-      test-name: ${{ matrix.test_name }}
-
   windows-generate-test-scripts:
     needs: check-workflows
     uses: ./.github/workflows/windows-generate-test-scripts.yml
 
-  windows-test-other:
+  # Each group runs in one job with win/run-tests.sh, two items at a time.
+  # The groups take about the same time; within a group the long items come
+  # first. The ESQL suites share one database, so they run one after another
+  # (joined with +). esql-utf8 is missing on purpose: it needs a compiler
+  # configured with --enable-utf8, and the Windows build is Shift_JIS only.
+  windows-test:
     needs: [windows-build, windows-generate-test-scripts]
     strategy:
       fail-fast: false
       matrix:
-        test_name:
-          - "command-line-options"
-          - "data-rep"
-          - "jp-compat"
-          - "run"
-          - "syntax"
-          - "file-lock"
-          - "file-lock2"
-          - "file-lock3"
-          - "file-lock4"
-          - "file-lock5"
-          - "misc"
-          - "multithread"
-    uses: ./.github/workflows/windows-test-other.yml
+        include:
+          - group: other-1
+            tests: "run misc file-lock3 command-line-options data-rep multithread syntax"
+          - group: other-2
+            tests: "file-lock file-lock5 file-lock4 jp-compat file-lock2"
+          # Same order as the old Linux ESQL job, which also shared one database
+          - group: nist-esql
+            tests: "esql-basic+esql-sqlca+esql-cobol-data+esql-misc+esql-sql-data+esql-multithread nist:NC nist:SQ nist:IX nist:IF nist:ST nist:RL nist:IC nist:SM nist:SG nist:OB"
+    name: windows-test (${{ matrix.group }})
+    uses: ./.github/workflows/windows-test.yml
     with:
-      test-name: ${{ matrix.test_name }}
-
-  # esql-utf8 is missing on purpose: it needs a compiler configured with
-  # --enable-utf8, and the Windows build is Shift_JIS only.
-  windows-test-esql:
-    needs: [windows-build, windows-generate-test-scripts]
-    strategy:
-      fail-fast: false
-      matrix:
-        test_name:
-          - "esql-basic"
-          - "esql-sqlca"
-          - "esql-cobol-data"
-          - "esql-misc"
-          - "esql-sql-data"
-          - "esql-multithread"
-    uses: ./.github/workflows/windows-test-esql.yml
-    with:
-      test-name: ${{ matrix.test_name }}
+      group: ${{ matrix.group }}
+      tests: ${{ matrix.tests }}
 
   static-analysis:
     needs: check-workflows

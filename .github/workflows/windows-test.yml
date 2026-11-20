@@ -1,49 +1,110 @@
-name: windows-test
+name: Windows tests
+
+# Runs a group of tests on Windows with win/run-tests.sh: autotest suites,
+# NIST COBOL85 modules (nist:MODULE) and ESQL suites. The callers split the
+# tests into a few groups, one job each, instead of one job per suite.
 
 on:
   workflow_call:
     inputs:
-      test-name:
+      group:
+        description: "Name of the group, used for the artifact name"
         required: true
         type: string
+      tests:
+        description: "Items for win/run-tests.sh, separated by spaces"
+        required: true
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: windows-latest
-
+    timeout-minutes: 60
+    env:
+      CLASSPATH: ".;C:/opensourcecobol4j/lib/libcobj.jar"
+      PG_LOG: "postgresql.log"
     steps:
     - uses: actions/checkout@v7
+
+    - name: Download test scripts
+      uses: actions/download-artifact@v8
+      with:
+        name: windows-test-scripts
+        path: tests/
 
     - name: Download libcobj.jar
       uses: actions/download-artifact@v8
       with:
         name: libcobj.jar
         path: libcobj/app/build/libs/
-    
+
     - name: Download cobj.exe
       uses: actions/download-artifact@v8
       with:
         name: cobj.exe
         path: win/x64/Release/
-      
+
     - name: Install Java
       uses: actions/setup-java@v6
       with:
         distribution: 'temurin'
         java-version: '11'
-    
+
     - name: Install Hagane COBOL
       run: |
         cd win
         ./make-install.ps1
 
-    - name: Run tests ${{ inputs.test-name }}
+    - name: Start PostgreSQL
+      if: contains(inputs.tests, 'esql')
+      shell: pwsh
+      run: ./win/start-test-postgresql.ps1 -LogFile "$env:RUNNER_TEMP/$env:PG_LOG"
+
+    - name: Set up test environment
       shell: bash
       run: |
-        export CLASSPATH='C:\opensourcecobol4j\lib\libcobj.jar'
-        export PATH="$PATH:/c/opensourcecobol4j/bin:/c/opensourcecobol4j/config"
-        cd tests/cobol85/${{ inputs.test-name }}
-        sh ../report.sh
-        cat report.txt
-        grep "Successfully executed:" report.txt > result-check
-        grep "100.00%" result-check
+        cd tests
+        cp atlocal-win.env atlocal
+        WORKSPACE=$(cd .. && pwd)
+        sed -i "s|abs_builddir=.*|abs_builddir='${WORKSPACE}/tests'|" atconfig
+        sed -i "s|abs_srcdir=.*|abs_srcdir='${WORKSPACE}/tests'|" atconfig
+        sed -i "s|abs_top_srcdir=.*|abs_top_srcdir='${WORKSPACE}'|" atconfig
+        sed -i "s|abs_top_builddir=.*|abs_top_builddir='${WORKSPACE}'|" atconfig
+        sed -i "s|SHELL=.*|SHELL='$(which bash)'|" atconfig
+        # ${EMBED_DB_INFO} substitutes these connection settings into every
+        # COBOL source of the ESQL tests before it is compiled.
+        cp ../.github/workflows/db-settings/embed_db_info_windows.sh embed_db_info.sh
+
+    - name: Run tests
+      shell: bash
+      env:
+        TESTS: ${{ inputs.tests }}
+      run: |
+        # The runners have 4 cores. Two items at a time, each autotest suite
+        # with -j4: many tests wait on file locks or JVM start-up. An item
+        # that hangs fails after 20 minutes, well before timeout-minutes.
+        read -r -a items <<< "$TESTS"
+        win/run-tests.sh -P 2 -j 4 -t 1200 "${items[@]}"
+
+    # cancelled() as well: a job that hits timeout-minutes is cancelled, and
+    # that is when the logs are needed most
+    - name: Show the PostgreSQL log if tests fail
+      if: (failure() || cancelled()) && contains(inputs.tests, 'esql')
+      shell: pwsh
+      run: |
+        $log = "$env:RUNNER_TEMP/$env:PG_LOG"
+        if (Test-Path $log) { Get-Content $log }
+
+    - name: Upload log files if tests fail
+      if: failure() || cancelled()
+      uses: actions/upload-artifact@v7
+      with:
+        name: windows-test-${{ inputs.group }}-log
+        path: |
+          tests/win-logs/*.log
+          tests/*.dir/
+          tests/cobol85/*/report.txt
+        if-no-files-found: warn

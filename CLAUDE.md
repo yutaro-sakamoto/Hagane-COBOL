@@ -41,7 +41,7 @@ autoreconf && ./configure --prefix=local/ && make && make install
 
 ### ビルド時の落とし穴
 
-- **sandboxを無効にする**: `make` / `make install` / `./format` / `tests/`配下のテスト実行は、libcobjのビルドでGradle wrapperが`~/.gradle/`に書き込むため、デフォルトのsandboxでは`Read-only file system`で失敗する。これらは最初から`dangerouslyDisableSandbox: true`で実行する（`configure`と`autom4te`はsandbox内で動く）。
+- **sandboxを無効にする**: `make` / `make install` / `./format` / `./local-ci` / `tests/`配下のテスト実行は、libcobjのビルドでGradle wrapperが`~/.gradle/`に書き込むため(`./local-ci`はさらにESQLテスト用のPostgreSQLとSpring Bootのsmoke testがポートを開くため)、デフォルトのsandboxでは`Read-only file system`で失敗する。これらは最初から`dangerouslyDisableSandbox: true`で実行する（`configure`と`autom4te`はsandbox内で動く）。
 - **UTF-8ビルドは`touch cobj/*.m4`が必須**: `./configure --enable-utf8`の後は必ず`touch cobj/*.m4 && make`する。`cobj/scanner.l`と`cobj/pplex.l`はm4生成物だがgitにコミットされており、checkout直後は`.l`と`.l.m4`のmtimeが同じでmakeが再生成しない。結果、Cコードは`I18N_UTF8`定義済みなのにレキサーはShift_JIS版という混成ビルドができ、日本語の利用者定義語が全滅する。`tests/cobol_utf8`が大量に「syntax error」で落ちたらまずこれを疑う（コードの不具合ではない）。SJIS版に戻すときも同様。
 - **`Makefile.in`と`configure`は手で編集しない**: これらは`Makefile.am`と`configure.ac`からautoreconfが自動生成するファイル。編集するのは常に`.am`/`.ac`のほうで、生成物はautoreconfで作り直す。
 - **autoreconfの出力は確認してからコミットする**: この環境で実行するとaclocal.m4からgettext/libtoolのm4マクロが脱落するなど、意図しない環境差分が混ざることがある(2026-08-05に15000行超の差分を確認)。CIはチェックイン済みのconfigure/Makefile.inをそのまま使うため、壊れた再生成ファイルをコミットするとビルドが壊れる。コミット前に`git diff --stat`で変更が意図した範囲に収まっているか確認すること。
@@ -53,7 +53,8 @@ autoreconf && ./configure --prefix=local/ && make && make install
 
 ただし、**変更箇所に対応するテストケースだけをローカルで先に回してからpushする**のは、状況に応じて選んでよい。
 不具合の修正中で同じテストを何度も回す場合や、CIの1往復が惜しい小さな変更では、そのほうが速い。
-逆に、変更がビルド構成や文字コードに及ぶ場合や、複数OSでの差異が問われる場合は、ローカルで確かめても意味が薄いのでCIに任せる。
+逆に、複数OSでの差異が問われる場合は、ローカルで確かめても意味が薄いのでCIに任せる。
+ローカルで先に回すときは、後述の`./local-ci`でタスクを選んで実行するのが手軽(Shift_JIS版とUTF-8版の両方をCIと同じ手順でビルドする)。
 
 tests/以下の構成:
 
@@ -64,9 +65,65 @@ tests/以下の構成:
 ローカルで一部だけ回すときは、関係ない部分を`#`でコメントアウトしてから`make`でスクリプトを再生成する
 (COBOL85以外はテストが長くなることがあるため)。実行は`{テスト名}.dir/`で行われ、失敗の記録はテスト終了後もそこに残る。
 
+### local-ci: CIのテスト一式を手元で回す
+
+リポジトリルートの`./local-ci`は、CIのLinuxジョブ(`.github/workflows/local-ci.yml`)が実際に実行しているスクリプトで、
+同じテスト一式を1台のマシンで並列に回せる。push前に変更に関係するタスクだけを先に流す用途に使う
+(全タスクの実行は重いので、基本は上のとおりCIに任せる)。**sandbox無効で実行すること。**
+
+- 作業ツリー(未コミットの変更と、無視されていない未追跡ファイルを含む)を`.local-ci/tree-*`に複製し、
+  そこでShift_JIS版とUTF-8版のコンパイラをビルドする。in-treeのビルド結果や`local/`には触れない。UTF-8版の`touch cobj/*.m4`も自動で行う。
+- タスクはautotestの各スイート(`test:{sjis,utf8}:<スイート>`)、NIST COBOL85(`nist:{sjis,utf8}:<モジュール>`)、
+  ESQL(`esql:*`。`initdb`/`pg_ctl`で専用のPostgreSQLを起動するのでPostgreSQLのサーバーバイナリが要る)、
+  libcobjの単体テスト(`unit:libcobj`)、Spring Bootのsmoke test(`smoke:spring-boot`)、
+  linter(`lint:clang-format`、`lint:cppcheck`、`lint:spotless`、`lint:spotbugs`、`lint:pmd`、`lint:javadoc`、`lint:missing-javadoc`)。
+  選んだタスクが依存するビルドやDB起動は自動で追加される。
+- 使い方の詳細はスクリプト冒頭のコメント(`./local-ci -h`)。よく使うのは次のとおり。
+
+```bash
+./local-ci -l                          # タスクの一覧
+./local-ci 'test:sjis:run' 'lint:*'    # パターン(bashのglob)で選んで実行
+./local-ci -x 'nist:*'                 # 除外して実行
+./local-ci -j 8 -t 4 'test:utf8:*'     # 同時タスク数 / autotestの-j
+./local-ci --no-esql                   # ESQLタスクとPostgreSQLの起動を外す
+./local-ci --clean                     # .local-ci/ を削除
+```
+
+- ログは`.local-ci/logs/<タスク名の:を_に置換>.log`(例: `test_sjis_run.log`)。autotestの失敗の詳細は
+  `.local-ci/tree-{sjis,utf8}/tests/<スイート>.dir/`に残る。
+- 環境によって手元の結果がCIと変わるもの(コードの問題ではない):
+  - Dockerが無いと、`unit:libcobj`はTestcontainersを使う3つのテストクラスとカバレッジ検証を飛ばす。
+  - `nkf`が無いと`test:utf8:cobol_utf8`はskipになる。
+  - PostgreSQL(`initdb`/`pg_ctl`)が無いと、起動時に警告が出て`esql:*`はSKIPになる(rcは0のまま。CIが設定する`LOCAL_CI_STRICT=1`のときだけ失敗扱い)。PostgreSQLの無い環境では`./local-ci --no-esql`でESQLタスクとDB起動を明示的に外す。`LOCAL_CI_PG_BIN=none`もPostgreSQL無しとして扱われる。
+  - localhost:5432で何かが待ち受けていると、`esql:sjis:esql-sqlca`のconnect-disconnectが落ちる(起動時に警告が出る)。
+  - `lint:cppcheck`はcppcheckのバージョンで結果が変わる(CIはAlmaLinux 9のEPELのcppcheckを使う)。
+  - `lint:javadoc`はjavadocの警告が1件でもあると失敗するので、既存の警告で落ちることがある。
+
+### テストランナー自体のテスト(ci-tests/)
+
+`local-ci`と`win/run-tests.sh`はテストを回す側のスクリプトなので、不具合があると落ちたテストを見逃す。
+**どちらかを変更したら`ci-tests/`のテストを回し、変更した振る舞いのテストを追加すること。**
+本物のスクリプトを偽のタスク・スイートで動かすもので、ビルドは不要。両方で2分20秒ほどかかる。
+
+```bash
+bash ci-tests/local-ci.test.sh                 # local-ciのテスト(Linuxのみ。/tmpとsetsidを使うのでsandbox無効で実行)
+bash ci-tests/run-tests.test.sh                # win/run-tests.shのテスト(LinuxとWindowsのGit Bash)
+T_FILTER='l_shard*' bash ci-tests/local-ci.test.sh   # テスト関数名のパターンで一部だけ実行
+```
+
+`local-ci.test.sh`は一時的なgitリポジトリで`local-ci`を実行し、環境変数`LOCAL_CI_TASK_DEFS`で
+タスク定義を偽のものに差し替える(このテスト専用。説明はスクリプト冒頭のコメント)。
+CIでは`.github/workflows/test-runners.yml`(`pull-request.yml`/`push.yml`のジョブ`test-runners`)が、
+Linuxで`shellcheck --severity=error`(`local-ci`、`win/run-tests.sh`、`ci-tests/*.sh`)と両方のテストを、
+WindowsのGit Bashで`run-tests.test.sh`を実行する。
+
 ### CIの既知のフレーク
 
-`run-test-other (file-lock*, almalinux:9)`が`COB4J_REAL_JAVA does not point at a real java`を大量に出して落ちることがある。コード変更なしの再実行で成功するリポジトリ全体の既存問題。自分の変更を疑う前に失敗ログを`gh run download`で確認し、該当すれば`gh run rerun <run-id> --failed`する。なお`run-test-other`のmatrixはfail-fastが既定なので、1ジョブの失敗で10件前後がcancelされる。cancelは失敗ではない。
+LinuxのテストはOS × 文字コード(sjis, utf8) × シャード(1/2, 2/2)のmatrixで`local-ci`を呼ぶジョブに集約されており、ジョブ名は`local-ci (ubuntu:26.04, sjis, 1/2) / test`のような形になる(AlmaLinux 9のジョブはpull_requestでのみ走る)。失敗したジョブは失敗タスクのログを折りたたみグループで出力し、`.local-ci/logs/`とautotestの`.dir/`を`local-ci-ubuntu-26.04-sjis-1-2`のような名前のアーティファクトにアップロードする。
+
+WindowsのテストはWindowsのビルドとテストスクリプト生成のあと、`.github/workflows/windows-test.yml`を3グループのmatrixで呼ぶジョブ(`windows-test (other-1)`、`windows-test (other-2)`、`windows-test (nist-esql)`)で走る。各ジョブは`win/run-tests.sh -P 2 -j 4 -t 1200 <項目...>`を実行する(項目はautotestのスイート名、`nist:<モジュール>`、DBを共有するESQLスイートを順に流す`A+B`形式。詳細はスクリプト冒頭のコメント)。項目ごとのログは`tests/win-logs/<項目>.log`、失敗した項目はログ末尾に`FAIL`で並び折りたたみグループでログが出る。`-t`は項目ごとの制限時間(秒)で、これを超えた項目は`TIMEOUT <項目> (1200s)`の行を出して失敗し(ログ末尾は`=== <項目> timed out after 1200s`)、他の項目はそのまま続く。失敗時のアーティファクトは`windows-test-<グループ>-log`(`tests/win-logs/`、`tests/*.dir/`、NISTの`report.txt`)。
+
+AlmaLinux 9のfile-lock系スイート(`local-ci (almalinux:9, ...)`ジョブ内の`test:*:file-lock*`タスク)が`COB4J_REAL_JAVA does not point at a real java`を大量に出して落ちることがある。コード変更なしの再実行で成功するリポジトリ全体の既存問題。自分の変更を疑う前に失敗ログ(またはアーティファクトを`gh run download`したもの)で確認し、該当すれば`gh run rerun <run-id> --failed`する。なお`local-ci`のmatrixは`fail-fast: false`なので、1ジョブが落ちても他のジョブはcancelされない。
 
 ## コード変更終了後
 
@@ -114,7 +171,11 @@ tests/以下の構成:
   - scanner.l.m4 - m4マクロで、scanner.lを生成するためのファイル
 - libcobj/ - libcobj.jarのためのコードを格納する。libocobj.jarは、COBOLからJavaへの変換で生成されたJavaコードが依存するライブラリ
 - website/ - GitHub Pagesで公開するWebサイト(VitePress)のソース。英語版は直下、日本語版はja/以下。libcobjのJavadocはCIがビルド時に追加する
+- local-ci - CIのLinuxテスト一式をローカルで並列実行するスクリプト。CIのテストジョブもこれを使う。「local-ci: CIのテスト一式を手元で回す」の節を参照
+- win/run-tests.sh - WindowsのCIがテストの項目を並列に実行するスクリプト(Git Bash用)。使い方はスクリプト冒頭のコメントと`tests/README.md`の「Running tests on Windows」
+- ci-tests/ - `local-ci`と`win/run-tests.sh`自体のテスト。「テストランナー自体のテスト(ci-tests/)」の節を参照
 - .claude-work/ - Claudeの作業用ディレクトリ(git管理外)。「作業用ディレクトリ」の節を参照
+- .local-ci/ - `./local-ci`の作業ディレクトリ(git管理外)。複製したソースツリー、ログ、PostgreSQLのデータが入る。`./local-ci --clean`で消してよい
 - local/ - `make install`のインストール先(git管理外)
 - wt/ - `git worktree`の置き場(git管理外)
 

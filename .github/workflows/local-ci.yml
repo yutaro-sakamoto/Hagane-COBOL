@@ -1,0 +1,141 @@
+name: local-ci
+
+# Builds Hagane COBOL and runs the Linux tests with ./local-ci in a single job.
+# local-ci runs the tasks in parallel and starts only the builds and the
+# PostgreSQL server that the selected tasks need, so one job replaces the
+# separate build, autotest, NIST, ESQL, cobj-api and Spring Boot jobs.
+#
+# The callers split the tests by character set (each job builds only one
+# compiler) and into shards with `--shard`.
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      charset:
+        description: "sjis or utf8"
+        required: true
+        type: string
+      shard:
+        description: "K/N, passed to local-ci --shard"
+        required: false
+        type: string
+        default: "1/1"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: ${{ inputs.os }}
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    defaults:
+      run:
+        # Steps in a container job run with sh unless told otherwise
+        shell: bash
+    steps:
+      - name: Install dependencies on Ubuntu 26.04
+        if: inputs.os == 'ubuntu:26.04'
+        run: |
+          apt-get update -y
+          # local-ci starts its own PostgreSQL server. Keep the package from
+          # creating a default cluster: esql-sqlca expects nothing on 5432.
+          apt-get install -y --no-install-recommends postgresql-common
+          echo 'create_main_cluster = false' >> /etc/postgresql-common/createcluster.conf
+          apt-get install -y --no-install-recommends build-essential gettext \
+            autoconf bison flex git ca-certificates unzip nkf curl python3 procps \
+            locales postgresql
+          # local-ci initializes the database with en_US.utf8 if it exists,
+          # the locale of the postgres images
+          locale-gen en_US.UTF-8
+
+      - name: Install dependencies on AlmaLinux 9
+        if: inputs.os == 'almalinux:9'
+        run: |
+          dnf module enable -y postgresql:15
+          dnf install -y gcc make autoconf diffutils gettext bison flex git \
+            unzip glibc-gconv-extra glibc-langpack-en python3 procps-ng util-linux \
+            findutils tar postgresql postgresql-server
+          curl -fsSL "https://github.com/nurse/nkf/archive/refs/tags/v2_1_3.tar.gz" -o nkf-2.1.3.tar.gz
+          tar zxf nkf-2.1.3.tar.gz
+          make -C nkf-2_1_3
+          make -C nkf-2_1_3 install
+          rm -rf nkf-2.1.3.tar.gz nkf-2_1_3
+
+      # The tests run on Java 11. The last setup-java sets JAVA_HOME and PATH,
+      # which local-ci uses for the build and the Gradle tasks.
+      - uses: actions/setup-java@v6
+        id: java11
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - uses: actions/setup-java@v6
+        if: inputs.os == 'ubuntu:26.04'
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Checkout Hagane COBOL
+        uses: actions/checkout@v7
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: wrapper
+
+      - name: Run local-ci
+        env:
+          LOCAL_CI_TEST_JAVA_HOME: ${{ steps.java11.outputs.path }}
+          CHARSET: ${{ inputs.charset }}
+          SHARD: ${{ inputs.shard }}
+          OS: ${{ inputs.os }}
+          # A task that hangs must time out before the job does, so that the
+          # logs are printed and uploaded
+          LOCAL_CI_TIMEOUT: 2400
+          # A skipped task means a missing tool here, not an expected skip
+          LOCAL_CI_STRICT: 1
+        run: |
+          # local-ci copies the work tree with git ls-files. The checkout is
+          # owned by another user than the container's root.
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "$CHARSET" = utf8 ]; then
+            tasks=('test:utf8:*' 'nist:utf8:*' 'esql:utf8:*')
+          else
+            # unit:libcobj is what `make test-cobj-api` runs
+            tasks=('test:sjis:*' 'nist:sjis:*' 'esql:sjis:*' 'unit:libcobj')
+            if [ "$OS" = 'ubuntu:26.04' ]; then
+              tasks+=('esql:examples' 'smoke:spring-boot')
+            fi
+          fi
+          ./local-ci --shard "$SHARD" -l "${tasks[@]}"
+          ./local-ci --shard "$SHARD" "${tasks[@]}"
+
+      - name: Get the artifact name
+        if: failure()
+        env:
+          NAME: local-ci-${{ inputs.os }}-${{ inputs.charset }}-${{ inputs.shard }}
+        run: echo "ARTIFACT_NAME=$NAME" | tr ':/' '--' >> "$GITHUB_ENV"
+
+      - name: Upload log files if tests fail
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: |
+            .local-ci/logs/
+            .local-ci/tree-*/tests/*.dir/
+            .local-ci/tree-*/tests/cobol85/*/report.txt
+            .local-ci/tree-*/samples/spring-boot-smoke/app.log
+            .local-ci/tree-*/samples/spring-boot-smoke/responses.txt
+            .local-ci/tree-unit/libcobj/app/build/reports/tests/
+            .local-ci/pg/server.log
+          # Everything is under .local-ci/, which upload-artifact skips by default
+          include-hidden-files: true
+          if-no-files-found: warn
