@@ -21,12 +21,11 @@ package jp.osscons.opensourcecobol.libcobj.termio;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import jp.osscons.opensourcecobol.libcobj.common.CobolCharset;
 import jp.osscons.opensourcecobol.libcobj.common.CobolEncoding;
 import jp.osscons.opensourcecobol.libcobj.common.CobolModule;
 import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
@@ -129,13 +128,7 @@ public class CobolTerminal {
             if (CobolUtil.terminalEncoding == CobolEncoding.UTF8) {
                 scan = new Scanner(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             } else {
-                try {
-                    scan =
-                            new Scanner(
-                                    new InputStreamReader(System.in, Charset.forName("Shift_JIS")));
-                } catch (UnsupportedCharsetException e) {
-                    scan = new Scanner(System.in);
-                }
+                scan = new Scanner(new InputStreamReader(System.in, CobolCharset.CHARSET));
             }
         }
         return scan;

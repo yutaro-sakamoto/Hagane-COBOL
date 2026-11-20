@@ -3,13 +3,13 @@ package jp.osscons.opensourcecobol.libcobj.sql;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.charset.Charset;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import jp.osscons.opensourcecobol.libcobj.common.CobolCharset;
 import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
 import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
 import jp.osscons.opensourcecobol.libcobj.data.CobolFieldAttribute;
@@ -63,7 +63,6 @@ public final class CobolDataConverter {
         JAPANESE_VARYING
     }
 
-    private static final Charset SHIFT_JIS = Charset.forName("SHIFT-JIS");
     private static final int OCDB_VARCHAR_HEADER_BYTE = 4;
 
     /**
@@ -477,14 +476,14 @@ public final class CobolDataConverter {
 
     /**
      * ストレージの内部配列の {@code index} から始まる {@code length} バイトを、スライスをコピーせずに
-     * Shift-JIS としてデコードする。
+     * ランタイムの文字セット ({@link CobolCharset#CHARSET}) でデコードする。
      */
     private static String shiftJisRef(CobolDataStorage storage, int index, int length) {
         return new String(
                 storage.getByteArrayRef(index, length),
                 storage.getIndex() + index,
                 length,
-                SHIFT_JIS);
+                CobolCharset.CHARSET);
     }
 
     private static String readAlphanumeric(int length, int scale, CobolDataStorage storage) {
@@ -510,7 +509,7 @@ public final class CobolDataConverter {
                 && data[end - 1] == SJIS_FULLWIDTH_SPACE[1]) {
             end -= 2;
         }
-        return new String(data, start, end - start, SHIFT_JIS);
+        return new String(data, start, end - start, CobolCharset.CHARSET);
     }
 
     /** VARYING ヘッダ (先頭 4 バイト) に格納されたビッグエンディアンの長さを読み取る。 */
@@ -543,9 +542,9 @@ public final class CobolDataConverter {
         if (i == data.length) {
             digits = "0";
         } else if (data[i] == (byte) '.') {
-            digits = "0" + new String(data, i, data.length - i);
+            digits = "0" + new String(data, i, data.length - i, CobolCharset.CHARSET);
         } else {
-            digits = new String(data, i, data.length - i);
+            digits = new String(data, i, data.length - i, CobolCharset.CHARSET);
         }
 
         if (hasLeadingSign && data.length > 0 && data[0] == (byte) '-' && !"0".equals(digits)) {
@@ -876,7 +875,7 @@ public final class CobolDataConverter {
         // length はすでにバイトサイズである (例: PIC N(5) なら 10)。National 項目は全角
         // (表意文字) スペース (Shift-JIS 0x81 0x40) でパディングする。readNational が末尾の
         // 全角スペースを取り除くため、これで読み書きが対称になる。
-        // SQL の結果は既に Shift-JIS。COBOL の MOVE 時と異なり半角→全角変換
+        // SQL の結果は既にランタイムの文字セット。COBOL の MOVE 時と異なり半角→全角変換
         // (CobolNationalField.han2zen) は適用しない (Open COBOL ESQL 4J の実装に準拠)。
         for (int j = 0; j + 1 < length; j += 2) {
             storage.memcpy(j, SJIS_FULLWIDTH_SPACE, 2);
@@ -905,7 +904,7 @@ public final class CobolDataConverter {
 
     private static void writeJapaneseVarying(
             int length, int scale, CobolDataStorage storage, byte[] str) {
-        // SQL の結果は既に Shift-JIS。COBOL の MOVE 時と異なり半角→全角変換
+        // SQL の結果は既にランタイムの文字セット。COBOL の MOVE 時と異なり半角→全角変換
         // (CobolNationalField.han2zen) は適用しない (Open COBOL ESQL 4J の実装に準拠)。
         byte[] lengthBytes = new byte[OCDB_VARCHAR_HEADER_BYTE];
         if (str.length >= length) {
@@ -1072,7 +1071,7 @@ public final class CobolDataConverter {
     }
 
     // -------------------------------------------------------
-    // getValueFromResultSet: カラムの値を SHIFT-JIS のバイト列として取り出す
+    // getValueFromResultSet: カラムの値をランタイムの文字セットのバイト列として取り出す
     // -------------------------------------------------------
     private static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
@@ -1081,7 +1080,7 @@ public final class CobolDataConverter {
             ThreadLocal.withInitial(() -> new SimpleDateFormat(DATE_FORMAT_PATTERN));
 
     /**
-     * ResultSet からカラムの値を SHIFT-JIS でエンコードしたバイト列として取り出す。
+     * ResultSet からカラムの値をランタイムの文字セット ({@link CobolCharset#CHARSET}) でエンコードしたバイト列として取り出す。
      *
      * @param rs 現在の行に位置付けられた JDBC result set
      * @param columnIndex 1 始まりのカラムインデックス
@@ -1103,7 +1102,7 @@ public final class CobolDataConverter {
                     if (s == null) {
                         return null;
                     }
-                    return s.getBytes(SHIFT_JIS);
+                    return s.getBytes(CobolCharset.CHARSET);
                 }
             case Types.DECIMAL:
             case Types.NUMERIC:
@@ -1112,7 +1111,7 @@ public final class CobolDataConverter {
                     if (bd == null) {
                         return null;
                     }
-                    return bd.toString().getBytes();
+                    return bd.toString().getBytes(CobolCharset.CHARSET);
                 }
             case Types.TIMESTAMP:
                 {
@@ -1120,7 +1119,7 @@ public final class CobolDataConverter {
                     if (ts == null) {
                         return null;
                     }
-                    return DATE_FORMAT.get().format(ts).getBytes();
+                    return DATE_FORMAT.get().format(ts).getBytes(CobolCharset.CHARSET);
                 }
             case Types.DATE:
                 {
@@ -1128,7 +1127,7 @@ public final class CobolDataConverter {
                     if (d == null) {
                         return null;
                     }
-                    return DATE_FORMAT.get().format(d).getBytes();
+                    return DATE_FORMAT.get().format(d).getBytes(CobolCharset.CHARSET);
                 }
             case Types.TIME:
                 {
@@ -1136,7 +1135,7 @@ public final class CobolDataConverter {
                     if (t == null) {
                         return null;
                     }
-                    return t.toString().getBytes();
+                    return t.toString().getBytes(CobolCharset.CHARSET);
                 }
             case Types.TINYINT:
                 strValue = Byte.toString(rs.getByte(columnIndex));
@@ -1164,7 +1163,7 @@ public final class CobolDataConverter {
                     if (rowId == null) {
                         return null;
                     }
-                    return rowId.toString().getBytes();
+                    return rowId.toString().getBytes(CobolCharset.CHARSET);
                 }
             default:
                 {
@@ -1172,12 +1171,12 @@ public final class CobolDataConverter {
                     if (s == null) {
                         return null;
                     }
-                    return s.getBytes(SHIFT_JIS);
+                    return s.getBytes(CobolCharset.CHARSET);
                 }
         }
         if (rs.wasNull()) {
             return null;
         }
-        return strValue.getBytes();
+        return strValue.getBytes(CobolCharset.CHARSET);
     }
 }

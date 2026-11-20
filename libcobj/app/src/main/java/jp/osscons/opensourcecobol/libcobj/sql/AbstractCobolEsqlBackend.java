@@ -1,6 +1,5 @@
 package jp.osscons.opensourcecobol.libcobj.sql;
 
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ParameterMetaData;
@@ -13,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import jp.osscons.opensourcecobol.libcobj.common.CobolCharset;
 import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
 import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
 import org.slf4j.Logger;
@@ -53,9 +53,6 @@ public abstract class AbstractCobolEsqlBackend implements CobolEsqlBackendInterf
     // 低レベルの接続確立ログ（Connecting to.../Connected successfully）は別ロガーに出す。
     // CobolEsql のロガーだけを debug 有効化しても、これらは出力されない（接続詳細を分離する）。
     private static final Logger CONN_LOG = LoggerFactory.getLogger(AbstractCobolEsqlBackend.class);
-
-    /** COBOL 固定長フィールドのバイト表現に用いる文字コード（接続パラメータの取り出し用）。 */
-    private static final Charset SHIFT_JIS = Charset.forName("SHIFT-JIS");
 
     /** デフォルト接続に付ける識別子。CONNECT では接続 ID を指定しないため、固定名を用いる。 */
     private static final String DEFAULT_CONN_ID = "OCDB_DEFAULT_DBNAME";
@@ -1254,7 +1251,8 @@ public abstract class AbstractCobolEsqlBackend implements CobolEsqlBackendInterf
         if (storage == null || len <= 0) {
             return null;
         }
-        return new String(storage.getByteArrayRef(0, len), storage.getIndex(), len, SHIFT_JIS);
+        return new String(
+                storage.getByteArrayRef(0, len), storage.getIndex(), len, CobolCharset.CHARSET);
     }
 
     private static String fieldToString(AbstractCobolField field) {

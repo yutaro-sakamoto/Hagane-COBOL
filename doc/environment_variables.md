@@ -144,9 +144,28 @@ libcobj: END OF SORT/MERGE, RECORD=3.
 
 Specifies the terminal encoding used by DISPLAY and ACCEPT statements.
 
-- **Value**: `UTF-8` or `UTF8` (default is Shift_JIS)
+- **Value**: `UTF-8` or `UTF8` (any other value, or unset, means no conversion)
 - **Example**: `COB_TERMINAL_ENCODING=UTF-8`
 - **Purpose**: Used for terminal I/O in UTF-8 environments.
+- **Behavior**:
+  - `UTF-8`: DISPLAY converts data from the runtime character set (see `COB_CHARSET`) to UTF-8 before writing it, and ACCEPT reads standard input as UTF-8.
+  - Default (any other value): no conversion is performed. DISPLAY writes the bytes as they are, and ACCEPT reads standard input in the runtime character set specified by `COB_CHARSET` (Shift_JIS when `COB_CHARSET` is unset).
+
+#### COB_CHARSET
+
+Specifies the character set the runtime uses to convert between Java strings and the bytes of COBOL data items.
+
+- **Value**: A Java character set name such as `SHIFT-JIS` or `UTF-8` (default is `SHIFT-JIS`; an empty value is treated as unset)
+- **Example**: `COB_CHARSET=UTF-8`
+- **Purpose**: Used when the data handled by a program is encoded in a character set other than Shift_JIS.
+- **Scope**: The character set applies to all of the following:
+  - Conversion between COBOL data items and Java strings in general
+  - Embedded SQL (`EXEC SQL`): host variables, SQLCA fields (SQLSTATE / SQLERRMC) and values fetched from a `ResultSet`
+  - Reading standard input in the ACCEPT statement when `COB_TERMINAL_ENCODING` is not `UTF-8`, and the source character set that DISPLAY converts to UTF-8 when it is `UTF-8` (see `COB_TERMINAL_ENCODING`)
+- **Note**:
+  - The value is read once when the runtime library is loaded. A name that Java does not recognize, or a character set that is not ASCII compatible such as `UTF-16`, causes an error when the runtime is initialized.
+  - The byte representation of `PIC N` (national) items, such as the full-width space used for padding, still assumes Shift_JIS.
+  - This variable affects only the runtime. The character set of COBOL source code accepted by the compiler (`cobj`) is determined at build time by `configure --enable-utf8` and is unrelated to `COB_CHARSET`.
 
 #### COB_SWITCH_1 through COB_SWITCH_8
 

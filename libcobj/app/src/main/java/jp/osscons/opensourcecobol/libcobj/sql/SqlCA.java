@@ -2,8 +2,8 @@ package jp.osscons.opensourcecobol.libcobj.sql;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import jp.osscons.opensourcecobol.libcobj.common.CobolCharset;
 import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
 
 /**
@@ -17,9 +17,6 @@ public final class SqlCA {
 
     /** ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。 */
     private SqlCA() {}
-
-    /** COBOL フィールド (SQLSTATE/SQLERRMC) のバイト表現に用いる文字コード。 */
-    private static final Charset SHIFT_JIS = Charset.forName("SHIFT-JIS");
 
     /** SQLERRMC エラーメッセージフィールドの最大長。 */
     static final int SQLERRMC_LEN = 70;
@@ -169,7 +166,7 @@ public final class SqlCA {
         if (sqlca == null || state == null) {
             return;
         }
-        byte[] stateBytes = state.getBytes(SHIFT_JIS);
+        byte[] stateBytes = state.getBytes(CobolCharset.CHARSET);
         for (int i = 0; i < 5; i++) {
             if (i < stateBytes.length) {
                 sqlca.setByte(OFFSET_SQLSTATE + i, stateBytes[i]);
@@ -208,21 +205,21 @@ public final class SqlCA {
     }
 
     /**
-     * 文字列を SHIFT-JIS でエンコードし、maxBytes バイト以内に収める。上限を超える場合は
+     * 文字列をランタイムの文字セット ({@link CobolCharset#CHARSET}) でエンコードし、maxBytes バイト以内に収める。上限を超える場合は
      * 多バイト文字を途中で分割しないよう、文字境界で切り詰める。
      *
      * @param s エンコードする文字列
      * @param maxBytes 許容する最大バイト数
-     * @return SHIFT-JIS バイト列 (maxBytes 以下、末尾の不完全な多バイト文字なし)
+     * @return エンコード後のバイト列 (maxBytes 以下、末尾の不完全な多バイト文字なし)
      */
     private static byte[] encodeWithinBytes(String s, int maxBytes) {
-        byte[] full = s.getBytes(SHIFT_JIS);
+        byte[] full = s.getBytes(CobolCharset.CHARSET);
         if (full.length <= maxBytes) {
             return full;
         }
         // 文字単位でエンコードし、出力バッファが一杯になった時点 (OVERFLOW) で停止することで
         // 多バイト文字の途中切れを防ぐ。
-        CharsetEncoder encoder = SHIFT_JIS.newEncoder();
+        CharsetEncoder encoder = CobolCharset.CHARSET.newEncoder();
         ByteBuffer out = ByteBuffer.allocate(maxBytes);
         encoder.encode(CharBuffer.wrap(s), out, true);
         out.flip();

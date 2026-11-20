@@ -319,7 +319,7 @@ The following COBOL items can be used as host variables. The runtime interprets 
 | `PIC 9(n)` / `PIC S9(n)` | DISPLAY (zoned decimal); supports signed/unsigned and sign position (LEADING/TRAILING, SEPARATE/combined) |
 | `PIC 9(n)V9(m)` | Fixed-point decimal |
 | `USAGE COMP-3` (packed decimal) | Packed decimal |
-| `PIC N(n)` | Japanese, Shift-JIS |
+| `PIC N(n)` | Japanese (full-width padding assumes Shift-JIS) |
 | Group item | Treated as alphanumeric |
 | VARYING item | Variable-length alphanumeric / Japanese string |
 
@@ -380,6 +380,7 @@ Example:
 | `OCDB_DB_USER` | Default database user |
 | `OCDB_DB_PASS` | Default database password |
 | `OCDB_DB_CHAR` | Character encoding for the database connection. When unset, the connection defaults to `UTF-8`. |
+| `COB_CHARSET` | Character set used to convert host variables, SQLCA fields and fetched values between COBOL bytes and Java strings. Defaults to `SHIFT-JIS`. This is the general runtime setting described in [environment_variables.md](environment_variables.md#cob_charset); it is independent of `OCDB_DB_CHAR`, which sets the encoding of the database connection itself. |
 | `OCESQL4J_FETCH_RECORDS` | Cursor pre-read (bulk fetch) count: the number of rows pulled in a single `FETCH FORWARD`. Defaults to 1 (one row at a time). Values of 0 or less, or non-numeric values, are treated as 1. Read once at process startup. |
 
 `OCDB_DB_NAME`, `OCDB_DB_USER`, and `OCDB_DB_PASS` are used as fallbacks when the

@@ -21,6 +21,7 @@ package jp.osscons.opensourcecobol.libcobj.data;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import jp.osscons.opensourcecobol.libcobj.common.CobolCharset;
 import jp.osscons.opensourcecobol.libcobj.common.CobolConstant;
 import jp.osscons.opensourcecobol.libcobj.common.CobolModule;
 import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
@@ -38,8 +39,11 @@ public abstract class AbstractCobolField {
     /** 変数に関する様々な情報を保持するオブジェクト(符号付か,COMP-3指定かなど) */
     protected CobolFieldAttribute attribute;
 
-    /** 文字データの符号化に使用するShift_JIS文字セット */
-    public static final Charset charSetSJIS = Charset.forName("SHIFT-JIS");
+    /**
+     * 文字データの符号化に使用する文字セット。{@link CobolCharset#CHARSET}と同じで、環境変数COB_CHARSETで変更できる。
+     * 未設定の場合は後方互換のためShift_JISを使用する。
+     */
+    public static final Charset charSetSJIS = CobolCharset.CHARSET;
 
     static final int[] cobExp10 = {
         1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
