@@ -62,9 +62,12 @@ run() {
   RC=$?
 }
 
-# Starts local-ci in the background with its own pid in $BG_PID
+# Starts local-ci in the background with its own pid in $BG_PID.
+# --default-signal=INT: if this suite itself was started with SIGINT ignored
+# (as on GitHub Actions), local-ci inherits that, and bash cannot trap a
+# signal that was ignored on entry. Reset it so the INT trap can be tested.
 run_bg() {
-  (cd "$REPO" && exec env -u GITHUB_ACTIONS LOCAL_CI_DIR="$WORK" \
+  (cd "$REPO" && exec env --default-signal=INT -u GITHUB_ACTIONS LOCAL_CI_DIR="$WORK" \
     LOCAL_CI_TASK_DEFS="$DEFS" ./local-ci "$@" > "$T_TMP/bg.out" 2>&1) &
   BG_PID=$!
 }
