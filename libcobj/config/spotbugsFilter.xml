@@ -9,26 +9,26 @@
     <Bug code="MS,EI,EI2,UrF,UuF,Dm,OBL,PA,ST" />
   </Match>
   <Match>
-    <Class name="jp.osscons.opensourcecobol.libcobj.file.IndexedCursor" />
+    <Class name="org.haganecobol.libcobj.file.IndexedCursor" />
     <Method name="getCursorForFirstLast" />
     <Bug code="ODR" />
   </Match>
   <Match>
-    <Class name="jp.osscons.opensourcecobol.libcobj.common.CobolInspect" />
+    <Class name="org.haganecobol.libcobj.common.CobolInspect" />
     <Bug code="DLS" />
   </Match>
   <Match>
-    <Class name="jp.osscons.opensourcecobol.libcobj.call.CobolResolve" />
+    <Class name="org.haganecobol.libcobj.call.CobolResolve" />
     <Method name="cobCancel" />
     <Bug code="NP" />
   </Match>
   <Match>
-    <Class name="jp.osscons.opensourcecobol.libcobj.data.CobolDecimal" />
+    <Class name="org.haganecobol.libcobj.data.CobolDecimal" />
     <Method name="compareTo" />
     <Bug code="Eq" />
   </Match>
   <Match>
-    <Class name="jp.osscons.opensourcecobol.libcobj.common.CobolUtil" />
+    <Class name="org.haganecobol.libcobj.common.CobolUtil" />
     <Method name="cob_init" />
     <Bug code="STCAL" />
   </Match>

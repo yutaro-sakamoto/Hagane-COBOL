@@ -426,7 +426,7 @@ ESQL ランタイムは [SLF4J](https://www.slf4j.org/) を使ってログを出
 
 `libcobj.jar` には slf4j-simple が同梱されており、ログは標準エラー出力に出力されます。既定では
 ESQL のロガーは **off** です。`libcobj.jar` には
-`org.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj.sql=off` を設定した
+`org.slf4j.simpleLogger.log.org.haganecobol.libcobj.sql=off` を設定した
 `simplelogger.properties` が同梱されているため、オプションを何も付けずに `java` コマンドで実行した
 場合は ESQL 関連のログは一切出力されません。この設定はグローバルな `defaultLogLevel` ではなく ESQL の
 ロガー名前空間に限定しているため、同梱ファイルが libcobj.jar を利用するアプリケーション側の他の
@@ -438,26 +438,26 @@ slf4j ロガーを抑制してしまうことはありません。ログを出�
 ERROR のみ（失敗時のエラーだけを出力）:
 
 ```bash
-java -Dorg.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj.sql=error YourProgram
+java -Dorg.slf4j.simpleLogger.log.org.haganecobol.libcobj.sql=error YourProgram
 ```
 
 ERROR と DEBUG（実行する SQL 文・接続/切断・カーソル操作まで出力）:
 
 ```bash
-java -Dorg.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj.sql=debug YourProgram
+java -Dorg.slf4j.simpleLogger.log.org.haganecobol.libcobj.sql=debug YourProgram
 ```
 
 ERROR と DEBUG と TRACE（`CONNECT` のホスト変数値や `FETCH` など、すべてを出力）:
 
 ```bash
-java -Dorg.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj.sql=trace YourProgram
+java -Dorg.slf4j.simpleLogger.log.org.haganecobol.libcobj.sql=trace YourProgram
 ```
 
 > [!NOTE]
 > `...libcobj.sql` 名前空間は `CobolEsql` ロガー（EXEC SQL の実行）と `SqlConnection` ロガー
 > （接続/切断）の両方を含むため、上記の設定で ESQL のログがすべて有効になります。単一のロガーだけを
 > 対象にしたい場合は、クラス名まで付与します
-> （例: `-Dorg.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj.sql.CobolEsql=debug`）。
+> （例: `-Dorg.slf4j.simpleLogger.log.org.haganecobol.libcobj.sql.CobolEsql=debug`）。
 
 ## 制限事項
 

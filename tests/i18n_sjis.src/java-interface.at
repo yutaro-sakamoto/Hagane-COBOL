@@ -15,7 +15,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();

@@ -16,7 +16,7 @@ color: cyan
 2. **`cobj/parser.y`** — 構文解析。COBOLの文法規則から`cb_tree`を組み立てる。`cobj/tree.h`が木の定義。
 3. **`cobj/typeck.c`** — 型検査と各種の意味解析。`cb_build_*` / `cb_emit_*` 群がここにあり、実際にはcodegen前の**変換処理の本体**であることが多い。「生成コードがおかしい」の原因はcodegen.cよりtypeck.cにあることが多い。
 4. **`cobj/codegen.c`** — Javaソースの出力。`output_*` 群。
-5. **`libcobj/app/src/main/java/jp/osscons/opensourcecobol/libcobj/`** — 生成されたJavaが呼ぶランタイム。`data/`(CobolDataStorage, CobolField系)、`file/`(順編成・INDEXED)、`common/`、`exceptions/` など。
+5. **`libcobj/app/src/main/java/org/haganecobol/libcobj/`** — 生成されたJavaが呼ぶランタイム。`data/`(CobolDataStorage, CobolField系)、`file/`(順編成・INDEXED)、`common/`、`exceptions/` など。
 
 EXEC SQL は別系統: `cobj/esql-scanner.l` / `cobj/esql-parser.y` / `cobj/esql.c`。
 

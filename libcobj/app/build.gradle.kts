@@ -88,7 +88,7 @@ tasks.cyclonedxDirectBom {
     // test-only dependencies are not part of the released artifact.
     includeConfigs.set(listOf("runtimeClasspath"))
     projectType.set(Component.Type.LIBRARY)
-    componentGroup.set("jp.osscons.opensourcecobol")
+    componentGroup.set("org.haganecobol")
     componentName.set("libcobj")
     componentVersion.set("1.0.0")
     schemaVersion.set(CycloneDxVersion.VERSION_16)
@@ -117,7 +117,7 @@ publishing {
     }
     publications {
         register<MavenPublication>("gpr") {
-            groupId = "jp.osscons.opensourcecobol"
+            groupId = "org.haganecobol"
             artifactId = "libcobj"
             version = "1.0.0"
             from(components["java"])
@@ -164,7 +164,7 @@ tasks.jacocoTestCoverageVerification {
     violationRules {
         rule {
             element = "PACKAGE"
-            includes = listOf("jp.osscons.opensourcecobol.libcobj.sql")
+            includes = listOf("org.haganecobol.libcobj.sql")
             limit {
                 counter = "BRANCH"
                 value = "COVEREDRATIO"

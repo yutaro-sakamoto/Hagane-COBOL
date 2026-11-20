@@ -43,8 +43,8 @@ generated program**; an instance must not be used by two threads at the same
 time.
 
 ```java
-import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
-import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
+import org.haganecobol.libcobj.common.CobolRunUnit;
+import org.haganecobol.libcobj.data.CobolDataStorage;
 
 // One instance of the COBOL program "sample" per thread
 private static final ThreadLocal<sample> program = ThreadLocal.withInitial(sample::new);
@@ -55,7 +55,7 @@ int returnCode = program.get().run(arg1, arg2);
 ```
 
 A generated program implements
-`jp.osscons.opensourcecobol.libcobj.call.CobolRunnable`, whose `run` method takes
+`org.haganecobol.libcobj.call.CobolRunnable`, whose `run` method takes
 the `PROCEDURE DIVISION USING` parameters as `CobolDataStorage` arguments and
 returns `RETURN-CODE`. Programs reached by a `CALL` statement are resolved and
 instantiated by the run unit of the calling thread, so their `WORKING-STORAGE`
@@ -74,7 +74,7 @@ the runtime settings should be in effect before the first COBOL call — for
 example at application start-up:
 
 ```java
-import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
+import org.haganecobol.libcobj.common.CobolUtil;
 
 CobolUtil.ensureInitialized();
 ```
@@ -84,7 +84,7 @@ CobolUtil.ensureInitialized();
 ## Ending a run unit
 
 ```java
-jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit.end();
+org.haganecobol.libcobj.common.CobolRunUnit.end();
 ```
 
 `CobolRunUnit.end()` ends the run unit of the calling thread: files that are

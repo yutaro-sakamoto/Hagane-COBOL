@@ -59,7 +59,7 @@ val compileCobol by tasks.registering(Exec::class) {
             "-C",
             "-j",
             generatedCobol.get().asFile.absolutePath,
-            "-java-package=jp.osscons.opensourcecobol.samples.smoke.cobol"
+            "-java-package=org.haganecobol.samples.smoke.cobol"
         ) + sources.files.map { it.name }
     )
 }

@@ -215,7 +215,7 @@ Two points to keep in mind:
   Only the `main` method of a generated program calls `System.exit`.
 * A program that leaves files open, or that uses `EXTERNAL` items or `SWITCH`,
   leaves that state on the pooled thread. Call
-  `jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit.end()` at the end of
+  `org.haganecobol.libcobj.common.CobolRunUnit.end()` at the end of
   the request to close the files and discard the run unit of the thread.
 
 `samples/spring-boot-smoke/` in this repository is a working example, and

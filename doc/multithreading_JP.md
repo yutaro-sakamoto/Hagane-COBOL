@@ -42,8 +42,8 @@ Javaアプリケーションから呼び出すことができる。
 1つのインスタンスを複数のスレッドから同時に使用してはならない。
 
 ```java
-import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
-import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
+import org.haganecobol.libcobj.common.CobolRunUnit;
+import org.haganecobol.libcobj.data.CobolDataStorage;
 
 // COBOLプログラム"sample"のインスタンスをスレッドごとに保持する
 private static final ThreadLocal<sample> program = ThreadLocal.withInitial(sample::new);
@@ -53,7 +53,7 @@ CobolDataStorage arg2 = new CobolDataStorage(9);
 int returnCode = program.get().run(arg1, arg2);
 ```
 
-変換後のプログラムは`jp.osscons.opensourcecobol.libcobj.call.CobolRunnable`を実装しており、
+変換後のプログラムは`org.haganecobol.libcobj.call.CobolRunnable`を実装しており、
 その`run`メソッドは`PROCEDURE DIVISION USING`の引数を`CobolDataStorage`として受け取り、
 `RETURN-CODE`を返す。
 `CALL`文で呼び出されるプログラムも、呼び出し元スレッドの実行単位が解決・生成するため、
@@ -71,7 +71,7 @@ COBOLプログラムを呼び出すだけのアプリケーションでは明示
 明示的に呼び出す。
 
 ```java
-import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
+import org.haganecobol.libcobj.common.CobolUtil;
 
 CobolUtil.ensureInitialized();
 ```
@@ -81,7 +81,7 @@ CobolUtil.ensureInitialized();
 ## 実行単位を終了する
 
 ```java
-jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit.end();
+org.haganecobol.libcobj.common.CobolRunUnit.end();
 ```
 
 `CobolRunUnit.end()`は、呼び出し元スレッドの実行単位を終了する。

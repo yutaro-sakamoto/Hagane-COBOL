@@ -121,7 +121,7 @@ For `SELECT INTO` / `FETCH`, `esql_build_and_resolve()` checks whether the leaf 
 
 ## Runtime layer
 
-### Package layout (`jp.osscons.opensourcecobol.libcobj.sql`)
+### Package layout (`org.haganecobol.libcobj.sql`)
 
 | Class | Visibility | Role |
 |---|---|---|
