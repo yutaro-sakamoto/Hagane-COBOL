@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import jp.osscons.opensourcecobol.libcobj.common.CobolConstant;
 import jp.osscons.opensourcecobol.libcobj.common.CobolUtil;
 import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
+import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolExceptionId;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolRuntimeException;
 import jp.osscons.opensourcecobol.libcobj.exceptions.CobolStopRunException;
@@ -329,8 +330,8 @@ public class CobolResolve {
 
     /**
      * パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
-     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
-     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、cobolFieldの示す名前のASCIIの英字を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、cobolFieldの示す名前のASCIIの英字を大文字に変換したものを検索する。<br>
      * 環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
      * 環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
      *
@@ -346,7 +347,7 @@ public class CobolResolve {
             String packageName, AbstractCobolField cobolField, CobolRunnable runner)
             throws CobolRuntimeException {
         if (runner == null) {
-            return resolve(packageName, cobolField.fieldToString());
+            return resolve(packageName, cobolField);
         } else {
             return runner;
         }
@@ -354,8 +355,8 @@ public class CobolResolve {
 
     /**
      * パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
-     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
-     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、nameの示す名前のASCIIの英字を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、nameの示す名前のASCIIの英字を大文字に変換したものを検索する。<br>
      * 環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
      * 環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
      *
@@ -378,8 +379,8 @@ public class CobolResolve {
 
     /**
      * パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
-     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
-     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、cobolFieldの示す名前のASCIIの英字を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、cobolFieldの示す名前のASCIIの英字を大文字に変換したものを検索する。<br>
      * 環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
      * 環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
      *
@@ -390,13 +391,19 @@ public class CobolResolve {
      */
     public static CobolRunnable resolve(String packageName, AbstractCobolField cobolField)
             throws CobolRuntimeException {
-        return resolve(packageName, cobolField.fieldToString());
+        byte[] bytes = fieldNameBytes(cobolField);
+        CobolRunnable runnable =
+                resolveClassNames(packageName, CobolProgramName.candidates(bytes, name_convert));
+        if (runnable == null) {
+            throw programNotFound(cobolField.fieldToString());
+        }
+        return runnable;
     }
 
     /**
      * パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
-     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
-     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにLOWERが指定されているときは、nameの示す名前のASCIIの英字を小文字に変換したものを検索する。<br>
+     * 環境変数COB_LOAD_CASEにUPPERが指定されているときは、nameの示す名前のASCIIの英字を大文字に変換したものを検索する。<br>
      * 環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
      * 環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
      *
@@ -407,54 +414,100 @@ public class CobolResolve {
      */
     public static CobolRunnable resolve(String packageName, String name)
             throws CobolRuntimeException {
-        String fullName;
-        CobolRunnable runnable = null;
-
-        /* encode program name */
-        char c1 = name.charAt(0);
-        if (c1 >= '0' && c1 <= '9') {
-            name = "_" + name;
+        CobolRunnable runnable =
+                resolveClassNames(packageName, CobolProgramName.candidates(name, name_convert));
+        if (runnable == null) {
+            throw programNotFound(name);
         }
-        name = name.replaceAll("-", "__");
+        return runnable;
+    }
+
+    /**
+     * プログラムが見つからなかったことを示す例外を生成する。
+     *
+     * @param name 変換前のプログラム名
+     * @return 生成した例外
+     */
+    private static CobolRuntimeException programNotFound(String name) {
+        return new CobolRuntimeException(
+                CobolExceptionId.COB_EC_PROGRAM_NOT_FOUND, "Program not found: " + name);
+    }
+
+    /**
+     * プログラム名をコンパイラと同じ規則で変換したクラス名の候補を順に検索し、クラスを動的に読み込む。
+     *
+     * @param packageName パッケージ名
+     * @param classNames クラス名の候補
+     * @return 読み込んだクラスのインスタンス。どの候補に対応するクラスも見つからなければnull
+     */
+    private static CobolRunnable resolveClassNames(String packageName, List<String> classNames) {
+        Map<String, CobolRunnable> table = callTable.get();
 
         /* search the cache */
-        Map<String, CobolRunnable> table = callTable.get();
-        if (table.containsKey(name)) {
-            return table.get(name);
+        for (String className : classNames) {
+            CobolRunnable runnable = table.get(className);
+            if (runnable != null) {
+                return runnable;
+            }
         }
 
-        if (name_convert == 1) {
-            name = name.toLowerCase();
-        } else if (name_convert == 2) {
-            name = name.toUpperCase();
+        for (String className : classNames) {
+            CobolRunnable runnable = searchClass(packageName, className);
+            if (runnable != null) {
+                table.put(className, runnable);
+                return runnable;
+            }
         }
+        return null;
+    }
 
+    /**
+     * 変換済みのクラス名に対応するクラスを、メインプログラムのパッケージと外部モジュールのパッケージから検索する。
+     *
+     * @param packageName パッケージ名。nullでもよい
+     * @param className クラス名
+     * @return 見つかったクラスのインスタンス。見つからなければnull
+     */
+    private static CobolRunnable searchClass(String packageName, String className) {
+        String fullName;
         if (packageName != null) {
-            fullName = packageName + "." + name;
+            fullName = packageName + "." + className;
         } else {
-            fullName = name;
+            fullName = className;
         }
 
         /* search the main program */
-        runnable = getInstance(fullName);
+        CobolRunnable runnable = getInstance(fullName);
         if (runnable != null) {
-            table.put(name, runnable);
             return runnable;
         }
 
         /* search external modules */
         for (String packagePath : package_paths) {
-            fullName = packagePath + "." + name;
-            runnable = getInstance(fullName);
+            runnable = getInstance(packagePath + "." + className);
             if (runnable != null) {
-                table.put(name, runnable);
                 return runnable;
             }
         }
+        return null;
+    }
 
-        // Not found
-        String msg = "Program not found: " + name;
-        throw new CobolRuntimeException(CobolExceptionId.COB_EC_PROGRAM_NOT_FOUND, msg);
+    /**
+     * プログラム名を格納するCOBOL変数から、末尾の空白とNULを除いたバイト列を取り出す。<br>
+     * JVMの既定の文字セットで復号すると情報が失われることがあるため、バイト列のまま{@link CobolProgramName}に渡す。
+     *
+     * @param f プログラム名を格納するCOBOL変数
+     * @return プログラム名のバイト列
+     */
+    private static byte[] fieldNameBytes(AbstractCobolField f) {
+        CobolDataStorage data = f.getDataStorage();
+        int i;
+        for (i = f.getSize() - 1; i >= 0; --i) {
+            if (data.getByte(i) != ' ' && data.getByte(i) != 0) {
+                break;
+            }
+        }
+        return data.getByteArray(0, i + 1);
     }
 
     private static final Logger RESOLVE_LOG = Logger.getLogger(CobolResolve.class.getName());
@@ -550,7 +603,11 @@ public class CobolResolve {
      * @throws CobolStopRunException プログラム名がnullまたは空文字列の場合にスローされる
      */
     public static void fieldCancel(AbstractCobolField f) throws CobolStopRunException {
-        CobolResolve.cobCancel(f.fieldToString());
+        String name = f.fieldToString();
+        if (name.isEmpty()) {
+            CobolStopRunException.stopRunAndThrow(1);
+        }
+        cancelByClassNames(CobolProgramName.candidates(fieldNameBytes(f), name_convert));
     }
 
     /**
@@ -565,10 +622,22 @@ public class CobolResolve {
             CobolStopRunException.stopRunAndThrow(1);
         }
 
-        name = name.replaceAll("-", "__");
-        CobolRunnable runner = callTable.get().get(name);
-        if (runner != null) {
-            runner.cancel();
+        cancelByClassNames(CobolProgramName.candidates(name, name_convert));
+    }
+
+    /**
+     * クラス名の候補のうち、読み込み済みのものがあればそのcancelメソッドを呼び出す
+     *
+     * @param classNames クラス名の候補
+     */
+    private static void cancelByClassNames(List<String> classNames) {
+        Map<String, CobolRunnable> table = callTable.get();
+        for (String className : classNames) {
+            CobolRunnable runner = table.get(className);
+            if (runner != null) {
+                runner.cancel();
+                return;
+            }
         }
     }
 
@@ -610,11 +679,8 @@ public class CobolResolve {
         // プログラムをキャンセル
         String programName = p.getName();
         if (programName != null) {
-            try {
-                CobolResolve.cobCancel(programName);
-            } catch (CobolStopRunException e) {
-                return;
-            }
+            /* コールスタックの名前は変換済みのクラス名なので、再変換せずに検索する */
+            cancelByClassNames(Collections.singletonList(programName));
         }
 
         // 子プログラムを再帰的にキャンセル
