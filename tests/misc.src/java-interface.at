@@ -541,3 +541,90 @@ AT_CHECK([java a], [0],
 -0002147483648
 ])
 AT_CLEANUP
+
+AT_SETUP([PIC S9(9)V99 with large and small double values])
+
+AT_DATA([b.cbl], [
+       identification division.
+       program-id. b.
+       data division.
+       linkage section.
+       01 arg pic S9(9)V99.
+       procedure division using arg.
+         display "<cobol> arg: " arg.
+         add 0.01 to arg.
+])
+
+AT_DATA([a.java], [
+import jp.osscons.opensourcecobol.libcobj.ui.*;
+import java.math.BigDecimal;
+public class a {
+	public static void main(String@<:@@:>@ args) {
+		b prog = new b();
+		CobolResultSet rs;
+		double@<:@@:>@ data_list = {9999999.99, 10000000.0, 123456789.01, -123456789.01, 0.001, 0.0001};
+		try{
+			for(double data : data_list) {
+				rs = prog.execute(data);
+				System.out.println("<java> arg: " + BigDecimal.valueOf(rs.getDouble(1)).toPlainString());
+			}
+		} catch(CobolResultSetException e) {
+			e.printStackTrace();
+		}
+	}
+}
+])
+
+AT_CHECK([${COBJ} b.cbl])
+AT_CHECK([javac a.java])
+AT_CHECK([java a], [0],
+[<cobol> arg: +009999999.99
+<java> arg: 10000000
+<cobol> arg: +010000000.00
+<java> arg: 10000000.01
+<cobol> arg: +123456789.01
+<java> arg: 123456789.02
+<cobol> arg: -123456789.01
+<java> arg: -123456789
+<cobol> arg: +000000000.00
+<java> arg: 0.01
+<cobol> arg: +000000000.00
+<java> arg: 0.01
+])
+
+AT_CLEANUP
+
+AT_SETUP([PIC S9(3)V9(6) with small double values])
+
+AT_DATA([b.cbl], [
+       identification division.
+       program-id. b.
+       data division.
+       linkage section.
+       01 arg pic S9(3)V9(6).
+       procedure division using arg.
+         display "<cobol> arg: " arg.
+])
+
+AT_DATA([a.java], [
+public class a {
+	public static void main(String@<:@@:>@ args) {
+		b prog = new b();
+		double@<:@@:>@ data_list = {0.001, 0.0001, -0.0001, 0.000015};
+		for(double data : data_list) {
+			prog.execute(data);
+		}
+	}
+}
+])
+
+AT_CHECK([${COBJ} b.cbl])
+AT_CHECK([javac a.java])
+AT_CHECK([java a], [0],
+[<cobol> arg: +000.001000
+<cobol> arg: +000.000100
+<cobol> arg: -000.000100
+<cobol> arg: +000.000015
+])
+
+AT_CLEANUP

@@ -688,10 +688,8 @@ public abstract class AbstractCobolField {
      * @param number 代入元のデータ
      */
     public void moveFrom(double number) {
-        String s = Double.toString(Math.abs(number));
-        String ss;
+        String ss = BigDecimal.valueOf(Math.abs(number)).toPlainString();
         int scale;
-        ss = s.replace("+", "").replace("-", "");
         int pointIndex = ss.indexOf('.');
         if (pointIndex < 0) {
             scale = 0;
