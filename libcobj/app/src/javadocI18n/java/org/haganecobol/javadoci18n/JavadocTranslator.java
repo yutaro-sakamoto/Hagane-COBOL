@@ -137,8 +137,10 @@ public final class JavadocTranslator {
             String text = new String(Files.readAllBytes(src), StandardCharsets.UTF_8);
             translateSource(rel, text, translations, report);
         }
-        report.printDetails(System.out, opts.githubActions, opts.failOnMissing);
+        // GitHub Actionsは1ステップにつき最初の10件の注釈しか表示しないため、
+        // 修正方法を含むサマリーを個々の未翻訳より先に出力する。
         report.printSummary(System.out, opts.githubActions, opts.failOnMissing);
+        report.printDetails(System.out, opts.githubActions, opts.failOnMissing);
         boolean failed =
                 report.errorCount() > 0 || (opts.failOnMissing && report.missingCount() > 0);
         return failed ? 1 : 0;
