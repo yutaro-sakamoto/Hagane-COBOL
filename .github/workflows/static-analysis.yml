@@ -39,12 +39,12 @@ jobs:
       - name: Run SpotBugs
         working-directory: libcobj
         run: |
-          ./gradlew spotbugsMain
+          ./gradlew spotbugsMain spotbugsJavadocI18n
 
       - name: Run PMD
         working-directory: libcobj
         run: |
-          ./gradlew pmdMain
+          ./gradlew pmdMain pmdJavadocI18n
 
       - name: Run cppcheck
         working-directory: cobj

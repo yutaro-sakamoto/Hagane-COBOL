@@ -24,8 +24,16 @@ repositories {
 // version from a copy of the sources whose comments are replaced with the
 // translations in libcobj/javadoc-i18n/en/ (see JavadocTranslator).
 val javadocI18n: SourceSet by sourceSets.creating
+val javadocI18nTest: SourceSet by sourceSets.creating {
+    compileClasspath += javadocI18n.output + javadocI18n.compileClasspath
+    runtimeClasspath += javadocI18n.output + javadocI18n.runtimeClasspath
+}
 val javadocTranslationsEn = rootProject.layout.projectDirectory.dir("javadoc-i18n/en")
 val javadocSourcesEn = layout.buildDirectory.dir("javadoc-src/en")
+val mainJavaDir: File = sourceSets.main.get().java.srcDirs.first()
+// The root of the git repository, so that messages and GitHub annotations show
+// paths relative to it.
+val repositoryRoot: File = rootProject.projectDir.parentFile
 
 // Paths on the website where each version of the Javadoc is published.
 val javadocUrlEn = "/javadoc/libcobj/index.html"
@@ -54,16 +62,17 @@ tasks {
         group = "documentation"
         classpath = javadocI18n.runtimeClasspath
         mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
-        val srcDir = sourceSets.main.get().java.srcDirs.first()
-        inputs.dir(srcDir)
+        inputs.dir(mainJavaDir)
         inputs.dir(javadocTranslationsEn).optional()
         outputs.dir(javadocSourcesEn)
+        // Remove the copies of deleted source files.
         doFirst { delete(javadocSourcesEn) }
         args(
             "apply",
-            "--source", srcDir.absolutePath,
+            "--source", mainJavaDir.absolutePath,
             "--translations", javadocTranslationsEn.asFile.absolutePath,
-            "--output", javadocSourcesEn.get().asFile.absolutePath)
+            "--output", javadocSourcesEn.get().asFile.absolutePath,
+            "--repo-root", repositoryRoot.absolutePath)
     }
 
     register<Javadoc>("javadocEn") {
@@ -83,28 +92,31 @@ tasks {
     register<JavaExec>("syncJavadocTranslations") {
         description =
             "Updates libcobj/javadoc-i18n/en/ to match the Javadoc comments in the sources:" +
-                " adds new Japanese texts with empty translations and removes unused ones."
+                " adds new Japanese texts (taking over translations found in other files)" +
+                " and removes unused ones."
         group = "documentation"
         classpath = javadocI18n.runtimeClasspath
         mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
         args(
             "sync",
-            "--source", sourceSets.main.get().java.srcDirs.first().absolutePath,
+            "--source", mainJavaDir.absolutePath,
             "--translations", javadocTranslationsEn.asFile.absolutePath)
     }
 
     register<JavaExec>("checkJavadocTranslations") {
         description =
-            "Lists the Javadoc texts without an English translation." +
-                " Fails on untranslated texts with -PfailOnMissingTranslation."
+            "Checks the English translations of the Javadoc. With -PfailOnMissingTranslation," +
+                " also fails on untranslated texts and on translation files that" +
+                " syncJavadocTranslations would change (as CI does)."
         group = "verification"
         classpath = javadocI18n.runtimeClasspath
         mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
         val checkArgs =
             mutableListOf(
                 "check",
-                "--source", sourceSets.main.get().java.srcDirs.first().absolutePath,
-                "--translations", javadocTranslationsEn.asFile.absolutePath)
+                "--source", mainJavaDir.absolutePath,
+                "--translations", javadocTranslationsEn.asFile.absolutePath,
+                "--repo-root", repositoryRoot.absolutePath)
         if (project.hasProperty("failOnMissingTranslation")) {
             checkArgs.add("--fail-on-missing")
         }
@@ -113,6 +125,28 @@ tasks {
         }
         args(checkArgs)
     }
+
+    register<Test>("testJavadocI18n") {
+        description = "Runs the unit tests of the Javadoc translation tool."
+        group = "verification"
+        testClassesDirs = javadocI18nTest.output.classesDirs
+        classpath = javadocI18nTest.runtimeClasspath
+        useJUnitPlatform()
+        // The tests also run the tool on the real sources and translations.
+        systemProperty("javadocI18n.sourceDir", mainJavaDir.absolutePath)
+        systemProperty("javadocI18n.translationDir", javadocTranslationsEn.asFile.absolutePath)
+        inputs.dir(mainJavaDir)
+        inputs.dir(javadocTranslationsEn).optional()
+        testLogging {
+            events("failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
+    }
+
+    // The JUnit rules of the PMD rule set are written for the tests of libcobj.
+    // The tests of the translation tool are checked by testJavadocI18n itself.
+    named("pmdJavadocI18nTest") { enabled = false }
+    named("spotbugsJavadocI18nTest") { enabled = false }
     compileJava {
         options.encoding = "UTF-8"
     }
@@ -140,6 +174,8 @@ dependencies {
 
     // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
     "javadocI18nImplementation"("org.yaml:snakeyaml:2.5")
+    "javadocI18nTestImplementation"("org.junit.jupiter:junit-jupiter:5.14.4")
+    "javadocI18nTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
 }
 
 configurations {
