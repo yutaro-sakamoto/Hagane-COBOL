@@ -39,7 +39,8 @@ untranslated until the translation is updated. Differences in line breaks and
 spaces are ignored. A translation found in another file is also used, so moving
 a comment to another class keeps its translation.
 
-Untranslated units stay in Japanese in the English Javadoc.
+In a local build, untranslated units stay in Japanese in the English Javadoc.
+CI does not allow them (see below).
 
 ## Updating the translations
 
@@ -103,7 +104,8 @@ Webサイトでは、Javadocを2つの言語で公開しています。
 日本語の原文そのものがキーです。ソースファイルの日本語が変更されると古い訳文が一致しなくなり、訳文を更新するまでその単位は未翻訳として報告されます。
 改行や空白の違いは無視します。別のファイルにある訳文も使うため、コメントを別のクラスに移動しても訳文は引き継がれます。
 
-未翻訳の単位は、英語版のJavadocでも日本語のまま残ります。
+ローカルでビルドした場合、未翻訳の単位は英語版のJavadocでも日本語のまま残ります。
+CIでは未翻訳は許されません(後述)。
 
 ## 翻訳の更新
 
