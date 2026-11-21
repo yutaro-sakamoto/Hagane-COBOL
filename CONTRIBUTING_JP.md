@@ -70,9 +70,11 @@ Hagane COBOLのlibcobj/ディレクトリで下記のコマンドを実行して
 ./gradlew javadoc                   # 日本語版Javadoc (app/build/docs/javadoc/)
 ./gradlew javadocEn                 # 英語版Javadoc (app/build/docs/javadoc-en/)
 ./gradlew syncJavadocTranslations   # 追加・変更されたJavadocの文言を翻訳ファイルに反映
-./gradlew checkJavadocTranslations  # 未翻訳の文言を一覧表示
+./gradlew checkJavadocTranslations  # 未翻訳の文言と、ソースと食い違っている翻訳ファイルを一覧表示
+./gradlew testJavadocI18n           # 翻訳ツールの単体テストを実行
 ```
 
 Javadocコメントを追加・変更したときは、`./gradlew syncJavadocTranslations`を実行し、空の`en`を埋めてください。
-Javadocの日本語に英訳が無いものが1つでもあると、CIは失敗します。
+Javadocの日本語に英訳が無いものが1つでもあるか、翻訳ファイルがソースと食い違っていると、CIは失敗します。
+同じ検査をローカルで行うには`./gradlew checkJavadocTranslations -PfailOnMissingTranslation`を実行してください。
 詳細は[libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md)を参照してください。

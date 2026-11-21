@@ -69,9 +69,11 @@ Run the following commands in libcobj/ directory:
 ./gradlew javadoc                   # Japanese Javadoc (app/build/docs/javadoc/)
 ./gradlew javadocEn                 # English Javadoc (app/build/docs/javadoc-en/)
 ./gradlew syncJavadocTranslations   # add new or changed Javadoc texts to the translation files
-./gradlew checkJavadocTranslations  # list untranslated texts
+./gradlew checkJavadocTranslations  # list untranslated texts and out-of-sync translation files
+./gradlew testJavadocI18n           # run the unit tests of the translation tool
 ```
 
 When you add or change Javadoc comments, run `./gradlew syncJavadocTranslations` and fill in the empty `en` entries.
-CI fails if any Japanese text in the Javadoc has no English translation.
+CI fails if any Japanese text in the Javadoc has no English translation, or if the translation files are out of sync with the sources.
+To run the same check locally, use `./gradlew checkJavadocTranslations -PfailOnMissingTranslation`.
 See [libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md) for details.
