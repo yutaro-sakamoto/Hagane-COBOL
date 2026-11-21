@@ -4,12 +4,14 @@
 // at /ja/... (for example /guide/usage and /ja/guide/usage, or
 // /javadoc/libcobj/index.html and /ja/javadoc/libcobj/index.html).
 //
-// - On the first visit, the language is chosen from the browser settings and
-//   the visitor is sent to the page in that language. The choice is saved, so
-//   this happens only once.
-// - When the visitor follows a link to the other language (the language menu
-//   of the website or the link at the top of the Javadoc), the new language is
-//   saved and used from then on.
+// - A visitor who comes from outside the site to the English top page (/ or
+//   the top of the Javadoc) is sent to the Japanese one if they chose
+//   Japanese before, or, if they have not chosen yet, if their browser
+//   prefers Japanese. Other pages are never redirected: a page opened from a
+//   search result or a shared link is shown in its own language, and search
+//   engines can index both languages.
+// - The language the visitor switches to (with the language menu of the
+//   website or the link at the top of the Javadoc) is remembered.
 // - Links with the class "language-switch" are pointed at the same page in the
 //   other language.
 (function () {
@@ -30,6 +32,11 @@
     return language === 'ja' ? '/ja' + english : english;
   }
 
+  function otherLanguageUrl() {
+    var other = languageOf(location.pathname) === 'ja' ? 'en' : 'ja';
+    return pathIn(other, location.pathname) + location.search + location.hash;
+  }
+
   function load() {
     try {
       var value = localStorage.getItem(STORAGE_KEY);
@@ -43,7 +50,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, language);
     } catch (e) {
-      // Storage may be disabled. The language is then detected on every visit.
+      // Storage may be disabled. The choice is then not remembered.
     }
   }
 
@@ -60,22 +67,42 @@
     return 'en';
   }
 
-  var current = languageOf(location.pathname);
-  var preferred = load();
-  if (preferred === null) {
-    preferred = detect();
-    save(preferred);
-    if (preferred !== current) {
-      location.replace(pathIn(preferred, location.pathname) + location.search + location.hash);
+  function isEnglishTopPage(path) {
+    return path === '/' || path === '/index.html'
+      || path === '/javadoc/libcobj/' || path === '/javadoc/libcobj/index.html';
+  }
+
+  function cameFromThisSite() {
+    try {
+      return document.referrer !== '' && new URL(document.referrer).origin === location.origin;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // Moving within the site (including the language switch itself) never
+  // redirects, so the switch works even when the choice cannot be saved.
+  if (isEnglishTopPage(location.pathname) && !cameFromThisSite()) {
+    var preferred = load() || detect();
+    if (preferred === 'ja') {
+      location.replace(pathIn('ja', location.pathname) + location.search + location.hash);
       return;
     }
   }
 
-  // Remember the language when the visitor follows a link to the other one.
   document.addEventListener('click', function (event) {
     var target = event.target;
     var link = target && target.closest ? target.closest('a[href]') : null;
     if (!link || link.origin !== location.origin) {
+      return;
+    }
+    // The URL may have changed without loading a page (the Javadoc search page
+    // rewrites the query), so point the switch at the current page now.
+    if (link.classList.contains('language-switch')) {
+      link.href = otherLanguageUrl();
+    }
+    // Opening the link in another tab is not a choice of language.
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
       return;
     }
     var language = languageOf(link.pathname);
@@ -87,8 +114,7 @@
   function updateSwitchLinks() {
     var links = document.querySelectorAll('a.language-switch');
     for (var i = 0; i < links.length; i++) {
-      var other = languageOf(location.pathname) === 'ja' ? 'en' : 'ja';
-      links[i].href = pathIn(other, location.pathname) + location.search + location.hash;
+      links[i].href = otherLanguageUrl();
     }
   }
 

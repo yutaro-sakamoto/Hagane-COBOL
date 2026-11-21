@@ -48,7 +48,7 @@ val languageScript: File = repositoryRoot.resolve("website/public/language.js")
  * page in the other language. The link at the top is shown as a button in the
  * navigation bar, which stays visible while scrolling.
  */
-fun languageLink(href: String, label: String, button: Boolean): String {
+fun languageLink(href: String, label: String, langCode: String, button: Boolean): String {
     val style =
         if (button) {
             "display:inline-block;margin-top:9px;padding:3px 10px;border:1px solid #fff;" +
@@ -57,15 +57,17 @@ fun languageLink(href: String, label: String, button: Boolean): String {
         } else {
             "font-weight:bold"
         }
-    // &#127760; is a globe.
-    val text = if (button) "&#127760; $label" else label
-    return "<a class=\"language-switch\" href=\"$href\" style=\"$style\">$text</a>"
+    // &#127760; is a globe. Screen readers skip it and read the label in its language.
+    val text = if (button) "<span aria-hidden=\"true\">&#127760;</span> $label" else label
+    return "<a class=\"language-switch\" href=\"$href\" lang=\"$langCode\"" +
+        " hreflang=\"$langCode\" style=\"$style\">$text</a>"
 }
 
 fun StandardJavadocDocletOptions.configureLibcobjJavadoc(
     lang: String,
     otherLanguageHref: String,
     otherLanguageLabel: String,
+    otherLanguageCode: String,
 ) {
     encoding = "UTF-8"
     docEncoding = "UTF-8"
@@ -73,8 +75,8 @@ fun StandardJavadocDocletOptions.configureLibcobjJavadoc(
     locale = lang
     windowTitle = "libcobj API"
     docTitle = "libcobj API"
-    header(languageLink(otherLanguageHref, otherLanguageLabel, button = true))
-    bottom(languageLink(otherLanguageHref, otherLanguageLabel, button = false))
+    header(languageLink(otherLanguageHref, otherLanguageLabel, otherLanguageCode, button = true))
+    bottom(languageLink(otherLanguageHref, otherLanguageLabel, otherLanguageCode, button = false))
     // javadoc copies the file into script-dir/ and loads it on every page.
     addFileOption("-add-script", languageScript)
     // It seems that the following line does not work.
@@ -85,7 +87,7 @@ tasks {
     javadoc {
         inputs.file(languageScript)
         (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
-            "ja_JP", javadocUrlEn, "English")
+            "ja_JP", javadocUrlEn, "English", "en")
     }
 
     val translateJavadocEn by registering(JavaExec::class) {
@@ -119,7 +121,8 @@ tasks {
             // "日本語" as character references, so that the option file does not
             // depend on the platform encoding.
             javadocUrlJa,
-            "&#26085;&#26412;&#35486;")
+            "&#26085;&#26412;&#35486;",
+            "ja")
     }
 
     register<JavaExec>("syncJavadocTranslations") {
