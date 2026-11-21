@@ -2,6 +2,9 @@
 
 | version (Hagane COBOL) | OS | version (JDK) |
 | -- | -- | -- |
+| 2.0.0 | Windows | 21 |
+| 2.0.0 | Ubuntu 26.04 | 21 |
+| 2.0.0 | AlmaLinux 9 | 11 |
 | 1.0.0 | Windows | 21 |
 | 1.0.0 | Ubuntu 26.04 | 21 |
 | 1.0.0 | AlmaLinux 9 | 11 |

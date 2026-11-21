@@ -2332,7 +2332,7 @@ int main(int argc, char *argv[]) {
 #ifdef _WIN32
     char *tmpdir = cobc_malloc(COB_SMALL_BUFF * sizeof(char));
     if ((GetTempPathA(COB_SMALL_BUFF, tmpdir)) == 0) {
-      strcpy(tmpdir, "c:\\opensourcecobol4j\\tmp");
+      strcpy(tmpdir, "c:\\hagane-cobol\\tmp");
     }
     cob_tmpdir = tmpdir;
     sprintf(buff, "TMPDIR=%s", cob_tmpdir);

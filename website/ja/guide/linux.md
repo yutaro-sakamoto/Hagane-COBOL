@@ -30,18 +30,18 @@ sudo dnf install -y java-11-openjdk-devel gcc make bison flex automake autoconf 
 ::: code-group
 
 ```bash [Shift_JISのソースコード(既定)]
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/
 make
 sudo make install
 ```
 
 ```bash [UTF-8のソースコード]
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/ --enable-utf8
 touch cobj/*.m4
 make
@@ -55,8 +55,14 @@ sudo make install
 環境変数`CLASSPATH`に`libcobj.jar`を追加します。たとえば`~/.bashrc`に次の行を書きます。
 
 ```bash
-export CLASSPATH="$CLASSPATH:/usr/lib/opensourcecobol4j/libcobj.jar"
+export CLASSPATH="$CLASSPATH:/usr/lib/hagane-cobol/libcobj.jar"
 ```
+
+::: warning 1.0.0からの移行
+Hagane COBOL 1.0.0は`libcobj.jar`を`/usr/lib/opensourcecobol4j/libcobj.jar`にインストールしていました。
+`CLASSPATH`のこのパスを新しいパスに置き換え、COBOLプログラムの変換とコンパイルをやり直してください。
+`make install`は1.0.0のファイルを削除しないため、不要であれば手動で削除してください。
+:::
 
 ## 4. インストールの確認
 

@@ -299,22 +299,22 @@
 #define ICONV_CONST 
 
 /* Name of package */
-#define PACKAGE "opensource-cobol4j-1.0.0"
+#define PACKAGE "hagane-cobol-2.0.0"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "ws-opensource-cobol-contact@osscons.jp"
+#define PACKAGE_BUGREPORT "https://github.com/yutaro-sakamoto/Hagane-COBOL/issues"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "Hagane COBOL"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Hagane COBOL 1.0.0"
+#define PACKAGE_STRING "Hagane COBOL 2.0.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "opensource-cobol4j-1.0.0"
+#define PACKAGE_TARNAME "hagane-cobol-2.0.0"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.0"
+#define PACKAGE_VERSION "2.0.0"
 
 /* Define a patch level */
 #define PATCH_LEVEL 0

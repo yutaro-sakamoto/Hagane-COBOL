@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      CLASSPATH: ".;C:/opensourcecobol4j/lib/libcobj.jar"
+      CLASSPATH: ".;C:/hagane-cobol/lib/libcobj.jar"
       PG_LOG: "postgresql.log"
 
     steps:

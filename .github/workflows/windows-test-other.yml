@@ -64,7 +64,7 @@ jobs:
         printf '%s\n' '#!/bin/bash' 'exec /usr/bin/diff --strip-trailing-cr "$@"' > /tmp/diff-wrapper/diff
         chmod +x /tmp/diff-wrapper/diff
         export PATH="/tmp/diff-wrapper:$PATH"
-        export CLASSPATH=".;C:/opensourcecobol4j/lib/libcobj.jar"
+        export CLASSPATH=".;C:/hagane-cobol/lib/libcobj.jar"
         cd tests
         # Autotest gives every test group its own working directory, so the
         # groups do not interfere with each other and the suites can run their

@@ -390,11 +390,11 @@ Javaアプリケーションから変換後のプログラムを呼び出す場�
 
 ## libcobj/の解説
 libcobj.jarはHagane COBOLのランタイムであり、
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj`に格納されているJavaソースコードよりビルドされる。
+`libcobj/app/src/main/java/org/haganecobol/libcobj`に格納されているJavaソースコードよりビルドされる。
 これらのソースコードの概要を以下に示す。
 
 ### callディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/call`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/call`に格納されているソースコードについて説明する。
 このディレクトリには、CALL文に関連するクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -405,7 +405,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | CobolSystemRoutine.java | 一部の組み込み関数を実装するクラス。 |
 
 ### commonディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/common`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/common`に格納されているソースコードについて説明する。
 このディレクトリには、その他のクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -426,7 +426,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | GetInt.java | AbstractCobolFieldを返すメソッドrunを実装したインターフェース。 |
 
 ### dataディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/data`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/data`に格納されているソースコードについて説明する。
 このディレクトリには、COBOLプログラムで使用される変数に関するクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -450,7 +450,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | CobolNumericPackedField.java | COMP-3のためのクラス。 |
 
 ### exceptionsディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/exceptions`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/exceptions`に格納されているソースコードについて説明する。
 このディレクトリには、COBOLプログラムの実行時に発生する例外を表すクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -468,7 +468,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 
 
 ### fileディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/file`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/file`に格納されているソースコードについて説明する。
 このディレクトリには、COBOLプログラムが扱うファイルに関連するクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -494,7 +494,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | MemoryStruct.java | ソート処理で使用するクラス。 |
 
 ### termioディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/termio`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/termio`に格納されているソースコードについて説明する。
 このディレクトリには、DISPLAY文やACCEPT文に関連するクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -502,7 +502,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | CobolTerminal.java | DISPLAY文やACCEPT文に関する処理を定義するクラス。 |
 
 ### sqlディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/sql`に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/sql`に格納されているソースコードについて説明する。
 このディレクトリには、EXEC SQL文（埋め込みSQL）に関連するクラスが定義される。
 
 | ファイル名 | 説明 |
@@ -510,7 +510,7 @@ libcobj.jarはHagane COBOLのランタイムであり、
 | CobolEsql.java | EXEC SQL文の実行時処理を定義するクラス。SQL接続、クエリ実行、カーソル操作、トランザクション制御等の機能を提供する。 |
 
 ### トップレベルディレクトリ
-`opensourcecobol4j/libcobj/src/org/haganecobol/libcobj/`の直下に格納されているソースコードについて説明する。
+`libcobj/app/src/main/java/org/haganecobol/libcobj/`の直下に格納されているソースコードについて説明する。
 
 | ファイル名 | 説明 |
 | --- | --- |
