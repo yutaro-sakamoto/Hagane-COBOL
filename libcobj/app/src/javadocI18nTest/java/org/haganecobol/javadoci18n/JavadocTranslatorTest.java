@@ -124,12 +124,38 @@ class JavadocTranslatorTest {
         TestSupport.Result r = check("--fail-on-missing");
         assertEquals(JavadocTranslator.FAILED, r.status, r.toString());
         assertTrue(r.out.contains("out of sync: tr/old/D.yaml"), r.toString());
+        assertTrue(r.out.contains("error: tr/notes.yaml: "), r.toString());
+        assertTrue(r.out.contains("Delete it by hand"), r.toString());
 
         r = sync();
         assertEquals(0, r.status, r.toString());
         assertFalse(Files.exists(tr().resolve("old")), "empty directory removed");
         assertTrue(Files.exists(tr().resolve("notes.yaml")), "file without the header kept");
         assertTrue(r.err.contains("notes.yaml is not used"), r.toString());
+    }
+
+    @Test
+    void crlfTranslationFilesAreInSync() throws Exception {
+        TestSupport.write(src().resolve("A.java"), "/** あ。 */ class A {}\n");
+        TestSupport.writeTranslations(tr().resolve("A.yaml"), "あ。", "A.");
+        Path yaml = tr().resolve("A.yaml");
+        TestSupport.write(yaml, TestSupport.read(yaml).replace("\n", "\r\n"));
+        TestSupport.Result r = check("--fail-on-missing");
+        assertEquals(0, r.status, r.toString());
+    }
+
+    @Test
+    void conflictingTranslationsAreReportedWhenCopied() throws Exception {
+        TestSupport.write(src().resolve("A.java"), "/** あ。 */ class A {}\n");
+        TestSupport.write(src().resolve("B.java"), "/** あ。 */ class B {}\n");
+        TestSupport.write(src().resolve("C.java"), "/** あ。 */ class C {}\n");
+        TestSupport.write(src().resolve("D.java"), "/** あ。 */ class D {}\n");
+        TestSupport.writeTranslations(tr().resolve("A.yaml"), "あ。", "One.");
+        TestSupport.writeTranslations(tr().resolve("B.yaml"), "あ。", "Two.");
+        TestSupport.writeTranslations(tr().resolve("C.yaml"), "あ。", "Two.");
+        TestSupport.Result r = sync();
+        assertTrue(r.out.contains("(other files translate it differently)"), r.toString());
+        assertTrue(TestSupport.read(tr().resolve("D.yaml")).contains("Two."), "most common wins");
     }
 
     @Test
@@ -251,23 +277,5 @@ class JavadocTranslatorTest {
             assertEquals(
                     TestSupport.withoutJavadoc(src.text), TestSupport.withoutJavadoc(out), src.rel);
         }
-    }
-
-    @Test
-    void realTranslationsAreCompleteAndInSync() throws Exception {
-        String source = System.getProperty("javadocI18n.sourceDir");
-        String translations = System.getProperty("javadocI18n.translationDir");
-        if (source == null || translations == null) {
-            return;
-        }
-        TestSupport.Result r =
-                TestSupport.run(
-                        "check",
-                        "--source",
-                        source,
-                        "--translations",
-                        translations,
-                        "--fail-on-missing");
-        assertEquals(0, r.status, r.toString());
     }
 }

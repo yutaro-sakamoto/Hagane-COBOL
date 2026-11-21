@@ -73,7 +73,7 @@ Run the following commands in libcobj/ directory:
 ./gradlew testJavadocI18n           # run the unit tests of the translation tool
 ```
 
-When you add or change Javadoc comments, run `./gradlew syncJavadocTranslations` and fill in the empty `en` entries.
+When you add or change Javadoc comments, run `./gradlew syncJavadocTranslations`, fill in the empty `en` entries, and run `./gradlew syncJavadocTranslations` again.
 CI fails if any Japanese text in the Javadoc has no English translation, or if the translation files are out of sync with the sources.
 To run the same check locally, use `./gradlew checkJavadocTranslations -PfailOnMissingTranslation`.
 See [libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md) for details.

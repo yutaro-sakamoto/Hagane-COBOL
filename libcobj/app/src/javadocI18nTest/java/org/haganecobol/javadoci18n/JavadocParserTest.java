@@ -111,6 +111,31 @@ class JavadocParserTest {
     }
 
     @Test
+    void preInsideInlineTagDoesNotHideBlockTags() {
+        String src =
+                "/**\n"
+                        + " * 説明。{@code <pre>} タグ\n"
+                        + " * @param x 引数\n"
+                        + " * @return 戻り値\n"
+                        + " */";
+        assertEquals(Arrays.asList("説明。{@code <pre>} タグ", "引数", "戻り値"), TestSupport.unitTexts(src));
+    }
+
+    @Test
+    void linesWithoutStarsKeepTheirIndentation() throws Exception {
+        String src =
+                "    /**\n"
+                        + "     * 本文。\n"
+                        + "     <pre>\n"
+                        + "       indented();\n"
+                        + "     </pre>\n"
+                        + "     * @param x 引数\n"
+                        + "     */\n";
+        Map.Entry<String, Report> r = TestSupport.translate(dir, src, "引数", "the argument");
+        assertEquals(src.replace("引数", "the argument"), r.getKey(), "output");
+    }
+
+    @Test
     void descriptionOnTheNextLineIsDedented() {
         String src = "/**\n" + " * @throws X\n" + " *     次の行の\n" + " *     説明\n" + " */";
         JavadocParser.Unit unit = onlyUnit(src);

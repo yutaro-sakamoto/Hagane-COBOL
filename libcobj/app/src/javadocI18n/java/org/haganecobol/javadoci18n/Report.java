@@ -12,7 +12,8 @@ final class Report {
     /** 失敗したときに表示する、直し方の説明。 */
     static final String HOW_TO_FIX =
             "Run `./gradlew syncJavadocTranslations` in libcobj/, fill in the empty `en` fields"
-                    + " in libcobj/javadoc-i18n/en/, and commit the YAML files";
+                    + " in libcobj/javadoc-i18n/en/, run `./gradlew syncJavadocTranslations` again"
+                    + " (it rewrites the files in the expected format), and commit the YAML files";
 
     private final List<Problem> problems = new ArrayList<>();
     private int units;

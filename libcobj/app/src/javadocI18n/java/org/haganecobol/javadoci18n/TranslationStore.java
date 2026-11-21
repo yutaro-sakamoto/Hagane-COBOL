@@ -1,7 +1,6 @@
 package org.haganecobol.javadoci18n;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ final class TranslationStore {
         for (Path yaml : Files2.list(dir, ".yaml")) {
             String rel = Files2.relative(dir, yaml);
             String source = rel.substring(0, rel.length() - ".yaml".length()) + ".java";
-            String content = new String(Files.readAllBytes(yaml), StandardCharsets.UTF_8);
+            String content = Files2.readUtf8(yaml);
             Map<String, String> map = new LinkedHashMap<>();
             for (Entry e : parse(content, yaml.toString())) {
                 String norm = Text.normalize(e.ja);

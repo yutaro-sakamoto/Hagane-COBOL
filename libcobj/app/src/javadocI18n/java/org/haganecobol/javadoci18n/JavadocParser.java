@@ -33,12 +33,18 @@ final class JavadocParser {
         /** {@code *}と本文の間にあった区切り。空白1つか空文字列。 */
         final String gap;
 
-        /** {@code *}と区切りの後ろの本文。末尾の空白は取り除く。 */
+        /**
+         * {@code *}と区切りの後ろの本文。末尾の空白は取り除く。{@code *}の無い行では、先頭の空白を含む行全体(Javadocは先頭の空白を本文として扱う)。
+         */
         final String content;
 
-        Line(String gap, String content) {
+        /** 行が{@code *}で始まっていたかどうか。 */
+        final boolean starred;
+
+        Line(String gap, String content, boolean starred) {
             this.gap = gap;
             this.content = content;
+            this.starred = starred;
         }
     }
 
@@ -117,38 +123,48 @@ final class JavadocParser {
          */
         String render(
                 Comment comment, String indent, String newline, Map<Unit, String> replacements) {
+            // 各行は、字下げを含めた完全な行として組み立てる。
             List<String> lines = new ArrayList<>();
             for (Part part : parts) {
                 if (part.unit == null) {
-                    addVerbatim(lines, part.verbatim);
+                    addVerbatim(lines, part.verbatim, indent);
                     continue;
                 }
                 String en = replacements.get(part.unit);
                 if (en == null) {
-                    addVerbatim(lines, part.unit.original);
+                    addVerbatim(lines, part.unit.original, indent);
                     continue;
                 }
                 String[] enLines = Text.lines(en);
                 for (int k = 0; k < enLines.length; k++) {
                     String line = k == 0 ? part.unit.prefix + enLines[k] : enLines[k];
                     line = Text.rtrim(line);
-                    lines.add(line.isEmpty() ? " *" : " * " + line);
+                    lines.add(indent + (line.isEmpty() ? " *" : " * " + line));
                 }
             }
-            if (comment.singleLine && lines.size() == 1 && lines.get(0).startsWith(" * ")) {
-                return "/** " + lines.get(0).substring(3) + " */";
+            String singlePrefix = indent + " * ";
+            if (comment.singleLine && lines.size() == 1 && lines.get(0).startsWith(singlePrefix)) {
+                return "/** " + lines.get(0).substring(singlePrefix.length()) + " */";
             }
             StringBuilder sb = new StringBuilder("/**").append(newline);
             for (String line : lines) {
-                sb.append(indent).append(line).append(newline);
+                sb.append(line).append(newline);
             }
             sb.append(indent).append(" */");
             return sb.toString();
         }
 
-        private static void addVerbatim(List<String> out, List<Line> lines) {
+        private static void addVerbatim(List<String> out, List<Line> lines, String indent) {
             for (Line line : lines) {
-                out.add(line.content.isEmpty() ? " *" : " *" + line.gap + line.content);
+                if (!line.starred) {
+                    out.add(line.content);
+                } else {
+                    out.add(
+                            indent
+                                    + (line.content.isEmpty()
+                                            ? " *"
+                                            : " *" + line.gap + line.content));
+                }
             }
         }
     }
@@ -246,13 +262,18 @@ final class JavadocParser {
                 j++;
                 star = true;
             }
+            if (k > 0 && !star) {
+                // *の無い行では、Javadocは先頭の空白も本文として扱う。<pre>の字下げを保つため、行全体を残す。
+                lines.add(new Line("", Text.rtrim(line), false));
+                continue;
+            }
             String gap = " ";
             if (j < line.length() && line.charAt(j) == ' ') {
                 j++;
             } else if (star || k == 0) {
                 gap = "";
             }
-            lines.add(new Line(gap, Text.rtrim(line.substring(j))));
+            lines.add(new Line(gap, Text.rtrim(line.substring(j)), true));
         }
         int from = 0;
         int to = lines.size();
@@ -288,7 +309,7 @@ final class JavadocParser {
             String lower = line.toLowerCase(Locale.ROOT);
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
-                if (c == '<') {
+                if (c == '<' && depth == 0) {
                     if (startsTag(lower, i, "<pre")) {
                         inPre = true;
                     } else if (lower.startsWith("</pre>", i)) {

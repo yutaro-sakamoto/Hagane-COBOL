@@ -58,7 +58,9 @@ After changing Javadoc comments, run in `libcobj/`:
 
 This adds the new Japanese texts to `en/` with an empty `en` (or with the
 translation copied from another file, see above), and removes the entries and
-files that are no longer used. Then fill in the empty `en` fields.
+files that are no longer used. Then fill in the empty `en` fields, and run
+`./gradlew syncJavadocTranslations` again: it rewrites the files in the format
+that the CI check expects.
 For safety, it deletes only YAML files that start with the generated header,
 removes directories that become empty, and refuses to run when it would delete
 more than half of the YAML files (for example, because of a wrong `--source`).
@@ -140,7 +142,7 @@ Javadocコメントを変更したら、`libcobj/`で以下を実行します。
 ```
 
 新しい日本語の原文が空の`en`(または前述のとおり別のファイルからコピーした訳文)とともに`en/`に追加され、使われなくなった項目とファイルは削除されます。
-その後、空の`en`を埋めてください。
+その後、空の`en`を埋め、もう一度`./gradlew syncJavadocTranslations`を実行してください。CIの検査が期待する形式にファイルを書き直します。
 安全のため、削除するのは生成時のヘッダで始まるYAMLファイルだけで、空になったディレクトリも削除します。また、YAMLファイルの半数を超えて削除することになる場合(`--source`の指定誤りなど)は実行を拒否します。
 `en`は必ずリテラルブロック(`|-`)で書き、`ja`は手で編集しないでください。
 

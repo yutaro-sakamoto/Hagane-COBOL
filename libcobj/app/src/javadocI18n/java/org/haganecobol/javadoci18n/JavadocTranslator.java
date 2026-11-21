@@ -149,7 +149,7 @@ public final class JavadocTranslator {
             Path yaml = e.getKey();
             if (!Files.exists(yaml)) {
                 report.add(Problem.outOfSync(yaml, "the translation file is missing"));
-            } else if (!Files2.readUtf8(yaml).equals(e.getValue())) {
+            } else if (!Files2.readUtf8(yaml).replace("\r\n", "\n").equals(e.getValue())) {
                 report.add(
                         Problem.outOfSync(
                                 yaml,
@@ -158,10 +158,20 @@ public final class JavadocTranslator {
             }
         }
         for (Path yaml : existingTranslationFiles(opts.translations)) {
-            if (!plan.files.containsKey(yaml)) {
+            if (plan.files.containsKey(yaml)) {
+                continue;
+            }
+            if (Files2.readUtf8(yaml).startsWith(TranslationStore.HEADER)) {
                 report.add(
                         Problem.outOfSync(
                                 yaml, "the translation file is no longer used by any source file"));
+            } else {
+                report.add(
+                        Problem.error(
+                                yaml,
+                                0,
+                                "the file is not used by any source file and was not written by"
+                                        + " sync, so sync leaves it alone. Delete it by hand"));
             }
         }
         report.print(out, opts.githubActions, opts.failOnMissing, opts.repoRoot, true);
