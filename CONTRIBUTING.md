@@ -60,6 +60,11 @@ npm run dev
 The Javadoc of libcobj is added to the site only by CI, so it is not included in a local build.
 The English Javadoc is served under `/javadoc/libcobj/` and the Japanese one under `/ja/javadoc/libcobj/`.
 
+`website/public/language.js`, loaded by both the website and the Javadoc, handles the language.
+It remembers the language the visitor switches to (in `localStorage` under the key `hagane-cobol-language`). When a visitor comes from outside the site to the English top page (`/` or `/javadoc/libcobj/`), it moves to the Japanese one if the visitor chose Japanese before or, without a choice, if the browser prefers Japanese. Other pages are never redirected, so that pages opened from search results or shared links stay in their language and search engines index both languages (the VitePress pages also declare each other with `hreflang`).
+It finds the page in the other language by adding or removing the `/ja` prefix of the path (`/x` and `/ja/x`), so every page must exist in both languages at mirrored paths.
+When you add, move, or remove a page in `website/`, do the same in `website/ja/`.
+
 ## Javadoc of libcobj
 
 The Javadoc comments in the libcobj sources are written in Japanese.
