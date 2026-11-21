@@ -133,7 +133,8 @@ public final class JavadocTranslator {
         }
         report.printDetails(System.out, opts.githubActions);
         report.printSummary(System.out, opts.githubActions);
-        boolean failed = report.errorCount() > 0 || (opts.failOnMissing && report.missingCount() > 0);
+        boolean failed =
+                report.errorCount() > 0 || (opts.failOnMissing && report.missingCount() > 0);
         return failed ? 1 : 0;
     }
 
@@ -205,8 +206,7 @@ public final class JavadocTranslator {
      * @param report 未翻訳の単位などを記録する
      * @return Javadocを翻訳したソースファイルの内容
      */
-    static String translateSource(
-            Path rel, String text, Translations translations, Report report) {
+    static String translateSource(Path rel, String text, Translations translations, Report report) {
         StringBuilder out = new StringBuilder(text.length());
         int pos = 0;
         for (Comment comment : findComments(text)) {
@@ -232,7 +232,8 @@ public final class JavadocTranslator {
                 report.translated();
             }
             if (changed) {
-                out.append(parsed.render(indentOf(text, comment.start)));
+                boolean singleLine = text.substring(comment.start, comment.end).indexOf('\n') < 0;
+                out.append(parsed.render(indentOf(text, comment.start), singleLine));
             } else {
                 out.append(text, comment.start, comment.end);
             }
@@ -382,20 +383,25 @@ public final class JavadocTranslator {
          * 訳文を埋め込んだコメントを出力する。
          *
          * @param indent コメントの開始位置の字下げ
+         * @param singleLine 元のコメントが1行で書かれていた場合はtrue。訳文も1行なら1行のコメントとして出力する
          * @return {@code /**}から{@code *}{@code /}までのコメント
          */
-        String render(String indent) {
+        String render(String indent, boolean singleLine) {
             List<String> lines = new ArrayList<>();
             for (Part part : parts) {
                 if (part.unit == null) {
                     lines.addAll(part.verbatim);
                     continue;
                 }
-                String body = part.unit.replacement != null ? part.unit.replacement : part.unit.text;
+                String body =
+                        part.unit.replacement != null ? part.unit.replacement : part.unit.text;
                 String[] bodyLines = body.split("\n", -1);
                 for (int k = 0; k < bodyLines.length; k++) {
                     lines.add(k == 0 ? part.unit.prefix + bodyLines[k] : bodyLines[k]);
                 }
+            }
+            if (singleLine && lines.size() == 1) {
+                return "/** " + lines.get(0) + " */";
             }
             StringBuilder sb = new StringBuilder("/**\n");
             for (String line : lines) {
