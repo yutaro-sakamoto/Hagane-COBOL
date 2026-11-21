@@ -2,15 +2,15 @@ import { defineConfig } from 'vitepress'
 
 const repo = 'https://github.com/yutaro-sakamoto/Hagane-COBOL'
 
-// The site is served from https://yutaro-sakamoto.github.io/Hagane-COBOL/
+// The site is served from https://haganecobol.org/
 export default defineConfig({
   title: 'Hagane COBOL',
-  base: '/Hagane-COBOL/',
+  base: '/',
   cleanUrls: true,
   // The Javadoc of libcobj is copied into /javadoc/libcobj/ after the build.
   ignoreDeadLinks: [/\/javadoc\//],
   lastUpdated: false,
-  head: [['link', { rel: 'icon', href: '/Hagane-COBOL/favicon.svg' }]],
+  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
 
   themeConfig: {
     logo: '/favicon.svg',

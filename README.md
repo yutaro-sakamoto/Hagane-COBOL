@@ -8,7 +8,7 @@ This compiler is deeply inspired by ["opensource COBOL"](https://github.com/open
 
 [CHANGELOG.md](./CHANGELOG.md) contains all notable changes.
 
-The website of Hagane COBOL, with installation and usage guides and the API reference of `libcobj.jar`, is at <https://yutaro-sakamoto.github.io/Hagane-COBOL/>.
+The website of Hagane COBOL, with installation and usage guides and the API reference of `libcobj.jar`, is at <https://haganecobol.org/>.
 
 ## Renamed from opensource COBOL 4J
 
@@ -211,7 +211,7 @@ Hagane COBOL supports Embedded SQL (`EXEC SQL`) for PostgreSQL, allowing COBOL p
 
 ## Documentation
 
-* [The API reference of the runtime library `libcobj.jar`](https://yutaro-sakamoto.github.io/Hagane-COBOL/javadoc/libcobj/index.html)
+* [The API reference of the runtime library `libcobj.jar`](https://haganecobol.org/javadoc/libcobj/index.html)
 * [Hagane COBOL: Java変換解説](./doc/converted_Java_file_JP.md)
 * [configuration-params-JP](./doc/configuration-params-JP.md)
 * [The specification of locking for INDEXED files in Hagane COBOL](./doc/specification-locking-indexed-file.md)

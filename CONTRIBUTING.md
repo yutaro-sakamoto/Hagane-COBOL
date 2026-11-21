@@ -47,7 +47,7 @@ Run the following command in libcobj/ directory:
 
 ## Website
 
-The source of the [website](https://yutaro-sakamoto.github.io/Hagane-COBOL/) is in `website/` and is built with [VitePress](https://vitepress.dev/) (English pages at `website/`, Japanese pages at `website/ja/`).
+The source of the [website](https://haganecobol.org/) is in `website/` and is built with [VitePress](https://vitepress.dev/) (English pages at `website/`, Japanese pages at `website/ja/`).
 It is built by CI on every pull request and push, and deployed to GitHub Pages whenever `main` is updated.
 To preview it locally with Node.js installed (CI uses Node.js 22), run the following commands:
 ```
