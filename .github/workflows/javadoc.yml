@@ -24,3 +24,14 @@ jobs:
           ./gradlew javadoc
           ./gradlew javadoc | tee javadoc.log
           test "$(grep '[1-9][0-9]* warning' javadoc.log)" = ""
+
+      # The English Javadoc is built from the translations in
+      # libcobj/javadoc-i18n/en/. Untranslated texts are reported as a warning
+      # and stay in Japanese, so they do not fail the build.
+      - name: Check the English translations of Javadoc
+        working-directory: libcobj
+        run: ./gradlew checkJavadocTranslations
+
+      - name: Build the English Javadoc
+        working-directory: libcobj
+        run: ./gradlew javadocEn

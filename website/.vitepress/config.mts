@@ -7,7 +7,8 @@ export default defineConfig({
   title: 'Hagane COBOL',
   base: '/',
   cleanUrls: true,
-  // The Javadoc of libcobj is copied into /javadoc/libcobj/ after the build.
+  // The Javadoc of libcobj is copied into /javadoc/libcobj/ (English) and
+  // /ja/javadoc/libcobj/ (Japanese) after the build.
   ignoreDeadLinks: [/\/javadoc\//],
   lastUpdated: false,
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
@@ -56,7 +57,7 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'はじめる', link: '/ja/guide/linux', activeMatch: '/ja/guide/' },
-          { text: 'Javadoc', link: '/javadoc/libcobj/index.html', target: '_self' },
+          { text: 'Javadoc', link: '/ja/javadoc/libcobj/index.html', target: '_self' },
           { text: 'リリース', link: `${repo}/releases` },
         ],
         sidebar: [

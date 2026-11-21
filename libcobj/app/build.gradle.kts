@@ -18,13 +18,98 @@ repositories {
     mavenCentral()
 }
 
+// The Javadoc of libcobj is published in two languages.
+// The comments in the source code are written in Japanese, and `javadoc` builds
+// the Japanese version from them as they are. `javadocEn` builds the English
+// version from a copy of the sources whose comments are replaced with the
+// translations in libcobj/javadoc-i18n/en/ (see JavadocTranslator).
+val javadocI18n: SourceSet by sourceSets.creating
+val javadocTranslationsEn = rootProject.layout.projectDirectory.dir("javadoc-i18n/en")
+val javadocSourcesEn = layout.buildDirectory.dir("javadoc-src/en")
+
+// Paths on the website where each version of the Javadoc is published.
+val javadocUrlEn = "/javadoc/libcobj/index.html"
+val javadocUrlJa = "/ja/javadoc/libcobj/index.html"
+
+fun StandardJavadocDocletOptions.configureLibcobjJavadoc(lang: String, otherLanguageLink: String) {
+    encoding = "UTF-8"
+    docEncoding = "UTF-8"
+    charSet = "UTF-8"
+    locale = lang
+    windowTitle = "libcobj API"
+    docTitle = "libcobj API"
+    bottom(otherLanguageLink)
+    // It seems that the following line does not work.
+    addStringOption("Xdoclint:missing")
+}
+
 tasks {
     javadoc {
-        options.encoding = "UTF-8"
-        options {
-            // It seems that the following line does not work.
-            (this as CoreJavadocOptions).addStringOption("Xdoclint:missing")
+        (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
+            "ja_JP", "<a href=\"$javadocUrlEn\">English</a>")
+    }
+
+    val translateJavadocEn by registering(JavaExec::class) {
+        description = "Copies the sources of libcobj with the Javadoc comments translated into English."
+        group = "documentation"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        val srcDir = sourceSets.main.get().java.srcDirs.first()
+        inputs.dir(srcDir)
+        inputs.dir(javadocTranslationsEn).optional()
+        outputs.dir(javadocSourcesEn)
+        doFirst { delete(javadocSourcesEn) }
+        args(
+            "apply",
+            "--source", srcDir.absolutePath,
+            "--translations", javadocTranslationsEn.asFile.absolutePath,
+            "--output", javadocSourcesEn.get().asFile.absolutePath)
+    }
+
+    register<Javadoc>("javadocEn") {
+        description = "Generates the English Javadoc of libcobj into build/docs/javadoc-en."
+        group = "documentation"
+        dependsOn(translateJavadocEn)
+        source(javadocSourcesEn)
+        include("**/*.java")
+        classpath = sourceSets.main.get().compileClasspath
+        setDestinationDir(layout.buildDirectory.dir("docs/javadoc-en").get().asFile)
+        (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
+            "en_US", "<a href=\"$javadocUrlJa\">日本語</a>")
+    }
+
+    register<JavaExec>("syncJavadocTranslations") {
+        description =
+            "Updates libcobj/javadoc-i18n/en/ to match the Javadoc comments in the sources:" +
+                " adds new Japanese texts with empty translations and removes unused ones."
+        group = "documentation"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        args(
+            "sync",
+            "--source", sourceSets.main.get().java.srcDirs.first().absolutePath,
+            "--translations", javadocTranslationsEn.asFile.absolutePath)
+    }
+
+    register<JavaExec>("checkJavadocTranslations") {
+        description =
+            "Lists the Javadoc texts without an English translation." +
+                " Fails on untranslated texts with -PfailOnMissingTranslation."
+        group = "verification"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        val checkArgs =
+            mutableListOf(
+                "check",
+                "--source", sourceSets.main.get().java.srcDirs.first().absolutePath,
+                "--translations", javadocTranslationsEn.asFile.absolutePath)
+        if (project.hasProperty("failOnMissingTranslation")) {
+            checkArgs.add("--fail-on-missing")
         }
+        if (System.getenv("GITHUB_ACTIONS") == "true") {
+            checkArgs.add("--github-actions")
+        }
+        args(checkArgs)
     }
     compileJava {
         options.encoding = "UTF-8"
@@ -50,6 +135,9 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-simple:2.0.20")
     testImplementation("com.github.valfirst:slf4j-test:3.0.3")
     implementation("org.postgresql:postgresql:42.7.14")
+
+    // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
+    "javadocI18nImplementation"("org.yaml:snakeyaml:2.5")
 }
 
 configurations {
