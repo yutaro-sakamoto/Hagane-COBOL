@@ -3,7 +3,7 @@ AT_SETUP([Compare comp3 and int])
 AT_DATA([a.java],[
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import jp.osscons.opensourcecobol.libcobj.data.*;
+import org.haganecobol.libcobj.data.*;
 
 public class a {
 	public static void main(String@<:@@:>@ args) {

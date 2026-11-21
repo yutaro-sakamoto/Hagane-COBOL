@@ -1,6 +1,6 @@
-import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
-import jp.osscons.opensourcecobol.libcobj.data.CobolFieldAttribute;
-import jp.osscons.opensourcecobol.libcobj.data.CobolGroupField;
+import org.haganecobol.libcobj.data.CobolDataStorage;
+import org.haganecobol.libcobj.data.CobolFieldAttribute;
+import org.haganecobol.libcobj.data.CobolGroupField;
 
 public class TestMoveFromBytes {
 

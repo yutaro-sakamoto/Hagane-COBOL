@@ -12,9 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import jp.osscons.opensourcecobol.libcobj.call.CobolRunnable;
-import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
-import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
+import org.haganecobol.libcobj.call.CobolRunnable;
+import org.haganecobol.libcobj.common.CobolRunUnit;
+import org.haganecobol.libcobj.data.CobolDataStorage;
 
 /**
  * Runs a generated COBOL program from several threads at once.

@@ -6857,15 +6857,15 @@ void codegen(struct cb_program *prog, const int nested, char **program_id_list,
   }
 
   joutput_line("import java.io.UnsupportedEncodingException;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.common.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.data.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.exceptions.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.termio.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.call.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.file.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.ui.*;");
-  joutput_line("import jp.osscons.opensourcecobol.libcobj.sql.*;");
+  joutput_line("import org.haganecobol.libcobj.*;");
+  joutput_line("import org.haganecobol.libcobj.common.*;");
+  joutput_line("import org.haganecobol.libcobj.data.*;");
+  joutput_line("import org.haganecobol.libcobj.exceptions.*;");
+  joutput_line("import org.haganecobol.libcobj.termio.*;");
+  joutput_line("import org.haganecobol.libcobj.call.*;");
+  joutput_line("import org.haganecobol.libcobj.file.*;");
+  joutput_line("import org.haganecobol.libcobj.ui.*;");
+  joutput_line("import org.haganecobol.libcobj.sql.*;");
   joutput("\n");
 
   /*if (!cb_flag_no_cobol_comment) {

@@ -2,10 +2,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import jp.osscons.opensourcecobol.libcobj.call.CobolRunnable;
-import jp.osscons.opensourcecobol.libcobj.common.CobolModule;
-import jp.osscons.opensourcecobol.libcobj.data.AbstractCobolField;
-import jp.osscons.opensourcecobol.libcobj.data.CobolDataStorage;
+import org.haganecobol.libcobj.call.CobolRunnable;
+import org.haganecobol.libcobj.common.CobolModule;
+import org.haganecobol.libcobj.data.AbstractCobolField;
+import org.haganecobol.libcobj.data.CobolDataStorage;
 
 /**
  * CALL "SyncPoint" USING STEP: a rendezvous between COBOL programs running on different threads of

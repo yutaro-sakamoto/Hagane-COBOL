@@ -29,8 +29,8 @@ binary-byteorder: big-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override
@@ -231,8 +231,8 @@ binary-byteorder: little-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override
@@ -429,8 +429,8 @@ binary-byteorder: big-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override
@@ -632,8 +632,8 @@ binary-byteorder: little-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override
@@ -833,8 +833,8 @@ binary-byteorder: big-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override
@@ -1035,8 +1035,8 @@ binary-byteorder: little-endian
 ])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
 	@Override

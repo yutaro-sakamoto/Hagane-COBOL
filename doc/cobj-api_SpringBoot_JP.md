@@ -218,7 +218,7 @@ Spring Bootは各リクエストをスレッドプールのスレッドで処理
 * ファイルを開いたままにするプログラムや、`EXTERNAL`項目・`SWITCH`を使用するプログラムは、
   その状態をプールされたスレッドに残す。
   リクエストの処理の最後に
-  `jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit.end()`を呼び出し、
+  `org.haganecobol.libcobj.common.CobolRunUnit.end()`を呼び出し、
   ファイルをクローズしてスレッドの実行単位を破棄すること。
 
 本リポジトリの`samples/spring-boot-smoke/`が動作するサンプルである。

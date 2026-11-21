@@ -5,8 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import jp.osscons.opensourcecobol.libcobj.call.CobolRunnable;
-import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;
+import org.haganecobol.libcobj.call.CobolRunnable;
+import org.haganecobol.libcobj.common.CobolRunUnit;
 
 /**
  * Runs one generated COBOL program per thread, all at once, and waits for them to finish.

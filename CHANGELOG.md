@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Breaking Changes
+
+- **The Java package of libcobj has changed** from `jp.osscons.opensourcecobol.libcobj` to `org.haganecobol.libcobj`, and the Maven groupId from `jp.osscons.opensourcecobol` to `org.haganecobol`.
+  - Java translated by an earlier `cobj` must be translated and compiled again.
+  - Java code that uses libcobj or generated programs directly must change its `import` statements (for example, `import jp.osscons.opensourcecobol.libcobj.common.CobolRunUnit;` becomes `import org.haganecobol.libcobj.common.CobolRunUnit;`).
+  - Logging settings keyed by the package name change accordingly: use `org.slf4j.simpleLogger.log.org.haganecobol.libcobj...` instead of `org.slf4j.simpleLogger.log.jp.osscons.opensourcecobol.libcobj...`.
+
 ## [1.0.0] - 2026-10-01
 
 ### Renamed to Hagane COBOL

@@ -119,7 +119,7 @@ SELECT INTO / FETCH では、`esql_build_and_resolve()` が leaf に `flag_occur
 
 ## ランタイム層
 
-### パッケージ構成 (`jp.osscons.opensourcecobol.libcobj.sql`)
+### パッケージ構成 (`org.haganecobol.libcobj.sql`)
 
 | クラス | 可視性 | 役割 |
 |---|---|---|

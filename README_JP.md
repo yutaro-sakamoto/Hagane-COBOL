@@ -18,9 +18,14 @@ Hagane COBOLは、これまで[opensource COBOL 4J](https://github.com/opensourc
 
 * バージョン番号は1.0.0から数え直します。Hagane COBOL 1.0.0はopensource COBOL 4J 2.1.0をもとにしています。
   opensource COBOL 4J 2.1.0からの変更点は[ReleaseNote.md](./ReleaseNote.md)をご覧ください。
-* コマンド名(`cobj`、`cobj-idx`、`cobj-api`)、ランタイムライブラリ`libcobj.jar`、Javaパッケージ`jp.osscons.opensourcecobol`、
+* コマンド名(`cobj`、`cobj-idx`、`cobj-api`)、ランタイムライブラリ`libcobj.jar`、
   インストール先(`/usr/lib/opensourcecobol4j/libcobj.jar`、`C:\opensourcecobol4j`)は変わりません。
   既存のビルドスクリプトや`CLASSPATH`の設定はそのまま使えます。
+* libcobjのJavaパッケージは`jp.osscons.opensourcecobol.libcobj`から`org.haganecobol.libcobj`に変わりました
+  (MavenのgroupIdも`jp.osscons.opensourcecobol`から`org.haganecobol`に変わりました)。
+  以前の`cobj`で生成したJavaは変換とコンパイルをやり直す必要があり、libcobjや生成されたプログラムを
+  Javaから直接利用しているコードは`import`文の書き換えが必要です。
+  詳しくは[CHANGELOG.md](./CHANGELOG.md)をご覧ください。
 * DockerイメージはDocker Hubではなく、GitHub Container Registry(`ghcr.io/yutaro-sakamoto/hagane-cobol`)で配布します。
 
 ## ライセンス

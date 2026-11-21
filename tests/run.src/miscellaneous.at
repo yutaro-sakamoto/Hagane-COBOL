@@ -400,8 +400,8 @@ AT_CLEANUP
 AT_SETUP([MOVE X'00'])
 
 AT_DATA([dump.java], [
-import jp.osscons.opensourcecobol.libcobj.data.*;
-import jp.osscons.opensourcecobol.libcobj.call.*;
+import org.haganecobol.libcobj.data.*;
+import org.haganecobol.libcobj.call.*;
 
 public class dump implements CobolRunnable {
   @Override

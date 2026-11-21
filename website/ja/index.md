@@ -60,4 +60,5 @@ java HELLO
 
 Hagane COBOLは、これまで[opensource COBOL 4J](https://github.com/opensourcecobol/opensourcecobol4j)のフォークとして開発されてきました。
 バージョン1.0.0はopensource COBOL 4J 2.1.0をもとにしています。コマンド名(`cobj`、`cobj-idx`、`cobj-api`)、
-ランタイムライブラリ`libcobj.jar`、インストール先は変わりません。
+ランタイムライブラリ`libcobj.jar`、インストール先は変わりません。ただし、libcobjのJavaパッケージは1.0.0の後に
+`jp.osscons.opensourcecobol.libcobj`から`org.haganecobol.libcobj`に変わったため、以前の`cobj`で生成したJavaは変換し直す必要があります。

@@ -10,7 +10,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -41,7 +41,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -88,7 +88,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -141,7 +141,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -197,7 +197,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -244,7 +244,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -297,7 +297,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -352,7 +352,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -389,7 +389,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
 		b prog = new b();
@@ -423,7 +423,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 public class a {
 	public static void main(String@<:@@:>@ args) {
                 b prog = new b();
@@ -464,13 +464,13 @@ public class a {
 
 AT_CHECK([${COBJ} b.cbl])
 AT_CHECK([javac a.java])
-AT_CHECK([java a 2>&1 | grep 'jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException'], [0],
-[jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'double'
-jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'String'
-jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'int'
-jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'String'
-jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'int'
-jp.osscons.opensourcecobol.libcobj.ui.CobolResultSetException: The result type is not 'double'
+AT_CHECK([java a 2>&1 | grep 'org.haganecobol.libcobj.ui.CobolResultSetException'], [0],
+[org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'double'
+org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'String'
+org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'int'
+org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'String'
+org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'int'
+org.haganecobol.libcobj.ui.CobolResultSetException: The result type is not 'double'
 ])
 AT_CLEANUP
 
@@ -556,7 +556,7 @@ AT_DATA([b.cbl], [
 ])
 
 AT_DATA([a.java], [
-import jp.osscons.opensourcecobol.libcobj.ui.*;
+import org.haganecobol.libcobj.ui.*;
 import java.math.BigDecimal;
 public class a {
 	public static void main(String@<:@@:>@ args) {
