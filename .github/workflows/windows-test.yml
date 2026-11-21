@@ -40,8 +40,8 @@ jobs:
     - name: Run tests ${{ inputs.test-name }}
       shell: bash
       run: |
-        export CLASSPATH='C:\opensourcecobol4j\lib\libcobj.jar'
-        export PATH="$PATH:/c/opensourcecobol4j/bin:/c/opensourcecobol4j/config"
+        export CLASSPATH='C:\hagane-cobol\lib\libcobj.jar'
+        export PATH="$PATH:/c/hagane-cobol/bin:/c/hagane-cobol/config"
         cd tests/cobol85/${{ inputs.test-name }}
         sh ../report.sh
         cat report.txt

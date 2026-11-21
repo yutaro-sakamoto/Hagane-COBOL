@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  CLASSPATH: ":/usr/lib/opensourcecobol4j/libcobj.jar"
+  CLASSPATH: ":/usr/lib/hagane-cobol/libcobj.jar"
 
 jobs:
   test-esql-utf8:

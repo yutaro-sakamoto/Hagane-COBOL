@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 env:
-  CLASSPATH: ":/usr/lib/opensourcecobol4j/libcobj.jar"
+  CLASSPATH: ":/usr/lib/hagane-cobol/libcobj.jar"
 
 jobs:
   spring-boot-smoke:
@@ -63,7 +63,7 @@ jobs:
         run: |
           ../../libcobj/gradlew -p . bootJar \
             -PcobjBin=/usr/bin/cobj \
-            -PlibcobjJar=/usr/lib/opensourcecobol4j/libcobj.jar
+            -PlibcobjJar=/usr/lib/hagane-cobol/libcobj.jar
 
       - name: Run the sample application and send concurrent requests
         working-directory: samples/spring-boot-smoke
