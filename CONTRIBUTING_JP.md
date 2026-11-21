@@ -61,6 +61,11 @@ npm run dev
 libcobjのJavadocはCIでのみサイトに追加されるため、ローカルのビルドには含まれません。
 英語版は`/javadoc/libcobj/`以下、日本語版は`/ja/javadoc/libcobj/`以下で公開されます。
 
+言語の扱いは、WebサイトとJavadocの両方が読み込む`website/public/language.js`が担います。
+初回の訪問時にはブラウザの設定から日本語か英語かを選んで一度だけその言語のページに移動し、訪問者が切り替えた言語を記憶します(`localStorage`のキー`hagane-cobol-language`)。
+もう一方の言語のページは、パスの先頭の`/ja`を付け外しして求めます(`/x`と`/ja/x`)。そのため、すべてのページを両方の言語で、対応するパスに置く必要があります。
+`website/`のページを追加・移動・削除したときは、`website/ja/`でも同じようにしてください。
+
 ## libcobjのJavadoc
 
 libcobjのソースのJavadocコメントは日本語で書きます。

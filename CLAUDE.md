@@ -125,6 +125,7 @@ ClaudeがIssueやPull Requestを作成・更新するときは、以下に従う
 - libcobj/ - libcobj.jarのためのコードを格納する。libocobj.jarは、COBOLからJavaへの変換で生成されたJavaコードが依存するライブラリ
   - javadoc-i18n/ - libcobjのJavadocの英訳(`en/*.yaml`、日本語の原文をキーとする)。ソースのJavadocは日本語のまま書き、英語版は`./gradlew javadocEn`でこの訳を差し込んで生成する。詳細は同ディレクトリのREADME.md
 - website/ - GitHub Pagesで公開するWebサイト(VitePress)のソース。英語版は直下、日本語版はja/以下。libcobjのJavadocはCIがビルド時に追加する(英語版は`/javadoc/libcobj/`、日本語版は`/ja/javadoc/libcobj/`)
+  - public/language.js - サイトとJavadocが共有する言語処理。初回訪問時にブラウザの言語で振り分け、切り替えた言語を記憶する。`/x`と`/ja/x`を対応づけるため、ページは両言語で同じパスに置く
 - .claude-work/ - Claudeの作業用ディレクトリ(git管理外)。「作業用ディレクトリ」の節を参照
 - local/ - `make install`のインストール先(git管理外)
 - wt/ - `git worktree`の置き場(git管理外)

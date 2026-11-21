@@ -60,6 +60,11 @@ npm run dev
 The Javadoc of libcobj is added to the site only by CI, so it is not included in a local build.
 The English Javadoc is served under `/javadoc/libcobj/` and the Japanese one under `/ja/javadoc/libcobj/`.
 
+`website/public/language.js`, loaded by both the website and the Javadoc, handles the language.
+On the first visit it chooses Japanese or English from the browser settings and redirects to that page once, and it remembers the language the visitor switches to (in `localStorage` under the key `hagane-cobol-language`).
+It finds the page in the other language by adding or removing the `/ja` prefix of the path (`/x` and `/ja/x`), so every page must exist in both languages at mirrored paths.
+When you add, move, or remove a page in `website/`, do the same in `website/ja/`.
+
 ## Javadoc of libcobj
 
 The Javadoc comments in the libcobj sources are written in Japanese.

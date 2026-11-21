@@ -8,6 +8,11 @@ The website publishes the Javadoc in two languages:
 | English | `./gradlew javadocEn` | `/javadoc/libcobj/` |
 | Japanese | `./gradlew javadoc` | `/ja/javadoc/libcobj/` |
 
+Every page has a link to the other language at the top (in the navigation bar)
+and at the bottom. The Javadoc loads `website/public/language.js`, which points
+these links at the same page in the other language and chooses the language on
+the first visit, as on the rest of the website.
+
 The English version is built from a copy of the sources in which the Javadoc
 comments are replaced with the translations in `en/`. The sources themselves
 are never modified.
@@ -101,6 +106,9 @@ Webサイトでは、Javadocを2つの言語で公開しています。
 |---|---|---|
 | 英語 | `./gradlew javadocEn` | `/javadoc/libcobj/` |
 | 日本語 | `./gradlew javadoc` | `/ja/javadoc/libcobj/` |
+
+各ページの上部(ナビゲーションバー)と下部には、もう一方の言語へのリンクがあります。
+Javadocは`website/public/language.js`を読み込み、Webサイトの他のページと同じく、このリンクをもう一方の言語の同じページに向け、初回の訪問時に言語を選びます。
 
 英語版は、ソースコードをコピーしてJavadocコメントを`en/`の訳文に置き換えたものからビルドします。
 ソースコードそのものは変更しません。
