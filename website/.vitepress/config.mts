@@ -11,7 +11,12 @@ export default defineConfig({
   // /ja/javadoc/libcobj/ (Japanese) after the build.
   ignoreDeadLinks: [/\/javadoc\//],
   lastUpdated: false,
-  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    // Chooses the language on the first visit and remembers the language the
+    // visitor switches to. Shared with the Javadoc (see language.js).
+    ['script', { src: '/language.js' }],
+  ],
 
   themeConfig: {
     logo: '/favicon.svg',

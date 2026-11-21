@@ -39,22 +39,53 @@ val repositoryRoot: File = rootProject.projectDir.parentFile
 val javadocUrlEn = "/javadoc/libcobj/index.html"
 val javadocUrlJa = "/ja/javadoc/libcobj/index.html"
 
-fun StandardJavadocDocletOptions.configureLibcobjJavadoc(lang: String, otherLanguageLink: String) {
+// The script shared with the website. It points the language links at the same
+// page in the other language, and chooses the language on the first visit.
+val languageScript: File = repositoryRoot.resolve("website/public/language.js")
+
+/**
+ * The link to the other language. language.js replaces the href with the same
+ * page in the other language. The link at the top is shown as a button in the
+ * navigation bar, which stays visible while scrolling.
+ */
+fun languageLink(href: String, label: String, button: Boolean): String {
+    val style =
+        if (button) {
+            "display:inline-block;margin-top:9px;padding:3px 10px;border:1px solid #fff;" +
+                "border-radius:4px;color:#fff;font-size:14px;font-weight:bold;text-decoration:none;" +
+                "text-transform:none"
+        } else {
+            "font-weight:bold"
+        }
+    // &#127760; is a globe.
+    val text = if (button) "&#127760; $label" else label
+    return "<a class=\"language-switch\" href=\"$href\" style=\"$style\">$text</a>"
+}
+
+fun StandardJavadocDocletOptions.configureLibcobjJavadoc(
+    lang: String,
+    otherLanguageHref: String,
+    otherLanguageLabel: String,
+) {
     encoding = "UTF-8"
     docEncoding = "UTF-8"
     charSet = "UTF-8"
     locale = lang
     windowTitle = "libcobj API"
     docTitle = "libcobj API"
-    bottom(otherLanguageLink)
+    header(languageLink(otherLanguageHref, otherLanguageLabel, button = true))
+    bottom(languageLink(otherLanguageHref, otherLanguageLabel, button = false))
+    // javadoc copies the file into script-dir/ and loads it on every page.
+    addFileOption("-add-script", languageScript)
     // It seems that the following line does not work.
     addStringOption("Xdoclint:missing")
 }
 
 tasks {
     javadoc {
+        inputs.file(languageScript)
         (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
-            "ja_JP", "<a href=\"$javadocUrlEn\">English</a>")
+            "ja_JP", javadocUrlEn, "English")
     }
 
     val translateJavadocEn by registering(JavaExec::class) {
@@ -82,11 +113,13 @@ tasks {
         include("**/*.java")
         classpath = sourceSets.main.get().compileClasspath
         setDestinationDir(layout.buildDirectory.dir("docs/javadoc-en").get().asFile)
+        inputs.file(languageScript)
         (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
             "en_US",
             // "日本語" as character references, so that the option file does not
             // depend on the platform encoding.
-            "<a href=\"$javadocUrlJa\">&#26085;&#26412;&#35486;</a>")
+            javadocUrlJa,
+            "&#26085;&#26412;&#35486;")
     }
 
     register<JavaExec>("syncJavadocTranslations") {
