@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <ctype.h>
+#include <limits.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1410,7 +1411,7 @@ static void joutput_int_enum(int val, const struct int_flag_name *names) {
  */
 static void joutput_int_bits(int val, const struct int_flag_name *names) {
   const struct int_flag_name *n;
-  const char *terms[33];
+  const char *terms[sizeof(int) * CHAR_BIT + 1]; /* every bit + the rest */
   int nterms = 0;
   int rest = val;
   int i;
