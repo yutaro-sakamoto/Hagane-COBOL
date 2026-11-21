@@ -58,4 +58,21 @@ npm run dev
 ```
 
 `npm run build`を実行すると`website/.vitepress/dist/`に静的サイトが生成され、`npm run preview`でビルド結果を確認できます。
-libcobjのJavadoc(`/javadoc/libcobj/`以下で公開)はCIでのみサイトに追加されるため、ローカルのビルドには含まれません。
+libcobjのJavadocはCIでのみサイトに追加されるため、ローカルのビルドには含まれません。
+英語版は`/javadoc/libcobj/`以下、日本語版は`/ja/javadoc/libcobj/`以下で公開されます。
+
+## libcobjのJavadoc
+
+libcobjのソースのJavadocコメントは日本語で書きます。
+英語版のJavadocは、日本語の原文をキーとする`libcobj/javadoc-i18n/en/`以下の翻訳から生成されます。
+Hagane COBOLのlibcobj/ディレクトリで下記のコマンドを実行してください。
+```
+./gradlew javadoc                   # 日本語版Javadoc (app/build/docs/javadoc/)
+./gradlew javadocEn                 # 英語版Javadoc (app/build/docs/javadoc-en/)
+./gradlew syncJavadocTranslations   # 追加・変更されたJavadocの文言を翻訳ファイルに反映
+./gradlew checkJavadocTranslations  # 未翻訳の文言を一覧表示
+```
+
+Javadocコメントを追加・変更したときは、`./gradlew syncJavadocTranslations`を実行し、空の`en`を埋めてください。
+未翻訳の文言は英語版のJavadocでも日本語のまま表示されます。CIでは警告として報告されるのみです。
+詳細は[libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md)を参照してください。

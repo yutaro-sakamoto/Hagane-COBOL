@@ -57,4 +57,21 @@ npm run dev
 ```
 
 `npm run build` generates the static site in `website/.vitepress/dist/`, and `npm run preview` serves the built site.
-The Javadoc of libcobj (served under `/javadoc/libcobj/`) is added to the site only by CI, so it is not included in a local build.
+The Javadoc of libcobj is added to the site only by CI, so it is not included in a local build.
+The English Javadoc is served under `/javadoc/libcobj/` and the Japanese one under `/ja/javadoc/libcobj/`.
+
+## Javadoc of libcobj
+
+The Javadoc comments in the libcobj sources are written in Japanese.
+The English Javadoc is built from the translations in `libcobj/javadoc-i18n/en/`, which are keyed by the Japanese text.
+Run the following commands in libcobj/ directory:
+```
+./gradlew javadoc                   # Japanese Javadoc (app/build/docs/javadoc/)
+./gradlew javadocEn                 # English Javadoc (app/build/docs/javadoc-en/)
+./gradlew syncJavadocTranslations   # add new or changed Javadoc texts to the translation files
+./gradlew checkJavadocTranslations  # list untranslated texts
+```
+
+When you add or change Javadoc comments, run `./gradlew syncJavadocTranslations` and fill in the empty `en` entries.
+Untranslated texts stay in Japanese in the English Javadoc; CI reports them only as a warning.
+See [libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md) for details.
