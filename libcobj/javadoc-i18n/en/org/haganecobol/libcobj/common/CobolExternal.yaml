@@ -1,0 +1,85 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    EXTERNAL属性を持つデータ項目およびファイルを管理するクラス<br>
+    libcobのcob_externalに対応する。名前をキーとして領域を一元管理し、複数のプログラム間で
+    同一の実体(ファイルやデータ領域)を共有できるようにする。
+  en: |-
+    Class that manages data items and files with the EXTERNAL attribute.<br>
+    Corresponds to cob_external in libcob. Manages areas centrally keyed by name
+    so that multiple programs can share the same entity (file or data area).
+- ja: |-
+    このインスタンスが保持するEXTERNALファイルの実体
+  en: |-
+    The EXTERNAL file entity held by this instance.
+- ja: |-
+    このインスタンスが保持するEXTERNALデータ領域の実体
+  en: |-
+    The EXTERNAL data area entity held by this instance.
+- ja: |-
+    EXTERNAL名から対応する{@link CobolExternal}インスタンスへの対応表。<br>
+    EXTERNAL項目は実行単位内のプログラム間で共有されるものであり、実行単位はスレッドごとに独立しているため、
+    スレッドごとに保持する。
+  en: |-
+    Map from EXTERNAL names to the corresponding {@link CobolExternal} instances.<br>
+    EXTERNAL items are shared among the programs in a run unit, and run
+    units are independent per thread, so this map is held per thread.
+- ja: |-
+    現在のスレッドに紐づくEXTERNAL項目の対応表を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the EXTERNAL item map bound to the current thread. Called when the run unit ends.
+- ja: |-
+    EXTERNALファイルを保持するインスタンスを生成する。
+  en: |-
+    Creates an instance that holds an EXTERNAL file.
+- ja: |-
+    共有するファイルの実体
+  en: |-
+    the file entity to share
+- ja: |-
+    EXTERNALデータ領域を保持するインスタンスを生成する。
+  en: |-
+    Creates an instance that holds an EXTERNAL data area.
+- ja: |-
+    共有するデータ領域の実体
+  en: |-
+    the data area entity to share
+- ja: |-
+    データ領域のサイズ(バイト数)
+  en: |-
+    the size of the data area (in bytes)
+- ja: |-
+    指定された名前に対応するEXTERNALファイルを取得する。<br>
+    既に登録されていればその実体を返し、未登録の場合は新たに生成して登録した上で返す。
+  en: |-
+    Returns the EXTERNAL file corresponding to the specified name.<br>
+    If it is already registered, returns that entity; otherwise, creates and registers a new one and returns it.
+- ja: |-
+    EXTERNALファイルの名前
+  en: |-
+    the name of the EXTERNAL file
+- ja: |-
+    名前に対応する共有ファイル
+  en: |-
+    the shared file corresponding to the name
+- ja: |-
+    指定された名前に対応するEXTERNALデータ領域を取得する。<br>
+    既に登録されていればその実体を返し、未登録の場合は指定サイズの領域を新たに生成して登録した上で返す。
+  en: |-
+    Returns the EXTERNAL data area corresponding to the specified name.<br>
+    If it is already registered, returns that entity; otherwise, creates
+    and registers a new area of the specified size and returns it.
+- ja: |-
+    EXTERNALデータ領域の名前
+  en: |-
+    the name of the EXTERNAL data area
+- ja: |-
+    新規生成する場合のデータ領域のサイズ(バイト数)
+  en: |-
+    the size of the data area (in bytes) used when it is newly created
+- ja: |-
+    名前に対応する共有データ領域
+  en: |-
+    the shared data area corresponding to the name

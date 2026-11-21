@@ -1,0 +1,95 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    TODO: 準備中
+  en: |-
+    TODO: Not documented yet.
+- ja: |-
+    読み込みバッファを有効にする。<br>
+    以降のread/getcは、ファイルからbufferSizeバイトずつまとめて読み込んだ内容を返す。
+  en: |-
+    Enables the read buffer.<br>
+    Subsequent read/getc calls return data read from the file in chunks of bufferSize bytes.
+- ja: |-
+    読み込みバッファのバイト数。0以下の場合はバッファを有効にしない
+  en: |-
+    the size of the read buffer in bytes; the buffer is not enabled if it is 0 or less
+- ja: |-
+    読み込みバッファ内の未読バイト数を返す。
+  en: |-
+    Returns the number of unread bytes in the read buffer.
+- ja: |-
+    読み込みバッファに未読データがあることを保証する。<br>
+    未読データが残っていない場合はファイルからまとめて読み込む。
+  en: |-
+    Ensures that the read buffer has unread data.<br>
+    If no unread data remains, reads a chunk from the file.
+- ja: |-
+    読み込みバッファ内の未読バイト数。ファイル終端またはエラーの場合は0
+  en: |-
+    the number of unread bytes in the read buffer, or 0 at end of file or on error
+- ja: |-
+    読み込みバッファ経由で最大sizeバイトを読み込む。<br>
+    bytesとstorageはどちらか一方のみを指定する。
+  en: |-
+    Reads up to size bytes through the read buffer.<br>
+    Exactly one of bytes and storage must be specified.
+- ja: |-
+    読み込み先のバイト配列(未使用の場合はnull)
+  en: |-
+    the destination byte array (null if unused)
+- ja: |-
+    読み込み先のデータストレージ(未使用の場合はnull)
+  en: |-
+    the destination data storage (null if unused)
+- ja: |-
+    読み込むバイト数
+  en: |-
+    the number of bytes to read
+- ja: |-
+    実際に読み込んだバイト数
+  en: |-
+    the number of bytes actually read
+- ja: |-
+    書き込みバッファを出力し、ファイルのチャネルを閉じずにこのインスタンスから切り離して返す。<br>
+    チャネルを閉じるとOSのファイルロックが失われる場合があるため、閉じる判断は
+    {@link JvmFileLockRegistry}に委ねる。標準入出力を使っている場合はnullを返す。
+  en: |-
+    Flushes the write buffer, and detaches the file's channel from this instance without closing it,
+    and returns it.<br>
+    Since closing the channel may cause the OS file lock to be lost, the decision to close it is left to
+    {@link JvmFileLockRegistry}. Returns null if standard input/output is being used.
+- ja: |-
+    切り離したチャネル。チャネルがない場合はnull
+  en: |-
+    the detached channel, or null if there is no channel
+- ja: |-
+    TODO: 準備中
+
+    <p>現状このメソッドの呼び出し元はREWRITE(OPEN I-O)だけであり、読み込みバッファはOPEN INPUTのときしか<br>
+    有効にならないため、読み込みバッファを考慮していない。将来OPEN I-Oでも読み込みバッファを使うようにする<br>
+    場合は、SEEK_CURの基準となるファイルチャネルの位置がバッファ内の未読データの分だけ論理的な現在位置より<br>
+    先に進んでいることと、位置の変更後はバッファ内の未読データが無効になることに注意が必要。
+  en: |-
+    TODO: Not documented yet.
+
+    <p>Currently the only caller of this method is REWRITE (OPEN I-O), and the read buffer is enabled<br>
+    only for OPEN INPUT, so this method does not take the read buffer into account. If the read buffer<br>
+    is used for OPEN I-O in the future, note that the position of the file channel, which is the base of<br>
+    SEEK_CUR, is ahead of the logical current position by the amount of unread data in the buffer, and
+    that the unread data in the buffer becomes invalid after the position is changed.
+- ja: |-
+    TODO: 準備中
+
+    <p>現状このメソッドの呼び出し元はCobolFileSortの作業ファイルだけであり、そこでは読み込みバッファを<br>
+    有効にしないため、読み込みバッファを考慮していない。将来これらのファイルでも読み込みバッファを使う<br>
+    ようにする場合は、位置の変更後はバッファ内の未読データが無効になることに注意が必要。
+  en: |-
+    TODO: Not documented yet.
+
+    <p>Currently the only callers of this method are the work files of CobolFileSort, which do not<br>
+    enable the read buffer, so this method does not take the read buffer into account. If the read<br>
+    buffer is used for these files in the future, note that the unread data in the buffer becomes
+    invalid after the position is changed.

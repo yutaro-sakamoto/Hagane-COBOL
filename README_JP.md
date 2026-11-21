@@ -214,7 +214,7 @@ Hagane COBOLは、PostgreSQL向けのEmbedded SQL (`EXEC SQL`) をサポート�
 
 ## ドキュメント
 
-* [ランタイムライブラリ`libcobj.jar`のAPIリファレンス](https://haganecobol.org/javadoc/libcobj/index.html)
+* [ランタイムライブラリ`libcobj.jar`のAPIリファレンス](https://haganecobol.org/ja/javadoc/libcobj/index.html)
 * [Hagane COBOL: Java変換解説](./doc/converted_Java_file_JP.md)
 * [configuration-params-JP](./doc/configuration-params-JP.md)
 * [INDEXEDファイルのロックの仕様](./doc/specification-locking-indexed-file_JP.md)

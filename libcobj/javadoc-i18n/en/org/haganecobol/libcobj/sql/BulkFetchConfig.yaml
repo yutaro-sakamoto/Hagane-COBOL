@@ -1,0 +1,41 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    カーソルの先読み（バルクフェッチ）件数の設定。
+
+    <p>環境変数 {@code OCESQL4J_FETCH_RECORDS} から取得する。既定値は 1（＝1 行ずつ取得）で、
+    0 以下や数値でない値は 1 として扱う。Open COBOL ESQL 4J の {@code GlobalState.fetch_records}
+    と同じ規則。プロセス起動時に一度だけ環境変数を読み取り、以降はキャッシュ値を返す。
+  en: |-
+    Configuration of the number of rows prefetched by a cursor (bulk fetch).
+
+    <p>Obtained from the environment variable {@code OCESQL4J_FETCH_RECORDS}. The default is 1 (fetch
+    one row at a time), and values of 0 or less or non-numeric values are treated as 1. This follows the
+    same rule as {@code GlobalState.fetch_records} in Open COBOL ESQL 4J. The environment variable is
+    read only once at process startup, and the cached value is returned afterwards.
+- ja: |-
+    ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。
+  en: |-
+    Private constructor to prevent instantiation of this utility class.
+- ja: |-
+    先読み件数を指定する環境変数名。
+  en: |-
+    Name of the environment variable that specifies the number of prefetched rows.
+- ja: |-
+    1 回の {@code FETCH FORWARD} で先読みする行数を返す。
+  en: |-
+    Returns the number of rows prefetched by one {@code FETCH FORWARD}.
+- ja: |-
+    先読み件数（1 以上）
+  en: |-
+    the number of prefetched rows (1 or more)
+- ja: |-
+    先読み件数を上書きする（主にユニットテスト用）。正の値のみ採用する。
+  en: |-
+    Overrides the number of prefetched rows (mainly for unit tests). Only positive values are accepted.
+- ja: |-
+    先読み件数
+  en: |-
+    the number of prefetched rows

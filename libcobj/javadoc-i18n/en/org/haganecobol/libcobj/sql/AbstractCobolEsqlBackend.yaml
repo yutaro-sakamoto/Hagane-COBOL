@@ -1,0 +1,441 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    埋め込み SQL の接続先 DB ごとの実装を行うための抽象クラス。{@link CobolEsqlBackendInterface} の
+    うち DB によらない処理を本クラスで実装し、DB ごとに書き分けが要る部分だけを
+    {@code protected abstract} フックに切り出している（Template Method）。MySQL など別の DB に
+    対応するときは、本クラスを継承してフックを実装する。
+
+    <p>SQLCA 構造体の byte エンコードは DB によらない COBOL 側の取り決めなので {@link SqlCA} の
+    static ヘルパを共有し、{@code JDBC が返した SQLException → (ECPG コード, ECPG の SQLSTATE)} の
+    変換だけを {@link #mapSqlException(SQLException)} フックとして DB ごとに実装する。
+
+    <p>サブクラスから見える範囲は {@code protected} フック群と、その引数・戻り値に現れる型
+    {@link DbSpec}/{@link SqlErrorMapping}（同一パッケージのトップレベルクラス）に限る。
+    カーソルについては役割を分けており、本クラスはカーソル名をキーに {@link Cursor}（DECLARE 済みか、
+    OPEN 済みか、どのクエリに紐づくか）を保持し、DECLARE/OPEN/FETCH/CLOSE が正しい順序で
+    呼ばれたかを判定する。フックへ渡すのはカーソル名・クエリ・解決済みパラメータという素の値だけで、
+    {@link Cursor} そのものは渡さない。{@code ResultSet} などの JDBC 資源や、先読みのような DB 固有の
+    仕組みはサブクラス側が持つ。
+  en: |-
+    Abstract base class for implementing embedded SQL support for each target database. The
+    DB-independent parts of {@link CobolEsqlBackendInterface} are implemented in this class, and only
+    the parts that must differ per database are split out into {@code protected abstract} hooks
+    (Template Method). To support another database such as MySQL, extend this class and implement the hooks.
+
+    <p>The byte encoding of the SQLCA structure is a COBOL-side convention independent of the database,
+    so the static helpers of {@link SqlCA} are shared, and only the conversion
+    {@code SQLException returned by JDBC -> (ECPG code, ECPG SQLSTATE)} is implemented per database as
+    the {@link #mapSqlException(SQLException)} hook.
+
+    <p>What subclasses can see is limited to the {@code protected} hooks and the types that appear in
+    their parameters and return values, {@link DbSpec}/{@link SqlErrorMapping} (top-level classes in the
+    same package). Responsibilities for cursors are divided: this class keeps a {@link Cursor} (whether
+    it is declared, whether it is open, and which query it is bound to) keyed by cursor name, and checks
+    that DECLARE/OPEN/FETCH/CLOSE are called in the correct order. Only plain values (the cursor name,
+    the query, and the resolved parameters) are passed to the hooks; the {@link Cursor} itself is not.
+    JDBC resources such as {@code ResultSet} and DB-specific mechanisms such as prefetching are held by
+    the subclass.
+- ja: |-
+    サブクラス（DB 依存バックエンド）から継承するための既定コンストラクタ。
+  en: |-
+    Default constructor for subclasses (DB-specific backends) to inherit.
+- ja: |-
+    操作系ログ（CONNECT/EXEC SQL/カーソル/DISCONNECT/エラー）用のロガー。公開エントリポイント
+    {@link CobolEsql} のロガー名で出す（運用者が有効化するロガー名 {@code ...sql.CobolEsql} を
+    維持するため）。サブクラス（{@link CobolEsqlBackendPostgresql} など）の {@code protected} フック
+    実装からも DB 固有ログを発行できるよう {@code protected} にしている。
+  en: |-
+    Logger for operation logs (CONNECT/EXEC SQL/cursor/DISCONNECT/errors). It logs under the logger name
+    of the public entry point {@link CobolEsql} (to keep the logger name {@code ...sql.CobolEsql} that
+    operators enable). It is {@code protected} so that the {@code protected} hook implementations of
+    subclasses (such as {@link CobolEsqlBackendPostgresql}) can also emit DB-specific logs.
+- ja: |-
+    COBOL 固定長フィールドのバイト表現に用いる文字コード（接続パラメータの取り出し用）。
+  en: |-
+    Character encoding used for the byte representation of COBOL fixed-length fields (for extracting connection parameters).
+- ja: |-
+    デフォルト接続に付ける識別子。CONNECT では接続 ID を指定しないため、固定名を用いる。
+  en: |-
+    Identifier given to the default connection. Since CONNECT does not specify a connection ID, a fixed name is used.
+- ja: |-
+    指標変数なしで NULL 列を受け取ったときに、ホスト変数へ書き込む空の結果。型対応の
+    変換 (stringToCobol/stringToCobolRaw) に空バイト列を渡すと、数値は 0、英数字は空白、
+    national は全角空白という型ごとに正しい表現になる。
+  en: |-
+    Empty result written to a host variable when a NULL column is received without an indicator
+    variable. Passing an empty byte array to the type-aware conversion (stringToCobol/stringToCobolRaw)
+    yields the correct representation for each type: 0 for numeric, spaces for alphanumeric, and
+    full-width spaces for national.
+- ja: |-
+    パース済みの接続情報から JDBC URL 文字列を組み立てる。
+  en: |-
+    Builds the JDBC URL string from the parsed connection information.
+- ja: |-
+    DB 非依存にパース済みの接続情報
+  en: |-
+    the connection information parsed in a DB-independent way
+- ja: |-
+    明示的なドライバロードが必要な DB のためのドライバクラス名。既定は {@code null}（不要）。
+    JDBC 4.0 以降のドライバは ServiceLoader で自動登録されるため通常は不要。
+  en: |-
+    Driver class name for databases that require explicit driver loading. Defaults to {@code null}
+    (not required). Usually unnecessary, since JDBC 4.0 or later drivers are registered automatically
+    via ServiceLoader.
+- ja: |-
+    ドライバの完全修飾クラス名、または不要なら {@code null}
+  en: |-
+    the fully qualified class name of the driver, or {@code null} if not required
+- ja: |-
+    接続直後の DB 別初期化（autoCommit モード・初回トランザクション開始など）。
+  en: |-
+    Performs DB-specific initialization right after connecting (autoCommit mode, starting the first transaction, etc.).
+- ja: |-
+    確立した JDBC 接続
+  en: |-
+    the established JDBC connection
+- ja: |-
+    データベースアクセスエラー
+  en: |-
+    if a database access error occurs
+- ja: |-
+    現在のトランザクションを commit し、以降の SQL が新しいトランザクションで実行される状態にする。
+    埋め込み SQL では、COBOL プログラムが {@code COMMIT} / {@code ROLLBACK} を書くまで更新は確定
+    しない。つまり COMMIT した直後から次のトランザクションが始まっている必要があり、その状態を
+    作るところまでが本フックの責務になる。実現手段は DB の流儀に委ねる。例: PostgreSQL は
+    {@code autoCommit(true)} のまま {@code COMMIT} と次の {@code BEGIN} を発行し、
+    {@code autoCommit=false} 流儀の DB は {@code c.commit()} だけでよい（次のトランザクションは
+    最初の SQL で暗黙に始まる）。
+
+    <p>本フックは「commit してトランザクションを継続する」公開操作（{@link #commit(CobolDataStorage)}）
+    のためのもの。「commit して接続を閉じる」経路（{@link #disconnect(CobolDataStorage)}）は
+    {@link #commitBeforeClose(Connection)} を通る。
+  en: |-
+    Commits the current transaction and puts the connection into a state where subsequent SQL runs in a
+    new transaction. In embedded SQL, updates are not committed until the COBOL program writes
+    {@code COMMIT} / {@code ROLLBACK}. That is, the next transaction must already have begun right
+    after COMMIT, and creating that state is the responsibility of this hook. How to achieve it is left
+    to the database's conventions. For example, PostgreSQL stays in {@code autoCommit(true)} and issues
+    {@code COMMIT} followed by the next {@code BEGIN}, while a database following the
+    {@code autoCommit=false} convention only needs {@code c.commit()} (the next transaction begins
+    implicitly with the first SQL statement).
+
+    <p>This hook serves the public "commit and continue the transaction" operation
+    ({@link #commit(CobolDataStorage)}). The "commit and close the connection" path
+    ({@link #disconnect(CobolDataStorage)}) goes through {@link #commitBeforeClose(Connection)}.
+- ja: |-
+    JDBC 接続
+  en: |-
+    the JDBC connection
+- ja: |-
+    接続を閉じる直前の commit。{@link #disconnect(CobolDataStorage)} だけが呼ぶ。
+
+    <p>{@link #commitTransaction(Connection)} と違い、次のトランザクションが始まる状態を作る必要は
+    ない。直後に接続を閉じるので、開始しても空のまま破棄されるだけである。明示 {@code BEGIN} 流儀の
+    DB は本フックを上書きして {@code BEGIN} を省けば、無駄な往復と紛らわしいログを 1 回減らせる。
+    既定は {@link #commitTransaction(Connection)} へ委譲するので、暗黙にトランザクションが始まる DB
+    （{@code autoCommit=false} 流儀）は実装しなくてよい。
+  en: |-
+    Commits right before closing the connection. Called only by {@link #disconnect(CobolDataStorage)}.
+
+    <p>Unlike {@link #commitTransaction(Connection)}, there is no need to put the connection into a
+    state where the next transaction has begun. Since the connection is closed immediately afterwards,
+    any transaction started would just be discarded empty. A database that uses explicit {@code BEGIN}
+    can override this hook to omit the {@code BEGIN}, saving one wasted round trip and a confusing log
+    entry. The default delegates to {@link #commitTransaction(Connection)}, so databases where a
+    transaction begins implicitly (the {@code autoCommit=false} convention) need not implement it.
+- ja: |-
+    現在のトランザクションを rollback し、以降の SQL が新しいトランザクションで実行される状態に
+    する。{@link #commitTransaction(Connection)} と対になるフックで、担当する範囲も同じ。
+    例: PostgreSQL は {@code ROLLBACK} と次の {@code BEGIN} を発行し、{@code autoCommit=false}
+    流儀の DB は {@code c.rollback()} だけでよい。
+  en: |-
+    Rolls back the current transaction and puts the connection into a state where subsequent SQL runs
+    in a new transaction. This hook is the counterpart of {@link #commitTransaction(Connection)} and has
+    the same scope of responsibility. For example, PostgreSQL issues {@code ROLLBACK} followed by the
+    next {@code BEGIN}, while a database following the {@code autoCommit=false} convention only needs
+    {@code c.rollback()}.
+- ja: |-
+    カーソルをオープンする（{@code DECLARE} など、どの SQL を発行するかは DB ごとに実装する）。
+    ここでは SQL の発行だけを行い、オープン済みかどうかの記録は本クラス側で更新する。
+  en: |-
+    Opens the cursor (which SQL is issued, such as {@code DECLARE}, is implemented per database).
+    This method only issues SQL; this class updates the record of whether the cursor is open.
+- ja: |-
+    カーソル名
+  en: |-
+    the cursor name
+- ja: |-
+    このカーソルに紐づく SQL クエリ
+  en: |-
+    the SQL query bound to this cursor
+- ja: |-
+    バインドする有効なホスト変数パラメータ。OPEN ... USING を最優先し、なければ
+        DECLARE 時のパラメータへフォールバックする解決は基底が済ませている（どちらも無ければ
+        {@code null}）
+  en: |-
+    the effective host variable parameters to bind. The base class has already resolved them,
+        giving priority to OPEN ... USING and falling back to the parameters given at DECLARE
+        ({@code null} if neither exists)
+- ja: |-
+    カーソルから次の 1 行を取得し、{@code out} へ書き込む。指標変数なしの NULL があれば
+    {@code sqlca} に {@code ECPG_MISSING_INDICATOR} を設定する。
+  en: |-
+    Fetches the next row from the cursor and writes it to {@code out}. If there is a NULL without an
+    indicator variable, sets {@code ECPG_MISSING_INDICATOR} in {@code sqlca}.
+- ja: |-
+    列の値を受け取る出力ホスト変数
+  en: |-
+    the output host variables that receive the column values
+- ja: |-
+    指標変数なしの NULL をフラグするための SQLCA ストレージ
+  en: |-
+    the SQLCA storage used to flag a NULL without an indicator variable
+- ja: |-
+    行が取得できた場合 true、これ以上行がなければ false
+  en: |-
+    true if a row was fetched, false if there are no more rows
+- ja: |-
+    カーソルから複数行を取得し、OCCURS 配列へ書き込む。行数・NULL 処理を含め {@code sqlca} を更新する。
+  en: |-
+    Fetches multiple rows from the cursor and writes them to an OCCURS array. Updates {@code sqlca}, including the row count and NULL handling.
+- ja: |-
+    OCCURS 要素 1 つあたりのバイトサイズ
+  en: |-
+    the size in bytes of one OCCURS element
+- ja: |-
+    取得する行の最大数
+  en: |-
+    the maximum number of rows to fetch
+- ja: |-
+    結果パラメータフィールド（列ごとに 1 つ）
+  en: |-
+    the result parameter fields (one per column)
+- ja: |-
+    SQLCA データストレージ
+  en: |-
+    the SQLCA data storage
+- ja: |-
+    カーソルをクローズする（{@code CLOSE} など、どの SQL を発行するかは DB ごとに実装する）。
+    SQL の発行と、このカーソルに紐づく資源や内部状態（あれば）の解放を行う。
+  en: |-
+    Closes the cursor (which SQL is issued, such as {@code CLOSE}, is implemented per database).
+    Issues the SQL and releases the resources and internal state (if any) bound to this cursor.
+- ja: |-
+    WHERE CURRENT OF を実行する前に、COBOL プログラムから見た現在行までカーソルを戻す
+    （PostgreSQL では、先読みした分だけ {@code FETCH BACKWARD} して先読みバッファを捨てる）。
+  en: |-
+    Moves the cursor back to the current row as seen by the COBOL program before executing WHERE
+    CURRENT OF (in PostgreSQL, issues {@code FETCH BACKWARD} by the number of prefetched rows and
+    discards the prefetch buffer).
+- ja: |-
+    すべてのカーソルがまとめて無効になるタイミングで呼ばれる通知フック。既定では何もしない。
+
+    <p>呼ばれるのは (1) COMMIT/ROLLBACK でトランザクションが終わった直後、(2) DISCONNECT で
+    接続を閉じる直前、の 2 とおり。カーソルごとに JDBC の {@code ResultSet}/{@code Statement} を
+    自前で持つバックエンドは、本フックでそれらをすべて閉じること。閉じ忘れると COMMIT/ROLLBACK の
+    たびに資源が残り続ける。カーソルごとの内部状態（先読みバッファなど）を持つバックエンドも、
+    ここで捨てる。どちらも持たないバックエンドは、既定のまま何もしなくてよい。
+
+    <p>カーソルを 1 本ずつ閉じる CLOSE は、このフックを通らない。その場合の解放は
+    {@link #closeCursorImpl} 側で行うこと。
+  en: |-
+    Notification hook called when all cursors become invalid at once. Does nothing by default.
+
+    <p>It is called in two cases: (1) right after a transaction ends with COMMIT/ROLLBACK, and (2) right
+    before the connection is closed by DISCONNECT. A backend that holds its own JDBC
+    {@code ResultSet}/{@code Statement} per cursor must close all of them in this hook; otherwise,
+    resources keep accumulating at every COMMIT/ROLLBACK. A backend that holds per-cursor internal state
+    (such as a prefetch buffer) should also discard it here. A backend that holds neither can leave the
+    default, which does nothing.
+
+    <p>CLOSE, which closes cursors one at a time, does not go through this hook. In that case, release
+    resources in {@link #closeCursorImpl}.
+- ja: |-
+    JDBC ドライバが投げた {@link SQLException} を、COBOL 側が見る (SQLCODE, SQLSTATE) の組へ
+    読み替える。例外オブジェクトごと受け取るため、{@code getSQLState()} に加えて
+    {@code getErrorCode()}（DB 固有のエラー番号）も判断材料にできる。
+
+    <p>SQLCODE（整数）と SQLSTATE（文字列）の両方を 1 つのフックで返すのは、DB ごとに異なる値を
+    ECPG が定める値へ揃えるため。整数だけ変換して SQLSTATE をドライバの値のまま通すと、SQLSTATE
+    で分岐する COBOL プログラムが DB ごとに違う値を見ることになる。
+  en: |-
+    Maps a {@link SQLException} thrown by the JDBC driver to the (SQLCODE, SQLSTATE) pair seen by the
+    COBOL side. Since the whole exception object is received, {@code getErrorCode()} (the DB-specific
+    error number) can be used in addition to {@code getSQLState()} to decide.
+
+    <p>Both SQLCODE (an integer) and SQLSTATE (a string) are returned by a single hook so that values
+    that differ per database are normalized to the values defined by ECPG. If only the integer were
+    converted and SQLSTATE were passed through as reported by the driver, COBOL programs that branch on
+    SQLSTATE would see different values per database.
+- ja: |-
+    JDBC ドライバが投げた SQL 例外
+  en: |-
+    the SQL exception thrown by the JDBC driver
+- ja: |-
+    ECPG の SQLCODE と SQLSTATE の組（{@link SqlErrorMapping}）
+  en: |-
+    the pair of ECPG SQLCODE and SQLSTATE ({@link SqlErrorMapping})
+- ja: |-
+    接続文字列・環境変数フォールバック・末尾空白除去を DB 非依存に処理し、{@link DbSpec} を生成する。
+    URL の組み立てだけを {@link #buildJdbcUrl(DbSpec)} フックへ委ねる。
+  en: |-
+    Processes the connection string, environment variable fallbacks, and trailing-space removal in a
+    DB-independent way, and creates a {@link DbSpec}. Only the URL construction is delegated to the
+    {@link #buildJdbcUrl(DbSpec)} hook.
+- ja: |-
+    JDBC ドライバの（必要なら）明示ロードと接続確立、接続後初期化までを行う。
+  en: |-
+    Loads the JDBC driver explicitly (if necessary), establishes the connection, and performs post-connection initialization.
+- ja: |-
+    WHERE CURRENT OF の実行前にカーソル位置を補正（{@link #repositionForCurrentOf} フック）し、
+    カーソル名を補った完全な SQL を返す。接続なし/カーソル未登録のときは SQLCA にエラーを設定し
+    {@code null} を返す。
+  en: |-
+    Adjusts the cursor position before executing WHERE CURRENT OF (the {@link #repositionForCurrentOf}
+    hook) and returns the complete SQL with the cursor name appended. If there is no connection or the
+    cursor is not registered, sets an error in the SQLCA and returns {@code null}.
+- ja: |-
+    1 行目に位置付け済みの {@link ResultSet} から OCCURS 配列へ複数行を書き込み、行数・NULL 処理を
+    含めて {@code sqlca} を更新する共通処理（SELECT INTO ... OCCURS とカーソルの複数行 FETCH で共用）。
+
+    <p>呼び出し側は本メソッドの前に最初の {@code rs.next()} と 0 行時の扱い（SELECT INTO は
+    {@code NOT_FOUND}、カーソル FETCH の末尾は {@code SUCCESS}）を済ませておく。本メソッドは
+    1 行以上ある前提で、{@code occursMax} 件まで各列を OCCURS のストライド {@code occursSize} で
+    書き込み、{@code SQLERRD(3)} に取得行数を設定する。
+  en: |-
+    Common processing that writes multiple rows from a {@link ResultSet} already positioned on the first
+    row into an OCCURS array and updates {@code sqlca}, including the row count and NULL handling
+    (shared by SELECT INTO ... OCCURS and multi-row cursor FETCH).
+
+    <p>Before calling this method, the caller must perform the first {@code rs.next()} and handle the
+    zero-row case ({@code NOT_FOUND} for SELECT INTO, {@code SUCCESS} at the end of a cursor FETCH).
+    This method assumes there is at least one row, writes each column with the OCCURS stride
+    {@code occursSize} for up to {@code occursMax} rows, and sets the number of fetched rows in
+    {@code SQLERRD(3)}.
+- ja: |-
+    1 行目に位置付け済みの ResultSet
+  en: |-
+    the ResultSet already positioned on the first row
+- ja: |-
+    OCCURS 要素 1 つあたりのバイトサイズ（ストライド）
+  en: |-
+    the size in bytes of one OCCURS element (stride)
+- ja: |-
+    カーソルを宣言して {@code cursors} に登録する（パラメータ有無の共通処理）。{@code params} が
+    {@code null} の場合はパラメータなしの DECLARE と同じ（nParams=0・params 未バインド）。
+  en: |-
+    Declares a cursor and registers it in {@code cursors} (common processing with or without parameters).
+    If {@code params} is {@code null}, this is the same as a DECLARE without parameters (nParams=0,
+    params not bound).
+- ja: |-
+    接続を登録する。最初に登録された接続がデフォルトになる。
+  en: |-
+    Registers a connection. The first registered connection becomes the default.
+- ja: |-
+    ID を指定して接続を削除する。それがデフォルトだった場合は、新しいデフォルトが選択される。
+  en: |-
+    Removes the connection with the given ID. If it was the default, a new default is selected.
+- ja: |-
+    現在のデフォルト接続の識別子を返す。それが未登録なら、登録済み接続の先頭を代わりに使う。
+  en: |-
+    Returns the identifier of the current default connection. If it is not registered, the first registered connection is used instead.
+- ja: |-
+    現在のデフォルト接続の JDBC Connection を返す。未登録なら null。
+  en: |-
+    Returns the JDBC Connection of the current default connection, or null if none is registered.
+- ja: |-
+    すべてのカーソルをクローズ済みとしてマークする（例: COMMIT や ROLLBACK の後）。
+  en: |-
+    Marks all cursors as closed (e.g., after COMMIT or ROLLBACK).
+- ja: |-
+    {@link SQLException} から SQLCA を設定する。ECPG コードと SQLSTATE への変換を
+    {@link #mapSqlException(SQLException)} フックへ委譲し、構造体の書き込みは共通。
+  en: |-
+    Sets the SQLCA from a {@link SQLException}. The conversion to the ECPG code and SQLSTATE is
+    delegated to the {@link #mapSqlException(SQLException)} hook; writing the structure is common.
+- ja: |-
+    SQLCA のデータストレージ
+  en: |-
+    the SQLCA data storage
+- ja: |-
+    SQL 例外
+  en: |-
+    the SQL exception
+- ja: |-
+    接続ごとに SQL 文字列をキーとして PreparedStatement をキャッシュする。
+  en: |-
+    Caches PreparedStatements per connection, keyed by the SQL string.
+- ja: |-
+    SQL 文字列（キャッシュのキー）
+  en: |-
+    the SQL string (the cache key)
+- ja: |-
+    キャッシュ済み、または新規作成した PreparedStatement
+  en: |-
+    the cached or newly created PreparedStatement
+- ja: |-
+    PreparedStatement の生成に失敗した場合
+  en: |-
+    if creating the PreparedStatement fails
+- ja: |-
+    指定した接続でキャッシュした PreparedStatement をすべて閉じ、キャッシュから取り除く。
+  en: |-
+    Closes all PreparedStatements cached for the given connection and removes them from the cache.
+- ja: |-
+    ログ出力用に、空白文字（改行、タブ、連続するスペース）を単一のスペースにまとめる。
+    サブクラスのフック実装が発行 SQL をログ整形するのにも使えるよう protected にする。
+  en: |-
+    Collapses whitespace (newlines, tabs, consecutive spaces) into a single space for logging.
+    It is protected so that subclass hook implementations can also use it to format issued SQL for logs.
+- ja: |-
+    整形対象の文字列
+  en: |-
+    the string to format
+- ja: |-
+    空白をまとめて前後をトリムした文字列
+  en: |-
+    the string with whitespace collapsed and leading and trailing whitespace trimmed
+- ja: |-
+    ログ出力用に末尾空白を除去する。null も安全に扱う (接続パラメータ未指定時のため)。
+  en: |-
+    Removes trailing spaces for logging. Handles null safely (for when connection parameters are not specified).
+- ja: |-
+    :name ホスト変数名を構成しうる文字 (COBOL データ名: 英数字・ハイフン、加えてアンダースコア) か。
+  en: |-
+    Returns whether the character can be part of a :name host variable name (a COBOL data name: alphanumerics and hyphens, plus underscores).
+- ja: |-
+    1 カーソルぶんの状態。DECLARE 済みか、OPEN 済みか、どのクエリとパラメータに紐づくかを持つ。
+    DB によらず同じ判定（未 DECLARE のカーソルを使ったらエラー、OPEN 済みのカーソルを再 DECLARE
+    したらエラー、OPEN していないカーソルの CLOSE は成功扱い）を本クラスで行うための内部状態で、
+    <strong>サブクラスには渡さない</strong>。バックエンド実装が受け取るのはフックの引数
+    （カーソル名・クエリ・パラメータ）だけ。
+  en: |-
+    State of one cursor: whether it is declared, whether it is open, and which query and parameters it
+    is bound to. This is internal state used by this class to perform the same checks regardless of the
+    database (using an undeclared cursor is an error, re-DECLARE of an open cursor is an error, and
+    CLOSE of a cursor that is not open is treated as success), and it is
+    <strong>not passed to subclasses</strong>. Backend implementations receive only the hook arguments
+    (cursor name, query, and parameters).
+- ja: |-
+    DECLARE/OPEN/FETCH/CLOSE 文で使用されるカーソル名。
+  en: |-
+    The cursor name used in DECLARE/OPEN/FETCH/CLOSE statements.
+- ja: |-
+    このカーソルに紐づく SQL クエリ。
+  en: |-
+    The SQL query bound to this cursor.
+- ja: |-
+    クエリ中のホスト変数パラメータの数。
+  en: |-
+    The number of host variable parameters in the query.
+- ja: |-
+    このカーソルが現在オープンされているかどうか。
+  en: |-
+    Whether this cursor is currently open.
+- ja: |-
+    DECLARE 時にバインドされたホスト変数パラメータ。
+  en: |-
+    The host variable parameters bound at DECLARE time.

@@ -1,0 +1,57 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    入力ソース(ファイル/標準入力)から1レコードずつ読み込むためのインタフェース。<br>
+    {@code cobj-idx load}コマンドで、入力データをインデックスファイルへ書き込むために使用される。
+    実装は入力データの形式(SEQUENTIAL / LINE SEQUENTIAL)および入力ソースによって切り替わる。
+  en: |-
+    Interface for reading records one at a time from an input source (a file or standard input).<br>
+    Used by the {@code cobj-idx load} command to write input data to an indexed file.
+    The implementation is selected according to the format of the input data (SEQUENTIAL / LINE
+    SEQUENTIAL) and the input source.
+- ja: |-
+    入力ソースをオープンし、読み込み可能な状態にする。
+  en: |-
+    Opens the input source and makes it ready for reading.
+- ja: |-
+    入力ソースから1レコードを読み込み、{@code record}に格納する。
+  en: |-
+    Reads one record from the input source and stores it in {@code record}.
+- ja: |-
+    読み込んだレコードの格納先
+  en: |-
+    the destination for the read record
+- ja: |-
+    読み込み結果を表す{@link LoadResult}
+  en: |-
+    a {@link LoadResult} representing the result of the read
+- ja: |-
+    入力ソースをクローズし、保持しているリソースを解放する。
+  en: |-
+    Closes the input source and releases the resources it holds.
+- ja: |-
+    指定された入力データ形式および入力ソースに対応する{@code RecordReader}の実装を返す。<br>
+    {@code filePath}が指定されている場合はファイルから、指定されていない場合は標準入力から読み込む実装を返す。
+  en: |-
+    Returns the implementation of {@code RecordReader} corresponding to the specified input data format
+    and input source.<br>
+    If {@code filePath} is specified, returns an implementation that reads from the file; otherwise,
+    returns one that reads from standard input.
+- ja: |-
+    入力データの形式
+  en: |-
+    the format of the input data
+- ja: |-
+    1レコードのバイト数
+  en: |-
+    the number of bytes in one record
+- ja: |-
+    読み込み対象のファイルのパス。標準入力から読み込む場合は空の{@link Optional}
+  en: |-
+    the path of the file to read, or an empty {@link Optional} to read from standard input
+- ja: |-
+    入力データ形式と入力ソースに対応する{@code RecordReader}の実装
+  en: |-
+    the implementation of {@code RecordReader} corresponding to the input data format and input source

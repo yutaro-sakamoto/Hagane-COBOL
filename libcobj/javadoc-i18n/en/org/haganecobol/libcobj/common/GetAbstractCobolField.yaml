@@ -1,0 +1,22 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    {@link AbstractCobolField}を返す処理を遅延実行するための関数型インターフェイス<br>
+    生成されたJavaコード中で、COBOLフィールドを後から評価したい箇所(コールバック)を表現するために用いる。
+  en: |-
+    Functional interface for deferred execution of a computation that returns an {@link AbstractCobolField}.<br>
+    Used in generated Java code to represent places (callbacks) where a COBOL field is to be evaluated later.
+- ja: |-
+    処理を実行し、結果の{@link AbstractCobolField}を返す。
+  en: |-
+    Executes the computation and returns the resulting {@link AbstractCobolField}.
+- ja: |-
+    処理結果のCOBOLフィールド
+  en: |-
+    the resulting COBOL field
+- ja: |-
+    処理中にSTOP RUNが実行された場合
+  en: |-
+    if STOP RUN is executed during the computation

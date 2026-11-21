@@ -1,7 +1,8 @@
 name: build website
 
 # Build the static website in website/ with VitePress, together with the
-# Javadoc of libcobj, which is served under /javadoc/libcobj/.
+# Javadoc of libcobj. The English Javadoc is served under /javadoc/libcobj/
+# and the Japanese one under /ja/javadoc/libcobj/.
 on:
   workflow_call:
     inputs:
@@ -46,9 +47,10 @@ jobs:
       - name: Build Javadoc
         working-directory: libcobj
         run: |
-          ./gradlew javadoc
-          mkdir -p ../website/.vitepress/dist/javadoc
-          cp -r app/build/docs/javadoc ../website/.vitepress/dist/javadoc/libcobj
+          ./gradlew javadoc javadocEn
+          mkdir -p ../website/.vitepress/dist/javadoc ../website/.vitepress/dist/ja/javadoc
+          cp -r app/build/docs/javadoc-en ../website/.vitepress/dist/javadoc/libcobj
+          cp -r app/build/docs/javadoc ../website/.vitepress/dist/ja/javadoc/libcobj
 
       # Always keep the built HTML as a plain artifact, so that the site can be
       # downloaded and checked before it is published.

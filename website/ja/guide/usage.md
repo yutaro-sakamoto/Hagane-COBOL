@@ -38,7 +38,7 @@ cobj *.cbl
 
 ## さらに詳しく
 
-- [APIリファレンス (libcobj.jarのJavadoc)](../../javadoc/libcobj/index.html){target="_self"}
+- [APIリファレンス (libcobj.jarのJavadoc)](../javadoc/libcobj/index.html){target="_self"}
 - [埋め込みSQL (EXEC SQL)ガイド](https://github.com/yutaro-sakamoto/Hagane-COBOL/blob/main/doc/esql-guide_JP.md)
 - [環境変数](https://github.com/yutaro-sakamoto/Hagane-COBOL/blob/main/doc/environment_variables_JP.md)
 - [マルチスレッドのJavaアプリケーションから生成プログラムを呼び出す](https://github.com/yutaro-sakamoto/Hagane-COBOL/blob/main/doc/multithreading_JP.md)

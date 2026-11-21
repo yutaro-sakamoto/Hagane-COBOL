@@ -1,0 +1,16 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    {@link CobolResultSet}や{@link CobolCallResult}の操作で不正なアクセスが行われた場合にスローされる例外
+  en: |-
+    Exception thrown when an invalid access is made in an operation on {@link CobolResultSet} or {@link CobolCallResult}.
+- ja: |-
+    指定されたメッセージを持つCobolResultSetExceptionを生成する。
+  en: |-
+    Creates a CobolResultSetException with the given message.
+- ja: |-
+    例外の詳細メッセージ
+  en: |-
+    the detail message of the exception

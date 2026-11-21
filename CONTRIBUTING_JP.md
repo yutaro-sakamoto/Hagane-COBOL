@@ -58,4 +58,28 @@ npm run dev
 ```
 
 `npm run build`を実行すると`website/.vitepress/dist/`に静的サイトが生成され、`npm run preview`でビルド結果を確認できます。
-libcobjのJavadoc(`/javadoc/libcobj/`以下で公開)はCIでのみサイトに追加されるため、ローカルのビルドには含まれません。
+libcobjのJavadocはCIでのみサイトに追加されるため、ローカルのビルドには含まれません。
+英語版は`/javadoc/libcobj/`以下、日本語版は`/ja/javadoc/libcobj/`以下で公開されます。
+
+言語の扱いは、WebサイトとJavadocの両方が読み込む`website/public/language.js`が担います。
+訪問者が切り替えた言語を記憶します(`localStorage`のキー`hagane-cobol-language`)。サイトの外から英語版のトップページ(`/`または`/javadoc/libcobj/`)に来た訪問者は、以前に日本語を選んでいた場合、または選んでいなくてもブラウザが日本語を優先している場合に、日本語のトップページへ移動します。それ以外のページは移動させません。検索結果や共有されたリンクから開いたページはその言語のまま表示し、検索エンジンが両方の言語を登録できるようにするためです(VitePressのページは`hreflang`でも互いを示しています)。
+もう一方の言語のページは、パスの先頭の`/ja`を付け外しして求めます(`/x`と`/ja/x`)。そのため、すべてのページを両方の言語で、対応するパスに置く必要があります。
+`website/`のページを追加・移動・削除したときは、`website/ja/`でも同じようにしてください。
+
+## libcobjのJavadoc
+
+libcobjのソースのJavadocコメントは日本語で書きます。
+英語版のJavadocは、日本語の原文をキーとする`libcobj/javadoc-i18n/en/`以下の翻訳から生成されます。
+Hagane COBOLのlibcobj/ディレクトリで下記のコマンドを実行してください。
+```
+./gradlew javadoc                   # 日本語版Javadoc (app/build/docs/javadoc/)
+./gradlew javadocEn                 # 英語版Javadoc (app/build/docs/javadoc-en/)
+./gradlew syncJavadocTranslations   # 追加・変更されたJavadocの文言を翻訳ファイルに反映
+./gradlew checkJavadocTranslations  # 未翻訳の文言と、ソースと食い違っている翻訳ファイルを一覧表示
+./gradlew testJavadocI18n           # 翻訳ツールの単体テストを実行
+```
+
+Javadocコメントを追加・変更したときは、`./gradlew syncJavadocTranslations`を実行して空の`en`を埋め、もう一度`./gradlew syncJavadocTranslations`を実行してください。
+Javadocの日本語に英訳が無いものが1つでもあるか、翻訳ファイルがソースと食い違っていると、CIは失敗します。
+同じ検査をローカルで行うには`./gradlew checkJavadocTranslations -PfailOnMissingTranslation`を実行してください。
+詳細は[libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md)を参照してください。

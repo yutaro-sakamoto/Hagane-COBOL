@@ -1,0 +1,45 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    取得した行のキー値（{@code key}列）。
+  en: |-
+    The key value of the fetched row (the {@code key} column).
+- ja: |-
+    取得した行の{@code value}列。
+
+    <p>この値の意味は、結果を生成したクエリによって異なる。主テーブルに対するクエリ、および副キーテーブルを走査する際に使用されるJOINベースのクエリでは、レコード本体（{@code
+    table0.value}由来）を保持する。副テーブルに対する直接（JOINなし）のクエリでは、主キーへの参照を保持する。
+  en: |-
+    The {@code value} column of the fetched row.
+
+    <p>The meaning of this value depends on the query that produced the result. For queries on the
+    primary table, and for the JOIN-based queries used when scanning an alternate key table, it holds the
+    record body (from {@code table0.value}). For direct (non-JOIN) queries on an alternate table, it holds
+    a reference to the primary key.
+- ja: |-
+    重複を許可するキーにおける取得行の重複番号。それ以外の場合は{@code 0}。
+  en: |-
+    The duplicate number of the fetched row for a key that allows duplicates; {@code 0}
+    otherwise.
+- ja: |-
+    重複を許可するキー向けのフェッチ結果を構築する。
+  en: |-
+    Constructs a fetch result for a key that allows duplicates.
+- ja: |-
+    取得した行のキー値
+  en: |-
+    the key value of the fetched row
+- ja: |-
+    取得した行の値
+  en: |-
+    the value of the fetched row
+- ja: |-
+    取得した行の重複番号
+  en: |-
+    the duplicate number of the fetched row
+- ja: |-
+    重複番号を{@code 0}としてフェッチ結果を構築する。
+  en: |-
+    Constructs a fetch result with a duplicate number of {@code 0}.

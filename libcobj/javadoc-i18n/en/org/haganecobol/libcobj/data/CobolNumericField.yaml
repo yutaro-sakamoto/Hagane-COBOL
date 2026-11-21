@@ -1,0 +1,100 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PIC 文字列が9(5)や9(9)の変数を表現するクラス.
+  en: |-
+    Represents a variable whose PIC string is like 9(5) or 9(9).
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト
+  en: |-
+    the object holding various information about the variable
+- ja: |-
+    文字列が数字として正しいかどうかを検査する(未実装)
+  en: |-
+    Checks whether a string is valid as a number (not implemented).
+- ja: |-
+    検査対象の文字列
+  en: |-
+    the string to check
+- ja: |-
+    CobolNumericDisplayからthisへの代入を行う
+  en: |-
+    Assigns a CobolNumericDisplay to this.
+- ja: |-
+    代入元のデータ(AbstractCobolField型)
+  en: |-
+    the source data (of type AbstractCobolField)
+- ja: |-
+    CobolNumericPackedFieldからthisへの代入を行う
+  en: |-
+    Assigns a CobolNumericPackedField to this.
+- ja: |-
+    CobolAlphanumericFieldからthisへの代入を行う
+  en: |-
+    Assigns a CobolAlphanumericField to this.
+- ja: |-
+    CobolNumericBinaryからthisへの代入を行う
+  en: |-
+    Assigns a CobolNumericBinary to this.
+- ja: |-
+    libcob/move.cのstore_common_regionの実装
+  en: |-
+    Implementation of store_common_region in libcob/move.c.
+- ja: |-
+    格納先のフィールド
+  en: |-
+    the destination field
+- ja: |-
+    格納する数字データを保持するオブジェクト
+  en: |-
+    the object holding the numeric data to store
+- ja: |-
+    dataが保持する数字の桁数
+  en: |-
+    the number of digits of the number held by data
+- ja: |-
+    dataが保持する数字の小数点以下の桁数
+  en: |-
+    the scale of the number held by data
+- ja: |-
+    dataにアクセスするときの開始位置
+  en: |-
+    the start position when accessing data
+- ja: |-
+    このフィールドが正のゼロまたは負のゼロであるかどうかを判定する
+  en: |-
+    Determines whether this field is positive zero or negative zero.
+- ja: |-
+    libcob/numeric.cのdisplay_add_intの実装
+  en: |-
+    Implementation of display_add_int in libcob/numeric.c.
+- ja: |-
+    加算対象の数字データを保持するオブジェクト
+  en: |-
+    the object holding the numeric data to add to
+- ja: |-
+    数字の桁数
+  en: |-
+    the number of digits
+- ja: |-
+    加算する値
+  en: |-
+    the value to add
+- ja: |-
+    オーバーフローが発生し,かつ切り捨て指定(BINARY-TRUNC)が有効な場合は1, それ以外は0
+  en: |-
+    1 if an overflow occurred and truncation (BINARY-TRUNC) is enabled, 0 otherwise

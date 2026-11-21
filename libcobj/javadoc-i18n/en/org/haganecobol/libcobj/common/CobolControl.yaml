@@ -1,0 +1,100 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLの手続き部における1つの段落・節を表す抽象クラス<br>
+    各段落・節を1つのCobolControlとして表し、{@link #run()}でその単位を実行する。<br>
+    {@link #run()}は実行後に続けて実行すべき次の制御を返すことで、段落の連続実行(フォールスルー)を表現する。<br>
+    続けて実行すべき制御が無い場合は{@code null}を返す。<br>
+    PERFORM文は{@link #perform(CobolControl[], int)}および{@link #performThrough(CobolControl[], int,
+    int)}に変換され、GO TO文は移行先のCobolControlを{@link #run()}の戻り値として返すコードに変換される。
+  en: |-
+    Abstract class representing a single paragraph or section in the COBOL PROCEDURE DIVISION.<br>
+    Each paragraph or section is represented as one CobolControl, and {@link #run()} executes that unit.<br>
+    {@link #run()} returns the next control to be executed after it, which
+    represents consecutive execution of paragraphs (fall-through).<br>
+    If there is no control to execute next, it returns {@code null}.<br>
+    PERFORM statements are converted to {@link #perform(CobolControl[], int)} and
+    {@link #performThrough(CobolControl[], int, int)}, and GO TO statements are converted
+    to code that returns the target CobolControl as the return value of {@link #run()}.
+- ja: |-
+    制御単位の種別(段落か節か)を表す列挙型
+  en: |-
+    Enumeration representing the kind of control unit (paragraph or section).
+- ja: |-
+    段落(paragraph)を表す
+  en: |-
+    Represents a paragraph.
+- ja: |-
+    節(section)を表す
+  en: |-
+    Represents a section.
+- ja: |-
+    この制御単位を実行する。
+  en: |-
+    Executes this control unit.
+- ja: |-
+    続けて実行すべき次の制御。続きがない場合は{@code null}
+  en: |-
+    the next control to execute, or {@code null} if there is none
+- ja: |-
+    実行中に実行時例外が発生した場合
+  en: |-
+    if a runtime exception occurs during execution
+- ja: |-
+    実行中にSTOP RUNが実行された場合
+  en: |-
+    if STOP RUN is executed during execution
+- ja: |-
+    この制御単位を識別するID(段落・節の通し番号)。未設定の場合は-1
+  en: |-
+    ID identifying this control unit (sequence number of the paragraph or section); -1 if not set.
+- ja: |-
+    この制御単位の種別(段落か節か)
+  en: |-
+    The kind of this control unit (paragraph or section).
+- ja: |-
+    既定値(ID:-1、種別:段落)で制御単位を生成する。
+  en: |-
+    Creates a control unit with the default values (ID: -1, kind: paragraph).
+- ja: |-
+    指定されたIDと種別で制御単位を生成する。
+  en: |-
+    Creates a control unit with the specified ID and kind.
+- ja: |-
+    制御単位を識別するID
+  en: |-
+    the ID identifying the control unit
+- ja: |-
+    制御単位の種別(段落か節か)
+  en: |-
+    the kind of the control unit (paragraph or section)
+- ja: |-
+    PERFORM ... THRU ...文に相当し、begin番目からend番目までの制御単位を順に実行する。<br>
+    終端が節の場合は、後続の段落も含めて節の終わりまで実行する。
+  en: |-
+    Corresponds to a PERFORM ... THRU ... statement; executes
+    the control units from index begin to index end in order.<br>
+    If the last one is a section, execution continues to the
+    end of the section, including the paragraphs that follow.
+- ja: |-
+    段落・節を格納した制御単位の配列
+  en: |-
+    the array of control units holding the paragraphs and sections
+- ja: |-
+    実行を開始する制御単位のインデックス
+  en: |-
+    the index of the control unit at which to start execution
+- ja: |-
+    実行を終了する制御単位のインデックス
+  en: |-
+    the index of the control unit at which to end execution
+- ja: |-
+    PERFORM文に相当し、指定された単一の段落・節を実行する。
+  en: |-
+    Corresponds to a PERFORM statement; executes the specified single paragraph or section.
+- ja: |-
+    実行する制御単位のインデックス
+  en: |-
+    the index of the control unit to execute

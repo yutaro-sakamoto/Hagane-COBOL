@@ -1,0 +1,177 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    libcob/common.hのcob_moduleに対応するクラス<br>
+    実行中のプログラム1つ分の実行時情報(照合順序、小数点文字、通貨記号、各種フラグ、
+    プログラムID、手続き部の引数など)を保持する。<br>
+    CALLによる呼び出しの入れ子をモジュールスタックで管理し、現在実行中のモジュールを追跡する。
+  en: |-
+    Class corresponding to cob_module in libcob/common.h.<br>
+    Holds the runtime information of one running program (collating sequence, decimal point
+    character, currency symbol, various flags, program ID, PROCEDURE DIVISION arguments, etc.).<br>
+    Manages nested calls made by CALL with a module stack and tracks the currently running module.
+- ja: |-
+    モジュールの呼び出し階層を表すスタック。<br>
+    実行単位(run unit)はスレッドごとに独立しているため、スタックはスレッドごとに保持する。
+  en: |-
+    Stack representing the module call hierarchy.<br>
+    Run units are independent per thread, so the stack is held per thread.
+- ja: |-
+    直近にスタックから取り除かれたモジュール。<br>
+    プログラムの実行が終わった後にJavaアプリケーションから結果を参照する場合(CobolResultSetなど)に、
+    小数点文字などのモジュール情報を引き続き参照できるようにするために保持する。
+  en: |-
+    The module most recently removed from the stack.<br>
+    Kept so that module information such as the decimal point character remains available when
+    a Java application refers to results after the program has finished (e.g. CobolResultSet).
+- ja: |-
+    現在実行中のモジュールを取得する。<br>
+    このスレッドで実行中のモジュールがない場合は、直近に実行を終えたモジュールを返す。
+  en: |-
+    Returns the currently running module.<br>
+    If no module is running in this thread, returns the module that most recently finished.
+- ja: |-
+    現在実行中のモジュール。このスレッドでモジュールが一度も実行されていない場合はnull
+  en: |-
+    the currently running module, or null if no module has ever run in this thread
+- ja: |-
+    モジュールスタックに追加する
+  en: |-
+    Pushes a module onto the module stack.
+- ja: |-
+    キューに追加するモジュール
+  en: |-
+    the module to add to the queue
+- ja: |-
+    モジュールスタックからモジュールを取り除く
+  en: |-
+    Removes a module from the module stack.
+- ja: |-
+    現在のスレッドのモジュールスタックの深さを返す。
+  en: |-
+    Returns the depth of the module stack of the current thread.
+- ja: |-
+    スタックに積まれているモジュールの数
+  en: |-
+    the number of modules on the stack
+- ja: |-
+    現在のスレッドに紐づくモジュールスタックを破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the module stack bound to the current thread. Called when the run unit ends.
+- ja: |-
+    呼び出し元プログラムの名前(プログラムID)を指定された記憶領域へ書き込む。<br>
+    C$NARGなどの呼び出し元情報を取得する機能に相当する。
+  en: |-
+    Writes the name (program ID) of the calling program into the specified storage.<br>
+    Corresponds to features that obtain caller information, such as C$NARG.
+- ja: |-
+    呼び出し元プログラム名の書き込み先となる記憶領域
+  en: |-
+    the storage into which the caller program name is written
+- ja: |-
+    呼び出し元の情報を書き込んだ場合、または第1引数が存在しない場合は1、
+        呼び出し元が存在しない場合(空白を書き込んだ場合)は0、
+        呼び出し元のプログラムIDがnullの場合は-1
+  en: |-
+    1 if the caller information was written or the first argument does not exist, 0 if
+    there is no caller (spaces were written), -1 if the program ID of the caller is null
+- ja: |-
+    モジュールキューが空かどうか
+  en: |-
+    Returns whether the module queue is empty.
+- ja: |-
+    モジュールスタックが空の場合はtrue、そうでない場合はfalse
+  en: |-
+    true if the module stack is empty, false otherwise
+- ja: |-
+    スタック上の次の(呼び出し元の)モジュール
+  en: |-
+    The next (calling) module on the stack.
+- ja: |-
+    PROGRAM COLLATING SEQUENCEで指定された照合順序
+  en: |-
+    The collating sequence specified by PROGRAM COLLATING SEQUENCE.
+- ja: |-
+    画面入出力時のCRT STATUS
+  en: |-
+    The CRT STATUS for screen I/O.
+- ja: |-
+    画面入出力時のカーソル位置
+  en: |-
+    The cursor position for screen I/O.
+- ja: |-
+    符号の表示方法(DISPLAY SIGN)
+  en: |-
+    How the sign is displayed (DISPLAY SIGN).
+- ja: |-
+    小数点として用いる文字
+  en: |-
+    The character used as the decimal point.
+- ja: |-
+    通貨記号として用いる文字
+  en: |-
+    The character used as the currency symbol.
+- ja: |-
+    桁区切りとして用いる文字
+  en: |-
+    The character used as the digit group separator.
+- ja: |-
+    ファイル名のマッピングを行うかどうかのフラグ
+  en: |-
+    Flag indicating whether file name mapping is performed.
+- ja: |-
+    2進数項目の桁あふれを切り捨てるかどうかのフラグ
+  en: |-
+    Flag indicating whether overflow of binary items is truncated.
+- ja: |-
+    DISPLAY文の整形出力を行うかどうかのフラグ
+  en: |-
+    Flag indicating whether pretty-printed output of DISPLAY statements is performed.
+- ja: |-
+    予約領域
+  en: |-
+    Reserved area.
+- ja: |-
+    プログラムID(プログラム名)
+  en: |-
+    The program ID (program name).
+- ja: |-
+    プログラムのパッケージ名
+  en: |-
+    The package name of the program.
+- ja: |-
+    手続き部に渡された引数(USING句の引数)のリスト
+  en: |-
+    The list of arguments passed to the PROCEDURE DIVISION (arguments of the USING phrase).
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    このモジュールのプログラムID(プログラム名)を設定する。
+  en: |-
+    Sets the program ID (program name) of this module.
+- ja: |-
+    設定するプログラム名
+  en: |-
+    the program name to set
+- ja: |-
+    このモジュールの手続き部の引数(USING句の引数)を設定する。<br>
+    既存の引数をすべて消去した上で、指定された引数で置き換える。
+  en: |-
+    Sets the PROCEDURE DIVISION arguments (arguments of the USING phrase) of this module.<br>
+    Clears all existing arguments and replaces them with the specified arguments.
+- ja: |-
+    手続き部に渡す引数の並び
+  en: |-
+    the sequence of arguments passed to the PROCEDURE DIVISION
+- ja: |-
+    現在実行中のモジュールにおける小数点文字を取得する。
+  en: |-
+    Returns the decimal point character of the currently running module.
+- ja: |-
+    現在のモジュールの小数点文字
+  en: |-
+    the decimal point character of the current module

@@ -1,0 +1,295 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL の埋め込み SQL で使用する SQLCA (SQL Communication Area) 構造体を管理する。
+
+    <p>{@code ECPG_*} 定数と {@link #setSuccess}・{@link #setMissingIndicator} は、
+    {@link CobolEsqlBackendInterface} 実装（別パッケージで提供されるバックエンドを含む）が利用できる
+    公開 API。それ以外のメンバはパッケージ内部用である。
+  en: |-
+    Manages the SQLCA (SQL Communication Area) structure used by COBOL embedded SQL.
+
+    <p>The {@code ECPG_*} constants, {@link #setSuccess}, and {@link #setMissingIndicator} are public APIs
+    available to {@link CobolEsqlBackendInterface} implementations (including backends provided in other
+    packages). All other members are for internal use within the package.
+- ja: |-
+    ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。
+  en: |-
+    Private constructor to prevent instantiation of this utility class.
+- ja: |-
+    COBOL フィールド (SQLSTATE/SQLERRMC) のバイト表現に用いる文字コード。
+  en: |-
+    Character encoding used for the byte representation of COBOL fields (SQLSTATE/SQLERRMC).
+- ja: |-
+    SQLERRMC エラーメッセージフィールドの最大長。
+  en: |-
+    Maximum length of the SQLERRMC error message field.
+- ja: |-
+    エラーなし。
+  en: |-
+    No error.
+- ja: |-
+    行が見つからない (SQLSTATE 02000)。
+  en: |-
+    No row found (SQLSTATE 02000).
+- ja: |-
+    メモリ不足。
+  en: |-
+    Out of memory.
+- ja: |-
+    未対応の機能。
+  en: |-
+    Unsupported feature.
+- ja: |-
+    ホスト変数の引数が多すぎる。
+  en: |-
+    Too many host variable arguments.
+- ja: |-
+    ホスト変数の引数が少なすぎる。
+  en: |-
+    Too few host variable arguments.
+- ja: |-
+    一致する行が多すぎる。
+  en: |-
+    Too many matching rows.
+- ja: |-
+    データ形式エラー。
+  en: |-
+    Data format error.
+- ja: |-
+    空のクエリまたは文。
+  en: |-
+    Empty query or statement.
+- ja: |-
+    指標変数が指定されていない。
+  en: |-
+    No indicator variable specified.
+- ja: |-
+    有効な接続がない。
+  en: |-
+    No valid connection.
+- ja: |-
+    未接続。
+  en: |-
+    Not connected.
+- ja: |-
+    不正な準備済みステートメント。
+  en: |-
+    Invalid prepared statement.
+- ja: |-
+    Informix 互換の一意キー違反エラー。
+  en: |-
+    Informix-compatible unique key violation error.
+- ja: |-
+    不明なデスクリプタ。
+  en: |-
+    Unknown descriptor.
+- ja: |-
+    不正なデスクリプタインデックス。
+  en: |-
+    Invalid descriptor index.
+- ja: |-
+    不明なデスクリプタ項目。
+  en: |-
+    Unknown descriptor item.
+- ja: |-
+    変数が数値型でない。
+  en: |-
+    Variable is not of a numeric type.
+- ja: |-
+    変数が文字型でない。
+  en: |-
+    Variable is not of a character type.
+- ja: |-
+    Informix 互換の副問い合わせが 2 行以上を返した。
+  en: |-
+    Informix-compatible error: a subquery returned more than one row.
+- ja: |-
+    PostgreSQL バックエンドエラー。
+  en: |-
+    PostgreSQL backend error.
+- ja: |-
+    トランザクションエラー。
+  en: |-
+    Transaction error.
+- ja: |-
+    接続エラー。
+  en: |-
+    Connection error.
+- ja: |-
+    一意キー違反。
+  en: |-
+    Unique key violation.
+- ja: |-
+    副問い合わせが 2 行以上を返した。
+  en: |-
+    A subquery returned more than one row.
+- ja: |-
+    不明なカーソル (ポータル)。
+  en: |-
+    Unknown cursor (portal).
+- ja: |-
+    既にトランザクション中。
+  en: |-
+    Already in a transaction.
+- ja: |-
+    有効なトランザクションがない。
+  en: |-
+    No valid transaction.
+- ja: |-
+    カーソル (ポータル) が既に存在する。
+  en: |-
+    Cursor (portal) already exists.
+- ja: |-
+    ロックエラー。
+  en: |-
+    Lock error.
+- ja: |-
+    JDD (Java Database Driver) エラー。
+  en: |-
+    JDD (Java Database Driver) error.
+- ja: |-
+    認識できないエラー。
+  en: |-
+    Unrecognized error.
+- ja: |-
+    SQLCA 構造体の SQLCODE フィールドを設定する。
+  en: |-
+    Sets the SQLCODE field of the SQLCA structure.
+- ja: |-
+    SQLCA のデータストレージ
+  en: |-
+    the SQLCA data storage
+- ja: |-
+    設定する SQLCODE 値
+  en: |-
+    the SQLCODE value to set
+- ja: |-
+    SQLCA 構造体から SQLCODE フィールドを取得する。
+  en: |-
+    Returns the SQLCODE field of the SQLCA structure.
+- ja: |-
+    現在の SQLCODE 値。sqlca が null の場合は 0
+  en: |-
+    the current SQLCODE value. 0 if sqlca is null.
+- ja: |-
+    SQLCA 構造体の 5 文字の SQLSTATE フィールドを設定する。
+  en: |-
+    Sets the 5-character SQLSTATE field of the SQLCA structure.
+- ja: |-
+    SQLSTATE 文字列 (例: "00000")
+  en: |-
+    the SQLSTATE string (e.g. "00000")
+- ja: |-
+    SQLCA 構造体の SQLERRMC エラーメッセージフィールドを設定する。
+  en: |-
+    Sets the SQLERRMC error message field of the SQLCA structure.
+- ja: |-
+    エラーメッセージ ({@link #SQLERRMC_LEN} バイトに切り詰められる)
+  en: |-
+    the error message (truncated to {@link #SQLERRMC_LEN} bytes)
+- ja: |-
+    文字列を SHIFT-JIS でエンコードし、maxBytes バイト以内に収める。上限を超える場合は
+    多バイト文字を途中で分割しないよう、文字境界で切り詰める。
+  en: |-
+    Encodes a string in SHIFT-JIS and fits it within maxBytes bytes. If it exceeds the limit, it is
+    truncated at a character boundary so that a multibyte character is not split in the middle.
+- ja: |-
+    エンコードする文字列
+  en: |-
+    the string to encode
+- ja: |-
+    許容する最大バイト数
+  en: |-
+    the maximum number of bytes allowed
+- ja: |-
+    SHIFT-JIS バイト列 (maxBytes 以下、末尾の不完全な多バイト文字なし)
+  en: |-
+    the SHIFT-JIS byte array (at most maxBytes, with no incomplete multibyte character at the end)
+- ja: |-
+    処理行数を保持する SQLERRD の 0 始まりインデックス。COBOL では {@code SQLERRD(3)} に対応し、
+    直前の SQL 文が処理した行数 (INSERT/UPDATE/DELETE の影響行数、FETCH した行数など) が入る。
+  en: |-
+    0-based index of the SQLERRD element that holds the processed row count. Corresponds to
+    {@code SQLERRD(3)} in COBOL, and holds the number of rows processed by the preceding SQL statement
+    (the number of rows affected by INSERT/UPDATE/DELETE, the number of rows fetched, etc.).
+- ja: |-
+    6 個ある SQLERRD 診断値のうちの 1 つを設定する。
+  en: |-
+    Sets one of the six SQLERRD diagnostic values.
+- ja: |-
+    SQLERRD のインデックス (0〜5)
+  en: |-
+    the SQLERRD index (0 to 5)
+- ja: |-
+    設定する整数値
+  en: |-
+    the integer value to set
+- ja: |-
+    直前の SQL 文が処理した行数を SQLERRD(3) に設定する。
+  en: |-
+    Sets the number of rows processed by the preceding SQL statement in SQLERRD(3).
+- ja: |-
+    処理した行数
+  en: |-
+    the number of rows processed
+- ja: |-
+    SQLCA 構造体の SQLERRMC および SQLERRML フィールドをクリアする。
+  en: |-
+    Clears the SQLERRMC and SQLERRML fields of the SQLCA structure.
+- ja: |-
+    SQLCA を正常終了に設定するが、SQLERRMC のバイト列は変更しない (SQLERRML は 0 にする)。
+
+    <p>CONNECT 成功時に使う。Open-COBOL-ESQL-4J は CONNECT 成功時に SQLERRMC を
+    上書きせず、COBOL が初期化した値 (PIC X のスペース) をそのまま残すため、それに合わせる。
+    メッセージ長 SQLERRML は 0 にして「メッセージなし」と整合させる (直前のエラーの長さが
+    残らないようにする)。
+  en: |-
+    Sets the SQLCA to successful completion without changing the SQLERRMC bytes (SQLERRML is set to 0).
+
+    <p>Used when CONNECT succeeds. Open-COBOL-ESQL-4J does not overwrite SQLERRMC when CONNECT succeeds
+    and leaves the value initialized by COBOL (PIC X spaces) as is, so this method matches that behavior.
+    The message length SQLERRML is set to 0 to be consistent with "no message" (so that the length of a
+    previous error does not remain).
+- ja: |-
+    SQLCA を正常終了を示す状態に設定する (SQLCODE=0, SQLSTATE="00000")。
+  en: |-
+    Sets the SQLCA to the state indicating successful completion (SQLCODE=0, SQLSTATE="00000").
+- ja: |-
+    SQLCA を「該当行なし」を示す状態に設定する (SQLCODE=ECPG_NOT_FOUND, SQLSTATE="02000")。
+    SELECT INTO やカーソル FETCH で結果が得られなかった場合に使う。
+  en: |-
+    Sets the SQLCA to the state indicating "no row found" (SQLCODE=ECPG_NOT_FOUND, SQLSTATE="02000").
+    Used when SELECT INTO or a cursor FETCH yields no result.
+- ja: |-
+    SQLCA を ECPG_MISSING_INDICATOR に設定する (sqlcode=-213, sqlstate="22002")。
+
+    <p>「指標変数なしの NULL 値」を通知する。これは、フェッチした列が SQL NULL であり、
+    かつホスト変数に対応する指標変数がない場合の ECPG 標準の動作である。COBOL フィールド
+    自体には依然として値が書き込まれる (通常はゼロ埋め) ため行は処理済みとみなされる。
+    アプリケーション側のコードは FETCH/SELECT の後に SQLCODE/SQLSTATE を確認することが想定されている。
+  en: |-
+    Sets the SQLCA to ECPG_MISSING_INDICATOR (sqlcode=-213, sqlstate="22002").
+
+    <p>Reports a "NULL value without an indicator variable". This is the standard ECPG behavior when a
+    fetched column is SQL NULL and the host variable has no corresponding indicator variable. A value
+    is still written to the COBOL field itself (usually zero-filled), so the row is considered processed.
+    Application code is expected to check SQLCODE/SQLSTATE after FETCH/SELECT.
+- ja: |-
+    SQLCA を、指定したコード・状態・メッセージのエラーを示す状態に設定する。
+  en: |-
+    Sets the SQLCA to the state indicating an error with the given code, state, and message.
+- ja: |-
+    SQLCODE のエラーコード
+  en: |-
+    the SQLCODE error code
+- ja: |-
+    5 文字の SQLSTATE
+  en: |-
+    the 5-character SQLSTATE
+- ja: |-
+    エラーメッセージ
+  en: |-
+    the error message

@@ -1,0 +1,32 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    インデックスファイルのキー情報を保持するクラス。<br>
+    1つのキーをレコード先頭からのオフセット(1始まり)、バイト単位のサイズ、
+    および重複キーを許可するかどうかの3つの情報で表現する。
+  en: |-
+    Class that holds key information of an indexed file.<br>
+    A key is represented by three pieces of information: its offset from the beginning of the record
+    (1-based), its size in bytes, and whether duplicate keys are allowed.
+- ja: |-
+    レコード先頭からのキーのオフセット(1始まり)
+  en: |-
+    The offset of the key from the beginning of the record (1-based).
+- ja: |-
+    キーのサイズ(バイト数)
+  en: |-
+    The size of the key (in bytes).
+- ja: |-
+    重複キーを許可する場合は{@code true}、そうでない場合は{@code false}
+  en: |-
+    {@code true} if duplicate keys are allowed, {@code false} otherwise.
+- ja: |-
+    新しい{@code CobolFileKeyInfo}インスタンスを生成する。
+  en: |-
+    Creates a new {@code CobolFileKeyInfo} instance.
+- ja: |-
+    重複キーを許可する場合は{@code true}
+  en: |-
+    {@code true} if duplicate keys are allowed

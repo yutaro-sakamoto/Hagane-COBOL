@@ -1,0 +1,219 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    INDEXEDファイルのバックエンドであるsqlite-jdbcのネイティブライブラリを、プロセス間で共有する1つのファイルに展開しておくためのユーティリティ。
+
+    <p>sqlite-jdbcは既定では、最初の接続時にネイティブライブラリを{@code
+    java.io.tmpdir}へ{@code sqlite-<バージョン>-<UUID>-<ライブラリ名>}という名前で展開する。 このとき、展開に先立って同じ一時ディレクトリを走査し、{@code
+    .lck}ファイルを持たない同名パターンのファイルを「すでに終了したプロセスの残骸」とみなして削除する。
+
+    <p>この一時ディレクトリはマシン上の全プロセスで共有されるため、INDEXEDファイルを扱うCOBOLプログラムを同時に複数起動すると、
+    2つのプロセスが同じ残骸を削除しようとして競合する。削除できなかった側は、実行結果には何の影響もないにもかかわらず、{@code Failed to delete old native
+    lib}というエラーとスタックトレースを標準エラー出力へ書き出す。
+
+    <p>そこでSQLiteへ最初に接続する前に、ネイティブライブラリをバージョンごとに1つだけ決まった場所へ展開し、その場所を{@code
+    org.sqlite.lib.path}と{@code org.sqlite.lib.name}でsqlite-jdbcに指示する。 こうするとsqlite-jdbc自身は共有一時ディレクトリへ展開しなくなるので、
+    新たな残骸が増えない。残骸が無ければ削除するものも無く、競合は起こらない。
+    展開したファイルはバージョンが同じ限り再利用するので、実行のたびに一時ファイルが増えることもない。
+
+    <p>ただし、後始末そのものを止められるわけではない点に注意が必要である。sqlite-jdbcは{@code
+    org.sqlite.lib.path}を見るより前に共有一時ディレクトリの走査を行うため、そこに残骸があれば、
+    このクラスを使っていても削除しに行き、競合すればエラーを出力する。 残骸を作るのはsqlite-jdbcを使う他のアプリケーションや、この修正より前のlibcobjである。
+    それらが無くなり、走査の対象が空になった時点で出力も止まる。
+
+    <p>準備に失敗した場合は何も設定しない。その場合sqlite-jdbcは従来どおり自身でライブラリを展開するため、動作に支障はない。
+  en: |-
+    Utility that extracts the native library of sqlite-jdbc, the backend of INDEXED files, to a single
+    file shared between processes.
+
+    <p>By default, on the first connection sqlite-jdbc extracts the native library into
+    {@code java.io.tmpdir} under the name {@code sqlite-<version>-<UUID>-<library name>}. Before
+    extracting, it scans the same temporary directory and deletes files matching the same name pattern
+    that have no {@code .lck} file, regarding them as "leftovers of processes that have already exited".
+
+    <p>Since this temporary directory is shared by all processes on the machine, when multiple COBOL
+    programs that use INDEXED files are started at the same time, two processes may race to delete the
+    same leftover. The side that fails to delete it writes the error {@code Failed to delete old native
+    lib} and a stack trace to standard error, even though this has no effect on the result of the run.
+
+    <p>Therefore, before the first connection to SQLite, the native library is extracted to one fixed
+    location per version, and sqlite-jdbc is directed to that location through
+    {@code org.sqlite.lib.path} and {@code org.sqlite.lib.name}. Then sqlite-jdbc itself no longer
+    extracts into the shared temporary directory, so no new leftovers are created. With no leftovers,
+    there is nothing to delete, and no race occurs.
+    The extracted file is reused as long as the version is the same, so temporary files do not
+    accumulate with each run either.
+
+    <p>Note, however, that this does not stop the cleanup itself. Since sqlite-jdbc scans the shared
+    temporary directory before looking at {@code org.sqlite.lib.path}, if there are leftovers there it
+    will try to delete them even when this class is used, and will print an error if it races. Leftovers
+    are created by other applications using sqlite-jdbc and by libcobj versions prior to this fix.
+    Once they are gone and there is nothing left to scan, the output stops as well.
+
+    <p>If preparation fails, nothing is set. In that case sqlite-jdbc extracts the library by itself as
+    before, so operation is not affected.
+- ja: |-
+    ネイティブライブラリを置いたディレクトリをsqlite-jdbcに伝えるためのシステムプロパティ。
+
+    <p>sqlite-jdbcはライブラリを読み込むとき、まずこのプロパティが指す場所を見に行き、そこにあればそれを使って終わる。
+    自前で展開する処理はその後ろにあるので、ここで見つけさせれば展開も後始末も行われない。
+  en: |-
+    System property for telling sqlite-jdbc the directory where the native library is placed.
+
+    <p>When loading the library, sqlite-jdbc first looks at the location this property points to, and if
+    the library is there, it uses it and is done. Its own extraction comes after that, so if the library
+    is found here, neither extraction nor cleanup takes place.
+- ja: |-
+    ネイティブライブラリのファイル名をsqlite-jdbcに伝えるためのシステムプロパティ。
+
+    <p>指定しなくても、sqlite-jdbcは{@code System.mapLibraryName}で同じ名前を組み立てるため、
+    現在の依存バージョンでは省略しても動く。それでも明示するのは、名前の決め方が将来変わったときに、
+    こちらが置いたファイルと探しに行く名前が食い違うのを防ぐためである。
+  en: |-
+    System property for telling sqlite-jdbc the file name of the native library.
+
+    <p>Even if it is not specified, sqlite-jdbc builds the same name with {@code System.mapLibraryName},
+    so with the current dependency version it works without it. It is still specified explicitly to
+    prevent a mismatch between the file placed here and the name looked up, should the way the name is
+    determined change in the future.
+- ja: |-
+    sqlite-jdbcがネイティブライブラリの置き場所を決めるときに参照するシステムプロパティ。
+
+    <p>sqlite-jdbcはこの指定があればそちらを、無ければ{@code java.io.tmpdir}を使う。
+    こちらも同じ順序で場所を決める必要がある。{@code /tmp}が{@code
+    noexec}であるなどの理由でこのプロパティが指定されている場合に、 {@code
+    java.io.tmpdir}へ置いてしまうと、そこから読み込めずにsqlite-jdbcがエラーを出力することになる。
+  en: |-
+    System property that sqlite-jdbc consults when deciding where to place the native library.
+
+    <p>sqlite-jdbc uses it if specified, and {@code java.io.tmpdir} otherwise. This class must determine
+    the location in the same order. If this property is specified because, for example, {@code /tmp} is
+    {@code noexec}, placing the library in {@code java.io.tmpdir} would make sqlite-jdbc unable to load it
+    from there and print an error.
+- ja: |-
+    準備処理を直列化するためのロック。クラスの内部ロックを外部に晒さないよう専用のオブジェクトを使う。
+  en: |-
+    Lock for serializing the preparation. A dedicated object is used so as not to expose the class's
+    intrinsic lock.
+- ja: |-
+    sqlite-jdbcのネイティブライブラリを共有の場所へ展開し、その場所をシステムプロパティでsqlite-jdbcに指示する。
+
+    <p>SQLiteへの最初の接続より前に呼び出す必要がある。2回目以降の呼び出しは何もしない。 利用者が{@code
+    org.sqlite.lib.path}または{@code org.sqlite.lib.name}を明示的に指定している場合は、その指定を尊重して何もしない。
+  en: |-
+    Extracts the native library of sqlite-jdbc to a shared location, and directs sqlite-jdbc to that
+    location through system properties.
+
+    <p>Must be called before the first connection to SQLite. Second and subsequent calls do nothing. If
+    the user has explicitly specified {@code org.sqlite.lib.path} or {@code org.sqlite.lib.name}, that
+    setting is respected and nothing is done.
+- ja: |-
+    展開先のディレクトリを返す。使えるディレクトリを用意できなければ{@code null}を返す。
+
+    <p>sqlite-jdbcの既定の展開先はUUIDを含む名前で、他人には狙って作れない。 対してこのクラスは決まった名前のファイルを読み込むので、
+    名前が事前に分かってしまう。 POSIX環境の{@code /tmp}のように一時ディレクトリが利用者間で共有される場合、
+    別の利用者が先回りしてそこに細工したライブラリを置けてしまっては困る。 そこで所有者だけが書き込めるディレクトリを作り、
+    すでに存在する場合は所有者と許可属性を確認してから使う。 確認できないディレクトリは使わず、{@code null}を返して呼び出し元に諦めさせる。
+  en: |-
+    Returns the directory to extract to, or {@code null} if no usable directory can be prepared.
+
+    <p>The default extraction destination of sqlite-jdbc has a name containing a UUID, which others
+    cannot create deliberately. This class, in contrast, loads a file with a fixed name, so the name is
+    known in advance. When the temporary directory is shared among users, as with {@code /tmp} in POSIX
+    environments, another user must not be able to plant a tampered library there beforehand. Therefore
+    it creates a directory that only the owner can write to, and if the directory already exists, it
+    checks the owner and permissions before using it. A directory that cannot be verified is not used;
+    {@code null} is returned so that the caller gives up.
+- ja: |-
+    ディレクトリ名に含める、バージョンとプラットフォームの識別子
+  en: |-
+    the version and platform identifier to include in the directory name
+- ja: |-
+    使えるディレクトリ。用意できなければ{@code null}
+  en: |-
+    a usable directory, or {@code null} if none can be prepared
+- ja: |-
+    すでにある置き場所を、そのまま使ってよいかどうか確かめる。
+
+    <p>POSIX環境では、ディレクトリであること、所有者が自分であること、グループとその他に書き込み権限が無いことを求める。
+    どれか1つでも欠けると、中のファイルを別の利用者に差し替えられる余地が残る。
+    シンボリックリンクをたどらないので、リンクが置かれていた場合はディレクトリではないとみなして拒否する。
+
+    <p>使えないと判断した場合はdebugレベルで記録する。 呼び出し元はこの場合何も設定せず、sqlite-jdbc本来の動作に任せることになるが、
+    その判断が黙って行われると、並列実行時の出力が減らない理由が分からなくなるためである。
+  en: |-
+    Checks whether an existing location can be used as is.
+
+    <p>In POSIX environments, it requires that it is a directory, that its owner is the current user, and
+    that the group and others have no write permission. If any one of these is missing, there remains
+    room for another user to replace the files inside. Since symbolic links are not followed, a link
+    placed there is regarded as not being a directory and is rejected.
+
+    <p>When it decides the location cannot be used, it logs this at debug level. In this case the caller
+    sets nothing and leaves things to sqlite-jdbc's own behavior, but if that decision were made silently,
+    it would be hard to understand why the output during parallel runs does not decrease.
+- ja: |-
+    取り出し済みのファイルが、jarの中のライブラリと同じ大きさで揃っているかどうかを確かめる。
+
+    <p>jarの中の大きさが分からなかった場合({@code expectedSize}が負)は、存在することだけを確かめる。
+  en: |-
+    Checks whether the already extracted file is complete, with the same size as the library in the
+    jar.
+
+    <p>If the size in the jar is unknown ({@code expectedSize} is negative), it only checks that the file
+    exists.
+- ja: |-
+    確かめる対象のファイル
+  en: |-
+    the file to check
+- ja: |-
+    jarの中のライブラリの大きさ。分からない場合は負の値
+  en: |-
+    the size of the library in the jar, or a negative value if unknown
+- ja: |-
+    jarの中のネイティブライブラリの大きさを返す。分からない場合は負の値を返す。
+
+    <p>中身を読まずにjarの持つ情報から大きさだけを得る。
+  en: |-
+    Returns the size of the native library in the jar, or a negative value if it is unknown.
+
+    <p>Only the size is obtained from the information held by the jar, without reading the contents.
+- ja: |-
+    jarの中のネイティブライブラリを展開する。
+
+    <p>いったん一時的な名前で書き出してから最終的な名前へ移動する。 最終的な名前のファイルは移動によって現れるので、
+    書き出し途中の中途半端な内容が読み込まれることはない。 複数のプロセスが同時にここへ来ても、それぞれ別の一時的な名前へ書き出すので互いを壊さず、
+    移動が成功した1つだけが残る。
+
+    <p>「展開」といっても、どこかに置かれているものを探してくるわけではない。 ネイティブライブラリはjarの中に同梱されており、それをファイルとして
+    取り出すことを指す。ネイティブライブラリはJavaのクラスと違ってjarの中のままでは読み込めないため、 誰かが必ず一度ファイルへ取り出す必要がある。
+  en: |-
+    Extracts the native library from the jar.
+
+    <p>It first writes the file under a temporary name and then moves it to the final name. Since the file
+    with the final name appears through the move, partially written content is never loaded. Even if
+    multiple processes get here at the same time, each writes to a different temporary name, so they do
+    not corrupt each other, and only the one whose move succeeds remains.
+
+    <p>"Extracting" here does not mean looking for something placed somewhere else. The native library is
+    bundled in the jar, and this means taking it out as a file. Unlike Java classes, a native library
+    cannot be loaded while it is still inside the jar, so someone must always take it out to a file
+    once.
+- ja: |-
+    jarの中のネイティブライブラリの位置
+  en: |-
+    the location of the native library in the jar
+- ja: |-
+    取り出し先のディレクトリ
+  en: |-
+    the directory to extract to
+- ja: |-
+    最終的なファイルの位置
+  en: |-
+    the location of the final file
+- ja: |-
+    ネイティブライブラリのファイル名。一時的な名前の元にする
+  en: |-
+    the file name of the native library, used as the basis of the temporary name

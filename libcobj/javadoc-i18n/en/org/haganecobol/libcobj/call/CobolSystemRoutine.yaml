@@ -1,0 +1,288 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    組み込み関数を提供するクラス
+  en: |-
+    Class that provides built-in routines.
+- ja: |-
+    組み込み関数CBL_EXIT_PROCの実装。未実装。
+  en: |-
+    Implementation of the built-in routine CBL_EXIT_PROC. Not implemented.
+- ja: |-
+    未実装
+  en: |-
+    not implemented
+- ja: |-
+    組み込み関数CBL_ERROR_PROCの実装。未実装。
+  en: |-
+    Implementation of the built-in routine CBL_ERROR_PROC. Not implemented.
+- ja: |-
+    組み込み関数SYSTEMの実装。cmdに指定されたコマンドを実行する。
+  en: |-
+    Implementation of the built-in routine SYSTEM. Executes the command specified by cmd.
+- ja: |-
+    コマンド文字列。Linux/Unix環境であればシェルコマンド、Windows環境であればコマンドプロンプトのコマンド。
+  en: |-
+    the command string: a shell command in a Linux/Unix environment,
+    or a Command Prompt command in a Windows environment
+- ja: |-
+    コマンドの終了コード。
+  en: |-
+    the exit code of the command
+- ja: |-
+    パラメータのサイズが0以下の場合、またはパラメータが現在のモジュールで指定されていない場合にスローされる
+  en: |-
+    thrown if the parameter size is 0 or less, or if the parameter is not specified in the current module
+- ja: |-
+    組み込み関数すうC$SLEEPの実装
+    opensource COBOLのlibcob/common.cのcob_acuw_sleep関数に相当する
+  en: |-
+    Implementation of the built-in routine C$SLEEP.
+    Corresponds to the cob_acuw_sleep function in libcob/common.c of opensource COBOL.
+- ja: |-
+    C$SLEEPの引数として指定されたCOBOL変数のバイト列。
+  en: |-
+    the byte sequence of the COBOL variable specified as the argument of C$SLEEP
+- ja: |-
+    組み込み関数CBL_ANDの実装。1バイトごとに論理積を取る。 先頭lengthバイトのデータについて論理積を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_AND. Computes a bitwise AND byte by byte. Computes the
+    AND of the first length bytes of data and stores the result at the beginning of the second argument.
+- ja: |-
+    計算対象の1番目のCOBOL変数のバイト列。
+  en: |-
+    the byte sequence of the first COBOL variable to compute
+- ja: |-
+    計算対象の2番目のCOBOL変数のバイト列。先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the byte sequence of the second COBOL variable to compute. The result is stored in its first length bytes.
+- ja: |-
+    計算するバイト数。
+  en: |-
+    the number of bytes to compute
+- ja: |-
+    計算対象の1番目のCOBOL変数。
+  en: |-
+    the first COBOL variable to compute
+- ja: |-
+    計算対象の2番目の引数のバイト列。先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the byte sequence of the second argument to compute. The result is stored in its first length bytes.
+- ja: |-
+    計算対象の2番目のCOBOL変数のバイト列。その変数のバイト列の先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the byte sequence of the second COBOL variable to compute. The result
+    is stored in the first length bytes of that variable's byte sequence.
+- ja: |-
+    計算対象の2番目のCOBOL変数。その変数のバイト列の先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the second COBOL variable to compute. The result is stored
+    in the first length bytes of that variable's byte sequence.
+- ja: |-
+    組み込み関数CBL_ORの実装。1バイトごとに論理和を取る。 先頭lengthバイトのデータについて論理和を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_OR. Computes a bitwise OR byte by byte. Computes the OR
+    of the first length bytes of data and stores the result at the beginning of the second argument.
+- ja: |-
+    計算するバイト数
+  en: |-
+    the number of bytes to compute
+- ja: |-
+    計算対象の2番目のCOBOL変数。そのバイト列の先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the second COBOL variable to compute. The result is stored in the first length bytes of its byte sequence.
+- ja: |-
+    計算対象の2番目のCOBOL変数。先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the second COBOL variable to compute. The result is stored in its first length bytes.
+- ja: |-
+    組み込み関数CBL_NORの実装。1バイトごとに否定論理和(NOR)を取る。 先頭lengthバイトのデータについてNOR演算を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_NOR. Computes a bitwise NOR byte by byte. Computes the
+    NOR of the first length bytes of data and stores the result at the beginning of the second argument.
+- ja: |-
+    組み込み関数CBL_XORの実装。1バイトごとに排他的論理和を取る。 先頭lengthバイトのデータについて排他的論理和を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_XOR. Computes a bitwise exclusive OR byte by byte. Computes the
+    exclusive OR of the first length bytes of data and stores the result at the beginning of the second argument.
+- ja: |-
+    組み込み関数CBL_NIMPの実装。1バイトごとに非含意演算(data1 AND NOT data2)を行う。 先頭lengthバイトのデータについて非含意演算を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_NIMP. Computes a
+    bitwise non-implication (data1 AND NOT data2) byte by byte.
+    Computes the non-implication of the first length bytes of data
+    and stores the result at the beginning of the second argument.
+- ja: |-
+    組み込み関数CBL_EQの実装。1バイトごとに等価演算(XNOR)を行う。 先頭lengthバイトのデータについて等価演算を計算し、計算結果を2番目の引数の先頭に格納する。
+  en: |-
+    Implementation of the built-in routine CBL_EQ. Computes a bitwise equivalence (XNOR) byte by byte. Computes
+    the equivalence of the first length bytes of data and stores the result at the beginning of the second argument.
+- ja: |-
+    組み込み関数CBL_NOTの実装。1バイトごとに論理否定(NOT)を行う。 先頭lengthバイトのデータについて論理否定を計算し、計算結果をdataに格納する。
+  en: |-
+    Implementation of the built-in routine CBL_NOT. Computes a bitwise NOT byte by byte.
+    Computes the NOT of the first length bytes of data and stores the result in data.
+- ja: |-
+    計算対象のCOBOL変数のバイト列。先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the byte sequence of the COBOL variable to compute. The result is stored in its first length bytes.
+- ja: |-
+    計算対象のCOBOL変数。そのバイト列の先頭lengthバイトに計算結果が格納される。
+  en: |-
+    the COBOL variable to compute. The result is stored in the first length bytes of its byte sequence.
+- ja: |-
+    組み込み関数CBL_XF4の実装。data2の各バイトの最下位ビットを取り出し、data1の対応するバイトのビット位置(7-n)にORで設定する。
+  en: |-
+    Implementation of the built-in routine CBL_XF4. Takes the least significant bit of each
+    byte of data2 and sets it by OR at bit position (7-n) of the corresponding byte of data1.
+- ja: |-
+    ビット設定先のCOBOL変数のバイト列。8バイト分が更新される。
+  en: |-
+    the byte sequence of the COBOL variable in which bits are set. 8 bytes are updated.
+- ja: |-
+    ビット値を提供するCOBOL変数のバイト列。各バイトの最下位ビットが使用される。
+  en: |-
+    the byte sequence of the COBOL variable that provides bit
+    values. The least significant bit of each byte is used.
+- ja: |-
+    ビット設定先のCOBOL変数。8バイト分が更新される。
+  en: |-
+    the COBOL variable in which bits are set. 8 bytes are updated.
+- ja: |-
+    ビット値を提供するCOBOL変数。各バイトの最下位ビットが使用される。
+  en: |-
+    the COBOL variable that provides bit values. The least significant bit of each byte is used.
+- ja: |-
+    組み込み関数CBL_XF5の実装。data1の先頭バイトの各ビットを取り出し、data2の対応するバイトに1または0として格納する。
+  en: |-
+    Implementation of the built-in routine CBL_XF5. Takes each bit of the first
+    byte of data1 and stores it as 1 or 0 in the corresponding byte of data2.
+- ja: |-
+    ビット値を提供するCOBOL変数のバイト列。先頭1バイトの各ビットが使用される。
+  en: |-
+    the byte sequence of the COBOL variable that provides bit values. Each bit of the first byte is used.
+- ja: |-
+    ビット展開先のCOBOL変数のバイト列。8バイト分にビット値(0または1)が格納される。
+  en: |-
+    the byte sequence of the COBOL variable into which bits
+    are expanded. Bit values (0 or 1) are stored in 8 bytes.
+- ja: |-
+    ビット値を提供するCOBOL変数。先頭1バイトの各ビットが使用される。
+  en: |-
+    the COBOL variable that provides bit values. Each bit of the first byte is used.
+- ja: |-
+    ビット展開先のCOBOL変数。8バイト分にビット値(0または1)が格納される。
+  en: |-
+    the COBOL variable into which bits are expanded. Bit values (0 or 1) are stored in 8 bytes.
+- ja: |-
+    組み込み関数CBL_X91の実装。COBOLスイッチの設定・取得を行う汎用ルーチン。
+    funcの値により動作が異なる。
+    func=11の場合、parmの各バイト(0~7)に基づきCOBOLスイッチを設定する(0=OFF、1=ON、その他=変更なし)。
+    func=12の場合、現在のCOBOLスイッチの状態をparmの各バイト(0~7)に格納する(OFF=0、ON=1)。
+    func=16の場合、保存済みCALLパラメータ数をparmの先頭バイトに格納する。
+  en: |-
+    Implementation of the built-in routine CBL_X91. A general-purpose routine that sets and gets COBOL switches.
+    Its behavior depends on the value of func.
+    If func=11, sets the COBOL switches based on each byte (0 to 7) of parm (0=OFF, 1=ON, other=unchanged).
+    If func=12, stores the current state of the COBOL switches in each byte (0 to 7) of parm (OFF=0, ON=1).
+    If func=16, stores the saved number of CALL parameters in the first byte of parm.
+- ja: |-
+    結果コード格納先。成功時は0、未知の機能コードの場合は1が格納される。
+  en: |-
+    where the result code is stored: 0 on success, or 1 for an unknown function code
+- ja: |-
+    機能コード。11=スイッチ設定、12=スイッチ取得、16=保存済みCALLパラメータ数の取得。
+  en: |-
+    the function code: 11=set switches, 12=get switches, 16=get the saved number of CALL parameters
+- ja: |-
+    パラメータ。機能コードにより用途が異なる。
+  en: |-
+    the parameter, whose use depends on the function code
+- ja: |-
+    組み込み関数CBL_TOLOWERの実装。先頭lengthバイトのデータについて、Shift_JISエンコーディングを用いて各バイトを小文字に変換する。
+  en: |-
+    Implementation of the built-in routine CBL_TOLOWER. Converts each of the
+    first length bytes of data to lowercase using the Shift_JIS encoding.
+- ja: |-
+    変換対象のCOBOL変数のバイト列。先頭lengthバイトが小文字に変換される。
+  en: |-
+    the byte sequence of the COBOL variable to convert. Its first length bytes are converted to lowercase.
+- ja: |-
+    変換するバイト数
+  en: |-
+    the number of bytes to convert
+- ja: |-
+    変換対象のCOBOL変数。そのバイト列の先頭lengthバイトが小文字に変換される。
+  en: |-
+    the COBOL variable to convert. The first length bytes of its byte sequence are converted to lowercase.
+- ja: |-
+    組み込み関数CBL_TOUPPERの実装。先頭lengthバイトのデータについて、Shift_JISエンコーディングを用いて各バイトを大文字に変換する。
+  en: |-
+    Implementation of the built-in routine CBL_TOUPPER. Converts each of the
+    first length bytes of data to uppercase using the Shift_JIS encoding.
+- ja: |-
+    変換対象のCOBOL変数のバイト列。先頭lengthバイトが大文字に変換される。
+  en: |-
+    the byte sequence of the COBOL variable to convert. Its first length bytes are converted to uppercase.
+- ja: |-
+    変換対象のCOBOL変数。そのバイト列の先頭lengthバイトが大文字に変換される。
+  en: |-
+    the COBOL variable to convert. The first length bytes of its byte sequence are converted to uppercase.
+- ja: |-
+    組み込み関数CBL_OC_NANOSLEEPの実装。指定されたナノ秒数だけスレッドをスリープさせる。
+    現在のモジュールの最初のプロシージャパラメータから整数値(ナノ秒)を取得し、その値が正の場合にスリープを実行する。
+  en: |-
+    Implementation of the built-in routine CBL_OC_NANOSLEEP. Puts
+    the thread to sleep for the specified number of nanoseconds.
+    Gets an integer value (nanoseconds) from the first procedure
+    parameter of the current module and sleeps if the value is positive.
+- ja: |-
+    CBL_OC_NANOSLEEPの引数として指定されたCOBOL変数のバイト列。
+  en: |-
+    the byte sequence of the COBOL variable specified as the argument of CBL_OC_NANOSLEEP
+- ja: |-
+    CBL_OC_NANOSLEEPの引数として指定されたCOBOL変数。
+  en: |-
+    the COBOL variable specified as the argument of CBL_OC_NANOSLEEP
+- ja: |-
+    組み込み関数calledByの実装。呼び出し元プログラムの名前を取得する。
+  en: |-
+    Implementation of the built-in routine calledBy. Gets the name of the calling program.
+- ja: |-
+    呼び出し元プログラム名の格納先となるCOBOL変数のバイト列。
+  en: |-
+    the byte sequence of the COBOL variable in which the caller program name is stored
+- ja: |-
+    CobolModule.calledByの戻り値
+  en: |-
+    the return value of CobolModule.calledBy
+- ja: |-
+    組み込み関数listDirectoryの実装。ディレクトリの内容を一覧表示する。
+    最初のパラメータで操作コードを指定する。
+    操作コード1の場合、指定されたディレクトリを開き一覧取得を開始する。
+    操作コード2の場合、次のディレクトリエントリを取得する。
+    操作コード3の場合、ディレクトリの一覧取得を終了する。
+  en: |-
+    Implementation of the built-in routine listDirectory. Lists the contents of a directory.
+    The first parameter specifies the operation code.
+    Operation code 1 opens the specified directory and starts listing.
+    Operation code 2 gets the next directory entry.
+    Operation code 3 ends the directory listing.
+- ja: |-
+    操作に応じたCOBOL変数のバイト列の可変長引数。
+  en: |-
+    variable-length arguments of COBOL variable byte sequences, depending on the operation
+- ja: |-
+    成功時は0、失敗時は-1
+  en: |-
+    0 on success, -1 on failure
+- ja: |-
+    C$LIST-DIRECTORYで走査中のディレクトリエントリ(スレッドごとに保持する)
+  en: |-
+    The directory entries being scanned by C$LIST-DIRECTORY (held per thread).
+- ja: |-
+    現在のスレッドに紐づくディレクトリ走査の状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the directory scan state bound to the current thread. Called when the run unit ends.

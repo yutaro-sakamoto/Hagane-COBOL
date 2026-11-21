@@ -1,0 +1,40 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLの実行単位(run unit)のライフサイクルを扱うクラス。<br>
+    libcobjのランタイム状態(モジュールスタック、例外コード、CALLのキャッシュ、オープン中のファイル、
+    EXTERNAL項目、ESQLの接続とカーソルなど)はスレッドごとに独立して保持されている。
+    実行単位が終了したとき(STOP RUN、または生成されたmainメソッドの終了時)にこれらを破棄することで、
+    スレッドプールで再利用されるスレッドに前の実行単位の状態が残らないようにする。
+
+    <p>TomcatやSpring Bootのようなマルチスレッド環境からCOBOLプログラムを呼び出す場合、
+    各スレッドはそれぞれ独立した実行単位として扱われる。STOP RUNを実行しないプログラムを
+    呼び出した後は、必要に応じて{@link #end()}を呼び出して実行単位の状態を解放すること。
+  en: |-
+    Class that manages the lifecycle of a COBOL run unit.<br>
+    The runtime state of libcobj (the module stack, exception codes, the CALL cache, open files,
+    EXTERNAL items, ESQL connections and cursors, etc.) is held independently for each thread.
+    Discarding this state when the run unit ends (on STOP RUN, or when the generated main method
+    finishes) ensures that no state of a previous run unit remains in threads reused by a thread pool.
+
+    <p>When COBOL programs are called from a multi-threaded environment such as Tomcat or Spring
+    Boot, each thread is treated as an independent run unit. After calling a program that does
+    not execute STOP RUN, call {@link #end()} as needed to release the state of the run unit.
+- ja: |-
+    現在のスレッドの実行単位を終了する。<br>
+    オープンしたままのファイルを暗黙的にクローズし、現在のスレッドに紐づくランタイム状態をすべて破棄する。
+  en: |-
+    Ends the run unit of the current thread.<br>
+    Implicitly closes any files that are still open and discards all runtime state bound to the current thread.
+- ja: |-
+    現在のスレッドに紐づくランタイム状態をすべて破棄する(ファイルのクローズは行わない)。<br>
+    注意: libcobjにThreadLocalの状態を持つクラスを追加したときは、そのクラスに
+    resetThreadState()を定義し、必ずここからも呼び出すこと。呼び出しが漏れると、
+    スレッドプールで再利用されるスレッドに前の実行単位の状態が残る。
+  en: |-
+    Discards all runtime state bound to the current thread (files are not closed).<br>
+    Note: when adding a class with ThreadLocal state to libcobj, define resetThreadState()
+    in that class and be sure to call it from here as well. If the call is missing,
+    state of a previous run unit remains in threads reused by a thread pool.

@@ -1,0 +1,642 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLで使用する変数を表現するクラス。
+  en: |-
+    Represents a variable used in COBOL.
+- ja: |-
+    データを格納に使用するバイト配列の長さ
+  en: |-
+    The length of the byte array used to store the data.
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    The object that handles the byte array storing the data.
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト(符号付か,COMP-3指定かなど)
+  en: |-
+    The object holding various information about the variable
+    (whether it is signed, whether COMP-3 is specified, etc.).
+- ja: |-
+    文字データの符号化に使用するShift_JIS文字セット
+  en: |-
+    The Shift_JIS character set used to encode character data.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    メンバ変数dataStorageのgetter
+  en: |-
+    Getter for the member variable dataStorage.
+- ja: |-
+    メンバ変数dataStorageのsetter
+  en: |-
+    Setter for the member variable dataStorage.
+- ja: |-
+    設定するデータを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data to set
+- ja: |-
+    メンバ変数attributeのsetter
+  en: |-
+    Setter for the member variable attribute.
+- ja: |-
+    設定する変数に関する様々な情報を保持するオブジェクト(符号付か,COMP-3指定かなど)
+  en: |-
+    the object holding various information about the variable to set
+    (whether it is signed, whether COMP-3 is specified, etc.)
+- ja: |-
+    メンバ変数attributeのgetter
+  en: |-
+    Getter for the member variable attribute.
+- ja: |-
+    メンバ変数sizeのsetter
+  en: |-
+    Setter for the member variable size.
+- ja: |-
+    設定するデータを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array storing the data to set
+- ja: |-
+    メンバ変数sizeのgetter
+  en: |-
+    Getter for the member variable size.
+- ja: |-
+    符号部分を除いた数値部分の長さを返す
+  en: |-
+    Returns the length of the numeric part, excluding the sign.
+- ja: |-
+    符号付で符号が分離している場合はthis.size-1,そうでなければthis.size
+  en: |-
+    this.size-1 if signed with a separate sign, this.size otherwise
+- ja: |-
+    バイト配列の中で(符号データではなく)数値データの格納されている最小の添え字を返す
+  en: |-
+    Returns the smallest index in the byte array at which numeric data (rather than sign data) is
+    stored.
+- ja: |-
+    SIGN LEADINGかつSIGN SEPARATEな変数なら1,それ以外は0
+  en: |-
+    1 if the variable is SIGN LEADING and SIGN SEPARATE, 0 otherwise
+- ja: |-
+    thisの保持する数値データを4バイトの2進数(符号付き)に変換し,そのバイト配列を返す
+  en: |-
+    Converts the numeric data held by this to a 4-byte (signed) binary number and returns its byte
+    array.
+- ja: |-
+    thisの保持する数値データを4バイトの2進数に変換したバイト配列
+  en: |-
+    the byte array of the numeric data held by this converted to a 4-byte binary number
+- ja: |-
+    thisの文字列表現をかえす.
+  en: |-
+    Returns the string representation of this.
+- ja: |-
+    thisの文字列表現
+  en: |-
+    the string representation of this
+- ja: |-
+    thisの保持する数値データを4バイトの2進数に変換し,int値として返す
+  en: |-
+    Converts the numeric data held by this to a 4-byte binary number and returns it as an int value.
+- ja: |-
+    thisの保持する数値データをintに変換した値
+  en: |-
+    the numeric data held by this converted to an int
+- ja: |-
+    thisの保持するデータをdouble型の値に変換して返す
+  en: |-
+    Converts the data held by this to a double value and returns it.
+- ja: |-
+    thisの文字列表現をdoubleに変換した値.変換できない場合は0
+  en: |-
+    the string representation of this converted to a double, or 0 if it cannot be converted
+- ja: |-
+    数値を表すデータが実装すべきメソッド. 保持する数値データをCobolDecimal型に変換する.
+  en: |-
+    Method that data representing numbers should implement. Converts the numeric data held to a
+    CobolDecimal.
+- ja: |-
+    保持する数値データをCobolDecimal型に変換した値
+  en: |-
+    the numeric data held, converted to a CobolDecimal
+- ja: |-
+    数値を表すデータが実装すべきメソッド. 引数で与えられた値をthisの保持する数値データに設定する.
+  en: |-
+    Method that data representing numbers should implement. Sets the given value to the numeric data
+    held by this.
+- ja: |-
+    thisに設定する数値
+  en: |-
+    the number to set to this
+- ja: |-
+    thisの保持する数値データをint型で返す
+  en: |-
+    Returns the numeric data held by this as an int.
+- ja: |-
+    変換に使用するバイトデータの桁数
+  en: |-
+    the number of digits of the byte data used for the conversion
+- ja: |-
+    thisの保持する数値データを0に設定するメソッド.
+  en: |-
+    Sets the numeric data held by this to 0.
+- ja: |-
+    thisの保持する数値データに,引数で与えられたフィールドの保持する数値データを加算する
+  en: |-
+    Adds the numeric data held by the given field to the numeric data held by this.
+- ja: |-
+    加算する数値を保持するフィールド
+  en: |-
+    the field holding the number to add
+- ja: |-
+    桁あふれ時の丸めや切り捨てなど,結果をthisに格納する際の動作を指定するオプション
+  en: |-
+    options specifying the behavior when storing the result in this, such as rounding or truncation
+    on overflow
+- ja: |-
+    加算後のthisの保持する数値データ
+  en: |-
+    the result code of storing the sum in this (0 on success)
+- ja: |-
+    実行を停止する状況が発生した場合にスローされる
+  en: |-
+    thrown if a situation that stops execution occurs
+- ja: |-
+    thisの保持する数値データに,引数で与えられたフィールドの保持する数値データを減算する
+  en: |-
+    Subtracts the numeric data held by the given field from the numeric data held by this.
+- ja: |-
+    減算する数値を保持するフィールド
+  en: |-
+    the field holding the number to subtract
+- ja: |-
+    減算後のthisの保持する数値データ
+  en: |-
+    the result code of storing the difference in this (0 on success)
+- ja: |-
+    保持する数値データに指定された値を加算する
+  en: |-
+    Adds the specified value to the numeric data held.
+- ja: |-
+    thisの保持する数値データに加算する数値
+  en: |-
+    the number to add to the numeric data held by this
+- ja: |-
+    基本的に0が返される
+  en: |-
+    normally 0
+- ja: |-
+    thisの保持するパック10進数(COMP-3)形式の数値データに指定された整数値を加算する
+  en: |-
+    Adds the specified integer value to the packed decimal (COMP-3) numeric data held by this.
+- ja: |-
+    thisの保持する数値データに加算する整数値
+  en: |-
+    the integer value to add to the numeric data held by this
+- ja: |-
+    thisの保持する数値データに指定された値を減算する
+  en: |-
+    Subtracts the specified value from the numeric data held by this.
+- ja: |-
+    thisの保持する数値データから減算する数値
+  en: |-
+    the number to subtract from the numeric data held by this
+- ja: |-
+    thisを被除数として除算を行い,商をquotientに格納する.剰余は後続のdivRemainderで取得できるよう内部に保持される.
+  en: |-
+    Performs division with this as the dividend and stores the quotient in quotient. The remainder is
+    kept internally so that it can be obtained by a subsequent divRemainder.
+- ja: |-
+    除数を保持するフィールド
+  en: |-
+    the field holding the divisor
+- ja: |-
+    商を格納するフィールド
+  en: |-
+    the field in which the quotient is stored
+- ja: |-
+    桁あふれ時の丸めや切り捨てなど,結果を格納する際の動作を指定するオプション
+  en: |-
+    options specifying the behavior when storing the result, such as rounding or truncation on
+    overflow
+- ja: |-
+    直前のdivQuotientで保持された剰余をthisに格納する
+  en: |-
+    Stores in this the remainder kept by the preceding divQuotient.
+- ja: |-
+    整数値との比較を行う
+  en: |-
+    Compares with an integer value.
+- ja: |-
+    代わりにcmpIntegerを使用してください
+  en: |-
+    Use cmpInteger instead.
+- ja: |-
+    比較対象の整数値
+  en: |-
+    the integer value to compare with
+- ja: |-
+    保持する数値データの比較を行い,this&lt;nなら負の値,this==nなら0,this&gt;nなら正の値
+  en: |-
+    the result of comparing the numeric data held: a negative value if this&lt;n, 0 if this==n,
+    a positive value if this&gt;n
+- ja: |-
+    thisと引数で与えられたフィールドの保持する数値データを数値として比較する
+  en: |-
+    Compares the numeric data held by this and by the given field as numbers.
+- ja: |-
+    thisと比較するフィールド
+  en: |-
+    the field to compare with this
+- ja: |-
+    保持する数値データの比較を行い,this&lt;fieldなら負の値,this==fieldなら0,this&gt;fieldなら正の値
+  en: |-
+    the result of comparing the numeric data held: a negative value if this&lt;field, 0 if
+    this==field, a positive value if this&gt;field
+- ja: |-
+    thisの保持する数値データの符号を返す
+  en: |-
+    Returns the sign of the numeric data held by this.
+- ja: |-
+    thisの保持する数値データが負ならば負数,0なら0,正なら正数を返す
+  en: |-
+    a negative number if the numeric data held by this is negative, 0 if it is 0, and a positive
+    number if it is positive
+- ja: |-
+    thisの保持する数値データの符号を設定する
+  en: |-
+    Sets the sign of the numeric data held by this.
+- ja: |-
+    正符号を設定するときは正数,負符号を設定するときは負数,それ以外は0
+  en: |-
+    a positive number to set a positive sign, a negative number to set a negative sign, 0 otherwise
+- ja: |-
+    代入処理(moveFrom)の前処理を行う. 全体集団項目(ALL)の代入や,英数字から日本語項目への変換などを処理する.
+  en: |-
+    Performs preprocessing for a move (moveFrom). Handles moves from ALL literals, conversion from
+    alphanumeric to national items, and so on.
+- ja: |-
+    代入元のフィールド
+  en: |-
+    the source field
+- ja: |-
+    後続の代入処理を行うべき代入元フィールド.前処理内で代入が完結した場合や代入する必要がない場合はnull
+  en: |-
+    the source field for which the subsequent move should be performed, or null if the move was
+    completed within the preprocessing or no move is necessary
+- ja: |-
+    全体集団項目(ALL定数)からthisへの代入を行う. 代入元のデータをthisのサイズいっぱいに繰り返し展開してから代入する.
+  en: |-
+    Moves an ALL literal to this. The source data is expanded repeatedly to fill the size of this
+    before the move.
+- ja: |-
+    引数で与えらえられたデータからthisへの代入を行う
+  en: |-
+    Moves the given data to this.
+- ja: |-
+    代入元のデータ
+  en: |-
+    the source data
+- ja: |-
+    thisの保持するデータが数値でない場合に実行時エラーを発生させ,実行を停止する
+  en: |-
+    Raises a runtime error and stops execution if the data held by this is not numeric.
+- ja: |-
+    エラーメッセージに表示する変数名(Shift_JISでエンコードされたバイト配列)
+  en: |-
+    the variable name shown in the error message (a byte array encoded in Shift_JIS)
+- ja: |-
+    thisの保持するデータが数値でない場合にスローされる
+  en: |-
+    thrown if the data held by this is not numeric
+- ja: |-
+    thisと引数で与えられたデータとの数値比較を行う
+  en: |-
+    Compares this with the given data numerically.
+- ja: |-
+    thisと比較するfield
+  en: |-
+    the field to compare with this
+- ja: |-
+    thisのデータを,引数で与えられたフィールドのデータを繰り返し並べたものと比較する
+  en: |-
+    Compares the data of this with the data of the given field laid out repeatedly.
+- ja: |-
+    比較を行い,this&lt;fieldなら負の値,this==fieldなら0,this&gt;fieldなら正の値
+  en: |-
+    the result of the comparison: a negative value if this&lt;field, 0 if this==field, a positive
+    value if this&gt;field
+- ja: |-
+    2つのバイトデータを英数字として1バイトずつ比較する
+  en: |-
+    Compares two byte sequences as alphanumeric data, one byte at a time.
+- ja: |-
+    比較対象の一方のバイトデータ
+  en: |-
+    one of the byte sequences to compare
+- ja: |-
+    s1のバイトデータにアクセスるするときの最初の添え字の相対位置
+  en: |-
+    the relative position of the first index when accessing the byte data of s1
+- ja: |-
+    比較対象のもう一方のバイトデータ
+  en: |-
+    the other byte sequence to compare
+- ja: |-
+    s2のバイトデータにアクセスるするときの最初の添え字の相対位置
+  en: |-
+    the relative position of the first index when accessing the byte data of s2
+- ja: |-
+    比較するバイト数
+  en: |-
+    the number of bytes to compare
+- ja: |-
+    文字の照合順序(コレーティングシーケンス).nullの場合はバイト値で比較する
+  en: |-
+    the collating sequence of characters, or null to compare by byte value
+- ja: |-
+    比較を行い,s1&lt;s2なら負の値,s1==s2なら0,s1&gt;s2なら正の値
+  en: |-
+    the result of the comparison: a negative value if s1&lt;s2, 0 if s1==s2, a positive value if
+    s1&gt;s2
+- ja: |-
+    thisと同じサイズ・データ・属性を持つCobolNumericField型のフィールドを生成して返す
+  en: |-
+    Creates and returns a field of type CobolNumericField with the same size, data, and attributes as
+    this.
+- ja: |-
+    thisからCobolNumericField型へ変換した値
+  en: |-
+    this converted to CobolNumericField
+- ja: |-
+    thisが英数字項目で,かつ引数のfieldが数値項目の場合に,thisの保持するデータがすべて数字であるか検査する
+  en: |-
+    Checks whether all data held by this are digits, when this is an alphanumeric item and the
+    argument field is a numeric item.
+- ja: |-
+    代入元など対象となる数値項目のフィールド
+  en: |-
+    the field of the numeric item concerned, such as the move source
+- ja: |-
+    thisに数字以外のバイトが含まれている場合にスローされる
+  en: |-
+    thrown if this contains bytes other than digits
+- ja: |-
+    s2のバイトデータをs1へ指定したバイト数だけコピーする
+  en: |-
+    Copies the specified number of bytes of the byte data of s2 to s1.
+- ja: |-
+    コピー先のバイトデータ
+  en: |-
+    the destination byte data
+- ja: |-
+    コピー元のバイトデータ
+  en: |-
+    the source byte data
+- ja: |-
+    コピーするバイト数
+  en: |-
+    the number of bytes to copy
+- ja: |-
+    thisの保持するデータを,末尾の空白および0バイトを取り除いた文字列にして返す
+  en: |-
+    Returns the data held by this as a string with trailing spaces and zero bytes removed.
+- ja: |-
+    this.dataの保持するデータを文字列にして返す.
+  en: |-
+    the data held by this.data as a string
+- ja: |-
+    引数で与えられたint値をthisの保持する数値データに設定する
+  en: |-
+    Sets the given int value to the numeric data held by this.
+- ja: |-
+    thisに設定するint値
+  en: |-
+    the int value to set to this
+- ja: |-
+    引数で与えられたバイトデータをint値として読み取り,thisの保持する数値データに設定する
+  en: |-
+    Reads the given byte data as an int value and sets it to the numeric data held by this.
+- ja: |-
+    thisに設定する値を保持するバイトデータ
+  en: |-
+    the byte data holding the value to set to this
+- ja: |-
+    引数で与えられたlong値をthisの保持する数値データに設定する
+  en: |-
+    Sets the given long value to the numeric data held by this.
+- ja: |-
+    thisに設定するlong値
+  en: |-
+    the long value to set to this
+- ja: |-
+    引数で与えられたバイト配列を英数字データとしてthisへ代入する
+  en: |-
+    Moves the given byte array to this as alphanumeric data.
+- ja: |-
+    代入元のバイト配列
+  en: |-
+    the source byte array
+- ja: |-
+    代入元として使用するバイト数
+  en: |-
+    the number of bytes to use from the source
+- ja: |-
+    引数で与えられたバイト配列全体を英数字データとしてthisへ代入する
+  en: |-
+    Moves the whole given byte array to this as alphanumeric data.
+- ja: |-
+    引数で与えられた文字列をShift_JISでエンコードし,英数字データとしてthisへ代入する
+  en: |-
+    Encodes the given string in Shift_JIS and moves it to this as alphanumeric data.
+- ja: |-
+    代入元の文字列
+  en: |-
+    the source string
+- ja: |-
+    引数で与えられた文字列全体をShift_JISでエンコードし,英数字データとしてthisへ代入する
+  en: |-
+    Encodes the whole given string in Shift_JIS and moves it to this as alphanumeric data.
+- ja: |-
+    thisが省略された引数(OMITTED)であるかどうかを返す
+  en: |-
+    Returns whether this is an omitted argument (OMITTED).
+- ja: |-
+    データを格納するバイト配列が存在しない(省略されている)場合はtrue,そうでなければfalse
+  en: |-
+    true if the byte array that stores the data does not exist (is omitted), false otherwise
+- ja: |-
+    thisの保持するデータが数値として有効であるかどうかを判定する(CLASS NUMERIC判定)
+  en: |-
+    Determines whether the data held by this is valid as a number (CLASS NUMERIC test).
+- ja: |-
+    保持するデータが数値として有効であればtrue,そうでなければfalse
+  en: |-
+    true if the data held is valid as a number, false otherwise
+- ja: |-
+    thisの保持するデータが英字および空白のみで構成されているかどうかを判定する(CLASS ALPHABETIC判定)
+  en: |-
+    Determines whether the data held by this consists only of letters and spaces (CLASS ALPHABETIC
+    test).
+- ja: |-
+    保持するデータが英字または空白のみであればtrue,そうでなければfalse
+  en: |-
+    true if the data held consists only of letters or spaces, false otherwise
+- ja: |-
+    thisの保持するデータが大文字および空白のみで構成されているかどうかを判定する(CLASS ALPHABETIC-UPPER判定)
+  en: |-
+    Determines whether the data held by this consists only of uppercase letters and spaces
+    (CLASS ALPHABETIC-UPPER test).
+- ja: |-
+    保持するデータが大文字または空白のみであればtrue,そうでなければfalse
+  en: |-
+    true if the data held consists only of uppercase letters or spaces, false otherwise
+- ja: |-
+    thisの保持するデータが小文字および空白のみで構成されているかどうかを判定する(CLASS ALPHABETIC-LOWER判定)
+  en: |-
+    Determines whether the data held by this consists only of lowercase letters and spaces
+    (CLASS ALPHABETIC-LOWER test).
+- ja: |-
+    保持するデータが小文字または空白のみであればtrue,そうでなければfalse
+  en: |-
+    true if the data held consists only of lowercase letters or spaces, false otherwise
+- ja: |-
+    thisの保持するデータを,指定した1文字で全体を埋めたデータと比較する
+  en: |-
+    Compares the data held by this with data filled entirely with the specified single character.
+- ja: |-
+    比較対象の文字(thisのサイズ分だけ繰り返されるとみなす)
+  en: |-
+    the character to compare with (regarded as repeated for the size of this)
+- ja: |-
+    比較を行い,this&lt;cの並びなら負の値,等しければ0,this&gt;cの並びなら正の値
+  en: |-
+    the result of the comparison: a negative value if this&lt;the sequence of c, 0 if equal, a
+    positive value if this&gt;the sequence of c
+- ja: |-
+    thisのデータをotherのデータに対して繰り返し並べ,照合順序を考慮して比較する(ALL定数の比較)
+  en: |-
+    Compares the data of this against the data of other laid out repeatedly, taking the collating
+    sequence into account (comparison with an ALL literal).
+- ja: |-
+    比較を行い,this&lt;otherなら負の値,this==otherなら0,this&gt;otherなら正の値
+  en: |-
+    the result of the comparison: a negative value if this&lt;other, 0 if this==other, a positive
+    value if this&gt;other
+- ja: |-
+    thisとotherを文字列として比較する. サイズが異なる場合は短い方を空白(日本語項目の場合は全角空白)で埋めて比較する.
+  en: |-
+    Compares this and other as strings. If the sizes differ, the shorter one is padded with spaces
+    (full-width spaces for national items) before the comparison.
+- ja: |-
+    thisとotherを英数字として比較する. 数値表示項目(DISPLAY)の場合は符号を一時的に正にしてから比較し,比較後に符号を元に戻す.
+  en: |-
+    Compares this and other as alphanumeric data. For display numeric items (DISPLAY), the sign is
+    temporarily made positive before the comparison and restored afterwards.
+- ja: |-
+    符号の有無にかかわらず,thisの保持する数値データの符号を実際に取得する. 必要に応じて符号桁を数字に戻す処理も行う.
+  en: |-
+    Actually gets the sign of the numeric data held by this, regardless of whether it is signed. Also
+    restores the sign digit to a digit if necessary.
+- ja: |-
+    数値データが正(または符号なし)なら1,負なら-1.数値型でない場合は0
+  en: |-
+    1 if the numeric data is positive (or unsigned), -1 if negative, 0 if not a numeric type
+- ja: |-
+    符号の有無にかかわらず,thisの保持する数値データに符号を実際に設定する
+  en: |-
+    Actually sets the sign to the numeric data held by this, regardless of whether it is signed.
+- ja: |-
+    正符号を設定するときは0以上の値,負符号を設定するときは負の値
+  en: |-
+    a value of 0 or more to set a positive sign, a negative value to set a negative sign
+- ja: |-
+    thisの保持する数値データを8バイトの2進数に変換し,long値として返す
+  en: |-
+    Converts the numeric data held by this to an 8-byte binary number and returns it as a long value.
+- ja: |-
+    thisの保持する数値データをlongに変換した値
+  en: |-
+    the numeric data held by this converted to a long
+- ja: |-
+    thisの保持する数値データをlong値として返す. 基底クラスでは0を返し,各サブクラスでオーバーライドされる.
+  en: |-
+    Returns the numeric data held by this as a long value. The base class returns 0, and each
+    subclass overrides it.
+- ja: |-
+    thisの保持する数値データをlongに変換した値.基底クラスでは0
+  en: |-
+    the numeric data held by this converted to a long, or 0 in the base class
+- ja: |-
+    半角文字への変換を伴う代入を行う(暫定実装として通常の代入を行う)
+  en: |-
+    Performs a move involving conversion to half-width characters (as a provisional implementation,
+    performs a normal move).
+- ja: |-
+    EBCDIC形式で符号が重ねられた符号桁から符号を取得し,その桁を対応する数字に戻す
+  en: |-
+    Gets the sign from a sign digit with an overpunched sign in EBCDIC format and restores the digit
+    to the corresponding numeral.
+- ja: |-
+    符号桁を先頭に持つバイトデータ
+  en: |-
+    the byte data starting with the sign digit
+- ja: |-
+    符号が正なら1,負なら-1
+  en: |-
+    1 if the sign is positive, -1 if negative
+- ja: |-
+    符号桁の数字に対し,指定された符号をEBCDIC形式で重ねて設定する
+  en: |-
+    Overpunches the specified sign in EBCDIC format onto the digit of the sign digit.
+- ja: |-
+    負符号を設定するときは負の値,正符号を設定するときはそれ以外の値
+  en: |-
+    a negative value to set a negative sign, any other value to set a positive sign
+- ja: |-
+    バイトデータを,指定した1文字で全体を埋めたデータと,照合順序を考慮して比較する
+  en: |-
+    Compares byte data with data filled entirely with the specified single character, taking the
+    collating sequence into account.
+- ja: |-
+    比較対象のバイトデータ
+  en: |-
+    the byte data to compare
+- ja: |-
+    比較対象の文字(size分だけ繰り返されるとみなす)
+  en: |-
+    the character to compare with (regarded as repeated for size)
+- ja: |-
+    比較を行い,s1&lt;cの並びなら負の値,等しければ0,s1&gt;cの並びなら正の値
+  en: |-
+    the result of the comparison: a negative value if s1&lt;the sequence of c, 0 if equal, a positive
+    value if s1&gt;the sequence of c
+- ja: |-
+    バイトデータの指定範囲が,日本語項目の余白(半角空白または全角空白)のみで構成されているかどうかを判定する
+  en: |-
+    Determines whether the specified range of byte data consists only of national item padding
+    (half-width or full-width spaces).
+- ja: |-
+    判定を開始するバイトデータの添え字
+  en: |-
+    the index in the byte data at which the check starts
+- ja: |-
+    判定対象のバイトデータ
+  en: |-
+    the byte data to check
+- ja: |-
+    判定するバイト数
+  en: |-
+    the number of bytes to check
+- ja: |-
+    余白(半角空白または全角空白)のみで構成されていれば1,そうでなければ0
+  en: |-
+    1 if it consists only of padding (half-width or full-width spaces), 0 otherwise

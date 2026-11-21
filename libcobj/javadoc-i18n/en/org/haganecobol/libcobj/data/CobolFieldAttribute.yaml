@@ -1,0 +1,436 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL変数の属性情報を保持するクラス.<br>
+    変数の種別(数値・英数字・日本語など)・桁数・スケール・各種フラグ・PICTURE句の文字列を保持する.
+    種別とフラグは{@code COB_TYPE_*}・{@code COB_FLAG_*}定数で表現される.
+  en: |-
+    Class that holds the attributes of a COBOL variable.<br>
+    Holds the variable type (numeric, alphanumeric, national, etc.), the number of digits, the scale,
+    various flags, and the PICTURE clause string.
+    Types and flags are represented by the {@code COB_TYPE_*} and {@code COB_FLAG_*} constants.
+- ja: |-
+    不明な種別を表す変数種別.
+  en: |-
+    Variable type representing an unknown type.
+- ja: |-
+    集団項目を表す変数種別.
+  en: |-
+    Variable type representing a group item.
+- ja: |-
+    真理値項目を表す変数種別.
+  en: |-
+    Variable type representing a boolean item.
+- ja: |-
+    数値項目を表す変数種別(数値種別共通のビットを含む).
+  en: |-
+    Variable type representing a numeric item (contains the bit common to all numeric types).
+- ja: |-
+    表示用数値項目(USAGE DISPLAY)を表す変数種別.
+  en: |-
+    Variable type representing a display numeric item (USAGE DISPLAY).
+- ja: |-
+    2進数値項目(USAGE COMP/BINARY)を表す変数種別.
+  en: |-
+    Variable type representing a binary numeric item (USAGE COMP/BINARY).
+- ja: |-
+    パック10進数値項目(USAGE COMP-3)を表す変数種別.
+  en: |-
+    Variable type representing a packed decimal numeric item (USAGE COMP-3).
+- ja: |-
+    単精度浮動小数点数値項目(USAGE COMP-1)を表す変数種別.
+  en: |-
+    Variable type representing a single-precision floating-point numeric item (USAGE COMP-1).
+- ja: |-
+    倍精度浮動小数点数値項目(USAGE COMP-2)を表す変数種別.
+  en: |-
+    Variable type representing a double-precision floating-point numeric item (USAGE COMP-2).
+- ja: |-
+    編集数値項目を表す変数種別.
+  en: |-
+    Variable type representing a numeric edited item.
+- ja: |-
+    英数字項目(PIC X)を表す変数種別.
+  en: |-
+    Variable type representing an alphanumeric item (PIC X).
+- ja: |-
+    ALL指定の英数字項目を表す変数種別.
+  en: |-
+    Variable type representing an alphanumeric item with ALL specified.
+- ja: |-
+    英数字編集項目を表す変数種別.
+  en: |-
+    Variable type representing an alphanumeric edited item.
+- ja: |-
+    日本語項目(PIC N)を表す変数種別.
+  en: |-
+    Variable type representing a national item (PIC N).
+- ja: |-
+    日本語編集項目を表す変数種別.
+  en: |-
+    Variable type representing a national edited item.
+- ja: |-
+    ALL指定の日本語項目を表す変数種別.
+  en: |-
+    Variable type representing a national item with ALL specified.
+- ja: |-
+    フラグが何も指定されていないことを表す値.
+  en: |-
+    Value indicating that no flags are specified.
+- ja: |-
+    符号を持つ数値であることを表すフラグ.
+  en: |-
+    Flag indicating a signed numeric value.
+- ja: |-
+    符号を独立した桁として保持する(SIGN SEPARATE)ことを表すフラグ.
+  en: |-
+    Flag indicating that the sign is held as a separate character (SIGN SEPARATE).
+- ja: |-
+    符号を先頭桁に保持する(SIGN LEADING)ことを表すフラグ.
+  en: |-
+    Flag indicating that the sign is held in the leading digit (SIGN LEADING).
+- ja: |-
+    値が0のとき空白で表示する(BLANK WHEN ZERO)ことを表すフラグ.
+  en: |-
+    Flag indicating that the value is displayed as spaces when it is zero (BLANK WHEN ZERO).
+- ja: |-
+    右寄せ(JUSTIFIED RIGHT)であることを表すフラグ.
+  en: |-
+    Flag indicating right justification (JUSTIFIED RIGHT).
+- ja: |-
+    2進数値のバイト順を入れ替える(バイトスワップする)ことを表すフラグ.
+  en: |-
+    Flag indicating that the byte order of binary values is reversed (byte-swapped).
+- ja: |-
+    2進数値を実際のバイト幅(BINARY-C-LONG等)で扱うことを表すフラグ.
+  en: |-
+    Flag indicating that binary values are handled with their actual byte width (BINARY-C-LONG, etc.).
+- ja: |-
+    ポインタ項目であることを表すフラグ.
+  en: |-
+    Flag indicating a pointer item.
+- ja: |-
+    変数種別
+  en: |-
+    Variable type.
+- ja: |-
+    数値の時,桁数を示す
+  en: |-
+    Number of digits, for a numeric item.
+- ja: |-
+    数値の時,スケールを示す
+  en: |-
+    Scale, for a numeric item.
+- ja: |-
+    様々なフラグ
+  en: |-
+    Various flags.
+- ja: |-
+    PICTURE句の文字列
+  en: |-
+    PICTURE clause string.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    フィールドの種別
+  en: |-
+    the type of the field
+- ja: |-
+    数値型のとき,桁数を表す
+  en: |-
+    the number of digits, for a numeric type
+- ja: |-
+    数値型の時,スケールを表す
+  en: |-
+    the scale, for a numeric type
+- ja: |-
+    各種フラグ
+  en: |-
+    the various flags
+- ja: |-
+    PIC文字列
+  en: |-
+    the PIC string
+- ja: |-
+    コピーコンストラクタ.別の属性オブジェクトの各値をコピーして新しいオブジェクトを生成する.
+  en: |-
+    Copy constructor. Creates a new object by copying each value of another attribute object.
+- ja: |-
+    コピー元の属性オブジェクト
+  en: |-
+    the attribute object to copy from
+- ja: |-
+    変数種別を取得する
+  en: |-
+    Gets the variable type.
+- ja: |-
+    このオブジェクトの変数種別
+  en: |-
+    the variable type of this object
+- ja: |-
+    このオブジェクトに設定する変数種別
+  en: |-
+    the variable type to set to this object
+- ja: |-
+    桁数を取得する
+  en: |-
+    Returns the number of digits.
+- ja: |-
+    このオブジェクトの桁数
+  en: |-
+    the number of digits of this object
+- ja: |-
+    桁数を設定する
+  en: |-
+    Sets the number of digits.
+- ja: |-
+    このオブジェクトに設定する桁数
+  en: |-
+    the number of digits to set to this object
+- ja: |-
+    このオブジェクトのスケールを取得する
+  en: |-
+    Returns the scale of this object.
+- ja: |-
+    このオブジェクトのスケール
+  en: |-
+    the scale of this object
+- ja: |-
+    このオブジェクトのスケールを設定する
+  en: |-
+    Sets the scale of this object.
+- ja: |-
+    このオブジェクトに設定するスケール
+  en: |-
+    the scale to set to this object
+- ja: |-
+    このオブジェクトのフラグを設定する
+  en: |-
+    Sets the flags of this object.
+- ja: |-
+    このオブジェクトのフラグ
+  en: |-
+    the flags of this object
+- ja: |-
+    このオブジェクトに設定するフラグ
+  en: |-
+    the flags to set to this object
+- ja: |-
+    このオブジェクトのPICTURE文字列を取得する
+  en: |-
+    Returns the PICTURE string of this object.
+- ja: |-
+    このオブジェクトのPICTURE文字列
+  en: |-
+    the PICTURE string of this object
+- ja: |-
+    このオブジェクトのPICTURE文字列を設定する
+  en: |-
+    Sets the PICTURE string of this object.
+- ja: |-
+    このオブジェクトに設定するPICTURE文字列
+  en: |-
+    the PICTURE string to set to this object
+- ja: |-
+    変数種別が不明な種別かどうかを判定する.
+  en: |-
+    Determines whether the variable type is an unknown type.
+- ja: |-
+    不明な種別であればtrue
+  en: |-
+    true if it is an unknown type
+- ja: |-
+    変数種別が集団項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a group item.
+- ja: |-
+    集団項目であればtrue
+  en: |-
+    true if it is a group item
+- ja: |-
+    変数種別が真理値項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a boolean item.
+- ja: |-
+    真理値項目であればtrue
+  en: |-
+    true if it is a boolean item
+- ja: |-
+    変数種別が数値項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a numeric item.
+- ja: |-
+    数値項目であればtrue
+  en: |-
+    true if it is a numeric item
+- ja: |-
+    変数種別が表示用数値項目(USAGE DISPLAY)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a display numeric item (USAGE DISPLAY).
+- ja: |-
+    表示用数値項目であればtrue
+  en: |-
+    true if it is a display numeric item
+- ja: |-
+    変数種別が2進数値項目(USAGE COMP/BINARY)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a binary numeric item (USAGE COMP/BINARY).
+- ja: |-
+    2進数値項目であればtrue
+  en: |-
+    true if it is a binary numeric item
+- ja: |-
+    変数種別がパック10進数値項目(USAGE COMP-3)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a packed decimal numeric item (USAGE COMP-3).
+- ja: |-
+    パック10進数値項目であればtrue
+  en: |-
+    true if it is a packed decimal numeric item
+- ja: |-
+    変数種別が単精度浮動小数点数値項目(USAGE COMP-1)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a single-precision floating-point numeric item (USAGE
+    COMP-1).
+- ja: |-
+    単精度浮動小数点数値項目であればtrue
+  en: |-
+    true if it is a single-precision floating-point numeric item
+- ja: |-
+    変数種別が倍精度浮動小数点数値項目(USAGE COMP-2)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a double-precision floating-point numeric item (USAGE
+    COMP-2).
+- ja: |-
+    倍精度浮動小数点数値項目であればtrue
+  en: |-
+    true if it is a double-precision floating-point numeric item
+- ja: |-
+    変数種別が編集数値項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a numeric edited item.
+- ja: |-
+    編集数値項目であればtrue
+  en: |-
+    true if it is a numeric edited item
+- ja: |-
+    変数種別が英数字項目(PIC X)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is an alphanumeric item (PIC X).
+- ja: |-
+    英数字項目であればtrue
+  en: |-
+    true if it is an alphanumeric item
+- ja: |-
+    変数種別がALL指定の英数字項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is an alphanumeric item with ALL specified.
+- ja: |-
+    ALL指定の英数字項目であればtrue
+  en: |-
+    true if it is an alphanumeric item with ALL specified
+- ja: |-
+    変数種別が英数字編集項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is an alphanumeric edited item.
+- ja: |-
+    英数字編集項目であればtrue
+  en: |-
+    true if it is an alphanumeric edited item
+- ja: |-
+    変数種別が日本語項目(PIC N)かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a national item (PIC N).
+- ja: |-
+    日本語項目であればtrue
+  en: |-
+    true if it is a national item
+- ja: |-
+    変数種別が日本語編集項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a national edited item.
+- ja: |-
+    日本語編集項目であればtrue
+  en: |-
+    true if it is a national edited item
+- ja: |-
+    変数種別がALL指定の日本語項目かどうかを判定する.
+  en: |-
+    Determines whether the variable type is a national item with ALL specified.
+- ja: |-
+    ALL指定の日本語項目であればtrue
+  en: |-
+    true if it is a national item with ALL specified
+- ja: |-
+    符号を持つ数値であるフラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating a signed numeric value is set.
+- ja: |-
+    符号を持つ数値であればtrue
+  en: |-
+    true if it is a signed numeric value
+- ja: |-
+    符号を独立した桁として保持する(SIGN SEPARATE)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating that the sign is held as a separate character (SIGN
+    SEPARATE) is set.
+- ja: |-
+    SIGN SEPARATEであればtrue
+  en: |-
+    true if SIGN SEPARATE
+- ja: |-
+    符号を先頭桁に保持する(SIGN LEADING)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating that the sign is held in the leading digit (SIGN LEADING) is
+    set.
+- ja: |-
+    SIGN LEADINGであればtrue
+  en: |-
+    true if SIGN LEADING
+- ja: |-
+    値が0のとき空白で表示する(BLANK WHEN ZERO)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating that the value is displayed as spaces when it is zero (BLANK
+    WHEN ZERO) is set.
+- ja: |-
+    BLANK WHEN ZEROであればtrue
+  en: |-
+    true if BLANK WHEN ZERO
+- ja: |-
+    右寄せ(JUSTIFIED RIGHT)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the right justification (JUSTIFIED RIGHT) flag is set.
+- ja: |-
+    右寄せであればtrue
+  en: |-
+    true if right-justified
+- ja: |-
+    2進数値のバイト順を入れ替える(バイトスワップする)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating that the byte order of binary values is reversed
+    (byte-swapped) is set.
+- ja: |-
+    バイトスワップするのであればtrue
+  en: |-
+    true if byte-swapped
+- ja: |-
+    2進数値を実際のバイト幅で扱う(REAL BINARY)フラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating that binary values are handled with their actual byte width
+    (REAL BINARY) is set.
+- ja: |-
+    REAL BINARYであればtrue
+  en: |-
+    true if REAL BINARY
+- ja: |-
+    ポインタ項目であるフラグが立っているかどうかを判定する.
+  en: |-
+    Determines whether the flag indicating a pointer item is set.
+- ja: |-
+    ポインタ項目であればtrue
+  en: |-
+    true if it is a pointer item

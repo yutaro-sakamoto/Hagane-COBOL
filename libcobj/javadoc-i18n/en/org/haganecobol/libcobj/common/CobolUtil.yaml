@@ -1,0 +1,689 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLランタイムの各種ユーティリティ機能を提供するクラス。<br>
+    libcobのcommon.cに相当し、ランタイムの初期化、環境変数の取得・設定、コマンドライン引数(CHAINING)の処理、<br>
+    ランタイムエラーの報告、SWITCHの設定・取得、参照修飾(reference modification)の境界チェック、<br>
+    文字列比較などのヘルパー処理をまとめて提供する。
+  en: |-
+    Class that provides various utility functions of the COBOL runtime.<br>
+    Corresponds to common.c in libcob and provides helper functions such as runtime initialization,
+    getting and setting environment variables, processing command line arguments (CHAINING),<br>
+    reporting runtime errors, setting and getting SWITCHes, bound checks for reference modification,<br>
+    and string comparison.
+- ja: |-
+    I/O操作でREWRITEを暗黙的に行うとみなすかどうかのフラグ(環境変数COB_IO_ASSUME_REWRITEで設定)。
+  en: |-
+    Flag indicating whether REWRITE is assumed to be performed implicitly in
+    I/O operations (set by the environment variable COB_IO_ASSUME_REWRITE).
+- ja: |-
+    冗長出力を有効にするかどうかのフラグ(環境変数COB_VERBOSEで設定)。
+  en: |-
+    Flag indicating whether verbose output is enabled (set by the environment variable COB_VERBOSE).
+- ja: |-
+    実行単位(スレッド)ごとに保持するランタイムの状態。<br>
+    実行位置、プログラムスイッチ、エラーハンドラなど、COBOLの実行単位に属する情報をまとめて保持する。
+  en: |-
+    Runtime state held per run unit (thread).<br>
+    Holds together the information belonging to a COBOL run unit, such
+    as the execution position, program switches, and error handlers.
+- ja: |-
+    DISPLAY UPON ENVIRONMENT-NAMEで設定された環境変数名。
+  en: |-
+    The environment variable name set by DISPLAY UPON ENVIRONMENT-NAME.
+- ja: |-
+    ACCEPT FROM ARGUMENT-VALUEで次に取得するコマンドライン引数のインデックス(1始まり)。
+  en: |-
+    The index (1-based) of the command line argument to be obtained next by ACCEPT FROM ARGUMENT-VALUE.
+- ja: |-
+    プログラムスイッチ(SWITCH-1からSWITCH-8)の状態。環境変数COB_SWITCH_nで初期化される。
+  en: |-
+    The states of the program switches (SWITCH-1 to SWITCH-8).
+    Initialized from the environment variables COB_SWITCH_n.
+- ja: |-
+    CALL文の引数個数の退避値。
+  en: |-
+    The saved number of arguments of the CALL statement.
+- ja: |-
+    終了時にエラーが発生したことを示すフラグ。
+  en: |-
+    Flag indicating that an error occurred at termination.
+- ja: |-
+    行トレース(READY TRACE)が有効かどうか。
+  en: |-
+    Whether line tracing (READY TRACE) is enabled.
+- ja: |-
+    現在実行中のソースファイル名。
+  en: |-
+    The name of the source file currently being executed.
+- ja: |-
+    現在実行中のソース行番号。
+  en: |-
+    The source line number currently being executed.
+- ja: |-
+    現在実行中のプログラムID。
+  en: |-
+    The program ID currently being executed.
+- ja: |-
+    現在実行中のセクション名。
+  en: |-
+    The name of the section currently being executed.
+- ja: |-
+    現在実行中の段落(パラグラフ)名。
+  en: |-
+    The name of the paragraph currently being executed.
+- ja: |-
+    現在実行中の文(ステートメント)の名称。
+  en: |-
+    The name of the statement currently being executed.
+- ja: |-
+    SET ENVIRONMENTなどでプログラムが設定した環境変数のテーブル。
+  en: |-
+    The table of environment variables set by the program, e.g. with SET ENVIRONMENT.
+- ja: |-
+    実行単位ごとの状態。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    The state per run unit. Run units are independent per thread, so it is held per thread.
+- ja: |-
+    cob_initによるランタイム設定の初期化が完了しているかどうか。
+  en: |-
+    Whether initialization of the runtime settings by cob_init has completed.
+- ja: |-
+    cob_initの排他制御に使用するロック。
+  en: |-
+    The lock used for mutual exclusion of cob_init.
+- ja: |-
+    環境変数COB_DATEで指定された固定日付を保持する。指定がない場合はnull。
+  en: |-
+    Holds the fixed date specified by the environment variable COB_DATE. null if not specified.
+- ja: |-
+    プログラムに渡されたコマンドライン引数(プログラム名を含まない)。
+  en: |-
+    The command line arguments passed to the program (not including the program name).
+- ja: |-
+    符号なし数値のニブル定数Cの扱いを制御するフラグ(環境変数COB_NIBBLE_C_UNSIGNEDで設定)。
+  en: |-
+    Flag controlling how the nibble value C is handled for unsigned
+    numbers (set by the environment variable COB_NIBBLE_C_UNSIGNED).
+- ja: |-
+    順編成ファイルの入出力バッファサイズ(レコード数)のデフォルト値。
+  en: |-
+    The default I/O buffer size (in records) for sequential files.
+- ja: |-
+    順編成ファイルへの書き込みバッファサイズ(環境変数COB_FILE_SEQ_WRITE_BUFFER_SIZEで設定)。
+  en: |-
+    The write buffer size for sequential files (set by the environment variable COB_FILE_SEQ_WRITE_BUFFER_SIZE).
+- ja: |-
+    順編成ファイルからの読み込みバッファサイズ(環境変数COB_FILE_SEQ_READ_BUFFER_SIZEで設定)。
+  en: |-
+    The read buffer size for sequential files (set by the environment variable COB_FILE_SEQ_READ_BUFFER_SIZE).
+- ja: |-
+    環境変数COB_FILE_IDX_COMMIT_INTERVALに{@code INF}が指定されたか。デフォルト(環境変数が
+    未指定)も{@code INF}である。COBOLには{@code COMMIT}文があり、コミットの時点は
+    プログラムが{@code COMMIT}文と{@code CLOSE}文で決めるのが本来の姿であるため、
+    ランタイムが勝手に途中でコミットすることはしない。
+
+    <p>{@code true}のときINDEXEDファイルのOUTPUTモードでは途中コミットを行わず、{@code
+    COMMIT}文と{@code CLOSE}時のみコミットする。このとき{@link #fileIdxCommitInterval}は参照されない。
+  en: |-
+    Whether {@code INF} was specified for the environment variable COB_FILE_IDX_COMMIT_INTERVAL.
+    The default (when the environment variable is not specified) is also {@code INF}. COBOL has a
+    {@code COMMIT} statement, and the points of commit are properly determined by the program through
+    {@code COMMIT} and {@code CLOSE} statements, so the runtime does not commit midway on its own.
+
+    <p>When {@code true}, no intermediate commits are performed in OUTPUT mode
+    for INDEXED files; commits occur only at {@code COMMIT} statements and at
+    {@code CLOSE}. In this case {@link #fileIdxCommitInterval} is not referenced.
+- ja: |-
+    INDEXEDファイルをOUTPUTモードで書き込むときのコミット間隔(レコード数。環境変数COB_FILE_IDX_COMMIT_INTERVALで設定)。
+    {@link #fileIdxCommitIntervalIsInf}が{@code true}のときは参照されない。
+  en: |-
+    The commit interval (in records) when writing an INDEXED file in OUTPUT
+    mode (set by the environment variable COB_FILE_IDX_COMMIT_INTERVAL).
+    Not referenced when {@link #fileIdxCommitIntervalIsInf} is {@code true}.
+- ja: |-
+    環境変数COB_FILE_IDX_COMMIT_INTERVALに{@code INF}が指定されたかを返す。
+  en: |-
+    Returns whether {@code INF} was specified for the environment variable COB_FILE_IDX_COMMIT_INTERVAL.
+- ja: |-
+    {@code INF}が指定されていれば{@code true}。このときINDEXEDファイルのOUTPUTモードでは
+        途中コミットを行わず、CLOSE時のみコミットする
+  en: |-
+    {@code true} if {@code INF} was specified. In this case no intermediate commits
+    are performed in OUTPUT mode for INDEXED files, and commits occur only at CLOSE.
+- ja: |-
+    INDEXEDファイルをOUTPUTモードで書き込むときのコミット間隔(レコード数)を返す。
+  en: |-
+    Returns the commit interval (in records) when writing an INDEXED file in OUTPUT mode.
+- ja: |-
+    コミット間隔(レコード数)。{@link #isFileIdxCommitIntervalInf()}が{@code true}のときは無意味な値
+  en: |-
+    the commit interval (in records); meaningless when {@link #isFileIdxCommitIntervalInf()} is {@code true}
+- ja: |-
+    DISPLAY/ACCEPT文によるデータ出力時のエンコーディング
+  en: |-
+    The encoding used for data output by DISPLAY/ACCEPT statements.
+- ja: |-
+    致命的エラー種別: cob_init()が呼び出されていない。
+  en: |-
+    Fatal error kind: cob_init() has not been called.
+- ja: |-
+    致命的エラー種別: コード生成エラー(報告が必要な内部エラー)。
+  en: |-
+    Fatal error kind: code generation error (an internal error that should be reported).
+- ja: |-
+    致命的エラー種別: CHAININGプログラムの再帰呼び出し。
+  en: |-
+    Fatal error kind: recursive call of a CHAINING program.
+- ja: |-
+    致命的エラー種別: スタックオーバーフロー(PERFORMの入れ子が深すぎる等)。
+  en: |-
+    Fatal error kind: stack overflow (e.g. PERFORM nested too deeply).
+- ja: |-
+    指定した環境変数の値が、指定した値と一致するかどうかを判定する。
+  en: |-
+    Determines whether the value of the specified environment variable matches the specified value.
+- ja: |-
+    環境変数名
+  en: |-
+    the environment variable name
+- ja: |-
+    比較対象の値
+  en: |-
+    the value to compare with
+- ja: |-
+    環境変数が存在し値が一致する場合は1、それ以外(引数がnullの場合を含む)は0
+  en: |-
+    1 if the environment variable exists and its value matches, 0 otherwise (including when an argument is null)
+- ja: |-
+    I/O操作でREWRITEを暗黙的に行うとみなす設定が有効かどうかを返す。
+  en: |-
+    Returns whether the setting that assumes REWRITE is performed implicitly in I/O operations is enabled.
+- ja: |-
+    暗黙のREWRITEが有効な場合はtrue、そうでない場合はfalse
+  en: |-
+    true if implicit REWRITE is enabled, false otherwise
+- ja: |-
+    日本語項目(NATIONAL)に対する参照修飾の境界チェックを行う。<br>
+    1文字が2バイトであることを考慮し、各値を文字単位に換算してから境界チェックを実行する。
+  en: |-
+    Performs a bound check of reference modification for a national item (NATIONAL).<br>
+    Taking into account that one character is 2 bytes, converts each
+    value to character units before performing the bound check.
+- ja: |-
+    参照修飾の開始位置(バイト単位、1始まり)
+  en: |-
+    the start position of the reference modification (in bytes, 1-based)
+- ja: |-
+    参照修飾の長さ(バイト単位)
+  en: |-
+    the length of the reference modification (in bytes)
+- ja: |-
+    対象項目の全体サイズ(バイト単位)
+  en: |-
+    the total size of the target item (in bytes)
+- ja: |-
+    対象項目の名前(バイト配列)
+  en: |-
+    the name of the target item (byte array)
+- ja: |-
+    参照修飾が境界外でランタイムを停止する場合
+  en: |-
+    if the runtime is stopped because the reference modification is out of bounds
+- ja: |-
+    対象項目の名前
+  en: |-
+    the name of the target item
+- ja: |-
+    参照修飾の境界チェックを行う。
+  en: |-
+    Performs a bound check of reference modification.
+- ja: |-
+    参照修飾の開始位置(1始まり)
+  en: |-
+    the start position of the reference modification (1-based)
+- ja: |-
+    参照修飾の長さ
+  en: |-
+    the length of the reference modification
+- ja: |-
+    対象項目の全体サイズ
+  en: |-
+    the total size of the target item
+- ja: |-
+    対象項目の名前を保持するデータストレージ
+  en: |-
+    the data storage holding the name of the target item
+- ja: |-
+    対象項目の名前の長さ(バイト数)
+  en: |-
+    the length of the name of the target item (in bytes)
+- ja: |-
+    参照修飾の境界チェックを行う。バイト配列の名前をSHIFT_JISの文字列に変換して処理する。
+  en: |-
+    Performs a bound check of reference modification. Converts
+    the byte-array name to a SHIFT_JIS string before processing.
+- ja: |-
+    参照修飾(reference modification)の開始位置と長さが項目の境界内に収まっているかをチェックする。<br>
+    境界外の場合はCOB_EC_BOUND_REF_MOD例外を設定し、ランタイムエラーを出力して実行を停止する。
+  en: |-
+    Checks whether the start position and length of a reference
+    modification fit within the bounds of the item.<br>
+    If out of bounds, sets the COB_EC_BOUND_REF_MOD exception, prints a runtime error, and stops execution.
+- ja: |-
+    BASED項目またはLINKAGE項目が有効なアドレス(非null)を持つかをチェックする。<br>
+    アドレスがnullの場合はランタイムエラーを出力して実行を停止する。
+  en: |-
+    Checks whether a BASED item or LINKAGE item has a valid (non-null) address.<br>
+    If the address is null, prints a runtime error and stops execution.
+- ja: |-
+    チェック対象の項目を指すデータストレージ
+  en: |-
+    the data storage pointing to the item to check
+- ja: |-
+    アドレスがnullでランタイムを停止する場合
+  en: |-
+    if the runtime is stopped because the address is null
+- ja: |-
+    ファイルI/Oのバッファサイズを指定する環境変数を読み込む。<br>
+    環境変数が設定されていない場合や、0以上の整数として解釈できない場合はデフォルト値を返す。
+  en: |-
+    Reads an environment variable that specifies a buffer size for file I/O.<br>
+    Returns the default value if the environment variable is
+    not set or cannot be interpreted as an integer of 0 or more.
+- ja: |-
+    環境変数が指定されていない場合に使用する値
+  en: |-
+    the value used when the environment variable is not specified
+- ja: |-
+    バッファサイズ(レコード数)
+  en: |-
+    the buffer size (in records)
+- ja: |-
+    INDEXEDファイルのOUTPUTモードにおけるコミット間隔を環境変数から読み取り、
+    {@link #fileIdxCommitIntervalIsInf}と{@link #fileIdxCommitInterval}に反映する。<br>
+    {@code INF}(大文字小文字不問)と未指定は「途中コミットしない」を意味する。<br>
+    {@code 0}は「毎回コミット」として{@code 1}に正規化する。<br>
+    0以上の整数とも{@code INF}とも解釈できない場合は、警告を出力して未指定と同じ扱いにする。
+  en: |-
+    Reads the commit interval in OUTPUT mode for INDEXED files from the environment variable and
+    reflects it in {@link #fileIdxCommitIntervalIsInf} and {@link #fileIdxCommitInterval}.<br>
+    {@code INF} (case-insensitive) and not specified both mean "no intermediate commits".<br>
+    {@code 0} is normalized to {@code 1}, meaning "commit every time".<br>
+    If the value can be interpreted neither as an integer of 0 or more
+    nor as {@code INF}, prints a warning and treats it as not specified.
+- ja: |-
+    COBOLランタイムを初期化する。<br>
+    未初期化の場合は、コマンドライン引数の保存、各サブシステム(INSPECT/ファイルI/O/組み込み関数)の初期化、<br>
+    およびCOB_SWITCH_1〜COB_SWITCH_8環境変数によるスイッチ設定を行う。<br>
+    その後、COB_DATE、COB_VERBOSE、COB_IO_ASSUME_REWRITE、COB_NIBBLE_C_UNSIGNED、<br>
+    COB_FILE_SEQ_WRITE_BUFFER_SIZE、COB_FILE_SEQ_READ_BUFFER_SIZE、COB_TERMINAL_ENCODINGなどの<br>
+    環境変数を読み込んでランタイム設定を反映する。
+  en: |-
+    Initializes the COBOL runtime.<br>
+    If not yet initialized, saves the command line arguments, initializes
+    each subsystem (INSPECT/file I/O/intrinsic functions),<br>
+    and sets the switches from the environment variables COB_SWITCH_1 to COB_SWITCH_8.<br>
+    Then reads environment variables such as COB_DATE,
+    COB_VERBOSE, COB_IO_ASSUME_REWRITE, COB_NIBBLE_C_UNSIGNED,<br>
+    COB_FILE_SEQ_WRITE_BUFFER_SIZE, COB_FILE_SEQ_READ_BUFFER_SIZE, and COB_TERMINAL_ENCODING<br>
+    and applies them to the runtime settings.
+- ja: |-
+    コマンドライン引数(プログラム名を含まない)
+  en: |-
+    the command line arguments (not including the program name)
+- ja: |-
+    すでに初期化済みかどうか。trueの場合はサブシステムの初期化をスキップする
+  en: |-
+    whether already initialized; if true, initialization of the subsystems is skipped
+- ja: |-
+    ランタイム設定が未初期化であれば初期化する。<br>
+    生成されたmainメソッドを経由せず、Javaアプリケーション(Webアプリケーションなど)から
+    COBOLプログラムを直接呼び出す場合の入口で使用する。
+    初期化は同一JVM内で1回だけ行われ、複数スレッドから同時に呼び出しても安全である。
+  en: |-
+    Initializes the runtime settings if they are not yet initialized.<br>
+    Used at the entry point when a COBOL program is called directly from a Java application
+    (such as a web application) without going through the generated main method.
+    Initialization is performed only once within the same JVM, and
+    it is safe to call this from multiple threads concurrently.
+- ja: |-
+    ランタイム設定が初期化済みかどうかを返す。
+  en: |-
+    Returns whether the runtime settings have been initialized.
+- ja: |-
+    cob_initが呼び出されていればtrue
+  en: |-
+    true if cob_init has been called
+- ja: |-
+    現在のスレッドに紐づく実行単位の状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the run unit state bound to the current thread. Called when the run unit ends.
+- ja: |-
+    現在のスレッドのプログラムスイッチの配列を取得する。
+  en: |-
+    Returns the array of program switches of the current thread.
+- ja: |-
+    SWITCH-1からSWITCH-8に対応する長さ8の配列(変更は現在のスレッドにのみ反映される)
+  en: |-
+    an array of length 8 corresponding to SWITCH-1 to SWITCH-8 (changes are reflected only in the current thread)
+- ja: |-
+    現在のスレッドのCALL文の引数個数の退避値を取得する。
+  en: |-
+    Returns the saved number of arguments of the CALL statement of the current thread.
+- ja: |-
+    退避されている引数個数
+  en: |-
+    the saved number of arguments
+- ja: |-
+    現在のスレッドのCALL文の引数個数の退避値を設定する。
+  en: |-
+    Sets the saved number of arguments of the CALL statement of the current thread.
+- ja: |-
+    退避する引数個数
+  en: |-
+    the number of arguments to save
+- ja: |-
+    現在のスレッドの終了時エラーフラグを取得する。
+  en: |-
+    Returns the termination error flag of the current thread.
+- ja: |-
+    終了時にエラーが発生していればtrue
+  en: |-
+    true if an error occurred at termination
+- ja: |-
+    現在のスレッドの終了時エラーフラグを設定する。
+  en: |-
+    Sets the termination error flag of the current thread.
+- ja: |-
+    設定する値
+  en: |-
+    the value to set
+- ja: |-
+    現在のスレッドのACCEPT FROM ARGUMENT-VALUEの引数インデックスを取得する。
+  en: |-
+    Returns the argument index for ACCEPT FROM ARGUMENT-VALUE of the current thread.
+- ja: |-
+    次に取得する引数のインデックス(1始まり)
+  en: |-
+    the index (1-based) of the argument to be obtained next
+- ja: |-
+    現在のスレッドのACCEPT FROM ARGUMENT-VALUEの引数インデックスを設定する。
+  en: |-
+    Sets the argument index for ACCEPT FROM ARGUMENT-VALUE of the current thread.
+- ja: |-
+    現在のスレッドのDISPLAY UPON ENVIRONMENT-NAMEで設定された環境変数名を取得する。
+  en: |-
+    Returns the environment variable name set by DISPLAY UPON ENVIRONMENT-NAME in the current thread.
+- ja: |-
+    環境変数名。未設定の場合はnull
+  en: |-
+    the environment variable name, or null if not set
+- ja: |-
+    現在のスレッドのDISPLAY UPON ENVIRONMENT-NAMEで設定された環境変数名を設定する。
+  en: |-
+    Sets the environment variable name for DISPLAY UPON ENVIRONMENT-NAME in the current thread.
+- ja: |-
+    現在のローカル日時をグリニッジ標準時からのオフセット付きで取得する。<br>
+    環境変数COB_DATEで固定日付({@link #cobLocalTm})が指定されている場合は、日付部分だけをその値で<br>
+    置き換える。時刻とオフセットは常にシステムクロックから取得するため、同一プロセス内でも<br>
+    呼び出しのたびに新しい時刻が得られる。
+  en: |-
+    Returns the current local date and time with the offset from Greenwich Mean Time.<br>
+    If a fixed date ({@link #cobLocalTm}) is specified by the
+    environment variable COB_DATE, only the date part is<br>
+    replaced with that value. The time and offset are always obtained from the system clock, so a new time is<br>
+    obtained on each call even within the same process.
+- ja: |-
+    取得したローカル日時
+  en: |-
+    the obtained local date and time
+- ja: |-
+    冗長出力が有効な場合に、メッセージを標準出力へ出力する。<br>
+    出力時には先頭に"libcobj: "が付加される。
+  en: |-
+    Prints a message to standard output if verbose output is enabled.<br>
+    "libcobj: " is prepended to the output.
+- ja: |-
+    出力するメッセージ
+  en: |-
+    the message to output
+- ja: |-
+    ランタイムエラーメッセージを出力する。<br>
+    ソースファイル名と行番号(判明している場合)を前置して、先頭に"libcobj: "を付けたメッセージを<br>
+    SHIFT_JISエンコードで標準エラー出力へ書き込む。
+  en: |-
+    Prints a runtime error message.<br>
+    Writes the message, prefixed with the source file name and
+    line number (if known) and starting with "libcobj: ",<br>
+    to standard error in SHIFT_JIS encoding.
+- ja: |-
+    出力するエラーメッセージ
+  en: |-
+    the error message to output
+- ja: |-
+    環境変数の値を取得し、指定したフィールドへ格納する。<br>
+    指定した名前の環境変数が存在しない場合はCOB_EC_IMP_ACCEPT例外を設定し、空白を格納する。
+  en: |-
+    Gets the value of an environment variable and stores it in the specified field.<br>
+    If no environment variable with the specified name exists,
+    sets the COB_EC_IMP_ACCEPT exception and stores spaces.
+- ja: |-
+    取得する環境変数名を保持するフィールド
+  en: |-
+    the field holding the name of the environment variable to get
+- ja: |-
+    取得した値を格納するフィールド
+  en: |-
+    the field in which the obtained value is stored
+- ja: |-
+    サブルーチン呼び出し時に渡されたパラメータ数を検査する(libcobのCOB_CHK_PARMSに相当)。<br>
+    現状の実装では検査処理は行わない。
+  en: |-
+    Checks the number of parameters passed when calling a subroutine (corresponds to COB_CHK_PARMS in libcob).<br>
+    The current implementation performs no check.
+- ja: |-
+    検査対象の関数(サブルーチン)名
+  en: |-
+    the name of the function (subroutine) to check
+- ja: |-
+    期待されるパラメータ数
+  en: |-
+    the expected number of parameters
+- ja: |-
+    指定したプログラムスイッチの状態を取得する。
+  en: |-
+    Returns the state of the specified program switch.
+- ja: |-
+    スイッチのインデックス(0始まり、SWITCH-1が0に対応する)
+  en: |-
+    the index of the switch (0-based; SWITCH-1 corresponds to 0)
+- ja: |-
+    スイッチがONの場合はtrue、OFFの場合はfalse
+  en: |-
+    true if the switch is ON, false if it is OFF
+- ja: |-
+    指定したプログラムスイッチの状態を設定する。
+  en: |-
+    Sets the state of the specified program switch.
+- ja: |-
+    設定する値。0でOFF、1でONに設定する(それ以外の値の場合は変更しない)
+  en: |-
+    the value to set: 0 sets OFF, 1 sets ON (any other value leaves it unchanged)
+- ja: |-
+    2つの英数字データを指定したバイト数だけ比較する。<br>
+    照合順序(collating sequence)が指定されている場合は、その変換表を適用してから各バイトを比較する。
+  en: |-
+    Compares two alphanumeric data for the specified number of bytes.<br>
+    If a collating sequence is specified, applies its translation table before comparing each byte.
+- ja: |-
+    比較対象の1つ目のデータストレージ
+  en: |-
+    the first data storage to compare
+- ja: |-
+    比較対象の2つ目のデータストレージ
+  en: |-
+    the second data storage to compare
+- ja: |-
+    比較するバイト数
+  en: |-
+    the number of bytes to compare
+- ja: |-
+    照合順序の変換表。nullの場合は変換せずバイト値で比較する
+  en: |-
+    the translation table of the collating sequence; if null, bytes are compared by value without translation
+- ja: |-
+    s1がs2より小さい場合は負、等しい場合は0、大きい場合は正の値
+  en: |-
+    a negative value if s1 is less than s2, 0 if they are equal, or a positive value if s1 is greater
+- ja: |-
+    2つの日本語(NATIONAL)データを指定したバイト数だけ比較する。<br>
+    2バイトを1文字として上位バイト・下位バイトを結合した値同士で比較する。
+  en: |-
+    Compares two national (NATIONAL) data for the specified number of bytes.<br>
+    Treats 2 bytes as one character and compares the values formed by combining the high and low bytes.
+- ja: |-
+    照合順序の変換表(現状の実装では使用しない)
+  en: |-
+    the translation table of the collating sequence (not used in the current implementation)
+- ja: |-
+    行トレース(READY TRACE)を有効にする。以降の実行位置がトレース出力される。
+  en: |-
+    Enables line tracing (READY TRACE). Subsequent execution positions are output as a trace.
+- ja: |-
+    行トレース(RESET TRACE)を無効にする。
+  en: |-
+    Disables line tracing (RESET TRACE).
+- ja: |-
+    致命的エラーを報告し、ランタイムの実行を停止する。<br>
+    指定されたエラー種別に応じたメッセージをランタイムエラーとして出力した後、実行を停止する。
+  en: |-
+    Reports a fatal error and stops the runtime.<br>
+    Prints a message corresponding to the specified error kind as a runtime error, then stops execution.
+- ja: |-
+    致命的エラーの種別。{@link #FERROR_INITIALIZED}、{@link #FERROR_CODEGEN}、{@link
+        #FERROR_CHAINING}、{@link #FERROR_STACK}のいずれか
+  en: |-
+    the kind of fatal error: one of {@link #FERROR_INITIALIZED},
+    {@link #FERROR_CODEGEN}, {@link #FERROR_CHAINING}, or {@link #FERROR_STACK}
+- ja: |-
+    常にランタイムを停止するためにスローされる
+  en: |-
+    always thrown to stop the runtime
+- ja: |-
+    現在の実行位置(プログラムID、ソースファイル、行番号、セクション、段落、文)を設定する。<br>
+    これらの情報はランタイムエラー出力やトレースに利用される。<br>
+    行トレースが有効な場合は、プログラムID・行番号・文をトレースとして標準エラー出力へ出力する。
+  en: |-
+    Sets the current execution position (program ID, source file, line number, section, paragraph, statement).<br>
+    This information is used for runtime error output and tracing.<br>
+    If line tracing is enabled, prints the program ID, line number, and statement to standard error as a trace.
+- ja: |-
+    現在のプログラムID
+  en: |-
+    the current program ID
+- ja: |-
+    現在のソースファイル名
+  en: |-
+    the current source file name
+- ja: |-
+    現在のソース行番号
+  en: |-
+    the current source line number
+- ja: |-
+    現在のセクション名
+  en: |-
+    the current section name
+- ja: |-
+    現在の段落(パラグラフ)名
+  en: |-
+    the current paragraph name
+- ja: |-
+    現在の文(ステートメント)の名称。nullの場合は更新しない
+  en: |-
+    the name of the current statement; if null, it is not updated
+- ja: |-
+    環境変数の値を取得する。<br>
+    まず{@link #setEnv}で設定された内部テーブルを参照し、存在しない場合はシステムの環境変数を参照する。
+  en: |-
+    Returns the value of an environment variable.<br>
+    First refers to the internal table set by {@link #setEnv}; if
+    not found there, refers to the system environment variables.
+- ja: |-
+    取得する環境変数名
+  en: |-
+    the name of the environment variable to get
+- ja: |-
+    環境変数の値。存在しない場合はnull
+  en: |-
+    the value of the environment variable, or null if it does not exist
+- ja: |-
+    文字列をSHIFT_JISエンコードのバイト配列に変換する。
+  en: |-
+    Converts a string to a SHIFT_JIS-encoded byte array.
+- ja: |-
+    変換する文字列
+  en: |-
+    the string to convert
+- ja: |-
+    SHIFT_JISでエンコードしたバイト配列
+  en: |-
+    the byte array encoded in SHIFT_JIS
+- ja: |-
+    可変長引数で渡されたバイト列をバイト配列として返す。
+  en: |-
+    Returns the bytes passed as variable-length arguments as a byte array.
+- ja: |-
+    バイト配列に変換するバイト列
+  en: |-
+    the bytes to convert to a byte array
+- ja: |-
+    渡されたバイト列からなるバイト配列
+  en: |-
+    a byte array consisting of the passed bytes
+- ja: |-
+    現在実行中のプログラムIDを取得する。
+  en: |-
+    Returns the program ID currently being executed.
+- ja: |-
+    現在実行中のセクション名を取得する。
+  en: |-
+    Returns the name of the section currently being executed.
+- ja: |-
+    現在実行中の段落(パラグラフ)名を取得する。
+  en: |-
+    Returns the name of the paragraph currently being executed.
+- ja: |-
+    現在の段落名
+  en: |-
+    the current paragraph name
+- ja: |-
+    現在実行中のソース行番号を取得する。
+  en: |-
+    Returns the source line number currently being executed.
+- ja: |-
+    現在実行中の文(ステートメント)の名称を取得する。
+  en: |-
+    Returns the name of the statement currently being executed.
+- ja: |-
+    現在の文の名称
+  en: |-
+    the name of the current statement
+- ja: |-
+    コマンドライン引数からCHAININGパラメータを設定する。
+  en: |-
+    Sets a CHAINING parameter from the command line arguments.
+- ja: |-
+    CHAININGパラメータのデータストレージ
+  en: |-
+    the data storage of the CHAINING parameter
+- ja: |-
+    パラメータのインデックス (1始まり)
+  en: |-
+    the index of the parameter (1-based)
+- ja: |-
+    データストレージのサイズ
+  en: |-
+    the size of the data storage

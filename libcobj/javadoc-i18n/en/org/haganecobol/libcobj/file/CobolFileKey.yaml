@@ -1,0 +1,127 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    INDEXEDファイルの1つのキー（主キーまたは副キー）を表す。
+
+    <p>コンパイラ（{@code cobj}）は、{@code SELECT}句で宣言された{@code RECORD KEY} / {@code ALTERNATE RECORD
+    KEY}ごとに{@code CobolFileKey}を1つ生成し、その配列を{@link
+    CobolFileFactory#makeCobolFileInstance}に渡す。各要素は、キー値を保持するCOBOLフィールド、重複フラグ、レコード内でのキーのバイトオフセット、そしてキーがSPLIT
+    KEYの場合はそれを構成する{@link KeyComponent}のリストを保持する。
+
+    <p>{@link
+    CobolIndexedFile}が利用するSQLiteストレージでは、インデックス{@code 0}の要素が主キー（{@code table0}に格納）であり、インデックス{@code
+    i >= 1}の要素が副キー（{@code tableI}に格納）である。
+  en: |-
+    Represents one key (primary key or alternate key) of an INDEXED file.
+
+    <p>The compiler ({@code cobj}) generates one {@code CobolFileKey} for each {@code RECORD KEY} /
+    {@code ALTERNATE RECORD KEY} declared in the {@code SELECT} clause, and passes the array of them to
+    {@link CobolFileFactory#makeCobolFileInstance}. Each element holds the COBOL field that holds the key
+    value, the duplicates flag, the byte offset of the key within the record, and, if the key is a SPLIT
+    KEY, the list of {@link KeyComponent}s that compose it.
+
+    <p>In the SQLite storage used by {@link CobolIndexedFile}, the element at index {@code 0} is the
+    primary key (stored in {@code table0}), and the elements at index {@code i >= 1} are alternate keys
+    (stored in {@code tableI}).
+- ja: |-
+    1つのSPLIT KEYを構成できる{@link KeyComponent}の最大数。
+  en: |-
+    The maximum number of {@link KeyComponent}s that can compose one SPLIT KEY.
+- ja: |-
+    このキーの値を保持するCOBOLフィールドを返す。
+  en: |-
+    Returns the COBOL field that holds the value of this key.
+- ja: |-
+    キーフィールド
+  en: |-
+    the key field
+- ja: |-
+    このキーの値を保持するCOBOLフィールドを設定する。
+  en: |-
+    Sets the COBOL field that holds the value of this key.
+- ja: |-
+    このキーの重複フラグを返す。
+  en: |-
+    Returns the duplicates flag of this key.
+- ja: |-
+    重複値を許可しない場合（主キー、または{@code WITH DUPLICATES}なしの{@code ALTERNATE RECORD
+        KEY}）は{@code 0}、重複値を許可する場合（{@code ALTERNATE RECORD KEY ... WITH
+        DUPLICATES}）は非ゼロ値
+  en: |-
+    {@code 0} if duplicate values are not allowed (the primary key, or an {@code ALTERNATE RECORD KEY}
+        without {@code WITH DUPLICATES}), or a non-zero value if duplicate values are allowed
+        ({@code ALTERNATE RECORD KEY ... WITH DUPLICATES})
+- ja: |-
+    このキーの重複フラグを設定する。
+  en: |-
+    Sets the duplicates flag of this key.
+- ja: |-
+    重複値を許可しない場合は{@code 0}、許可する場合は非ゼロ値
+  en: |-
+    {@code 0} if duplicate values are not allowed, or a non-zero value if they are allowed
+- ja: |-
+    レコード内でのこのキーのバイトオフセットを返す。
+  en: |-
+    Returns the byte offset of this key within the record.
+- ja: |-
+    レコード先頭からの0始まりのバイトオフセット。キーがSPLIT KEYの場合は{@code
+        -1}（その場合のレイアウトは{@link #getComponent()}で記述される）
+  en: |-
+    the zero-based byte offset from the beginning of the record, or {@code -1} if the key is a SPLIT
+        KEY (in which case its layout is described by {@link #getComponent()})
+- ja: |-
+    レコード内でのこのキーのバイトオフセットを設定する。
+  en: |-
+    Sets the byte offset of this key within the record.
+- ja: |-
+    レコード先頭からの0始まりのバイトオフセット。SPLIT KEYの場合は{@code -1}
+  en: |-
+    the zero-based byte offset from the beginning of the record, or {@code -1} for a SPLIT KEY
+- ja: |-
+    このキーを構成する{@link KeyComponent}の数を返す。
+  en: |-
+    Returns the number of {@link KeyComponent}s that compose this key.
+- ja: |-
+    {@link
+        #getComponent()}が返す配列のうち有効な要素数。SPLIT KEYは2以上、通常のキーは0
+  en: |-
+    the number of valid elements in the array returned by {@link #getComponent()}; 2 or more for a
+        SPLIT KEY, 0 for an ordinary key
+- ja: |-
+    このキーを構成する{@link KeyComponent}の数を設定する。
+  en: |-
+    Sets the number of {@link KeyComponent}s that compose this key.
+- ja: |-
+    構成要素配列のうち有効な要素数
+  en: |-
+    the number of valid elements in the component array
+- ja: |-
+    SPLIT KEYを記述する{@link KeyComponent}の配列を返す。
+
+    <p>有効なのは先頭{@link #getCountComponents()}個の要素のみである。
+  en: |-
+    Returns the array of {@link KeyComponent}s describing the SPLIT KEY.
+
+    <p>Only the first {@link #getCountComponents()} elements are valid.
+- ja: |-
+    構成要素配列（{@code null}にはならない。容量は{@link #COB_MAX_KEY_COMPONENTS}）
+  en: |-
+    the component array (never {@code null}; its capacity is {@link #COB_MAX_KEY_COMPONENTS})
+- ja: |-
+    SPLIT KEYを記述する{@link KeyComponent}の配列を設定する。
+  en: |-
+    Sets the array of {@link KeyComponent}s describing the SPLIT KEY.
+- ja: |-
+    構成要素配列
+  en: |-
+    the component array
+- ja: |-
+    SPLIT KEYを構成できる要素の最大数を返す。
+  en: |-
+    Returns the maximum number of components that can compose a SPLIT KEY.
+- ja: |-
+    {@link #COB_MAX_KEY_COMPONENTS}の値
+  en: |-
+    the value of {@link #COB_MAX_KEY_COMPONENTS}

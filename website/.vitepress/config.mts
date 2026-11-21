@@ -1,16 +1,39 @@
 import { defineConfig } from 'vitepress'
 
 const repo = 'https://github.com/yutaro-sakamoto/Hagane-COBOL'
+const site = 'https://haganecobol.org'
 
 // The site is served from https://haganecobol.org/
 export default defineConfig({
   title: 'Hagane COBOL',
   base: '/',
   cleanUrls: true,
-  // The Javadoc of libcobj is copied into /javadoc/libcobj/ after the build.
+  // The Javadoc of libcobj is copied into /javadoc/libcobj/ (English) and
+  // /ja/javadoc/libcobj/ (Japanese) after the build.
   ignoreDeadLinks: [/\/javadoc\//],
   lastUpdated: false,
-  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  // Tell search engines that each page has an English and a Japanese version
+  // (/x and /ja/x), so that both are indexed.
+  transformHead({ pageData }) {
+    if (pageData.isNotFound) {
+      return []
+    }
+    const path = pageData.relativePath
+      .replace(/^ja\//, '')
+      .replace(/(^|\/)index\.md$/, '$1')
+      .replace(/\.md$/, '')
+    return [
+      ['link', { rel: 'alternate', hreflang: 'en', href: `${site}/${path}` }],
+      ['link', { rel: 'alternate', hreflang: 'ja', href: `${site}/ja/${path}` }],
+      ['link', { rel: 'alternate', hreflang: 'x-default', href: `${site}/${path}` }],
+    ]
+  },
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    // Chooses the language on the first visit and remembers the language the
+    // visitor switches to. Shared with the Javadoc (see language.js).
+    ['script', { src: '/language.js' }],
+  ],
 
   themeConfig: {
     logo: '/favicon.svg',
@@ -56,7 +79,7 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'はじめる', link: '/ja/guide/linux', activeMatch: '/ja/guide/' },
-          { text: 'Javadoc', link: '/javadoc/libcobj/index.html', target: '_self' },
+          { text: 'Javadoc', link: '/ja/javadoc/libcobj/index.html', target: '_self' },
           { text: 'リリース', link: `${repo}/releases` },
         ],
         sidebar: [

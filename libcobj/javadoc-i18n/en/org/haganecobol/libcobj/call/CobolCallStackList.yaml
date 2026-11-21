@@ -1,0 +1,72 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    CALLしたプログラムを階層構造で管理するためのクラス
+  en: |-
+    Class for managing called programs in a hierarchical structure.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    プログラム名
+  en: |-
+    the program name
+- ja: |-
+    親ノードを取得する
+  en: |-
+    Returns the parent node.
+- ja: |-
+    parent 親ノード
+  en: |-
+    the parent node
+- ja: |-
+    親ノードを設定する
+  en: |-
+    Sets the parent node.
+- ja: |-
+    親ノード
+  en: |-
+    the parent node
+- ja: |-
+    子ノードを取得する
+  en: |-
+    Returns the child node.
+- ja: |-
+    children 子ノード
+  en: |-
+    the child node
+- ja: |-
+    子ノードを設定する
+  en: |-
+    Sets the child node.
+- ja: |-
+    子ノード
+  en: |-
+    the child node
+- ja: |-
+    兄弟ノードを取得する
+  en: |-
+    Returns the sibling node.
+- ja: |-
+    sister 兄弟ノード
+  en: |-
+    the sibling node
+- ja: |-
+    兄弟ノードを設定する
+  en: |-
+    Sets the sibling node.
+- ja: |-
+    兄弟ノード
+  en: |-
+    the sibling node
+- ja: |-
+    プログラム名を取得する
+  en: |-
+    Returns the program name.
+- ja: |-
+    name プログラム名
+  en: |-
+    the program name

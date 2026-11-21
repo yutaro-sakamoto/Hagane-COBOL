@@ -1,0 +1,240 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    動的にクラスファイルを読み込んでCALL文のような機能を実装するためのクラス
+  en: |-
+    Class that dynamically loads class files to implement functionality like the CALL statement.
+- ja: |-
+    プログラム名とCobolRunnableインスタンスの対応表。<br>
+    CALLされたプログラムのインスタンス(とそのWORKING-STORAGE)は実行単位ごとに独立しているため、
+    スレッドごとに保持する。
+  en: |-
+    Map from program names to CobolRunnable instances.<br>
+    Instances of called programs (and their WORKING-STORAGE) are
+    independent per run unit, so this map is held per thread.
+- ja: |-
+    例外コードと例外名の対応を表現する(変更不可)
+  en: |-
+    Represents the mapping between exception codes and exception names (unmodifiable).
+- ja: |-
+    名前の変換方法(小文字か大文字)を示す変数
+  en: |-
+    Variable indicating how names are converted (to lowercase or uppercase).
+- ja: |-
+    システムで設定された区切り文字で区切られた0個以上のパス 動的に読み込むクラスファイルを検索する場所を示す.
+  en: |-
+    Zero or more paths separated by the system-defined separator character,
+    indicating where to search for class files to load dynamically.
+- ja: |-
+    システムで設定された区切り文字で区切られた0個以上のパス 動的に読み込むクラスファイルを検索するパッケージ名を示す.
+  en: |-
+    Zero or more paths separated by the system-defined separator character, indicating
+    the package names in which to search for class files to load dynamically.
+- ja: |-
+    実行単位ごとのコールスタックの状態
+  en: |-
+    State of the call stack per run unit.
+- ja: |-
+    コールスタックリストのヘッド
+  en: |-
+    The head of the call stack list.
+- ja: |-
+    現在のコールスタックリスト
+  en: |-
+    The current call stack list.
+- ja: |-
+    コールスタック。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    The call stack. Run units are independent per thread, so it is held per thread.
+- ja: |-
+    現在のスレッドに紐づくCALLのキャッシュとコールスタックを破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the CALL cache and the call stack bound to the current thread. Called when the run unit ends.
+- ja: |-
+    下記の環境変数を読み込み、CobolResolve内で定義されたメソッドの動作が変わる。<br>
+    環境変数COB_LOAD_CASEにLOWERが指定されているときは、resolveメソッドに渡された引数を小文字に変換してから処理を開始する。<br>
+    環境変数COB_LOAD_CASEにUPPERが指定されているときは、resolveメソッドに渡された引数を大文字に変換してから処理を開始する。<br>
+    環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 resolveメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
+    環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 resolveメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
+    環境変数COB_PRE_LOADは未実装
+  en: |-
+    Reads the following environment variables, which change
+    the behavior of the methods defined in CobolResolve.<br>
+    If the environment variable COB_LOAD_CASE is set to LOWER, the argument
+    passed to the resolve method is converted to lowercase before processing.<br>
+    If the environment variable COB_LOAD_CASE is set to UPPER, the argument
+    passed to the resolve method is converted to uppercase before processing.<br>
+    If the environment variable COB_LIBRARY_PATH specifies directory paths, they are
+    added to the list of directory paths of modules searched by the resolve method.<br>
+    If the environment variable COB_PACKAGE_PATH specifies directory paths, they are
+    added to the list of package paths of modules searched by the resolve method.
+    The environment variable COB_PRE_LOAD is not implemented.
+- ja: |-
+    ライブラリパスを更新する
+  en: |-
+    Updates the library path.
+- ja: |-
+    区切り文字で区切られた0個以上のパスを示す文字列
+  en: |-
+    a string representing zero or more paths separated by the separator character
+- ja: |-
+    パッケージへパスを更新する
+  en: |-
+    Updates the package path.
+- ja: |-
+    パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
+    環境変数COB_LOAD_CASEにLOWERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
+    環境変数COB_LOAD_CASEにUPPERが指定されているときは、cobolFieldの示す文字列全体を小文字に変換したものを検索する。<br>
+    環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
+    環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
+  en: |-
+    Dynamically loads a class from a package name and a class name. The behavior
+    of this method depends on environment variable settings as follows.<br>
+    If the environment variable COB_LOAD_CASE is set to LOWER, the whole string
+    indicated by cobolField is converted to lowercase and searched for.<br>
+    If the environment variable COB_LOAD_CASE is set to UPPER, the whole string
+    indicated by cobolField is converted to uppercase and searched for.<br>
+    If the environment variable COB_LIBRARY_PATH specifies directory paths, they
+    are added to the list of directory paths of modules searched by this method.<br>
+    If the environment variable COB_PACKAGE_PATH specifies directory paths, they
+    are added to the list of package paths of modules searched by this method.
+- ja: |-
+    検索するクラスのパッケージ名
+  en: |-
+    the package name of the class to search for
+- ja: |-
+    読み込むクラスの名前を格納するCOBOL変数
+  en: |-
+    the COBOL variable holding the name of the class to load
+- ja: |-
+    CobolRunnableを実装したクラス。nullでもよい。
+  en: |-
+    a class implementing CobolRunnable; may be null
+- ja: |-
+    runnerがnullでない場合はrunnerを返し、そうでないときはクラス名とパッケージ名を元に検索処理を実施する。
+        検索して動的にクラスの読み込みに成功したら、それを返す。検索に失敗したら nullを返す。
+  en: |-
+    runner if runner is not null; otherwise, a search is performed based on the class name and package name.
+    If the class is found and loaded dynamically, it is returned. If the search fails, null is returned.
+- ja: |-
+    runnerがnullの場合に、委譲先の {@link #resolve(String, String)}
+        で指定されたプログラム名に対応するクラスが見つからない場合にスローされる
+  en: |-
+    thrown if runner is null and the delegated {@link #resolve(String, String)}
+    cannot find a class corresponding to the specified program name
+- ja: |-
+    パッケージ名とクラス名から、クラスを動的に読み込む。 このメソッドは以下のように、環境変数の設定値によって動作が変わる。<br>
+    環境変数COB_LOAD_CASEにLOWERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
+    環境変数COB_LOAD_CASEにUPPERが指定されているときは、nameの示す文字列全体を小文字に変換したものを検索する。<br>
+    環境変数COB_LIBRARY_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのディレクトリパスのリストにそれを追加する。<br>
+    環境変数COB_PACKAGE_PATHにディレクトリパスが指定されている場合、 このメソッドが検索するモジュールのパッケージパスのリストにそれを追加する。
+  en: |-
+    Dynamically loads a class from a package name and a class name. The behavior
+    of this method depends on environment variable settings as follows.<br>
+    If the environment variable COB_LOAD_CASE is set to LOWER, the whole
+    string indicated by name is converted to lowercase and searched for.<br>
+    If the environment variable COB_LOAD_CASE is set to UPPER, the whole
+    string indicated by name is converted to uppercase and searched for.<br>
+    If the environment variable COB_LIBRARY_PATH specifies directory paths, they
+    are added to the list of directory paths of modules searched by this method.<br>
+    If the environment variable COB_PACKAGE_PATH specifies directory paths, they
+    are added to the list of package paths of modules searched by this method.
+- ja: |-
+    読み込むクラスの名前
+  en: |-
+    the name of the class to load
+- ja: |-
+    パッケージ名
+  en: |-
+    the package name
+- ja: |-
+    クラス名とパッケージ名を元に検索処理を実施する。 検索して動的にクラスの読み込みに成功したら、それを返す。検索に失敗したら nullを返す。
+  en: |-
+    the class found by searching based on the class name and package name. If the class is
+    found and loaded dynamically, it is returned. If the search fails, null is returned.
+- ja: |-
+    指定されたプログラム名に対応するクラスが見つからない場合にスローされる
+  en: |-
+    thrown if no class corresponding to the specified program name is found
+- ja: |-
+    リフレクション機能を用いて動的にクラスファイルを読み込んでCobolRunnableのインスタンスを生成する
+  en: |-
+    Dynamically loads a class file using reflection and creates a CobolRunnable instance.
+- ja: |-
+    読み込むクラスファイルのパス
+  en: |-
+    the path of the class file to load
+- ja: |-
+    読み込みに失敗したときはnull,其れ以外は読み込んだCobolRunnbableのインスタンス
+  en: |-
+    null if loading fails; otherwise, the loaded CobolRunnable instance
+- ja: |-
+    引数で与えられたプログラム名に対応するCobolRunnableのインスタンスの cancelメソッドを呼び出す
+  en: |-
+    Calls the cancel method of the CobolRunnable instance corresponding to the program name given as the argument.
+- ja: |-
+    プログラム名を示すCOBOL変数
+  en: |-
+    the COBOL variable indicating the program name
+- ja: |-
+    委譲先の {@link #cancel(String)} でプログラム名がnullの場合にスローされる
+  en: |-
+    thrown if the program name is null in the delegated {@link #cancel(String)}
+- ja: |-
+    プログラム名
+  en: |-
+    the program name
+- ja: |-
+    プログラム名がnullの場合にスローされる
+  en: |-
+    thrown if the program name is null
+- ja: |-
+    指定のプログラムのcancelメソッドを呼び出す
+  en: |-
+    Calls the cancel method of the specified program.
+- ja: |-
+    cancelを呼び出すプログラム名を示すCOBOL変数
+  en: |-
+    the COBOL variable indicating the name of the program whose cancel method is called
+- ja: |-
+    プログラム名がnullまたは空文字列の場合にスローされる
+  en: |-
+    thrown if the program name is null or an empty string
+- ja: |-
+    コールスタックリストを初期化する
+  en: |-
+    Initializes the call stack list.
+- ja: |-
+    新しいコールスタックリストを作成する
+  en: |-
+    Creates a new call stack list.
+- ja: |-
+    作成したコールスタックリスト
+  en: |-
+    the created call stack list
+- ja: |-
+    指定されたコールスタックリストとその子プログラムをすべてキャンセルする
+  en: |-
+    Cancels the specified call stack list and all of its child programs.
+- ja: |-
+    キャンセル対象のコールスタックリスト
+  en: |-
+    the call stack list to cancel
+- ja: |-
+    コールスタックにプログラムをプッシュする
+  en: |-
+    Pushes a program onto the call stack.
+- ja: |-
+    コールスタックから一つ取り出す
+  en: |-
+    Pops one entry from the call stack.
+- ja: |-
+    現在のコールスタックの子プログラムをすべてキャンセルする
+  en: |-
+    Cancels all child programs of the current call stack.
+- ja: |-
+    現在のスタックがnullの場合
+  en: |-
+    if the current stack is null

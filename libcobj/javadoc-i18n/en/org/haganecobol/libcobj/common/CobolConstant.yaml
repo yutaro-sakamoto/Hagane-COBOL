@@ -1,0 +1,180 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLの定数値(figurative constant)および実行時に用いる各種定数を保持するクラス<br>
+    ZERO・SPACE・HIGH-VALUE・LOW-VALUE・QUOTEなどの形象定数や、それらの全角(ZEN)版、
+    各種バッファサイズ、10のべき乗表などをまとめて定義する。
+  en: |-
+    Holds COBOL figurative constant values and various constants used at run time.<br>
+    Defines together the figurative constants such as ZERO, SPACE, HIGH-VALUE, LOW-VALUE, and QUOTE, their
+    full-width (ZEN) versions, various buffer sizes, a table of powers of 10, and so on.
+- ja: |-
+    英数字のALL定数(SPACE・ZEROなどの形象定数)に用いる属性
+  en: |-
+    Attribute used for alphanumeric ALL constants (figurative constants such as SPACE and ZERO).
+- ja: |-
+    数字定数1に用いる属性(1桁の数字項目)
+  en: |-
+    Attribute used for the numeric constant 1 (a 1-digit numeric item).
+- ja: |-
+    Shift_JISの全角ゼロ「０」のバイト列
+  en: |-
+    Byte sequence of the Shift_JIS full-width zero character.
+- ja: |-
+    Shift_JISの全角空白「　」のバイト列
+  en: |-
+    Byte sequence of the Shift_JIS full-width space character.
+- ja: |-
+    Shift_JISの全角空白(BLANK)のバイト列
+  en: |-
+    Byte sequence of the Shift_JIS full-width space (BLANK).
+- ja: |-
+    Shift_JISの全角引用符「”」のバイト列
+  en: |-
+    Byte sequence of the Shift_JIS full-width quotation mark.
+- ja: |-
+    Shift_JISの全角スラッシュ「／」のバイト列
+  en: |-
+    Byte sequence of the Shift_JIS full-width slash.
+- ja: |-
+    Shift_JISの全角文字1文字あたりのバイト数
+  en: |-
+    Number of bytes per full-width character in Shift_JIS.
+- ja: |-
+    全角ゼロのバイト列({@link #SJZERO}の別名)
+  en: |-
+    Byte sequence of the full-width zero (alias of {@link #SJZERO}).
+- ja: |-
+    全角空白のバイト列({@link #SJSPC}の別名)
+  en: |-
+    Byte sequence of the full-width space (alias of {@link #SJSPC}).
+- ja: |-
+    全角空白(BLANK)のバイト列({@link #SJBLK}の別名)
+  en: |-
+    Byte sequence of the full-width space (BLANK) (alias of {@link #SJBLK}).
+- ja: |-
+    全角引用符のバイト列({@link #SJQUOT}の別名)
+  en: |-
+    Byte sequence of the full-width quotation mark (alias of {@link #SJQUOT}).
+- ja: |-
+    全角スラッシュのバイト列({@link #SJSLAS}の別名)
+  en: |-
+    Byte sequence of the full-width slash (alias of {@link #SJSLAS}).
+- ja: |-
+    全角文字1文字あたりのバイト数({@link #SJCSIZ}の別名)
+  en: |-
+    Number of bytes per full-width character (alias of {@link #SJCSIZ}).
+- ja: |-
+    形象定数ZEROを表すフィールド
+  en: |-
+    Field representing the figurative constant ZERO.
+- ja: |-
+    形象定数SPACEを表すフィールド
+  en: |-
+    Field representing the figurative constant SPACE.
+- ja: |-
+    形象定数BLANKを表すフィールド
+  en: |-
+    Field representing the figurative constant BLANK.
+- ja: |-
+    形象定数HIGH-VALUE(0xFF)を表すフィールド
+  en: |-
+    Field representing the figurative constant HIGH-VALUE (0xFF).
+- ja: |-
+    形象定数LOW-VALUE(0x00)を表すフィールド
+  en: |-
+    Field representing the figurative constant LOW-VALUE (0x00).
+- ja: |-
+    形象定数QUOTEを表すフィールド
+  en: |-
+    Field representing the figurative constant QUOTE.
+- ja: |-
+    数字定数1を表すフィールド
+  en: |-
+    Field representing the numeric constant 1.
+- ja: |-
+    全角の形象定数ZEROを表すフィールド
+  en: |-
+    Field representing the full-width figurative constant ZERO.
+- ja: |-
+    全角の形象定数SPACEを表すフィールド
+  en: |-
+    Field representing the full-width figurative constant SPACE.
+- ja: |-
+    全角の形象定数BLANKを表すフィールド
+  en: |-
+    Field representing the full-width figurative constant BLANK.
+- ja: |-
+    全角の形象定数QUOTEを表すフィールド
+  en: |-
+    Field representing the full-width figurative constant QUOTE.
+- ja: |-
+    10のべき乗の表(添字が指数に対応する。10^0〜10^18)
+  en: |-
+    Table of powers of 10 (the index corresponds to the exponent; 10^0 to 10^18).
+- ja: |-
+    最小サイズのバッファのバイト数
+  en: |-
+    Size in bytes of the minimum-size buffer.
+- ja: |-
+    小サイズのバッファのバイト数
+  en: |-
+    Size in bytes of the small buffer.
+- ja: |-
+    標準サイズのバッファのバイト数
+  en: |-
+    Size in bytes of the standard-size buffer.
+- ja: |-
+    中サイズのバッファのバイト数
+  en: |-
+    Size in bytes of the medium buffer.
+- ja: |-
+    大サイズのバッファのバイト数
+  en: |-
+    Size in bytes of the large buffer.
+- ja: |-
+    最小サイズのバッファに格納できる最大文字数(終端分を除いた値)
+  en: |-
+    Maximum number of characters the minimum-size buffer can hold (excluding the terminator).
+- ja: |-
+    小サイズのバッファに格納できる最大文字数(終端分を除いた値)
+  en: |-
+    Maximum number of characters the small buffer can hold (excluding the terminator).
+- ja: |-
+    標準サイズのバッファに格納できる最大文字数(終端分を除いた値)
+  en: |-
+    Maximum number of characters the standard-size buffer can hold (excluding the terminator).
+- ja: |-
+    中サイズのバッファに格納できる最大文字数(終端分を除いた値)
+  en: |-
+    Maximum number of characters the medium buffer can hold (excluding the terminator).
+- ja: |-
+    大サイズのバッファに格納できる最大文字数(終端分を除いた値)
+  en: |-
+    Maximum number of characters the large buffer can hold (excluding the terminator).
+- ja: |-
+    1つのフィールドに指定できる引数の最大数
+  en: |-
+    Maximum number of arguments that can be specified for one field.
+- ja: |-
+    初期化に関する致命的エラーを表すエラーコード
+  en: |-
+    Error code indicating a fatal initialization error.
+- ja: |-
+    コンパイル対象のソースファイル名
+  en: |-
+    Name of the source file being compiled.
+- ja: |-
+    パッケージのバージョン番号
+  en: |-
+    Version number of the package.
+- ja: |-
+    パッチレベル
+  en: |-
+    Patch level.
+- ja: |-
+    ライブラリの検索パス
+  en: |-
+    Library search path.

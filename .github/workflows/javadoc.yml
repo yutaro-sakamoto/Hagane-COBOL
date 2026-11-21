@@ -24,3 +24,27 @@ jobs:
           ./gradlew javadoc
           ./gradlew javadoc | tee javadoc.log
           test "$(grep '[1-9][0-9]* warning' javadoc.log)" = ""
+
+      - name: Test the Javadoc translation tool
+        working-directory: libcobj
+        run: ./gradlew testJavadocI18n
+
+      # The English Javadoc is built from the translations in
+      # libcobj/javadoc-i18n/en/. Every Japanese text in the Javadoc must have a
+      # translation, and the translation files must match what
+      # syncJavadocTranslations writes, so either fails the build.
+      - name: Check the English translations of Javadoc
+        working-directory: libcobj
+        run: ./gradlew checkJavadocTranslations -PfailOnMissingTranslation
+
+      # A broken translation (HTML, {@link ...}) shows up as a Javadoc warning.
+      # The English Javadoc must not have more warnings than the Japanese one.
+      - name: Build the English Javadoc
+        working-directory: libcobj
+        run: |
+          ./gradlew javadoc --rerun 2>&1 | tee javadoc-ja.log
+          ./gradlew javadocEn --rerun 2>&1 | tee javadoc-en.log
+          ja=$(grep -c ': warning:' javadoc-ja.log || true)
+          en=$(grep -c ': warning:' javadoc-en.log || true)
+          echo "Javadoc warnings: Japanese $ja, English $en"
+          test "$en" -le "$ja"
