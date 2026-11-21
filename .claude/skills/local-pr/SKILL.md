@@ -11,6 +11,6 @@ description: 自分のフォークのデフォルトブランチに対してDraf
 デフォルトブランチ名は決め打ちにせず、`gh repo view <owner>/<repo> --json defaultBranchRef -q .defaultBranchRef.name`
 で取得する（`gh pr create` は `--base` を省略すればデフォルトブランチを使う）。
 
-- PRのタイトルは英語で、本文は前半を日本語・後半を英語で書く。
+- PRのタイトルと本文の言語は`CLAUDE.md`の「IssueとPull Requestの書き方」に従う(タイトルは英語、本文は前半が英語・後半が同じ内容の日本語)。
 - タイトルにも本文にも、「Claudeが書いた」といった記述は一切入れない。
 - `$ARGUMENTS` に `not-draft` が指定されていたら、Draftではなく通常のPull Requestを作成する。
