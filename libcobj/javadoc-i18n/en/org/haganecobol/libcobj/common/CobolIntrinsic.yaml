@@ -1,0 +1,1249 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLの組み込み関数(FUNCTION ...)を実装するクラス。<br>
+    GnuCOBOL/opensource COBOLのランタイムライブラリlibcobのintrinsic.cに対応する。<br>
+    ABS、MOD、FACTORIAL、SUM、MAX、MIN、NUMVAL、CURRENT-DATE、UPPER-CASE、LOWER-CASEなどの
+    各組み込み関数を、{@code funcXxx}という名前の静的メソッドとして提供する。<br>
+    各メソッドは計算結果を{@link AbstractCobolField}として返す。
+  en: |-
+    Implements the COBOL intrinsic functions (FUNCTION ...).<br>
+    Corresponds to intrinsic.c in libcob, the runtime library of GnuCOBOL/opensource COBOL.<br>
+    Provides intrinsic functions such as ABS, MOD, FACTORIAL, SUM, MAX, MIN, NUMVAL, CURRENT-DATE, UPPER-CASE,
+    and LOWER-CASE as static methods named {@code funcXxx}.<br>
+    Each method returns its result as an {@link AbstractCobolField}.
+- ja: |-
+    各月初日までの通日(非うるう年)。インデックスは月(0〜12)。
+  en: |-
+    Cumulative number of days before the first day of each month (non-leap year). The index is the month (0 to 12).
+- ja: |-
+    各月初日までの通日(うるう年)。インデックスは月(0〜12)。
+  en: |-
+    Cumulative number of days before the first day of each month (leap year). The index is the month (0 to 12).
+- ja: |-
+    各月の日数(非うるう年)。インデックスは月(0〜12)。
+  en: |-
+    Number of days in each month (non-leap year). The index is the month (0 to 12).
+- ja: |-
+    各月の日数(うるう年)。インデックスは月(0〜12)。
+  en: |-
+    Number of days in each month (leap year). The index is the month (0 to 12).
+- ja: |-
+    double型1個分のバイト数。
+  en: |-
+    Number of bytes in one double value.
+- ja: |-
+    直近に生成した計算結果フィールド。<br>
+    組み込み関数の評価中に使用する作業領域であり、実行単位はスレッドごとに独立しているため、
+    スレッドごとに保持する。
+  en: |-
+    Most recently created result field.<br>
+    This is a work area used while evaluating intrinsic functions; since each run unit is independent per thread,
+    it is held per thread.
+- ja: |-
+    FUNCTION RANDOMで使用する擬似乱数生成器(スレッドごとに保持する)。
+  en: |-
+    Pseudo-random number generator used by FUNCTION RANDOM (held per thread).
+- ja: |-
+    現在のスレッドの直近の計算結果フィールドを取得する。
+  en: |-
+    Returns the most recent result field of the current thread.
+- ja: |-
+    直近に生成した計算結果フィールド
+  en: |-
+    the most recently created result field
+- ja: |-
+    現在のスレッドの直近の計算結果フィールドを設定する。
+  en: |-
+    Sets the most recent result field of the current thread.
+- ja: |-
+    計算結果フィールド
+  en: |-
+    the result field
+- ja: |-
+    現在のスレッドに紐づく作業領域を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the work area bound to the current thread. Called when the run unit ends.
+- ja: |-
+    文字列"00"のSJISバイト列(ファイルステータスの初期値などに使用)。
+  en: |-
+    SJIS byte sequence of the string "00" (used, for example, as the initial value of a file status).
+- ja: |-
+    libcob/intrinsicのmake_double_entryの実装。<br>
+    double型(COB_TYPE_NUMERIC_DOUBLE)の計算結果フィールドを新たに生成し、
+    currField()に設定する。
+  en: |-
+    Implements make_double_entry in libcob/intrinsic.<br>
+    Creates a new result field of type double (COB_TYPE_NUMERIC_DOUBLE)
+    and sets it as currField().
+- ja: |-
+    libcob/intrinsicのmake_field_entryの実装。<br>
+    指定したフィールドと同じサイズ・属性を持つ計算結果フィールドを新たに生成し、
+    currField()に設定する。
+  en: |-
+    Implements make_field_entry in libcob/intrinsic.<br>
+    Creates a new result field with the same size and attributes as the specified field,
+    and sets it as currField().
+- ja: |-
+    生成するフィールドのサイズと属性の基となるフィールド
+  en: |-
+    the field whose size and attributes are used for the field to create
+- ja: |-
+    指定した西暦年がうるう年かどうかを判定する。
+  en: |-
+    Determines whether the specified year is a leap year.
+- ja: |-
+    判定対象の西暦年
+  en: |-
+    the year to check
+- ja: |-
+    うるう年であればtrue、そうでなければfalse
+  en: |-
+    true if it is a leap year, false otherwise
+- ja: |-
+    組み込み関数の作業領域を初期化する。<br>
+    計算結果フィールドは呼び出しのたびに生成するため、現在のスレッドの作業領域をリセットするのみである。
+  en: |-
+    Initializes the work area for intrinsic functions.<br>
+    Since a result field is created on every call, this only resets the work area of the current thread.
+- ja: |-
+    {@link CobolDecimal}の値を、その位取り(scale)を反映したdouble値に変換する。
+  en: |-
+    Converts the value of a {@link CobolDecimal} to a double value that reflects its scale.
+- ja: |-
+    変換元の十進数値
+  en: |-
+    the decimal value to convert
+- ja: |-
+    位取りを反映したdouble値
+  en: |-
+    the double value reflecting the scale
+- ja: |-
+    部分参照(reference modification)を計算結果フィールドに適用する。<br>
+    指定した開始位置offset(1始まり)と長さlengthに従ってフィールドの内容を切り出し、
+    フィールドのサイズとデータを更新する。
+  en: |-
+    Applies reference modification to a result field.<br>
+    Extracts part of the field's contents according to the specified start position offset (1-based) and
+    length, and updates the size and data of the field.
+- ja: |-
+    部分参照を適用するフィールド
+  en: |-
+    the field to which reference modification is applied
+- ja: |-
+    切り出し開始位置(1始まり)
+  en: |-
+    the start position of the extraction (1-based)
+- ja: |-
+    切り出す長さ。0以下の場合は開始位置以降の全体を対象とする
+  en: |-
+    the length to extract; if 0 or less, everything from the start position onward is extracted
+- ja: |-
+    2つのフィールドに対して二項算術演算を行い、その結果をフィールドとして返す。<br>
+    COBOLの算術式の評価に対応する。
+  en: |-
+    Performs a binary arithmetic operation on two fields and returns the result as a field.<br>
+    Corresponds to the evaluation of COBOL arithmetic expressions.
+- ja: |-
+    左辺のフィールド
+  en: |-
+    the left-hand operand field
+- ja: |-
+    演算子を表す文字コード('+'、'-'、'*'、'/'、'^'のいずれか)
+  en: |-
+    the character code representing the operator (one of '+', '-', '*', '/', or '^')
+- ja: |-
+    右辺のフィールド
+  en: |-
+    the right-hand operand field
+- ja: |-
+    演算結果を保持するフィールド
+  en: |-
+    a field holding the result of the operation
+- ja: |-
+    演算処理中にランタイムエラーが発生した場合
+  en: |-
+    if a runtime error occurs during the operation
+- ja: |-
+    COBOLの組み込み関数FUNCTION LENGTHに対応する。<br>
+    引数のフィールドのバイト数を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LENGTH.<br>
+    Returns the number of bytes of the argument field.
+- ja: |-
+    長さを求める対象のフィールド
+  en: |-
+    the field whose length is computed
+- ja: |-
+    フィールドのバイト数を保持する数値フィールド
+  en: |-
+    a numeric field holding the number of bytes of the field
+- ja: |-
+    COBOLの組み込み関数FUNCTION INTEGERに対応する。<br>
+    引数の値を超えない最大の整数(負方向への切り捨て、すなわち床関数)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION INTEGER.<br>
+    Returns the greatest integer not exceeding the argument (truncation toward negative infinity, that is, the
+    floor function).
+- ja: |-
+    対象の数値フィールド
+  en: |-
+    the target numeric field
+- ja: |-
+    床関数の結果を保持する整数フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    an integer field holding the result of the floor function, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION INTEGER-PARTに対応する。<br>
+    引数の整数部(小数点以下を0方向へ切り捨てた値)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION INTEGER-PART.<br>
+    Returns the integer part of the argument (the value with the fractional part truncated toward zero).
+- ja: |-
+    整数部を保持する整数フィールド
+  en: |-
+    an integer field holding the integer part
+- ja: |-
+    COBOLの組み込み関数FUNCTION UPPER-CASEに対応する。<br>
+    引数の文字列中の小文字を大文字に変換した結果を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION UPPER-CASE.<br>
+    Returns the result of converting lowercase letters in the argument string to uppercase.
+- ja: |-
+    結果に対する部分参照の開始位置(1始まり)。0以下の場合は部分参照を行わない
+  en: |-
+    the start position (1-based) of reference modification applied to the result; if 0 or less, no reference
+    modification is applied
+- ja: |-
+    結果に対する部分参照の長さ
+  en: |-
+    the length of reference modification applied to the result
+- ja: |-
+    変換対象の文字列フィールド
+  en: |-
+    the string field to convert
+- ja: |-
+    大文字に変換した結果を保持するフィールド
+  en: |-
+    a field holding the result converted to uppercase
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOWER-CASEに対応する。<br>
+    引数の文字列中の大文字を小文字に変換した結果を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOWER-CASE.<br>
+    Returns the result of converting uppercase letters in the argument string to lowercase.
+- ja: |-
+    小文字に変換した結果を保持するフィールド
+  en: |-
+    a field holding the result converted to lowercase
+- ja: |-
+    COBOLの組み込み関数FUNCTION REVERSEに対応する。<br>
+    引数の文字列を逆順に並べ替えた結果を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION REVERSE.<br>
+    Returns the result of reversing the order of the characters in the argument string.
+- ja: |-
+    反転対象の文字列フィールド
+  en: |-
+    the string field to reverse
+- ja: |-
+    文字順を反転した結果を保持するフィールド
+  en: |-
+    a field holding the result with the character order reversed
+- ja: |-
+    COBOLの組み込み関数FUNCTION WHEN-COMPILEDに対応する。<br>
+    コンパイル日時を表すフィールドの内容をそのまま返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION WHEN-COMPILED.<br>
+    Returns the contents of the field representing the compilation date and time as is.
+- ja: |-
+    コンパイル日時を保持するフィールド
+  en: |-
+    the field holding the compilation date and time
+- ja: |-
+    COBOLの組み込み関数FUNCTION CURRENT-DATEに対応する。<br>
+    現在の日付と時刻を「YYYYMMDDHHMMSSccsHHMM」形式の21文字の文字列として返す。<br>
+    ここでccは1/100秒、sHHMMはグリニッジ標準時からのオフセット(符号+時+分)を表す。<br>
+    環境変数COB_DATEで固定日付が指定されている場合は、日付部分にその値が反映される。<br>
+    時刻とオフセットは常に実行時のシステムクロックから取得する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION CURRENT-DATE.<br>
+    Returns the current date and time as a 21-character string in the format "YYYYMMDDHHMMSSccsHHMM".<br>
+    Here, cc is hundredths of a second, and sHHMM is the offset from Greenwich Mean Time (sign + hours + minutes).<br>
+    If a fixed date is specified with the environment variable COB_DATE, that value is reflected in the date part.<br>
+    The time and offset are always taken from the system clock at run time.
+- ja: |-
+    現在日時を表す文字列フィールド
+  en: |-
+    a string field representing the current date and time
+- ja: |-
+    COBOLの組み込み関数FUNCTION CHARに対応する。<br>
+    引数の整数値(1始まりの順序位置)に対応する1文字を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION CHAR.<br>
+    Returns the single character corresponding to the integer argument (a 1-based ordinal position).
+- ja: |-
+    文字の順序位置を表す数値フィールド
+  en: |-
+    a numeric field representing the ordinal position of the character
+- ja: |-
+    対応する1文字を保持するフィールド
+  en: |-
+    a field holding the corresponding character
+- ja: |-
+    COBOLの組み込み関数FUNCTION ORDに対応する。<br>
+    引数の文字の照合順序上の位置(1始まり)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ORD.<br>
+    Returns the position (1-based) of the argument character in the collating sequence.
+- ja: |-
+    対象の1文字を保持するフィールド
+  en: |-
+    the field holding the target character
+- ja: |-
+    文字の順序位置を保持する数値フィールド
+  en: |-
+    a numeric field holding the ordinal position of the character
+- ja: |-
+    COBOLの組み込み関数FUNCTION DATE-OF-INTEGERに対応する。<br>
+    基準日(1601年1月1日を1とする通日)から、対応する日付を「YYYYMMDD」形式で返す。<br>
+    引数が有効範囲(1〜3067671)外の場合は例外を設定し、結果を"00000000"とする。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION DATE-OF-INTEGER.<br>
+    Returns the date corresponding to the integer date (day count with January 1, 1601 as 1) in the format
+    "YYYYMMDD".<br>
+    If the argument is outside the valid range (1 to 3067671), sets an exception and makes the result "00000000".
+- ja: |-
+    通日(整数)を保持するフィールド
+  en: |-
+    the field holding the integer date
+- ja: |-
+    日付を表す8桁の数値フィールド
+  en: |-
+    an 8-digit numeric field representing the date
+- ja: |-
+    COBOLの組み込み関数FUNCTION DAY-OF-INTEGERに対応する。<br>
+    基準日(1601年1月1日を1とする通日)から、対応する日付を年間通日形式「YYYYDDD」で返す。<br>
+    引数が有効範囲(1〜3067671)外の場合は例外を設定する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION DAY-OF-INTEGER.<br>
+    Returns the date corresponding to the integer date (day count with January 1, 1601 as 1) in the Julian date
+    format "YYYYDDD".<br>
+    If the argument is outside the valid range (1 to 3067671), sets an exception.
+- ja: |-
+    年間通日を表す7桁の数値フィールド
+  en: |-
+    a 7-digit numeric field representing the Julian date
+- ja: |-
+    COBOLの組み込み関数FUNCTION INTEGER-OF-DATEに対応する。<br>
+    「YYYYMMDD」形式の日付を、1601年1月1日を1とする通日(整数)に変換する。<br>
+    年・月・日のいずれかが有効範囲外の場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION INTEGER-OF-DATE.<br>
+    Converts a date in the format "YYYYMMDD" to an integer date (day count with January 1, 1601 as 1).<br>
+    If any of the year, month, or day is outside its valid range, sets an exception and returns 0.
+- ja: |-
+    「YYYYMMDD」形式の日付を保持するフィールド
+  en: |-
+    the field holding a date in the format "YYYYMMDD"
+- ja: |-
+    通日を表す数値フィールド
+  en: |-
+    a numeric field representing the integer date
+- ja: |-
+    COBOLの組み込み関数FUNCTION INTEGER-OF-DAYに対応する。<br>
+    年間通日形式「YYYYDDD」の日付を、1601年1月1日を1とする通日(整数)に変換する。<br>
+    年または日が有効範囲外の場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION INTEGER-OF-DAY.<br>
+    Converts a date in the Julian date format "YYYYDDD" to an integer date (day count with January 1, 1601 as 1).<br>
+    If the year or day is outside its valid range, sets an exception and returns 0.
+- ja: |-
+    「YYYYDDD」形式の日付を保持するフィールド
+  en: |-
+    the field holding a date in the format "YYYYDDD"
+- ja: |-
+    COBOLの組み込み関数FUNCTION FACTORIALに対応する。<br>
+    引数の非負整数の階乗を返す。<br>
+    引数が負の場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION FACTORIAL.<br>
+    Returns the factorial of the non-negative integer argument.<br>
+    If the argument is negative, sets an exception and returns 0.
+- ja: |-
+    階乗を求める非負整数を保持するフィールド
+  en: |-
+    the field holding the non-negative integer whose factorial is computed
+- ja: |-
+    階乗の値を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the factorial, or null if an error occurs during processing
+- ja: |-
+    三角関数・逆三角関数系の組み込み関数の前処理。<br>
+    引数から{@link CobolDecimal}を生成し、結果格納用の数値フィールドを準備する。
+  en: |-
+    Preprocessing for the trigonometric and inverse trigonometric intrinsic functions.<br>
+    Creates a {@link CobolDecimal} from the argument and prepares a numeric field to store the result.
+- ja: |-
+    引数の値を保持する十進数値
+  en: |-
+    the decimal value holding the argument's value
+- ja: |-
+    指数・対数・平方根系の組み込み関数の前処理。<br>
+    引数から{@link CobolDecimal}を生成し、結果格納用のdouble型フィールドを準備する。
+  en: |-
+    Preprocessing for the exponential, logarithmic, and square root intrinsic functions.<br>
+    Creates a {@link CobolDecimal} from the argument and prepares a double field to store the result.
+- ja: |-
+    {@link #mathFunctionBefore1(AbstractCobolField)}と対になる後処理。<br>
+    計算したdouble値を、位取り17桁の数値フィールドに格納して返す。<br>
+    値がNaNまたは無限大の場合は0を格納する。
+  en: |-
+    Postprocessing paired with {@link #mathFunctionBefore1(AbstractCobolField)}.<br>
+    Stores the computed double value in a numeric field with a scale of 17 and returns it.<br>
+    If the value is NaN or infinite, stores 0.
+- ja: |-
+    数学関数の計算結果
+  en: |-
+    the result of the mathematical function
+- ja: |-
+    結果を保持する数値フィールド
+  en: |-
+    a numeric field holding the result
+- ja: |-
+    {@link #mathFunctionBefore2(AbstractCobolField)}と対になる後処理。<br>
+    計算したdouble値を、double型のフィールドに格納して返す。<br>
+    値がNaNまたは無限大の場合は0を格納する。
+  en: |-
+    Postprocessing paired with {@link #mathFunctionBefore2(AbstractCobolField)}.<br>
+    Stores the computed double value in a double field and returns it.<br>
+    If the value is NaN or infinite, stores 0.
+- ja: |-
+    結果を保持するdouble型フィールド
+  en: |-
+    a double field holding the result
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXPに対応する。<br>
+    ネイピア数eを底とする指数関数(e のsrcfield乗)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXP.<br>
+    Returns the exponential function with base e (Napier's constant), that is, e raised to the power srcfield.
+- ja: |-
+    指数を保持する数値フィールド
+  en: |-
+    a numeric field holding the exponent
+- ja: |-
+    計算結果を保持するdouble型フィールド
+  en: |-
+    a double field holding the result
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXP10に対応する。<br>
+    10を底とする指数関数(10 のsrcfield乗)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXP10.<br>
+    Returns the exponential function with base 10, that is, 10 raised to the power srcfield.
+- ja: |-
+    COBOLの組み込み関数FUNCTION ABSに対応する。<br>
+    引数の絶対値を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ABS.<br>
+    Returns the absolute value of the argument.
+- ja: |-
+    絶対値を保持するフィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a field holding the absolute value, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION ACOSに対応する。<br>
+    引数の逆余弦(アークコサイン、単位はラジアン)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ACOS.<br>
+    Returns the arc cosine of the argument (in radians).
+- ja: |-
+    逆余弦の値を保持するフィールド
+  en: |-
+    a field holding the arc cosine
+- ja: |-
+    COBOLの組み込み関数FUNCTION ASINに対応する。<br>
+    引数の逆正弦(アークサイン、単位はラジアン)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ASIN.<br>
+    Returns the arc sine of the argument (in radians).
+- ja: |-
+    逆正弦の値を保持するフィールド
+  en: |-
+    a field holding the arc sine
+- ja: |-
+    COBOLの組み込み関数FUNCTION ATANに対応する。<br>
+    引数の逆正接(アークタンジェント、単位はラジアン)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ATAN.<br>
+    Returns the arc tangent of the argument (in radians).
+- ja: |-
+    逆正接の値を保持するフィールド
+  en: |-
+    a field holding the arc tangent
+- ja: |-
+    COBOLの組み込み関数FUNCTION COSに対応する。<br>
+    引数(ラジアン)の余弦(コサイン)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION COS.<br>
+    Returns the cosine of the argument (in radians).
+- ja: |-
+    角度(ラジアン)を保持する数値フィールド
+  en: |-
+    a numeric field holding the angle (in radians)
+- ja: |-
+    余弦の値を保持するフィールド
+  en: |-
+    a field holding the cosine
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOGに対応する。<br>
+    引数の自然対数(底はネイピア数e)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOG.<br>
+    Returns the natural logarithm (base e) of the argument.
+- ja: |-
+    自然対数の値を保持するdouble型フィールド
+  en: |-
+    a double field holding the natural logarithm
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOG10に対応する。<br>
+    引数の常用対数(底は10)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOG10.<br>
+    Returns the common logarithm (base 10) of the argument.
+- ja: |-
+    常用対数の値を保持するdouble型フィールド
+  en: |-
+    a double field holding the common logarithm
+- ja: |-
+    COBOLの組み込み関数FUNCTION SINに対応する。<br>
+    引数(ラジアン)の正弦(サイン)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SIN.<br>
+    Returns the sine of the argument (in radians).
+- ja: |-
+    正弦の値を保持するフィールド
+  en: |-
+    a field holding the sine
+- ja: |-
+    COBOLの組み込み関数FUNCTION SQRTに対応する。<br>
+    引数の平方根を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SQRT.<br>
+    Returns the square root of the argument.
+- ja: |-
+    平方根の値を保持するdouble型フィールド
+  en: |-
+    a double field holding the square root
+- ja: |-
+    COBOLの組み込み関数FUNCTION TANに対応する。<br>
+    引数(ラジアン)の正接(タンジェント)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION TAN.<br>
+    Returns the tangent of the argument (in radians).
+- ja: |-
+    正接の値を保持するdouble型フィールド
+  en: |-
+    a double field holding the tangent
+- ja: |-
+    COBOLの組み込み関数FUNCTION NUMVALに対応する。<br>
+    数字を表す文字列(符号、小数点、CR/DBなどを含む)を解析し、対応する数値に変換して返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION NUMVAL.<br>
+    Parses a string representing a number (which may include a sign, a decimal point, CR/DB, etc.) and returns the
+    corresponding numeric value.
+- ja: |-
+    数字を表す文字列フィールド
+  en: |-
+    a string field representing a number
+- ja: |-
+    変換した数値を保持するフィールド
+  en: |-
+    a field holding the converted numeric value
+- ja: |-
+    COBOLの組み込み関数FUNCTION NUMVAL-Cに対応する。<br>
+    通貨記号やカンマを含む金額文字列を解析し、対応する数値に変換して返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION NUMVAL-C.<br>
+    Parses a monetary string that may contain a currency symbol and commas, and returns the corresponding numeric
+    value.
+- ja: |-
+    金額を表す文字列フィールド
+  en: |-
+    a string field representing a monetary amount
+- ja: |-
+    通貨記号を表すフィールド。nullの場合はモジュールの通貨記号設定を用いる
+  en: |-
+    a field representing the currency symbol; if null, the currency symbol setting of the module is used
+- ja: |-
+    COBOLの組み込み関数FUNCTION NUMVAL-Cに対応するオーバーロードのうち、第1引数が数値リテラルとして
+    渡された呼び出しに対応するスタブ。<br>
+    このメソッドは未実装であり、常にnullを返す。
+  en: |-
+    A stub for the overload of the COBOL intrinsic function FUNCTION NUMVAL-C that handles calls in which the first
+    argument is passed as a numeric literal.<br>
+    This method is not implemented and always returns null.
+- ja: |-
+    金額を表す数値(未使用)
+  en: |-
+    a number representing the monetary amount (unused)
+- ja: |-
+    通貨記号を表すフィールド(未使用)
+  en: |-
+    a field representing the currency symbol (unused)
+- ja: |-
+    常にnull
+  en: |-
+    always null
+- ja: |-
+    COBOLの組み込み関数FUNCTION NUMVAL-Cに対応するオーバーロード。<br>
+    通貨記号の指定を省略した呼び出しに対応し、通貨記号なしで
+    {@link #funcNumvalC(AbstractCobolField, AbstractCobolField)}を実行する。
+  en: |-
+    An overload corresponding to the COBOL intrinsic function FUNCTION NUMVAL-C.<br>
+    Handles calls that omit the currency symbol, and executes
+    {@link #funcNumvalC(AbstractCobolField, AbstractCobolField)} without a currency symbol.
+- ja: |-
+    通貨記号フィールドが指定されなかったことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the currency symbol field was not specified
+- ja: |-
+    COBOLの組み込み関数FUNCTION NUMVAL-Cに対応するオーバーロードのうち、両引数が数値リテラルとして
+    渡された呼び出しに対応するスタブ。<br>
+    このメソッドは未実装であり、常にnullを返す。
+  en: |-
+    A stub for the overload of the COBOL intrinsic function FUNCTION NUMVAL-C that handles calls in which both
+    arguments are passed as numeric literals.<br>
+    This method is not implemented and always returns null.
+- ja: |-
+    通貨記号を表す数値(未使用)
+  en: |-
+    a number representing the currency symbol (unused)
+- ja: |-
+    COBOLの組み込み関数FUNCTION ANNUITYに対応する。<br>
+    利率srcfield1と期間数srcfield2から、元本1に対する年金係数(期ごとの返済額)を返す。<br>
+    利率が0の場合は期間数の逆数を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ANNUITY.<br>
+    Returns the annuity factor (the payment per period) for a principal of 1, given the interest rate srcfield1
+    and the number of periods srcfield2.<br>
+    If the interest rate is 0, returns the reciprocal of the number of periods.
+- ja: |-
+    期あたりの利率を保持するフィールド
+  en: |-
+    the field holding the interest rate per period
+- ja: |-
+    期間数を保持するフィールド
+  en: |-
+    the field holding the number of periods
+- ja: |-
+    年金係数を保持するdouble型フィールド
+  en: |-
+    a double field holding the annuity factor
+- ja: |-
+    値の整数部の桁数を返す。<br>
+    符号と小数部を除いた、10進数表記での整数部の桁数を求める。
+  en: |-
+    Returns the number of digits in the integer part of a value.<br>
+    Computes the number of digits of the integer part in decimal notation, excluding the sign and the fractional
+    part.
+- ja: |-
+    対象の十進数値
+  en: |-
+    the target decimal value
+- ja: |-
+    整数部の桁数
+  en: |-
+    the number of digits in the integer part
+- ja: |-
+    COBOLの組み込み関数FUNCTION SUMに対応する。<br>
+    引数として与えられたすべての数値の総和を返す。位取りは各引数のうち最大のものに合わせる。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SUM.<br>
+    Returns the sum of all numeric values given as arguments. The scale is aligned to the largest among the
+    arguments.
+- ja: |-
+    引数の個数
+  en: |-
+    the number of arguments
+- ja: |-
+    合計の対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields to sum
+- ja: |-
+    総和を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the sum, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION ORD-MINに対応する。<br>
+    引数の並びの中で最小の値を持つ要素の順序位置(1始まり)を返す。<br>
+    引数が1個以下の場合は0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ORD-MIN.<br>
+    Returns the ordinal position (1-based) of the element with the smallest value in the argument list.<br>
+    If there is at most one argument, returns 0.
+- ja: |-
+    比較対象となるフィールドの並び
+  en: |-
+    the list of fields to compare
+- ja: |-
+    最小値を持つ要素の順序位置を保持する数値フィールド
+  en: |-
+    a numeric field holding the ordinal position of the element with the smallest value
+- ja: |-
+    COBOLの組み込み関数FUNCTION ORD-MAXに対応する。<br>
+    引数の並びの中で最大の値を持つ要素の順序位置(1始まり)を返す。<br>
+    引数が1個以下の場合は0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION ORD-MAX.<br>
+    Returns the ordinal position (1-based) of the element with the largest value in the argument list.<br>
+    If there is at most one argument, returns 0.
+- ja: |-
+    最大値を持つ要素の順序位置を保持する数値フィールド
+  en: |-
+    a numeric field holding the ordinal position of the element with the largest value
+- ja: |-
+    COBOLの組み込み関数FUNCTION MINに対応する。<br>
+    引数の並びの中で最小の値を持つフィールドを返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MIN.<br>
+    Returns the field with the smallest value in the argument list.
+- ja: |-
+    最小値を持つフィールド
+  en: |-
+    the field with the smallest value
+- ja: |-
+    COBOLの組み込み関数FUNCTION MAXに対応する。<br>
+    引数の並びの中で最大の値を持つフィールドを返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MAX.<br>
+    Returns the field with the largest value in the argument list.
+- ja: |-
+    最大値を持つフィールド
+  en: |-
+    the field with the largest value
+- ja: |-
+    COBOLの組み込み関数FUNCTION MIDRANGEに対応する。<br>
+    引数の並びの中の最小値と最大値の平均((最小値 + 最大値) / 2)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MIDRANGE.<br>
+    Returns the mean of the minimum and maximum values in the argument list ((minimum + maximum) / 2).
+- ja: |-
+    比較対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields to compare
+- ja: |-
+    最小値と最大値の中間値を保持するdouble型フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a double field holding the midpoint of the minimum and maximum values, or null if an error occurs during
+    processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION MEDIANに対応する。<br>
+    引数を昇順に整列したときの中央値を返す。引数の個数が奇数の場合は中央の要素を、
+    偶数の場合は中央の2要素の平均を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MEDIAN.<br>
+    Returns the median of the arguments sorted in ascending order. If the number of arguments is odd, returns the
+    middle element; if it is even, returns the mean of the two middle elements.
+- ja: |-
+    中央値を求める対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields whose median is computed
+- ja: |-
+    中央値を保持するフィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a field holding the median, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION MEANに対応する。<br>
+    引数として与えられたすべての数値の算術平均(総和を要素数で割った値)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MEAN.<br>
+    Returns the arithmetic mean (the sum divided by the number of elements) of all numeric values given as
+    arguments.
+- ja: |-
+    平均を求める対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields whose mean is computed
+- ja: |-
+    算術平均を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the arithmetic mean, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION MODに対応する。<br>
+    srcfield1をsrcfield2で割った剰余(srcfield1 - srcfield2 * FUNCTION INTEGER(srcfield1 / srcfield2))を返す。
+    結果の符号は除数srcfield2と一致する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION MOD.<br>
+    Returns the remainder of srcfield1 divided by srcfield2 (srcfield1 - srcfield2 * FUNCTION INTEGER(srcfield1 / srcfield2)).
+    The sign of the result matches that of the divisor srcfield2.
+- ja: |-
+    被除数を保持するフィールド
+  en: |-
+    the field holding the dividend
+- ja: |-
+    除数を保持するフィールド
+  en: |-
+    the field holding the divisor
+- ja: |-
+    剰余を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the remainder, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION RANGEに対応する。<br>
+    引数の並びの中の最大値から最小値を引いた値(値の範囲)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION RANGE.<br>
+    Returns the maximum value minus the minimum value in the argument list (the range of the values).
+- ja: |-
+    範囲を求める対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields whose range is computed
+- ja: |-
+    最大値と最小値の差を保持する数値フィールド
+  en: |-
+    a numeric field holding the difference between the maximum and minimum values
+- ja: |-
+    COBOLの組み込み関数FUNCTION REMに対応する。<br>
+    srcfield1をsrcfield2で割った剰余(srcfield1 - srcfield2 * FUNCTION INTEGER-PART(srcfield1 / srcfield2))を返す。
+    商の整数部を0方向へ切り捨てて算出するため、結果の符号は被除数srcfield1と一致する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION REM.<br>
+    Returns the remainder of srcfield1 divided by srcfield2 (srcfield1 - srcfield2 * FUNCTION INTEGER-PART(srcfield1 / srcfield2)).
+    Since the integer part of the quotient is truncated toward zero, the sign of the result matches that of the
+    dividend srcfield1.
+- ja: |-
+    剰余を保持する数値フィールド
+  en: |-
+    a numeric field holding the remainder
+- ja: |-
+    COBOLの組み込み関数FUNCTION RANDOMに対応する。<br>
+    0以上1未満の擬似乱数を返す。引数が与えられた場合はその値を乱数の種(シード)として用いる。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION RANDOM.<br>
+    Returns a pseudo-random number greater than or equal to 0 and less than 1. If an argument is given, its value
+    is used as the seed.
+- ja: |-
+    シードを保持するフィールドの並び(省略可能)。指定された場合は先頭要素をシードとして用いる
+  en: |-
+    the list of fields holding the seed (optional); if specified, the first element is used as the seed
+- ja: |-
+    擬似乱数を保持する数値フィールド
+  en: |-
+    a numeric field holding the pseudo-random number
+- ja: |-
+    COBOLの組み込み関数FUNCTION VARIANCEに対応する。<br>
+    引数として与えられた数値の母分散(平均との差の二乗の平均)を返す。<br>
+    引数が1個の場合は0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION VARIANCE.<br>
+    Returns the population variance (the mean of the squared differences from the mean) of the numeric values
+    given as arguments.<br>
+    If there is only one argument, returns 0.
+- ja: |-
+    分散を求める対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields whose variance is computed
+- ja: |-
+    母分散を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the population variance, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION STANDARD-DEVIATIONに対応する。<br>
+    引数として与えられた数値の母標準偏差(母分散の平方根)を返す。<br>
+    引数が1個の場合は0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION STANDARD-DEVIATION.<br>
+    Returns the population standard deviation (the square root of the population variance) of the numeric values
+    given as arguments.<br>
+    If there is only one argument, returns 0.
+- ja: |-
+    標準偏差を求める対象となる数値フィールドの並び
+  en: |-
+    the list of numeric fields whose standard deviation is computed
+- ja: |-
+    母標準偏差を保持する数値フィールド。処理中にエラーが発生した場合はnull
+  en: |-
+    a numeric field holding the population standard deviation, or null if an error occurs during processing
+- ja: |-
+    COBOLの組み込み関数FUNCTION PRESENT-VALUEに対応する。<br>
+    第1引数を割引率とし、第2引数以降を将来の各期の収支とみなして、それらの現在価値の合計を返す。<br>
+    引数が2個未満の場合はエラーメッセージを出力し0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION PRESENT-VALUE.<br>
+    Treats the first argument as the discount rate and the second and subsequent arguments as the amounts for
+    future periods, and returns the sum of their present values.<br>
+    If there are fewer than two arguments, outputs an error message and returns 0.
+- ja: |-
+    先頭が割引率、それ以降が各期の収支を表す数値フィールドの並び
+  en: |-
+    the list of numeric fields whose first element is the discount rate and whose remaining elements are the
+    amounts for each period
+- ja: |-
+    現在価値の合計を保持するdouble型フィールド
+  en: |-
+    a double field holding the sum of the present values
+- ja: |-
+    COBOLの組み込み関数FUNCTION NATIONALに対応する。<br>
+    引数の半角文字(英数字)を全角の日本語文字(各国文字)に変換した結果を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION NATIONAL.<br>
+    Returns the result of converting the half-width (alphanumeric) characters of the argument to full-width
+    Japanese (national) characters.
+- ja: |-
+    各国文字に変換した結果を保持するフィールド
+  en: |-
+    a field holding the result converted to national characters
+- ja: |-
+    COBOLの組み込み関数FUNCTION COMBINED-DATETIMEに対応する。<br>
+    通日(整数日付)と時刻(0時からの経過秒数)を結合し、「DDDDDDDttttt」形式の
+    12桁の数値(整数部7桁が通日、小数部5桁が時刻)を返す。<br>
+    通日が有効範囲(1〜3067671)外、または時刻が有効範囲(1〜86400)外の場合は
+    例外を設定し、結果を0とする。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION COMBINED-DATETIME.<br>
+    Combines an integer date and a time (the number of seconds since midnight), and returns a 12-digit number in
+    the format "DDDDDDDttttt" (7 integer digits for the integer date and 5 fractional digits for the time).<br>
+    If the integer date is outside the valid range (1 to 3067671), or the time is outside the valid range
+    (1 to 86400), sets an exception and makes the result 0.
+- ja: |-
+    0時からの経過秒数を保持するフィールド
+  en: |-
+    the field holding the number of seconds since midnight
+- ja: |-
+    通日と時刻を結合した数値フィールド
+  en: |-
+    a numeric field combining the integer date and the time
+- ja: |-
+    COBOLの組み込み関数FUNCTION CONCATENATEに対応する。<br>
+    引数として与えられたすべての文字列フィールドを順に連結した結果を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION CONCATENATE.<br>
+    Returns the result of concatenating, in order, all string fields given as arguments.
+- ja: |-
+    連結対象の引数の個数
+  en: |-
+    the number of arguments to concatenate
+- ja: |-
+    連結する文字列フィールドの並び
+  en: |-
+    the list of string fields to concatenate
+- ja: |-
+    連結した結果を保持するフィールド
+  en: |-
+    a field holding the concatenated result
+- ja: |-
+    COBOLの組み込み関数FUNCTION DATE-TO-YYYYMMDDに対応する。<br>
+    2桁年の日付「YYMMDD」を、ウィンドウ方式(基準年と区間)により4桁年の日付「YYYYMMDD」に変換して返す。<br>
+    第2引数で区間(省略時は50)、第3引数で実行年(省略時はシステム日付)を指定できる。<br>
+    引数が有効範囲外の場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION DATE-TO-YYYYMMDD.<br>
+    Converts a date with a 2-digit year "YYMMDD" to a date with a 4-digit year "YYYYMMDD" using a windowing
+    method (base year and window) and returns it.<br>
+    The second argument specifies the window (50 if omitted), and the third argument specifies the execution year
+    (the system date if omitted).<br>
+    If an argument is outside its valid range, sets an exception and returns 0.
+- ja: |-
+    先頭が「YYMMDD」形式の日付、第2要素が区間、第3要素が実行年を表す数値フィールドの並び
+  en: |-
+    the list of numeric fields whose first element is a date in the format "YYMMDD", second element is the
+    window, and third element is the execution year
+- ja: |-
+    4桁年の日付「YYYYMMDD」を保持する数値フィールド
+  en: |-
+    a numeric field holding the date with a 4-digit year "YYYYMMDD"
+- ja: |-
+    COBOLの組み込み関数FUNCTION DAY-TO-YYYYDDDに対応する。<br>
+    2桁年の年間通日「YYDDD」を、ウィンドウ方式(基準年と区間)により4桁年の年間通日「YYYYDDD」に変換して返す。<br>
+    第2引数で区間(省略時は50)、第3引数で実行年(省略時はシステム日付)を指定できる。<br>
+    引数が有効範囲外の場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION DAY-TO-YYYYDDD.<br>
+    Converts a Julian date with a 2-digit year "YYDDD" to a Julian date with a 4-digit year "YYYYDDD" using a
+    windowing method (base year and window) and returns it.<br>
+    The second argument specifies the window (50 if omitted), and the third argument specifies the execution year
+    (the system date if omitted).<br>
+    If an argument is outside its valid range, sets an exception and returns 0.
+- ja: |-
+    先頭が「YYDDD」形式の年間通日、第2要素が区間、第3要素が実行年を表す数値フィールドの並び
+  en: |-
+    the list of numeric fields whose first element is a Julian date in the format "YYDDD", second element is the
+    window, and third element is the execution year
+- ja: |-
+    4桁年の年間通日「YYYYDDD」を保持する数値フィールド
+  en: |-
+    a numeric field holding the Julian date with a 4-digit year "YYYYDDD"
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXCEPTION-FILEに対応する。<br>
+    直近に発生した入出力例外に関するファイル情報(2桁のファイルステータスと、続くファイル名)を返す。<br>
+    入出力例外が発生していない場合はファイルステータス"00"のみを返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXCEPTION-FILE.<br>
+    Returns file information about the most recent I/O exception (the 2-digit file status followed by the file
+    name).<br>
+    If no I/O exception has occurred, returns only the file status "00".
+- ja: |-
+    ファイルステータスとファイル名を保持する文字列フィールド
+  en: |-
+    a string field holding the file status and the file name
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXCEPTION-LOCATIONに対応する。<br>
+    直近に発生した例外の発生箇所(プログラムID、節・段落名、行番号)を
+    「プログラムID; 段落 OF 節; 行番号」などの形式の文字列として返す。<br>
+    例外が発生していない場合は空白1文字を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXCEPTION-LOCATION.<br>
+    Returns the location where the most recent exception occurred (program ID, section and paragraph names, and
+    line number) as a string in a format such as "program-ID; paragraph OF section; line-number".<br>
+    If no exception has occurred, returns a single space.
+- ja: |-
+    例外発生箇所を表す文字列フィールド
+  en: |-
+    a string field representing the location where the exception occurred
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXCEPTION-STATEMENTに対応する。<br>
+    直近に発生した例外を引き起こした文(STATEMENT)の名前を、31桁に左詰めした文字列として返す。<br>
+    該当する文が無い場合は空白を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXCEPTION-STATEMENT.<br>
+    Returns the name of the statement (STATEMENT) that caused the most recent exception, as a string
+    left-justified in 31 characters.<br>
+    If there is no such statement, returns spaces.
+- ja: |-
+    例外を引き起こした文の名前を表す31桁の文字列フィールド
+  en: |-
+    a 31-character string field representing the name of the statement that caused the exception
+- ja: |-
+    例外名が取得できなかった場合に用いる既定の例外名"EXCEPTION-OBJECT"のSJISバイト列。
+  en: |-
+    SJIS byte sequence of the default exception name "EXCEPTION-OBJECT", used when the exception name cannot be
+    obtained.
+- ja: |-
+    COBOLの組み込み関数FUNCTION EXCEPTION-STATUSに対応する。<br>
+    直近に発生した例外の名前を、31桁に左詰めした文字列として返す。<br>
+    例外が発生していない場合は空白を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION EXCEPTION-STATUS.<br>
+    Returns the name of the most recent exception as a string left-justified in 31 characters.<br>
+    If no exception has occurred, returns spaces.
+- ja: |-
+    例外の名前を表す31桁の文字列フィールド
+  en: |-
+    a 31-character string field representing the name of the exception
+- ja: |-
+    COBOLの組み込み関数FUNCTION FRACTION-PARTに対応する。<br>
+    引数の小数部(整数部を除いた値)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION FRACTION-PART.<br>
+    Returns the fractional part of the argument (the value excluding the integer part).
+- ja: |-
+    小数部を保持する数値フィールド
+  en: |-
+    a numeric field holding the fractional part
+- ja: |-
+    COBOLの組み込み関数FUNCTION SECONDS-FROM-FORMATTED-TIMEに対応する。<br>
+    時刻書式文字列(時を"hh"、分を"mm"、秒を"ss"で表す)に従ってvalueを解析し、
+    その時刻を0時からの経過秒数に変換して返す。<br>
+    時・分・秒のいずれかが書式中に現れない場合は例外を設定し、0を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SECONDS-FROM-FORMATTED-TIME.<br>
+    Parses value according to a time format string (in which "hh" represents hours, "mm" minutes, and "ss"
+    seconds), and returns that time converted to the number of seconds since midnight.<br>
+    If any of the hours, minutes, or seconds does not appear in the format, sets an exception and returns 0.
+- ja: |-
+    時刻の書式を表すフィールド("hh"、"mm"、"ss"を含む)
+  en: |-
+    a field representing the time format (containing "hh", "mm", and "ss")
+- ja: |-
+    書式に従った時刻文字列を保持するフィールド
+  en: |-
+    a field holding a time string that follows the format
+- ja: |-
+    0時からの経過秒数を保持する数値フィールド
+  en: |-
+    a numeric field holding the number of seconds since midnight
+- ja: |-
+    COBOLの組み込み関数FUNCTION SECONDS-PAST-MIDNIGHTに対応する。<br>
+    現在時刻の、0時からの経過秒数(時 * 3600 + 分 * 60 + 秒)を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SECONDS-PAST-MIDNIGHT.<br>
+    Returns the number of seconds since midnight for the current time (hours * 3600 + minutes * 60 + seconds).
+- ja: |-
+    COBOLの組み込み関数FUNCTION SIGNに対応する。<br>
+    引数の符号に応じて、負の場合は-1、0の場合は0、正の場合は1を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SIGN.<br>
+    Returns -1 if the argument is negative, 0 if it is zero, and 1 if it is positive.
+- ja: |-
+    符号を表す数値フィールド(-1、0、または1)
+  en: |-
+    a numeric field representing the sign (-1, 0, or 1)
+- ja: |-
+    COBOLの組み込み関数FUNCTION STORED-CHAR-LENGTHに対応する。<br>
+    引数の文字列から末尾の空白を取り除いた、実質的な格納文字数を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION STORED-CHAR-LENGTH.<br>
+    Returns the effective number of stored characters in the argument string, excluding trailing spaces.
+- ja: |-
+    対象の文字列フィールド
+  en: |-
+    the target string field
+- ja: |-
+    末尾の空白を除いた文字数を保持する数値フィールド
+  en: |-
+    a numeric field holding the number of characters excluding trailing spaces
+- ja: |-
+    COBOLの組み込み関数FUNCTION SUBSTITUTEに対応する。<br>
+    先頭の引数を対象文字列とし、続く引数を(検索文字列, 置換文字列)の組として、
+    対象文字列中に出現する各検索文字列を対応する置換文字列に置き換えた結果を返す。<br>
+    大文字・小文字を区別して比較する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SUBSTITUTE.<br>
+    Treats the first argument as the target string and the following arguments as pairs of (search string,
+    replacement string), and returns the result of replacing each occurrence of a search string in the target
+    string with the corresponding replacement string.<br>
+    The comparison is case-sensitive.
+- ja: |-
+    引数の個数(先頭の対象文字列と、それに続く検索・置換の組)
+  en: |-
+    the number of arguments (the leading target string followed by the search/replacement pairs)
+- ja: |-
+    先頭が対象文字列、それ以降が検索文字列と置換文字列を交互に並べたフィールドの並び
+  en: |-
+    the list of fields whose first element is the target string, followed by search strings and replacement
+    strings in alternation
+- ja: |-
+    置換した結果を保持するフィールド
+  en: |-
+    a field holding the result of the replacement
+- ja: |-
+    COBOLの組み込み関数FUNCTION SUBSTITUTE-CASEに対応する。<br>
+    先頭の引数を対象文字列とし、続く引数を(検索文字列, 置換文字列)の組として、
+    対象文字列中に出現する各検索文字列を対応する置換文字列に置き換えた結果を返す。<br>
+    大文字・小文字を区別せずに比較する。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION SUBSTITUTE-CASE.<br>
+    Treats the first argument as the target string and the following arguments as pairs of (search string,
+    replacement string), and returns the result of replacing each occurrence of a search string in the target
+    string with the corresponding replacement string.<br>
+    The comparison is case-insensitive.
+- ja: |-
+    COBOLの組み込み関数FUNCTION TRIMに対応する。<br>
+    引数の文字列の前後の空白を取り除いた結果を返す。directionにより、取り除く位置を切り替える。<br>
+    文字列が空白のみの場合は空白1文字を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION TRIM.<br>
+    Returns the result of removing leading and trailing spaces from the argument string. direction selects
+    where spaces are removed.<br>
+    If the string consists only of spaces, returns a single space.
+- ja: |-
+    空白を取り除く対象の文字列フィールド
+  en: |-
+    the string field from which spaces are removed
+- ja: |-
+    取り除く位置の指定。1は先頭の空白のみ、2は末尾の空白のみ、それ以外は前後両方の空白を取り除く
+  en: |-
+    where to remove spaces: 1 removes only leading spaces, 2 removes only trailing spaces, and any other value
+    removes both
+- ja: |-
+    空白を取り除いた結果を保持するフィールド
+  en: |-
+    a field holding the result with spaces removed
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-DATEに対応するオーバーロード。<br>
+    ロケールの指定が省略された呼び出しに対応し、既定のロケールで
+    {@link #funcLocaleDate(int, int, AbstractCobolField, AbstractCobolField)}を実行する。
+  en: |-
+    An overload corresponding to the COBOL intrinsic function FUNCTION LOCALE-DATE.<br>
+    Handles calls that omit the locale, and executes
+    {@link #funcLocaleDate(int, int, AbstractCobolField, AbstractCobolField)} with the default locale.
+- ja: |-
+    ロケールフィールドが指定されなかったことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the locale field was not specified
+- ja: |-
+    ロケールに従って整形した日付文字列を保持するフィールド
+  en: |-
+    a field holding the date string formatted according to the locale
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-DATEに対応する。<br>
+    「YYYYMMDD」形式の日付を、指定されたロケール(省略時は既定のロケール)の書式に従って整形した
+    日付文字列に変換して返す。<br>
+    日付の各要素が有効範囲外の場合は例外を設定し、"0000000000"を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOCALE-DATE.<br>
+    Converts a date in the format "YYYYMMDD" to a date string formatted according to the specified locale (the
+    default locale if omitted) and returns it.<br>
+    If any component of the date is outside its valid range, sets an exception and returns "0000000000".
+- ja: |-
+    「YYYYMMDD」形式の日付を保持するフィールド(数値・文字列いずれも可)
+  en: |-
+    the field holding a date in the format "YYYYMMDD" (either numeric or string)
+- ja: |-
+    ロケール名を保持するフィールド。nullの場合は既定のロケールを用いる
+  en: |-
+    the field holding the locale name; if null, the default locale is used
+- ja: |-
+    {@link #funcLocaleDate}や{@link #funcLocaleTime}などの引数が不正な場合のエラー処理。<br>
+    結果フィールドを10桁の"0"で埋め、引数エラーの例外を設定して返す。
+  en: |-
+    Error handling for invalid arguments to {@link #funcLocaleDate}, {@link #funcLocaleTime}, and similar methods.<br>
+    Fills the result field with ten "0" characters, sets an argument error exception, and returns it.
+- ja: |-
+    エラー結果を格納するフィールド
+  en: |-
+    the field in which the error result is stored
+- ja: |-
+    "0000000000"を保持する結果フィールド
+  en: |-
+    the result field holding "0000000000"
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-TIMEに対応するオーバーロード。<br>
+    ロケールの指定が省略された呼び出しに対応し、既定のロケールで
+    {@link #funcLocaleTime(int, int, AbstractCobolField, AbstractCobolField)}を実行する。
+  en: |-
+    An overload corresponding to the COBOL intrinsic function FUNCTION LOCALE-TIME.<br>
+    Handles calls that omit the locale, and executes
+    {@link #funcLocaleTime(int, int, AbstractCobolField, AbstractCobolField)} with the default locale.
+- ja: |-
+    「hhmmss」形式の時刻を保持するフィールド
+  en: |-
+    the field holding a time in the format "hhmmss"
+- ja: |-
+    ロケールに従って整形した時刻文字列を保持するフィールド
+  en: |-
+    a field holding the time string formatted according to the locale
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-TIMEに対応する。<br>
+    「hhmmss」形式の時刻を、指定されたロケール(省略時は既定のロケール)の書式に従って整形した
+    時刻文字列に変換して返す。<br>
+    時・分・秒のいずれかが有効範囲外の場合は例外を設定し、"0000000000"を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOCALE-TIME.<br>
+    Converts a time in the format "hhmmss" to a time string formatted according to the specified locale (the
+    default locale if omitted) and returns it.<br>
+    If any of the hours, minutes, or seconds is outside its valid range, sets an exception and returns
+    "0000000000".
+- ja: |-
+    「hhmmss」形式の時刻を保持するフィールド(数値・文字列いずれも可)
+  en: |-
+    the field holding a time in the format "hhmmss" (either numeric or string)
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-TIME-FROM-SECONDSに対応するオーバーロード。<br>
+    ロケールの指定が省略された呼び出しに対応し、既定のロケールで処理を実行する。
+  en: |-
+    An overload corresponding to the COBOL intrinsic function FUNCTION LOCALE-TIME-FROM-SECONDS.<br>
+    Handles calls that omit the locale, and performs the processing with the default locale.
+- ja: |-
+    COBOLの組み込み関数FUNCTION LOCALE-TIME-FROM-SECONDSに対応する。<br>
+    0時からの経過秒数を時・分・秒に変換し、指定されたロケール(省略時は既定のロケール)の書式に従って
+    整形した時刻文字列に変換して返す。<br>
+    引数が数値でない場合は例外を設定し、"0000000000"を返す。
+  en: |-
+    Corresponds to the COBOL intrinsic function FUNCTION LOCALE-TIME-FROM-SECONDS.<br>
+    Converts the number of seconds since midnight to hours, minutes, and seconds, and returns a time string
+    formatted according to the specified locale (the default locale if omitted).<br>
+    If the argument is not numeric, sets an exception and returns "0000000000".

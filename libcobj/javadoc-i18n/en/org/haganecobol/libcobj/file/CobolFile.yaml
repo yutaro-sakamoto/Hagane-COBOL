@@ -1,0 +1,153 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    INDEXED, RELATIVE, SEQUENTIAL, LINE SEQUENTIAL等のCOBOLの ファイルを実装するための基底クラス
+  en: |-
+    Base class for implementing COBOL files such as INDEXED, RELATIVE, SEQUENTIAL and LINE SEQUENTIAL
+    files.
+- ja: |-
+    TODO: 準備中
+  en: |-
+    TODO: Not documented yet.
+- ja: |-
+    現在のスレッドで直近にI/Oステータスが設定されたファイルを取得する。
+  en: |-
+    Returns the file whose I/O status was most recently set in the current thread.
+- ja: |-
+    直近にI/Oが行われたファイル。まだI/Oが行われていない場合はnull
+  en: |-
+    the file on which I/O was most recently performed, or null if no I/O has been performed yet
+- ja: |-
+    改ページ(EOP)が発生したことを示すフラグ(スレッドごとに保持する)
+  en: |-
+    Flag indicating that a page overflow (EOP) has occurred (held per thread).
+- ja: |-
+    現在のスレッドのEOPフラグを取得する
+  en: |-
+    Returns the EOP flag of the current thread.
+- ja: |-
+    EOPが発生していれば0以外
+  en: |-
+    non-zero if EOP has occurred
+- ja: |-
+    現在のスレッドのEOPフラグを設定する
+  en: |-
+    Sets the EOP flag of the current thread.
+- ja: |-
+    設定する値
+  en: |-
+    the value to set
+- ja: |-
+    オープン中のファイルの集合。{@code COMMIT}/{@code ROLLBACK}文とプログラム終了時に、
+    後始末が必要なファイルを見つけるために使用する。オープン時に追加し、クローズに
+    成功した時点で取り除く。{@link CobolFile}は{@code equals}を上書きしていないため
+    同一性で判定される。反復順(＝オープン順)を保つためLinkedHashSetを使用する。
+  en: |-
+    Set of open files. Used by the {@code COMMIT}/{@code ROLLBACK} statements and at program termination
+    to find the files that need cleanup. A file is added when it is opened and removed once it is
+    closed successfully. Since {@link CobolFile} does not override {@code equals}, files are compared by
+    identity. A LinkedHashSet is used to preserve the iteration order (= the order in which files were
+    opened).
+- ja: |-
+    現在のスレッドに紐づくファイル関連の状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the file-related state bound to the current thread. Called when the run unit terminates.
+- ja: |-
+    このファイルのOPENで取得したJVM内ファイルロックの票。ロックを取得していない場合はnull
+  en: |-
+    The lease of the in-JVM file lock acquired by OPEN of this file, or null if no lock has been
+    acquired.
+- ja: |-
+    OPENで取得したJVM内ファイルロックを解放し、ファイルのチャネルを閉じる。<br>
+    他の実行単位がまだファイルを開いている場合、チャネルはロックの解放まで台帳が預かる
+    (閉じるとOSのロックが失われる場合があるため)。
+  en: |-
+    Releases the in-JVM file lock acquired by OPEN and closes the file's channel.<br>
+    If other run units still have the file open, the registry holds on to the channel until the lock is
+    released (because closing it may cause the OS lock to be lost).
+- ja: |-
+    ファイルのI/Oに使っていたチャネル。nullでもよい
+  en: |-
+    the channel that was used for the file's I/O; may be null
+- ja: |-
+    クローズが完了したファイルをキャッシュから取り除く。<br>
+    クローズに失敗した場合は呼び出してはならない。プログラム終了時の暗黙クローズで
+    再試行する機会が失われ、遅延中の書き込みが確定しなくなるためである。
+  en: |-
+    Removes a file whose close has completed from the cache.<br>
+    Must not be called if the close failed. Otherwise the opportunity to retry with the implicit close at
+    program termination would be lost, and deferred writes would never be committed.
+- ja: |-
+    取り除くファイル
+  en: |-
+    the file to remove
+- ja: |-
+    順編成ファイルの入出力バッファに割り当てるバイト数の上限。
+  en: |-
+    Upper limit on the number of bytes allocated to the I/O buffer of a sequential file.
+- ja: |-
+    順編成ファイルの入出力バッファのバイト数を求める。<br>
+    環境変数で指定されたレコード数と最大レコード長の積が大きすぎる場合は、{@link #MAX_SEQ_BUFFER_SIZE}に切り詰める。
+  en: |-
+    Calculates the size in bytes of the I/O buffer of a sequential file.<br>
+    If the product of the number of records specified by the environment variable and the maximum record
+    length is too large, it is truncated to {@link #MAX_SEQ_BUFFER_SIZE}.
+- ja: |-
+    一度に入出力するレコード数
+  en: |-
+    the number of records to read or write at a time
+- ja: |-
+    バッファのバイト数。バッファを使用しない場合は0
+  en: |-
+    the size of the buffer in bytes, or 0 if no buffer is used
+- ja: |-
+    COBOLの{@code COMMIT}文によるファイルごとの処理。デフォルトでは{@link #unlock_}と同じ。
+    書き込みを遅延しているファイル実装（INDEXEDファイルのOUTPUTモード等）は、
+    このメソッドをオーバーライドして遅延分を永続化する。
+  en: |-
+    Per-file processing for the COBOL {@code COMMIT} statement. By default it is the same as
+    {@link #unlock_}. File implementations that defer writes (such as an INDEXED file in OUTPUT mode)
+    override this method to persist the deferred writes.
+- ja: |-
+    COBOLの{@code ROLLBACK}文の処理。オープン中の全ファイルに対して{@link #rollback_}を実行する。
+
+    <p>参照実装(opensource COBOL 1.xとGnuCOBOL 3.xのcob_rollback)は
+    {@code COMMIT}文と同じくレコードロックの解放しか行わない。書き込みが常にその場で
+    永続化される実装では取り消せる変更が存在しないためである。本実装もそれに倣うが、
+    INDEXEDファイルのOUTPUTモードのように実際に未コミットの書き込みを保持している場合は、
+    {@link CobolIndexedFile#rollback_}がそれを取り消す。
+  en: |-
+    Processes the COBOL {@code ROLLBACK} statement. Executes {@link #rollback_} on all open files.
+
+    <p>The reference implementations (cob_rollback in opensource COBOL 1.x and GnuCOBOL 3.x), like the
+    {@code COMMIT} statement, only release record locks. This is because an implementation where writes
+    are always persisted immediately has no changes that can be undone. This implementation follows
+    them, but when uncommitted writes are actually held, as in an INDEXED file in OUTPUT mode,
+    {@link CobolIndexedFile#rollback_} undoes them.
+- ja: |-
+    COBOLの{@code ROLLBACK}文によるファイルごとの処理。デフォルトでは{@link #unlock_}と同じ。
+    書き込みを遅延しているファイル実装（INDEXEDファイルのOUTPUTモード等）は、
+    このメソッドをオーバーライドして遅延分を取り消す。
+  en: |-
+    Per-file processing for the COBOL {@code ROLLBACK} statement. By default it is the same as
+    {@link #unlock_}. File implementations that defer writes (such as an INDEXED file in OUTPUT mode)
+    override this method to discard the deferred writes.
+- ja: |-
+    プログラム終了時に、開いたままのファイルを警告を出力した上で暗黙的にクローズする。
+    これによりバッファリングされた書き込み（順編成ファイルの書き込みバッファや、
+    INDEXEDファイルのOUTPUTモードで遅延されたコミット）がフラッシュされる。
+  en: |-
+    At program termination, implicitly closes files that are still open, after printing a warning.
+    This flushes buffered writes (the write buffer of sequential files and the commits deferred in
+    OUTPUT mode of INDEXED files).
+- ja: |-
+    EXTERNALファイルのファイルステータスの対応表(実行単位ごとに保持するためスレッドごとに独立)
+  en: |-
+    Mapping table of file statuses for EXTERNAL files (independent per thread, since it is held per
+    run unit).
+- ja: |-
+    EXTERNALファイルの対応表(実行単位ごとに保持するためスレッドごとに独立)
+  en: |-
+    Mapping table of EXTERNAL files (independent per thread, since it is held per run unit).

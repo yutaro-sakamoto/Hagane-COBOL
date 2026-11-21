@@ -18,14 +18,135 @@ repositories {
     mavenCentral()
 }
 
+// The Javadoc of libcobj is published in two languages.
+// The comments in the source code are written in Japanese, and `javadoc` builds
+// the Japanese version from them as they are. `javadocEn` builds the English
+// version from a copy of the sources whose comments are replaced with the
+// translations in libcobj/javadoc-i18n/en/ (see JavadocTranslator).
+val javadocI18n: SourceSet by sourceSets.creating
+val javadocI18nTest: SourceSet by sourceSets.creating {
+    compileClasspath += javadocI18n.output + javadocI18n.compileClasspath
+    runtimeClasspath += javadocI18n.output + javadocI18n.runtimeClasspath
+}
+val javadocTranslationsEn = rootProject.layout.projectDirectory.dir("javadoc-i18n/en")
+val javadocSourcesEn = layout.buildDirectory.dir("javadoc-src/en")
+val mainJavaDir: File = sourceSets.main.get().java.srcDirs.first()
+// The root of the git repository, so that messages and GitHub annotations show
+// paths relative to it.
+val repositoryRoot: File = rootProject.projectDir.parentFile
+
+// Paths on the website where each version of the Javadoc is published.
+val javadocUrlEn = "/javadoc/libcobj/index.html"
+val javadocUrlJa = "/ja/javadoc/libcobj/index.html"
+
+fun StandardJavadocDocletOptions.configureLibcobjJavadoc(lang: String, otherLanguageLink: String) {
+    encoding = "UTF-8"
+    docEncoding = "UTF-8"
+    charSet = "UTF-8"
+    locale = lang
+    windowTitle = "libcobj API"
+    docTitle = "libcobj API"
+    bottom(otherLanguageLink)
+    // It seems that the following line does not work.
+    addStringOption("Xdoclint:missing")
+}
+
 tasks {
     javadoc {
-        options.encoding = "UTF-8"
-        options {
-            // It seems that the following line does not work.
-            (this as CoreJavadocOptions).addStringOption("Xdoclint:missing")
+        (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
+            "ja_JP", "<a href=\"$javadocUrlEn\">English</a>")
+    }
+
+    val translateJavadocEn by registering(JavaExec::class) {
+        description = "Copies the sources of libcobj with the Javadoc comments translated into English."
+        group = "documentation"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        inputs.dir(mainJavaDir)
+        inputs.dir(javadocTranslationsEn).optional()
+        outputs.dir(javadocSourcesEn)
+        // Remove the copies of deleted source files.
+        doFirst { delete(javadocSourcesEn) }
+        args(
+            "apply",
+            "--source", mainJavaDir.absolutePath,
+            "--translations", javadocTranslationsEn.asFile.absolutePath,
+            "--output", javadocSourcesEn.get().asFile.absolutePath,
+            "--repo-root", repositoryRoot.absolutePath)
+    }
+
+    register<Javadoc>("javadocEn") {
+        description = "Generates the English Javadoc of libcobj into build/docs/javadoc-en."
+        group = "documentation"
+        source(translateJavadocEn)
+        include("**/*.java")
+        classpath = sourceSets.main.get().compileClasspath
+        setDestinationDir(layout.buildDirectory.dir("docs/javadoc-en").get().asFile)
+        (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
+            "en_US",
+            // "日本語" as character references, so that the option file does not
+            // depend on the platform encoding.
+            "<a href=\"$javadocUrlJa\">&#26085;&#26412;&#35486;</a>")
+    }
+
+    register<JavaExec>("syncJavadocTranslations") {
+        description =
+            "Updates libcobj/javadoc-i18n/en/ to match the Javadoc comments in the sources:" +
+                " adds new Japanese texts (taking over translations found in other files)" +
+                " and removes unused ones."
+        group = "documentation"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        args(
+            "sync",
+            "--source", mainJavaDir.absolutePath,
+            "--translations", javadocTranslationsEn.asFile.absolutePath)
+    }
+
+    register<JavaExec>("checkJavadocTranslations") {
+        description =
+            "Checks the English translations of the Javadoc. With -PfailOnMissingTranslation," +
+                " also fails on untranslated texts and on translation files that" +
+                " syncJavadocTranslations would change (as CI does)."
+        group = "verification"
+        classpath = javadocI18n.runtimeClasspath
+        mainClass.set("org.haganecobol.javadoci18n.JavadocTranslator")
+        val checkArgs =
+            mutableListOf(
+                "check",
+                "--source", mainJavaDir.absolutePath,
+                "--translations", javadocTranslationsEn.asFile.absolutePath,
+                "--repo-root", repositoryRoot.absolutePath)
+        if (project.hasProperty("failOnMissingTranslation")) {
+            checkArgs.add("--fail-on-missing")
+        }
+        if (System.getenv("GITHUB_ACTIONS") == "true") {
+            checkArgs.add("--github-actions")
+        }
+        args(checkArgs)
+    }
+
+    register<Test>("testJavadocI18n") {
+        description = "Runs the unit tests of the Javadoc translation tool."
+        group = "verification"
+        testClassesDirs = javadocI18nTest.output.classesDirs
+        classpath = javadocI18nTest.runtimeClasspath
+        useJUnitPlatform()
+        // The tests also run the tool on the real sources and translations.
+        systemProperty("javadocI18n.sourceDir", mainJavaDir.absolutePath)
+        systemProperty("javadocI18n.translationDir", javadocTranslationsEn.asFile.absolutePath)
+        inputs.dir(mainJavaDir)
+        inputs.dir(javadocTranslationsEn).optional()
+        testLogging {
+            events("failed")
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
     }
+
+    // The JUnit rules of the PMD rule set are written for the tests of libcobj.
+    // The tests of the translation tool are checked by testJavadocI18n itself.
+    named("pmdJavadocI18nTest") { enabled = false }
+    named("spotbugsJavadocI18nTest") { enabled = false }
     compileJava {
         options.encoding = "UTF-8"
     }
@@ -50,6 +171,11 @@ dependencies {
     runtimeOnly("org.slf4j:slf4j-simple:2.0.20")
     testImplementation("com.github.valfirst:slf4j-test:3.0.3")
     implementation("org.postgresql:postgresql:42.7.14")
+
+    // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
+    "javadocI18nImplementation"("org.yaml:snakeyaml:2.5")
+    "javadocI18nTestImplementation"("org.junit.jupiter:junit-jupiter:5.14.4")
+    "javadocI18nTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
 }
 
 configurations {

@@ -1,0 +1,88 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    1つのINDEXEDファイル（＝1つのSQLite接続）で発行するSQL文の{@link PreparedStatement}を、
+    SQL文字列をキーとしてキャッシュする。
+
+    <p>INDEXEDファイルのテーブル構成（テーブル数・スキーマ）はオープン成功時点で確定し、
+    オープン中に変わることはない。またSQL文はすべて定数テンプレートとテーブル名から
+    組み立てられ、値は必ずプレースホルダでバインドされるため、SQL文字列の種類は有界で、
+    同じ文字列は常に同じ意味を持つ。したがって文ごとに毎回SQLを解析し直す代わりに、
+    接続ごとに1つのPreparedStatementを生成して使い回すことができる。
+
+    <p>PreparedStatementは接続内で完結するため、ファイルを他プロセスと共有していても、
+    コミット・ロールバック・セーブポイントをまたいでも安全に再利用できる。
+
+    <p>使用上の規約:
+
+    <ul>
+      <li>{@link #get(String)}が返すPreparedStatementを呼び出し側でcloseしてはならない。
+          解放は{@link #closeAll()}が一括して行い、その後に接続をcloseする。
+      <li>パラメータは実行のたびにすべてバインドし直すこと。
+      <li>{@code executeQuery}が返す{@link java.sql.ResultSet}は、従来どおり呼び出し側が
+          try-with-resourcesでcloseすること。
+    </ul>
+  en: |-
+    Caches the {@link PreparedStatement}s of the SQL statements issued on one INDEXED file (= one SQLite
+    connection), keyed by the SQL string.
+
+    <p>The table structure of an INDEXED file (the number of tables and the schema) is fixed when the open
+    succeeds and does not change while the file is open. Moreover, every SQL statement is assembled from
+    constant templates and table names, and values are always bound through placeholders, so the set of
+    SQL strings is bounded and the same string always has the same meaning. Therefore, instead of parsing
+    the SQL again for every statement, one PreparedStatement can be created per connection and reused.
+
+    <p>Since a PreparedStatement is self-contained within its connection, it can be safely reused even if
+    the file is shared with other processes, and across commits, rollbacks and savepoints.
+
+    <p>Usage rules:
+
+    <ul>
+      <li>The caller must not close a PreparedStatement returned by {@link #get(String)}.
+          They are released all at once by {@link #closeAll()}, after which the connection is closed.
+      <li>All parameters must be rebound on every execution.
+      <li>The {@link java.sql.ResultSet} returned by {@code executeQuery} must, as before, be closed by the
+          caller with try-with-resources.
+    </ul>
+- ja: |-
+    キャッシュしたPreparedStatementの生成元となるJDBC接続。
+  en: |-
+    The JDBC connection from which the cached PreparedStatements are created.
+- ja: |-
+    SQL文字列からPreparedStatementへのキャッシュ。
+  en: |-
+    Cache mapping SQL strings to PreparedStatements.
+- ja: |-
+    指定した接続に対するキャッシュを構築する。
+  en: |-
+    Constructs a cache for the specified connection.
+- ja: |-
+    PreparedStatementの生成に使用するJDBC接続
+  en: |-
+    the JDBC connection used to create PreparedStatements
+- ja: |-
+    指定したSQL文に対応するPreparedStatementを返す。初回はprepareしてキャッシュし、
+    2回目以降はキャッシュ済みのインスタンスをそのまま返す。
+  en: |-
+    Returns the PreparedStatement corresponding to the specified SQL statement. The first time, it
+    prepares and caches the statement; from the second time on, it returns the cached instance as is.
+- ja: |-
+    発行するSQL文
+  en: |-
+    the SQL statement to issue
+- ja: |-
+    キャッシュされたPreparedStatement。呼び出し側でcloseしてはならない
+  en: |-
+    the cached PreparedStatement; the caller must not close it
+- ja: |-
+    SQL文の解析に失敗した場合
+  en: |-
+    if parsing the SQL statement fails
+- ja: |-
+    キャッシュしているすべてのPreparedStatementをcloseし、キャッシュを空にする。
+    接続をcloseする直前に呼ぶこと。
+  en: |-
+    Closes all cached PreparedStatements and empties the cache.
+    Must be called immediately before closing the connection.

@@ -1,0 +1,63 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PIC 文字列がN(5)やN(9)の変数を表現するクラス.
+  en: |-
+    Represents a variable whose PIC string is like N(5) or N(9).
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト
+  en: |-
+    the object holding various information about the variable
+- ja: |-
+    CobolAlphanumericFieldからthisへの代入を行う
+  en: |-
+    Assigns a CobolAlphanumericField to this.
+- ja: |-
+    代入元のデータ(AbstractCobolField型)
+  en: |-
+    the source data (of type AbstractCobolField)
+- ja: |-
+    転記元データが存在する場合に,全角へ変換したバイト列を返す.
+  en: |-
+    Returns the source data converted to full-width characters, if the source data exists.
+- ja: |-
+    変換対象の英数字項目
+  en: |-
+    the alphanumeric item to convert
+- ja: |-
+    全角へ変換したバイト列.変換対象が空または先頭バイトが0の場合はnull
+  en: |-
+    the byte sequence converted to full-width characters, or null if the item to convert is empty
+    or its first byte is 0
+- ja: |-
+    半角文字のバイト列をシフトJISの全角文字のバイト列へ変換する.
+  en: |-
+    Converts a byte sequence of half-width characters into a byte sequence of Shift_JIS full-width
+    characters.
+- ja: |-
+    変換対象の半角文字のバイト列
+  en: |-
+    the byte sequence of half-width characters to convert
+- ja: |-
+    変換対象のバイト数
+  en: |-
+    the number of bytes to convert
+- ja: |-
+    全角へ変換したバイト列.配列長が変換後のサイズとなる
+  en: |-
+    the byte sequence converted to full-width characters. The array length is the size after
+    conversion.

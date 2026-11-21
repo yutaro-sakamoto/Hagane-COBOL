@@ -1,0 +1,109 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    STOP RUNの呼び出し時にスローされる例外。返り値を保持する。
+  en: |-
+    Exception thrown when STOP RUN is called. Holds the return value.
+- ja: |-
+    返り値
+  en: |-
+    The return value.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    返り値を格納したCobolDataStorageのインスタンス
+  en: |-
+    an instance of CobolDataStorage that holds the return value
+- ja: |-
+    このクラスが保持するSTOP RUNの返り値を取得する。
+  en: |-
+    Returns the STOP RUN return value held by this class.
+- ja: |-
+    このクラスが保持するSTOP RUNの返り値
+  en: |-
+    the STOP RUN return value held by this class
+- ja: |-
+    CobolStopRunExceptionを例外としてスローする。 COBOLプログラム終了時のデフォルトの終了処理は実行されない。
+  en: |-
+    Throws a CobolStopRunException. The default termination processing at the end of a COBOL program
+    is not performed.
+- ja: |-
+    STOP RUNの返り値
+  en: |-
+    the STOP RUN return value
+- ja: |-
+    常にスローされる
+  en: |-
+    always thrown
+- ja: |-
+    CobolStopRunExceptionをスローする。<br>
+    例外が実行単位のルートのプログラムに到達したとき({@link #handleAtFrame(int)})に、
+    COBOLプログラムによってオープンされたファイルのクローズなどの終了処理が行われる。
+  en: |-
+    Throws a CobolStopRunException.<br>
+    When the exception reaches the root program of the run unit ({@link #handleAtFrame(int)}),
+    termination processing such as closing the files opened by the COBOL program is performed.
+- ja: |-
+    このメソッドでは必ずCobolStopRunExceptionがスローされる。
+  en: |-
+    always thrown by this method
+- ja: |-
+    デフォルトの終了処理を実行する。CobolStopRunExceptionをスローしない。<br>
+    現在のスレッドの実行単位を終了し、オープン中のファイルのクローズとランタイム状態の破棄を行う。
+    他のスレッドで実行中の実行単位には影響しない。
+  en: |-
+    Performs the default termination processing. Does not throw CobolStopRunException.<br>
+    Terminates the run unit of the current thread, closing open files and discarding the runtime state.
+    Run units running in other threads are not affected.
+- ja: |-
+    STOP RUNによって実行単位が終了したときの返り値(スレッドごとに保持する)。 STOP RUNが実行されていない場合はnull。
+  en: |-
+    The return value when the run unit was terminated by STOP RUN (held per thread). null if STOP RUN
+    has not been executed.
+- ja: |-
+    生成されたCOBOLプログラムのrun_moduleがCobolStopRunExceptionまたは{@link CobolStopRunSignal}を 捕捉したときに呼び出す。<br>
+    呼び出し元のモジュールスタックとコールスタックを1段戻し、このプログラムが実行単位のルート
+    (モジュールスタックが空になった)であれば実行単位の終了処理({@link #stopRun()})を行って返り値を返す。
+    ルートでなければ{@link CobolStopRunSignal}をスローして呼び出し元のCOBOLプログラムへ巻き戻す。
+  en: |-
+    Called when run_module of a generated COBOL program catches a CobolStopRunException or a
+    {@link CobolStopRunSignal}.<br>
+    Pops one level off the caller's module stack and call stack, and if this program is the root of the
+    run unit (the module stack has become empty), performs the termination processing of the run unit
+    ({@link #stopRun()}) and returns the return value.
+    If it is not the root, throws {@link CobolStopRunSignal} to unwind to the calling COBOL program.
+- ja: |-
+    実行単位のルートで捕捉した場合のSTOP RUNの返り値
+  en: |-
+    the STOP RUN return value when caught at the root of the run unit
+- ja: |-
+    実行単位のルートでない場合
+  en: |-
+    if this is not the root of the run unit
+- ja: |-
+    現在のスレッドに記録されたSTOP RUNの返り値を破棄する。実行単位の状態を破棄するときに呼び出す。
+  en: |-
+    Discards the STOP RUN return value recorded for the current thread. Called when discarding the
+    state of the run unit.
+- ja: |-
+    現在のスレッドでSTOP RUNによって実行単位が終了したかどうかを返す。<br>
+    生成されたmainメソッドがプロセスの終了コードを決めるために使用する。 呼び出すと記録はクリアされる。
+  en: |-
+    Returns whether the run unit in the current thread was terminated by STOP RUN.<br>
+    Used by the generated main method to determine the exit code of the process. Calling it clears the
+    record.
+- ja: |-
+    STOP RUNが実行されていればその返り値、実行されていなければnull
+  en: |-
+    the return value if STOP RUN was executed, or null otherwise
+- ja: |-
+    生成されたmainメソッドの末尾で呼び出し、実行単位を終了する。<br>
+    STOP RUNで終了していた場合はその返り値で{@link System#exit}する。 それ以外の場合はSystem.exitを呼ばずに復帰する。
+  en: |-
+    Called at the end of the generated main method to terminate the run unit.<br>
+    If it was terminated by STOP RUN, calls {@link System#exit} with that return value. Otherwise, returns
+    without calling System.exit.

@@ -1,0 +1,36 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PICにXやAなどの編集用文字を含む英数字編集項目を表現するクラス.
+  en: |-
+    Represents an alphanumeric edited item whose PIC contains editing characters such as X and A.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト
+  en: |-
+    the object holding various information about the variable
+- ja: |-
+    転記元データを転記先のPIC編集指定に従って英数字編集項目へ転記する.
+  en: |-
+    Moves the source data to the alphanumeric edited item according to the PIC editing of the destination.
+- ja: |-
+    転記先の英数字編集項目
+  en: |-
+    the destination alphanumeric edited item
+- ja: |-
+    転記元のフィールド
+  en: |-
+    the source field

@@ -1,0 +1,46 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    cobj-idxコマンドで発生するエラーのメッセージ出力と終了コードの生成をまとめたクラス
+  en: |-
+    Class that groups the output of error messages and the generation of exit codes for errors that
+    occur in the cobj-idx command.
+- ja: |-
+    指定されたインデックスファイルが存在しない場合のエラーメッセージを標準エラー出力へ出力する。
+  en: |-
+    Prints an error message to standard error when the specified indexed file does not exist.
+- ja: |-
+    存在が確認できなかったインデックスファイルのパス
+  en: |-
+    the path of the indexed file whose existence could not be confirmed
+- ja: |-
+    終了コードとして用いる{@code 1}
+  en: |-
+    {@code 1}, used as the exit code
+- ja: |-
+    指定されたファイルが正しいインデックスファイルでない場合のエラーメッセージを標準エラー出力へ出力する。
+  en: |-
+    Prints an error message to standard error when the specified file is not a valid indexed file.
+- ja: |-
+    正しいインデックスファイルとして認識できなかったファイルのパス
+  en: |-
+    the path of the file that could not be recognized as a valid indexed file
+- ja: |-
+    インデックスファイルに対する入出力処理でエラーが発生した場合のエラーメッセージを標準エラー出力へ出力する。
+  en: |-
+    Prints an error message to standard error when an error occurs in I/O processing on an indexed file.
+- ja: |-
+    入力データの中でキーの重複があるためにロードに失敗した場合のエラーメッセージを標準エラー出力へ出力する。
+  en: |-
+    Prints an error message to standard error when loading fails because of duplicate keys in the input data.
+- ja: |-
+    入力データに想定と異なる長さのレコードが含まれる場合のエラーメッセージを標準エラー出力へ出力する。
+  en: |-
+    Prints an error message to standard error when the input data contains records of an unexpected
+    length.
+- ja: |-
+    インデックスファイルに定義されている正しいレコードサイズ(バイト数)
+  en: |-
+    the correct record size (in bytes) defined in the indexed file

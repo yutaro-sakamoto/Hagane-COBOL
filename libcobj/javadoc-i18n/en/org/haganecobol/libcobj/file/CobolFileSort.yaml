@@ -1,0 +1,84 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    TODO: 準備中
+  en: |-
+    TODO: Not documented yet.
+- ja: |-
+    実行単位(スレッド)ごとに保持する作業状態。<br>
+    文の処理は複数のメソッド呼び出しにまたがって状態を共有するため、スレッドごとに独立させる。
+  en: |-
+    Working state held per run unit (thread).<br>
+    Since the processing of a statement shares state across multiple method calls, the state is kept
+    independent per thread.
+- ja: |-
+    現在のスレッドの作業状態。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    Working state of the current thread. Since each run unit is independent per thread, it is held per
+    thread.
+- ja: |-
+    現在のスレッドに紐づく作業状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the working state bound to the current thread. Called when the run unit terminates.
+- ja: |-
+    libcob/fileio.cのsort_cmpsの実装
+  en: |-
+    Implementation of sort_cmps in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_file_sort_compareの実装
+  en: |-
+    Implementation of cob_file_sort_compare in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_free_listの実装
+  en: |-
+    Implementation of cob_free_list in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_new_itemの実装
+  en: |-
+    Implementation of cob_new_item in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_tmpfileの実装
+  en: |-
+    Implementation of cob_tmpfile in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_get_temp_fileの実装
+  en: |-
+    Implementation of cob_get_temp_file in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_sort_queuesの実装
+  en: |-
+    Implementation of cob_sort_queues in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_read_itemの実装
+  en: |-
+    Implementation of cob_read_item in libcob/fileio.c.
+- ja: |-
+    writeBlock内で使う補助メソッド
+  en: |-
+    Helper method used in writeBlock.
+- ja: |-
+    書き込み失敗時true,それ以外はfalse
+  en: |-
+    true if writing fails, false otherwise
+- ja: |-
+    libcob/fileio.cのcob_write_blockの実装
+  en: |-
+    Implementation of cob_write_block in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_copy_checkの実装
+  en: |-
+    Implementation of cob_copy_check in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_file_sort_processの実装
+  en: |-
+    Implementation of cob_file_sort_process in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_file_sort_submitの実装
+  en: |-
+    Implementation of cob_file_sort_submit in libcob/fileio.c.
+- ja: |-
+    libcob/fileio.cのcob_file_sort_retrieveの実装
+  en: |-
+    Implementation of cob_file_sort_retrieve in libcob/fileio.c.

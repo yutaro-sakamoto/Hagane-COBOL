@@ -1,0 +1,38 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    エラーコードを保持する。
+  en: |-
+    Holds the error code.
+- ja: |-
+    現在のエラーコード。CobolExceptionTabCode.codeテーブルから取得した16進数のエラーコードが格納される。
+    CobolRuntimeExceptionとは異なりコンテキスト情報は保持せず、エラーコードのみを管理する。
+    主にACCEPT文やDISPLAY文の実装固有エラーの判定に使用される。
+  en: |-
+    The current error code. Holds a hexadecimal error code obtained from the CobolExceptionTabCode.code
+    table.
+    Unlike CobolRuntimeException, it holds no context information and manages only the error code.
+    It is mainly used to detect implementation-specific errors in ACCEPT and DISPLAY statements.
+- ja: |-
+    エラーコードを設定する。指定された例外IDに対応するエラーコードをCobolExceptionTabCode.codeテーブルから取得し、codeフィールドに設定する。
+  en: |-
+    Sets the error code. Obtains the error code corresponding to the specified exception ID from the
+    CobolExceptionTabCode.code table and sets it in the code field.
+- ja: |-
+    CobolExceptionIdで定義された例外ID
+  en: |-
+    an exception ID defined in CobolExceptionId
+- ja: |-
+    現在のスレッドのエラーコードを取得する。
+  en: |-
+    Returns the error code of the current thread.
+- ja: |-
+    エラーコード
+  en: |-
+    the error code
+- ja: |-
+    現在のスレッドに紐づくエラーコードを破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the error code bound to the current thread. Called when the run unit terminates.

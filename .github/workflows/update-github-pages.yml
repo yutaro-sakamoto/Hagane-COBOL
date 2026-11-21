@@ -44,9 +44,10 @@ jobs:
       - name: Build Javadoc
         working-directory: libcobj
         run: |
-          ./gradlew javadoc
-          mkdir -p ../github-pages/javadoc/
-          mv app/build/docs/javadoc ../github-pages/javadoc/libcobj
+          ./gradlew javadoc javadocEn
+          mkdir -p ../github-pages/javadoc/ ../github-pages/ja/javadoc/
+          mv app/build/docs/javadoc-en ../github-pages/javadoc/libcobj
+          mv app/build/docs/javadoc ../github-pages/ja/javadoc/libcobj
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

@@ -1,0 +1,236 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLのINSPECT文を実装するクラス<br>
+    libcob/strings.cのcob_inspect_*系の関数に対応する。<br>
+    TALLYING(文字の計数)・REPLACING(文字の置換)・CONVERTING(文字の変換)の各機能を提供する。<br>
+    INSPECT文は{@link #init(AbstractCobolField, int)}で対象を設定し、{@link #start()}や
+    {@link #before(AbstractCobolField)}・{@link #after(AbstractCobolField)}で走査範囲(BEFORE/AFTER)を限定した上で、
+    {@link #all(AbstractCobolField, AbstractCobolField)}などで計数・置換を行い、最後に{@link #finish()}で確定する
+    という手順で実行する。
+  en: |-
+    Implements the COBOL INSPECT statement.<br>
+    Corresponds to the cob_inspect_* functions in libcob/strings.c.<br>
+    Provides the TALLYING (counting characters), REPLACING (replacing characters), and CONVERTING (converting
+    characters) functions.<br>
+    An INSPECT statement is executed by setting its target with {@link #init(AbstractCobolField, int)}, limiting
+    the scan range (BEFORE/AFTER) with {@link #start()},
+    {@link #before(AbstractCobolField)}, and {@link #after(AbstractCobolField)}, counting or replacing with
+    {@link #all(AbstractCobolField, AbstractCobolField)} and similar methods, and finally committing the result
+    with {@link #finish()}.
+- ja: |-
+    一致する文字をすべて対象とする(INSPECT ... ALLに対応)
+  en: |-
+    Targets all matching characters (corresponds to INSPECT ... ALL).
+- ja: |-
+    先頭から連続する一致のみを対象とする(INSPECT ... LEADINGに対応)
+  en: |-
+    Targets only the consecutive matches from the beginning (corresponds to INSPECT ... LEADING).
+- ja: |-
+    最初に一致した1箇所のみを対象とする(INSPECT ... FIRSTに対応)
+  en: |-
+    Targets only the first match (corresponds to INSPECT ... FIRST).
+- ja: |-
+    末尾から連続する一致のみを対象とする(INSPECT ... TRAILINGに対応)
+  en: |-
+    Targets only the consecutive matches at the end (corresponds to INSPECT ... TRAILING).
+- ja: |-
+    実行単位(スレッド)ごとに保持する作業状態。<br>
+    文の処理は複数のメソッド呼び出しにまたがって状態を共有するため、スレッドごとに独立させる。
+  en: |-
+    Working state held for each run unit (thread).<br>
+    Since processing a statement shares state across multiple method calls, the state is kept separate for each
+    thread.
+- ja: |-
+    INSPECTの対象となるフィールド
+  en: |-
+    Field that is the target of INSPECT.
+- ja: |-
+    INSPECTの対象フィールドの記憶領域
+  en: |-
+    Storage area of the INSPECT target field.
+- ja: |-
+    走査範囲の開始位置(0始まり)
+  en: |-
+    Start position of the scan range (0-based).
+- ja: |-
+    走査範囲の終了位置(この位置は含まない)
+  en: |-
+    End position of the scan range (exclusive).
+- ja: |-
+    各バイトの処理状況を保持する配列(-1:未処理、1:計数済み、その他:置換後のバイト値)
+  en: |-
+    Array holding the processing status of each byte (-1: unprocessed, 1: counted, otherwise: the byte value
+    after replacement).
+- ja: |-
+    inspectMarkとして確保済みの領域サイズ
+  en: |-
+    Size of the area already allocated for inspectMark.
+- ja: |-
+    INSPECTの対象フィールドのサイズ(バイト数)
+  en: |-
+    Size (in bytes) of the INSPECT target field.
+- ja: |-
+    REPLACING(置換)モードかどうかを表す(0以外で置換、0で計数)
+  en: |-
+    Indicates whether the mode is REPLACING (non-zero for replacing, 0 for counting).
+- ja: |-
+    対象フィールドの元の符号(処理後に復元するために退避する)
+  en: |-
+    Original sign of the target field (saved so that it can be restored after processing).
+- ja: |-
+    INSPECTの対象フィールドの控え
+  en: |-
+    Saved copy of the INSPECT target field.
+- ja: |-
+    現在のスレッドの作業状態。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    Working state of the current thread. Since each run unit is independent per thread, it is held per thread.
+- ja: |-
+    現在のスレッドに紐づく作業状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the working state bound to the current thread. Called when the run unit ends.
+- ja: |-
+    形象定数f1を、対象f2のサイズに合わせて繰り返し展開したフィールドを生成する。<br>
+    REPLACINGでALL形象定数を置換文字として用いる場合に、長さを一致させるために使用する。
+  en: |-
+    Creates a field in which the figurative constant f1 is repeated to fit the size of the target f2.<br>
+    Used to make the lengths match when an ALL figurative constant is used as the replacement characters in
+    REPLACING.
+- ja: |-
+    展開元となる形象定数のフィールド
+  en: |-
+    the figurative constant field to expand
+- ja: |-
+    展開後の長さの基準となるフィールド
+  en: |-
+    the field whose size determines the length after expansion
+- ja: |-
+    f2と同じサイズに展開された英数字フィールド
+  en: |-
+    an alphanumeric field expanded to the same size as f2
+- ja: |-
+    ALL/LEADING/FIRST/TRAILINGに共通する、文字列の照合・計数・置換処理を行う。<br>
+    指定された種別に応じて走査範囲内でf2を検索し、計数モードでは出現回数をf1に加算し、
+    置換モードではinspectMarkに置換後のバイト値を記録する。
+  en: |-
+    Performs the string matching, counting, and replacing common to ALL/LEADING/FIRST/TRAILING.<br>
+    Searches for f2 within the scan range according to the specified kind; in counting mode, adds the number of
+    occurrences to f1, and in replacing mode, records the byte values after replacement in inspectMark.
+- ja: |-
+    計数モードでは計数結果を加算するフィールド、置換モードでは置換後の文字を表すフィールド
+  en: |-
+    in counting mode, the field to which the count is added; in replacing mode, the field representing the
+    replacement characters
+- ja: |-
+    検索対象となる文字または文字列を表すフィールド
+  en: |-
+    the field representing the character or string to search for
+- ja: |-
+    照合の種別({@link #INSPECT_ALL}・{@link #INSPECT_LEADING}・{@link #INSPECT_FIRST}・{@link #INSPECT_TRAILING})
+  en: |-
+    the kind of matching ({@link #INSPECT_ALL}, {@link #INSPECT_LEADING}, {@link #INSPECT_FIRST}, or {@link #INSPECT_TRAILING})
+- ja: |-
+    処理中にSTOP RUNが実行された場合
+  en: |-
+    if STOP RUN is executed during processing
+- ja: |-
+    libcob/strings.cのcob_inspect_initの実装。<br>
+    INSPECT文の処理を開始し、対象フィールドや処理状況を記録する各種状態を初期化する。
+  en: |-
+    Implements cob_inspect_init in libcob/strings.c.<br>
+    Starts processing of an INSPECT statement and initializes the state that records the target field and the
+    processing status.
+- ja: |-
+    REPLACING(置換)を行う場合は0以外、TALLYING(計数)の場合は0
+  en: |-
+    non-zero for REPLACING, 0 for TALLYING
+- ja: |-
+    libcob/strings.cのcob_inspect_startの実装。<br>
+    走査範囲を対象フィールドの全体(先頭から末尾まで)に設定する。
+  en: |-
+    Implements cob_inspect_start in libcob/strings.c.<br>
+    Sets the scan range to the whole target field (from the beginning to the end).
+- ja: |-
+    libcob/strings.cのcob_inspect_beforeの実装。<br>
+    BEFORE INITIAL句に対応し、指定された区切り文字が最初に現れる位置で走査範囲の終了位置を制限する。
+  en: |-
+    Implements cob_inspect_before in libcob/strings.c.<br>
+    Corresponds to the BEFORE INITIAL phrase; limits the end position of the scan range to the position where the
+    specified delimiter first appears.
+- ja: |-
+    走査範囲の終端を定める区切り文字(BEFORE INITIALの基準)を表すフィールド
+  en: |-
+    the field representing the delimiter that determines the end of the scan range (the reference for BEFORE INITIAL)
+- ja: |-
+    libcob/strings.cのcob_inspect_afterの実装。<br>
+    AFTER INITIAL句に対応し、指定された区切り文字が最初に現れる位置の直後から走査範囲の開始位置を制限する。
+  en: |-
+    Implements cob_inspect_after in libcob/strings.c.<br>
+    Corresponds to the AFTER INITIAL phrase; limits the start position of the scan range to just after the
+    position where the specified delimiter first appears.
+- ja: |-
+    走査範囲の始端を定める区切り文字(AFTER INITIALの基準)を表すフィールド
+  en: |-
+    the field representing the delimiter that determines the start of the scan range (the reference for AFTER INITIAL)
+- ja: |-
+    libcob/strings.cのcob_inspect_charactersの実装。<br>
+    INSPECT ... CHARACTERS句に対応し、走査範囲内の未処理のすべての文字を対象とする。<br>
+    計数モードでは対象文字数をf1に加算し、置換モードでは対象範囲をf1の内容で置き換える。
+  en: |-
+    Implements cob_inspect_characters in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... CHARACTERS phrase and targets all unprocessed characters within the scan range.<br>
+    In counting mode, adds the number of target characters to f1; in replacing mode, replaces the target range
+    with the contents of f1.
+- ja: |-
+    libcob/strings.cのcob_inspect_allの実装。<br>
+    INSPECT ... ALL句に対応し、走査範囲内に現れるf2のすべての出現を対象に計数または置換を行う。
+  en: |-
+    Implements cob_inspect_all in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... ALL phrase and counts or replaces all occurrences of f2 within the scan range.
+- ja: |-
+    libcob/strings.cのcob_inspect_leadingの実装。<br>
+    INSPECT ... LEADING句に対応し、走査範囲の先頭から連続して現れるf2のみを対象に計数または置換を行う。
+  en: |-
+    Implements cob_inspect_leading in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... LEADING phrase and counts or replaces only the occurrences of f2 that appear
+    consecutively from the beginning of the scan range.
+- ja: |-
+    libcob/strings.cのcob_inspect_firstの実装。<br>
+    INSPECT ... FIRST句に対応し、走査範囲内で最初に現れたf2の1箇所のみを対象に計数または置換を行う。
+  en: |-
+    Implements cob_inspect_first in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... FIRST phrase and counts or replaces only the first occurrence of f2 within the
+    scan range.
+- ja: |-
+    libcob/strings.cのcob_inspect_trailingの実装。<br>
+    INSPECT ... TRAILING句に対応し、走査範囲の末尾から連続して現れるf2のみを対象に計数または置換を行う。
+  en: |-
+    Implements cob_inspect_trailing in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... TRAILING phrase and counts or replaces only the occurrences of f2 that appear
+    consecutively at the end of the scan range.
+- ja: |-
+    libcob/strings.cのcob_inspect_convertingの実装。<br>
+    INSPECT ... CONVERTING句に対応し、走査範囲内でf1に含まれる各文字を、対応するf2の文字に変換する。
+  en: |-
+    Implements cob_inspect_converting in libcob/strings.c.<br>
+    Corresponds to the INSPECT ... CONVERTING phrase and converts each character within the scan range that is
+    contained in f1 to the corresponding character in f2.
+- ja: |-
+    変換元となる文字の集合を表すフィールド
+  en: |-
+    the field representing the set of characters to convert from
+- ja: |-
+    変換先となる文字の集合を表すフィールド
+  en: |-
+    the field representing the set of characters to convert to
+- ja: |-
+    libcob/strings.cのcob_inspect_finishの実装。<br>
+    INSPECT文の処理を確定する。置換モードの場合はinspectMarkに記録した置換結果を対象フィールドへ書き戻し、
+    退避していた符号を復元する。
+  en: |-
+    Implements cob_inspect_finish in libcob/strings.c.<br>
+    Finalizes processing of the INSPECT statement. In replacing mode, writes the replacement results recorded in
+    inspectMark back to the target field and restores the saved sign.

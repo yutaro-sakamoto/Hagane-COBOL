@@ -1,0 +1,1293 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL変数のデータを保存するバイト配列を扱うクラス<br>
+    byte[]型のデータと,その配列中での相対位置を保持し,データの読み書きを行う
+  en: |-
+    Class that handles the byte array storing the data of a COBOL variable.<br>
+    Holds data of type byte[] and an offset within that array, and reads and writes the data.
+- ja: |-
+    データを保存するバイト配列
+  en: |-
+    Byte array that stores the data.
+- ja: |-
+    このクラスの扱うデータが保存する領域のバイト配列中での相対位置
+  en: |-
+    Offset, within the byte array, of the area where the data handled by this class is stored.
+- ja: |-
+    引数で指定された長さ分のバイト配列を確保する.相対位置は0にする.
+  en: |-
+    Allocates a byte array of the specified length. The offset is set to 0.
+- ja: |-
+    バイト配列の長さ
+  en: |-
+    the length of the byte array
+- ja: |-
+    バイト配列と相対位置を指定する
+  en: |-
+    Creates an instance with the specified byte array and offset.
+- ja: |-
+    バイト配列中の相対位置
+  en: |-
+    the offset within the byte array
+- ja: |-
+    データを保存するバイト配列を引数で指定する.相対位置は0にする.
+  en: |-
+    Creates an instance that uses the specified byte array to store data. The offset is set to 0.
+- ja: |-
+    指定したバイト列を保持するCobolDataStorageのインスタンスを生成する.
+  en: |-
+    Creates a CobolDataStorage instance that holds the specified bytes.
+- ja: |-
+    保持するバイト列
+  en: |-
+    the bytes to hold
+- ja: |-
+    生成したCobolDataStorageのインスタンス
+  en: |-
+    the created CobolDataStorage instance
+- ja: |-
+    バイト配列を持たない空のインスタンスを生成する.相対位置は0にする.
+  en: |-
+    Creates an empty instance that has no byte array. The offset is set to 0.
+- ja: |-
+    指定したCobolDataStorageのバイト配列への参照と相対位置をこのオブジェクトに設定する.
+  en: |-
+    Sets the reference to the byte array of the specified CobolDataStorage and the offset to this
+    object.
+- ja: |-
+    参照元のCobolDataStorage
+  en: |-
+    the CobolDataStorage to refer to
+- ja: |-
+    設定する相対位置
+  en: |-
+    the offset to set
+- ja: |-
+    このオブジェクトが保持する相対位置を返す.
+  en: |-
+    Returns the offset held by this object.
+- ja: |-
+    相対位置
+  en: |-
+    the offset
+- ja: |-
+    このオブジェクトの相対位置を設定する.
+  en: |-
+    Sets the offset of this object.
+- ja: |-
+    このオブジェクトが保持するバイト配列への参照を返す.
+  en: |-
+    Returns the reference to the byte array held by this object.
+- ja: |-
+    バイト配列への参照
+  en: |-
+    the reference to the byte array
+- ja: |-
+    このオブジェクトと同じバイト配列への参照と相対位置を持つ複製を生成する.
+  en: |-
+    Creates a copy that has the same byte array reference and offset as this object.
+- ja: |-
+    生成した複製のインスタンス
+  en: |-
+    the created copy
+- ja: |-
+    相対位置から指定したサイズのByteBufferを生成して返す.
+  en: |-
+    Creates and returns a ByteBuffer of the specified size starting at the offset.
+- ja: |-
+    ByteBufferのサイズ(バイト数)
+  en: |-
+    the size of the ByteBuffer (in bytes)
+- ja: |-
+    生成したByteBuffer
+  en: |-
+    the created ByteBuffer
+- ja: |-
+    相対位置に指定した値を加算する.
+  en: |-
+    Adds the specified value to the offset.
+- ja: |-
+    加算するバイト数
+  en: |-
+    the number of bytes to add
+- ja: |-
+    プリミティブ値をバイト配列に変換して保持するCobolDataStorageのインスタンスを生成する.
+  en: |-
+    Creates a CobolDataStorage instance that holds the primitive value converted to a byte array.
+- ja: |-
+    変換する値
+  en: |-
+    the value to convert
+- ja: |-
+    変換する文字列
+  en: |-
+    the string to convert
+- ja: |-
+    引数の文字列をShift_JISでエンコードしたバイト配列を保持するインスタンスを生成する.相対位置は0にする.
+  en: |-
+    Creates an instance that holds the byte array obtained by encoding the argument string in
+    Shift_JIS. The offset is set to 0.
+- ja: |-
+    保持する文字列
+  en: |-
+    the string to hold
+- ja: |-
+    保持するバイト配列のコピーを返す
+  en: |-
+    Returns a copy of the held byte array.
+- ja: |-
+    保持するバイト配列のコピー
+  en: |-
+    a copy of the held byte array
+- ja: |-
+    引数で指定した開始位置から末尾までをコピーした配列を返す.
+  en: |-
+    Returns an array copied from the specified start position to the end.
+- ja: |-
+    このオブジェクトの保持する相対位置を基準とした,コピーの開始位置
+  en: |-
+    the start position of the copy, relative to the offset held by this object
+- ja: |-
+    開始位置から末尾までのデータをコピーしたバイト配列
+  en: |-
+    a byte array containing a copy of the data from the start position to the end
+- ja: |-
+    引数で指定した相対位置から指定した長さをコピーした配列を返す.
+  en: |-
+    Returns an array containing the specified length of data copied from the specified offset.
+- ja: |-
+    コピーする長さ(バイト数)
+  en: |-
+    the length to copy (in bytes)
+- ja: |-
+    開始位置からlengthバイト分の配列
+  en: |-
+    an array of length bytes from the start position
+- ja: |-
+    相対位置から指定した範囲を参照するByteBufferの内部配列を返す.
+  en: |-
+    Returns the backing array of a ByteBuffer that refers to the specified range starting at the offset.
+- ja: |-
+    相対位置からの開始位置
+  en: |-
+    the start position relative to the offset
+- ja: |-
+    範囲の長さ(バイト数)
+  en: |-
+    the length of the range (in bytes)
+- ja: |-
+    参照したバイト配列
+  en: |-
+    the referenced byte array
+- ja: |-
+    C言語のmemcpyに相当するメソッド
+  en: |-
+    Equivalent of memcpy in C.
+- ja: |-
+    コピー元のデータ
+  en: |-
+    the source data
+- ja: |-
+    コピーするバイト数
+  en: |-
+    the number of bytes to copy
+- ja: |-
+    コピー元の文字列
+  en: |-
+    the source string
+- ja: |-
+    コピー先のthis.indexからの相対位置
+  en: |-
+    the destination offset relative to this.index
+- ja: |-
+    コピー元bufの先頭からの相対位置
+  en: |-
+    the offset from the beginning of the source buf
+- ja: |-
+    C言語のmemsetに相当するメソッド
+  en: |-
+    Equivalent of memset in C.
+- ja: |-
+    代入する値
+  en: |-
+    the value to assign
+- ja: |-
+    代入先のバイト数
+  en: |-
+    the number of destination bytes
+- ja: |-
+    代入先のthis.indexからの相対位置
+  en: |-
+    the destination offset relative to this.index
+- ja: |-
+    C言語のmemcmpに相当するメソッド
+  en: |-
+    Equivalent of memcmp in C.
+- ja: |-
+    比較対象のデータ
+  en: |-
+    the data to compare with
+- ja: |-
+    比較するバイト数
+  en: |-
+    the number of bytes to compare
+- ja: |-
+    先頭から異なるバイトの差(符号なし).すべて等しい場合は0
+  en: |-
+    the difference (as unsigned values) of the first differing bytes, or 0 if all bytes are equal
+- ja: |-
+    比較開始のthis.indexからの相対位置
+  en: |-
+    the offset, relative to this.index, at which the comparison starts
+- ja: |-
+    引数で与えられたバイト配列に保持したデータをこのオブジェクトに書き込む
+  en: |-
+    Writes the data held in the given byte array to this object.
+- ja: |-
+    コピー元のバイト配列
+  en: |-
+    the source byte array
+- ja: |-
+    コピー先のバイト配列中での開始位置
+  en: |-
+    the start position in the destination byte array
+- ja: |-
+    引数で指定された分だけ相対位置を変位させたCobolDataStorageクラスのインスタンスを作成する
+  en: |-
+    Creates a CobolDataStorage instance whose offset is shifted by the specified amount.
+- ja: |-
+    変位させるバイト数
+  en: |-
+    the number of bytes to shift
+- ja: |-
+    新たに作成したCobolDataStorageクラスのインスタンス
+  en: |-
+    the newly created CobolDataStorage instance
+- ja: |-
+    指定のバイト配列中での位置に指定の値を代入する
+  en: |-
+    Assigns the specified value at the specified position in the byte array.
+- ja: |-
+    代入先のバイト配列中の位置
+  en: |-
+    the destination position in the byte array
+- ja: |-
+    代入先のバイト配列中の位置.
+  en: |-
+    the destination position in the byte array
+- ja: |-
+    先頭(相対位置0)に指定の値を代入する
+  en: |-
+    Assigns the specified value at the beginning (offset 0).
+- ja: |-
+    指定のバイト配列中での位置に格納された値を返す
+  en: |-
+    Returns the value stored at the specified position in the byte array.
+- ja: |-
+    バイト配列中での位置.
+  en: |-
+    the position in the byte array
+- ja: |-
+    指定のバイト配列中での位置に格納された値
+  en: |-
+    the value stored at the specified position in the byte array
+- ja: |-
+    バイト配列のthis.indexバイト目からsizeバイトの範囲にvalueを代入する
+  en: |-
+    Assigns value to the range of size bytes starting at byte this.index of the byte array.
+- ja: |-
+    バイト配列の0バイト目からsizeバイトの範囲にvalueを代入する
+  en: |-
+    Assigns value to the range of size bytes starting at byte 0 of the byte array.
+- ja: |-
+    コピーの開始位置
+  en: |-
+    the start position of the copy
+- ja: |-
+    指定したデータをバイト配列にコピーする.
+  en: |-
+    Copies the specified data to the byte array.
+- ja: |-
+    指定したバイト配列をコピーし,残りの領域を半角空白で埋める.
+  en: |-
+    Copies the specified byte array and fills the remaining area with single-byte spaces.
+- ja: |-
+    コピーする最大バイト数
+  en: |-
+    the maximum number of bytes to copy
+- ja: |-
+    コピー元の配列
+  en: |-
+    the source array
+- ja: |-
+    指定のバイト配列に格納された値を this.dataのthis.indexバイト目以降へlengthバイトだけコピーする.
+  en: |-
+    Copies length bytes of the values stored in the specified byte array into this.data, starting at
+    byte this.index.
+- ja: |-
+    指定した文字列をバイト配列にコピーする
+  en: |-
+    Copies the specified string to the byte array.
+- ja: |-
+    指定されたCobolDataStorageのインスタンスから,lengthバイトだけデータをコピーする
+  en: |-
+    Copies length bytes of data from the specified CobolDataStorage instance.
+- ja: |-
+    コピー元のCobolDataStorage
+  en: |-
+    the source CobolDataStorage
+- ja: |-
+    コピー元バイト配列中の相対位置
+  en: |-
+    the offset in the source byte array
+- ja: |-
+    TODO 暫定的な実装
+  en: |-
+    TODO: Provisional implementation.
+- ja: |-
+    書き込む文字列
+  en: |-
+    the string to write
+- ja: |-
+    TODO 暫定的な実装(対応未定)
+  en: |-
+    TODO: Provisional implementation (support undecided).
+- ja: |-
+    設定するポインタ値
+  en: |-
+    the pointer value to set
+- ja: |-
+    指定した値をこのオブジェクトのバイト配列に書き込む.
+  en: |-
+    Writes the specified value to the byte array of this object.
+- ja: |-
+    書き込むバイト配列
+  en: |-
+    the byte array to write
+- ja: |-
+    書き込む値
+  en: |-
+    the value to write
+- ja: |-
+    2バイト整数値をこのオブジェクト時書き込む
+  en: |-
+    Writes a 2-byte integer value to this object.
+- ja: |-
+    4バイト整数値をこのオブジェクト時書き込む
+  en: |-
+    Writes a 4-byte integer value to this object.
+- ja: |-
+    8バイト整数値をこのオブジェクト時書き込む
+  en: |-
+    Writes an 8-byte integer value to this object.
+- ja: |-
+    double型の値をこのオブジェクト時書き込む
+  en: |-
+    Writes a double value to this object.
+- ja: |-
+    書き込む値を持つCobolDataStorage
+  en: |-
+    the CobolDataStorage holding the value to write
+- ja: |-
+    コピーの開始位置を指定して,4バイト整数値を書き込む
+  en: |-
+    Writes a 4-byte integer value at the specified start position.
+- ja: |-
+    書き込み先のthis.indexからの相対位置
+  en: |-
+    the destination offset relative to this.index
+- ja: |-
+    このオブジェクトと引数が同じバイト配列と相対位置を参照しているか判定する.
+  en: |-
+    Determines whether this object and the argument refer to the same byte array and offset.
+- ja: |-
+    比較対象のCobolDataStorage
+  en: |-
+    the CobolDataStorage to compare with
+- ja: |-
+    同じバイト配列と相対位置を参照していればtrue
+  en: |-
+    true if both refer to the same byte array and offset
+- ja: |-
+    このオブジェクトの保持するバイト配列の先頭2バイトを読み込んでshort型として返す
+  en: |-
+    Reads the first 2 bytes of the byte array held by this object and returns them as a short.
+- ja: |-
+    読み込んだ2バイト整数値
+  en: |-
+    the 2-byte integer value read
+- ja: |-
+    このオブジェクトの保持するバイト配列の先頭4バイトを読み込んでint型として返す
+  en: |-
+    Reads the first 4 bytes of the byte array held by this object and returns them as an int.
+- ja: |-
+    読み込んだ4バイト整数値
+  en: |-
+    the 4-byte integer value read
+- ja: |-
+    このオブジェクトの保持するバイト配列の先頭4バイトを読み込んでlong型として返す
+  en: |-
+    Reads the first 8 bytes of the byte array held by this object and returns them as a long.
+- ja: |-
+    読み込んだ8バイト整数値
+  en: |-
+    the 8-byte integer value read
+- ja: |-
+    このオブジェクトの保持するバイト配列の先頭8バイトを読み込んでdouble型として返す
+  en: |-
+    Reads the first 8 bytes of the byte array held by this object and returns them as a double.
+- ja: |-
+    読み込んだdouble値
+  en: |-
+    the double value read
+- ja: |-
+    相対位置を加算したCobolDataStorageのインスタンスを返す
+  en: |-
+    Returns a CobolDataStorage instance whose offset is advanced by the specified value.
+- ja: |-
+    相対位置に加算する値
+  en: |-
+    the value to add to the offset
+- ja: |-
+    相対位置を加算したCobolDataStorageのインスタンス
+  en: |-
+    the CobolDataStorage instance with the advanced offset
+- ja: |-
+    このオブジェクトが保持するバイナリ整数を引数nと比較する.
+  en: |-
+    Compares the binary integer held by this object with the argument n.
+- ja: |-
+    比較対象の値
+  en: |-
+    the value to compare with
+- ja: |-
+    読み込むバイト数
+  en: |-
+    the number of bytes to read
+- ja: |-
+    符号付きならtrue
+  en: |-
+    true if signed
+- ja: |-
+    ビッグエンディアンならtrue
+  en: |-
+    true if big-endian
+- ja: |-
+    保持する値がnより小さい場合は負の値,大きい場合は正の値,等しい場合は0
+  en: |-
+    a negative value if the held value is less than n, a positive value if it is greater, or 0 if they
+    are equal
+- ja: |-
+    このオブジェクトが保持するバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the binary integer held by this object.
+- ja: |-
+    加算する値
+  en: |-
+    the value to add
+- ja: |-
+    対象のバイト数
+  en: |-
+    the number of target bytes
+- ja: |-
+    このオブジェクトが保持するバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the binary integer held by this object.
+- ja: |-
+    減算する値
+  en: |-
+    the value to subtract
+- ja: |-
+    このオブジェクトが保持する符号なし8ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 8-bit binary integer held by this object with the argument n.
+- ja: |-
+    比較対象の整数値
+  en: |-
+    the integer value to compare with
+- ja: |-
+    このオブジェクトが保持する符号付き8ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 8-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし16ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 16-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き16ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 16-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし24ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 24-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き24ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 24-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし32ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 32-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き32ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 32-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし40ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 40-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き40ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 40-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし48ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 48-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き48ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 48-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし56ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 56-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き56ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 56-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号なし64ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the unsigned 64-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持する符号付き64ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the signed 64-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし8ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned unsigned 8-bit binary integer held by this object with the argument n. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き8ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned signed 8-bit binary integer held by this object with the argument n. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし16ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned unsigned 16-bit binary integer held by this object with the argument n. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き16ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned signed 16-bit binary integer held by this object with the argument n. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし32ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned unsigned 32-bit binary integer held by this object with the argument n. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き32ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned signed 32-bit binary integer held by this object with the argument n. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし64ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned unsigned 64-bit binary integer held by this object with the argument n. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き64ビットバイナリ整数と引数nを比較する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the aligned signed 64-bit binary integer held by this object with the argument n. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持する符号なし8ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き8ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし16ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き16ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし24ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き24ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし32ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き32ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし40ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き40ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし48ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き48ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし56ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き56ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし64ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the unsigned 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き64ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the signed 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし8ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned unsigned 8-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き8ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned signed 8-bit binary integer held by this object. (In the current
+    implementation, the alignment specification is not applied, and this method behaves the same as the
+    corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし16ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned unsigned 16-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き16ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned signed 16-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし32ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned unsigned 32-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き32ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned signed 32-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし64ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned unsigned 64-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き64ビットバイナリ整数に引数nを加算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the aligned signed 64-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持する符号なし8ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き8ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし16ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き16ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし24ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き24ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし32ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き32ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし40ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き40ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし48ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き48ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし56ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き56ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号なし64ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the unsigned 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持する符号付き64ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the signed 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし8ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned unsigned 8-bit binary integer held by this object. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き8ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned signed 8-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし16ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned unsigned 16-bit binary integer held by this object. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き16ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned signed 16-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし32ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned unsigned 32-bit binary integer held by this object. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き32ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned signed 32-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号なし64ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned unsigned 64-bit binary integer held by this object. (In
+    the current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するアライメント済みの符号付き64ビットバイナリ整数から引数nを減算する. (現状の実装ではアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the aligned signed 64-bit binary integer held by this object. (In the
+    current implementation, the alignment specification is not applied, and this method behaves the
+    same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし8ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 8-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き8ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 8-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし16ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 16-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き16ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 16-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし24ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 24-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き24ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 24-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし32ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 32-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き32ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 32-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし40ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 40-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き40ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 40-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし48ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 48-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き48ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 48-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし56ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 56-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き56ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 56-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし64ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware unsigned 64-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き64ビットバイナリ整数と引数nを比較する.
+  en: |-
+    Compares the byte-swap-aware signed 64-bit binary integer held by this object with the argument n.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし8ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned unsigned 8-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き8ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned signed 8-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし16ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned unsigned 16-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き16ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned signed 16-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし32ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned unsigned 32-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き32ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned signed 32-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし64ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned unsigned 64-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き64ビットバイナリ整数と引数nを比較する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Compares the byte-swap-aware aligned signed 64-bit binary integer held by this object with the
+    argument n. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし8ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き8ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし16ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き16ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし24ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き24ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし32ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き32ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし40ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き40ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし48ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き48ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし56ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き56ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし64ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware unsigned 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き64ビットバイナリ整数に引数nを加算する.
+  en: |-
+    Adds the argument n to the byte-swap-aware signed 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし8ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned unsigned 8-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き8ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned signed 8-bit binary integer held by this object.
+    (In the current implementation, the byte-swap and alignment specifications are not applied, and
+    this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし16ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned unsigned 16-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き16ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned signed 16-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし32ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned unsigned 32-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き32ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned signed 32-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし64ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned unsigned 64-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き64ビットバイナリ整数に引数nを加算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Adds the argument n to the byte-swap-aware aligned signed 64-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし8ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き8ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 8-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし16ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 16-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き16ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 16-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし24ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 24-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き24ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 24-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし32ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 32-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き32ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 32-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし40ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 40-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き40ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 40-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし48ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 48-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き48ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 48-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし56ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 56-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き56ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 56-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号なし64ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware unsigned 64-bit binary integer held by this
+    object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応の符号付き64ビットバイナリ整数から引数nを減算する.
+  en: |-
+    Subtracts the argument n from the byte-swap-aware signed 64-bit binary integer held by this object.
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし8ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned unsigned 8-bit binary integer held by
+    this object. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き8ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned signed 8-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし16ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned unsigned 16-bit binary integer held by
+    this object. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き16ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned signed 16-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし32ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned unsigned 32-bit binary integer held by
+    this object. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き32ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned signed 32-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号なし64ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned unsigned 64-bit binary integer held by
+    this object. (In the current implementation, the byte-swap and alignment specifications are not
+    applied, and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトが保持するバイトスワップ対応のアライメント済みの符号付き64ビットバイナリ整数から引数nを減算する. (現状の実装ではバイトスワップとアライメントの指定は反映されず,対応する非修飾版と同一に動作する)
+  en: |-
+    Subtracts the argument n from the byte-swap-aware aligned signed 64-bit binary integer held by this
+    object. (In the current implementation, the byte-swap and alignment specifications are not applied,
+    and this method behaves the same as the corresponding unqualified version.)
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし16ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 16-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き16ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 16-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし24ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 24-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き24ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 24-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし32ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 32-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き32ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 32-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし40ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 40-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き40ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 40-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし48ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 48-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き48ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 48-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし56ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 56-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き56ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 56-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号なし64ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware unsigned 64-bit binary integer.
+- ja: |-
+    このオブジェクトにバイトスワップ対応の符号付き64ビットバイナリ整数として引数nを書き込む.
+  en: |-
+    Writes the argument n to this object as a byte-swap-aware signed 64-bit binary integer.
+- ja: |-
+    表示用数字(数字列)として保持する値を引数nと比較する.
+  en: |-
+    Compares the value held as display numeric digits (a digit string) with the argument n.
+- ja: |-
+    対象のバイト数(桁数)
+  en: |-
+    the number of target bytes (digits)
+- ja: |-
+    保持する値がnより小さい場合は-1,大きい場合は1,等しい場合は0
+  en: |-
+    -1 if the held value is less than n, 1 if it is greater, or 0 if they are equal
+- ja: |-
+    符号付き表示用数字として保持する値を引数nと比較する.
+  en: |-
+    Compares the value held as signed display numeric digits with the argument n.
+- ja: |-
+    表示用数字(数字列)として保持する値を整数値に変換して返す.
+  en: |-
+    Converts the value held as display numeric digits (a digit string) to an integer and returns it.
+- ja: |-
+    変換した整数値
+  en: |-
+    the converted integer value
+- ja: |-
+    EBCDIC形式の符号付き最下位桁を解釈し,値と符号を返す.
+  en: |-
+    Interprets a signed last digit in EBCDIC format and returns the value and the sign.
+- ja: |-
+    符号桁のバイト配列中の位置
+  en: |-
+    the position of the sign digit in the byte array
+- ja: |-
+    符号桁を除いた値
+  en: |-
+    the value excluding the sign digit
+- ja: |-
+    値(first)と符号(last,負なら1)を保持するPairInt
+  en: |-
+    a PairInt holding the value (first) and the sign (last, 1 if negative)
+- ja: |-
+    保持する2バイトをビッグエンディアンの整数として読み込んで返す.
+  en: |-
+    Reads the held 2 bytes as a big-endian integer and returns it.
+- ja: |-
+    保持する4バイトをビッグエンディアンの整数として読み込んで返す.
+  en: |-
+    Reads the held 4 bytes as a big-endian integer and returns it.
+- ja: |-
+    保持する8バイトをビッグエンディアンの整数として読み込んで返す.
+  en: |-
+    Reads the held 8 bytes as a big-endian integer and returns it.

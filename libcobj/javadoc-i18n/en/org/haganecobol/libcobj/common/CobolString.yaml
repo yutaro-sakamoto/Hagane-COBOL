@@ -1,0 +1,459 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    UNSTRING文で使用される1個の区切り文字(DELIMITED BY指定)を保持するクラス。
+  en: |-
+    Holds one delimiter (DELIMITED BY) used in an UNSTRING statement.
+- ja: |-
+    区切り文字を表すフィールド。
+  en: |-
+    Field representing the delimiter.
+- ja: |-
+    DELIMITED BY ALL指定の有無を表す値(0以外でALL指定あり)。
+  en: |-
+    Value indicating whether DELIMITED BY ALL is specified (non-zero if ALL is specified).
+- ja: |-
+    COBOLのSTRING文およびUNSTRING文の処理を実装するクラス。<br>
+    libcobのstrings.cに対応する。<br>
+    STRING文は{@code stringInit}→{@code stringDelimited}/{@code stringAppend}を繰り返し→{@code stringFinish}の順に、
+    UNSTRING文は{@code unstringInit}→{@code unstringDelimited}/{@code unstringInto}を繰り返し→{@code unstringTallying}→{@code unstringFinish}の順に、
+    それぞれ静的メソッドを呼び出すことで実行される。<br>
+    処理途中の状態(対象フィールド・オフセット・区切り文字など)はクラスの静的フィールドに保持される。
+  en: |-
+    Implements the processing of the COBOL STRING and UNSTRING statements.<br>
+    Corresponds to strings.c in libcob.<br>
+    A STRING statement is executed by calling the static methods in the order {@code stringInit}, then
+    {@code stringDelimited}/{@code stringAppend} repeatedly, then {@code stringFinish}; an UNSTRING statement in
+    the order {@code unstringInit}, then {@code unstringDelimited}/{@code unstringInto} repeatedly, then
+    {@code unstringTallying}, then {@code unstringFinish}.<br>
+    The intermediate state (target fields, offsets, delimiters, etc.) is held in static fields of the class.
+- ja: |-
+    UNSTRING文の区切り文字リストの既定の確保数。
+  en: |-
+    Default number of entries allocated for the UNSTRING delimiter list.
+- ja: |-
+    実行単位(スレッド)ごとに保持する作業状態。<br>
+    文の処理は複数のメソッド呼び出しにまたがって状態を共有するため、スレッドごとに独立させる。
+  en: |-
+    Working state held for each run unit (thread).<br>
+    Since processing a statement shares state across multiple method calls, the state is kept separate for each
+    thread.
+- ja: |-
+    現在確保している区切り文字リスト(dlmList)の要素数。
+  en: |-
+    Number of elements of the currently allocated delimiter list (dlmList).
+- ja: |-
+    STRING文の連結先(INTO)フィールド。
+  en: |-
+    Destination (INTO) field of the STRING statement.
+- ja: |-
+    STRING文の文字位置(WITH POINTER)フィールド。指定されない場合はnull。
+  en: |-
+    Character position (WITH POINTER) field of the STRING statement. null if not specified.
+- ja: |-
+    STRING文の現在の区切り文字(DELIMITED BY)フィールド。指定されない場合はnull。
+  en: |-
+    Current delimiter (DELIMITED BY) field of the STRING statement. null if not specified.
+- ja: |-
+    STRING文の連結先フィールドの保持用コピー。
+  en: |-
+    Copy of the destination field of the STRING statement, kept for retention.
+- ja: |-
+    STRING文の文字位置フィールドの保持用コピー。
+  en: |-
+    Copy of the character position field of the STRING statement, kept for retention.
+- ja: |-
+    STRING文の区切り文字フィールドの保持用コピー。
+  en: |-
+    Copy of the delimiter field of the STRING statement, kept for retention.
+- ja: |-
+    STRING文で次に書き込む連結先フィールド内のオフセット(バイト単位)。
+  en: |-
+    Offset (in bytes) within the destination field at which the STRING statement writes next.
+- ja: |-
+    UNSTRING文で使用する区切り文字(DELIMITED BY)のリスト。
+  en: |-
+    List of delimiters (DELIMITED BY) used by the UNSTRING statement.
+- ja: |-
+    UNSTRING文の分解対象(送り出し元)フィールド。
+  en: |-
+    Field to be split (the sending field) of the UNSTRING statement.
+- ja: |-
+    UNSTRING文の文字位置(WITH POINTER)フィールド。指定されない場合はnull。
+  en: |-
+    Character position (WITH POINTER) field of the UNSTRING statement. null if not specified.
+- ja: |-
+    UNSTRING文の分解対象フィールドの保持用コピー。
+  en: |-
+    Copy of the field to be split of the UNSTRING statement, kept for retention.
+- ja: |-
+    UNSTRING文の文字位置フィールドの保持用コピー。
+  en: |-
+    Copy of the character position field of the UNSTRING statement, kept for retention.
+- ja: |-
+    UNSTRING文で次に読み込む分解対象フィールド内のオフセット(バイト単位)。
+  en: |-
+    Offset (in bytes) within the field to be split at which the UNSTRING statement reads next.
+- ja: |-
+    UNSTRING文で分解した部分文字列の個数(TALLYING IN用のカウンタ)。
+  en: |-
+    Number of substrings split out by the UNSTRING statement (counter for TALLYING IN).
+- ja: |-
+    UNSTRING文で現在登録されている区切り文字の個数。
+  en: |-
+    Number of delimiters currently registered for the UNSTRING statement.
+- ja: |-
+    現在のスレッドの作業状態。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    Working state of the current thread. Since each run unit is independent per thread, it is held per thread.
+- ja: |-
+    現在のスレッドに紐づく作業状態を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the working state bound to the current thread. Called when the run unit ends.
+- ja: |-
+    STRING文の処理を開始する。連結先フィールドが省略された場合のオーバーロード。<br>
+    連結先(dst)が指定されない場合に、整数のダミー引数を受け取って{@link #stringInit(AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Starts processing of a STRING statement. Overload for when the destination field is omitted.<br>
+    When the destination (dst) is not specified, receives an integer dummy argument and delegates to
+    {@link #stringInit(AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    連結先フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the destination field is omitted
+- ja: |-
+    文字位置(WITH POINTER)フィールド
+  en: |-
+    the character position (WITH POINTER) field
+- ja: |-
+    STRING文の処理を開始する。文字位置フィールドが省略された場合のオーバーロード。<br>
+    文字位置(ptr)が指定されない場合に、整数のダミー引数を受け取って{@link #stringInit(AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Starts processing of a STRING statement. Overload for when the character position field is omitted.<br>
+    When the character position (ptr) is not specified, receives an integer dummy argument and delegates to
+    {@link #stringInit(AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    連結先(INTO)フィールド
+  en: |-
+    the destination (INTO) field
+- ja: |-
+    文字位置フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the character position field is omitted
+- ja: |-
+    STRING文の処理を開始する。連結先・文字位置の両フィールドが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #stringInit(AbstractCobolField, AbstractCobolField)}へ委譲する。
+  en: |-
+    Starts processing of a STRING statement. Overload for when both the destination and character position
+    fields are omitted.<br>
+    Receives integer dummy arguments for both and delegates to
+    {@link #stringInit(AbstractCobolField, AbstractCobolField)}.
+- ja: |-
+    STRING文の処理を開始する。<br>
+    連結先フィールドと文字位置フィールドを保持して内部状態を初期化し、文字位置が指定されている場合は
+    その値から書き込み開始オフセットを設定する。開始位置が連結先の範囲外であればオーバーフロー例外を設定する。<br>
+    連結先が日本語項目の場合はオフセットを2倍(バイト単位)に補正する。
+  en: |-
+    Starts processing of a STRING statement.<br>
+    Retains the destination field and the character position field, initializes the internal state, and, if a
+    character position is specified, sets the write start offset from its value. If the start position is outside
+    the destination, sets an overflow exception.<br>
+    If the destination is a national item, doubles the offset (to convert it to bytes).
+- ja: |-
+    文字位置(WITH POINTER)フィールド。省略時はnull
+  en: |-
+    the character position (WITH POINTER) field, or null if omitted
+- ja: |-
+    STRING文の区切り文字を設定する。区切り文字が省略された場合(DELIMITED BY SIZE相当)のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #stringDelimited(AbstractCobolField)}へ委譲する。
+  en: |-
+    Sets the delimiter of the STRING statement. Overload for when the delimiter is omitted (equivalent to
+    DELIMITED BY SIZE).<br>
+    Receives an integer dummy argument and delegates to {@link #stringDelimited(AbstractCobolField)}.
+- ja: |-
+    区切り文字が省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the delimiter is omitted
+- ja: |-
+    STRING文の区切り文字(DELIMITED BY)を設定する。<br>
+    以降の{@link #stringAppend(AbstractCobolField)}で連結する送り出し元から、この区切り文字までの部分を連結対象とする。<br>
+    連結先が日本語項目の場合は、引用符・空白・ゼロの定数を対応する全角の定数に置き換える。
+  en: |-
+    Sets the delimiter (DELIMITED BY) of the STRING statement.<br>
+    For the sending fields subsequently appended with {@link #stringAppend(AbstractCobolField)}, the part up to
+    this delimiter is appended.<br>
+    If the destination is a national item, replaces the quote, space, and zero constants with the corresponding
+    full-width constants.
+- ja: |-
+    区切り文字フィールド。区切り文字を指定しない(全体を連結する)場合はnull
+  en: |-
+    the delimiter field, or null if no delimiter is specified (the whole field is appended)
+- ja: |-
+    STRING文の送り出し元を連結する。送り出し元が省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #stringAppend(AbstractCobolField)}へ委譲する。
+  en: |-
+    Appends a sending field of the STRING statement. Overload for when the sending field is omitted.<br>
+    Receives an integer dummy argument and delegates to {@link #stringAppend(AbstractCobolField)}.
+- ja: |-
+    送り出し元フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the sending field is omitted
+- ja: |-
+    STRING文の送り出し元フィールドを連結先へ連結する。<br>
+    区切り文字(stringDlm)が設定されている場合は、送り出し元の先頭から区切り文字が現れる手前までを連結対象とする。<br>
+    連結先の残り領域に収まらない場合は収まる分だけ連結し、オーバーフロー例外を設定する。<br>
+    すでに例外が発生している場合は何も行わない。
+  en: |-
+    Appends the sending field of the STRING statement to the destination.<br>
+    If a delimiter (stringDlm) is set, appends the part of the sending field from its beginning up to just before
+    where the delimiter appears.<br>
+    If it does not fit in the remaining area of the destination, appends only as much as fits and sets an
+    overflow exception.<br>
+    Does nothing if an exception has already occurred.
+- ja: |-
+    連結する送り出し元フィールド
+  en: |-
+    the sending field to append
+- ja: |-
+    STRING文の処理を終了する。<br>
+    連結先が日本語項目の場合は最終オフセットをバイト単位から文字単位に戻し、文字位置(WITH POINTER)フィールドが
+    指定されていれば、次の文字位置(オフセット+1)を書き戻す。
+  en: |-
+    Finishes processing of the STRING statement.<br>
+    If the destination is a national item, converts the final offset back from bytes to characters, and if a
+    character position (WITH POINTER) field is specified, writes back the next character position (offset + 1).
+- ja: |-
+    UNSTRING文の処理を開始する。分解対象・文字位置の両フィールドが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #unstringInit(AbstractCobolField, AbstractCobolField, int)}へ委譲する。
+  en: |-
+    Starts processing of an UNSTRING statement. Overload for when both the field to be split and the character
+    position field are omitted.<br>
+    Receives integer dummy arguments for both and delegates to
+    {@link #unstringInit(AbstractCobolField, AbstractCobolField, int)}.
+- ja: |-
+    分解対象フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the field to be split is omitted
+- ja: |-
+    区切り文字の個数
+  en: |-
+    the number of delimiters
+- ja: |-
+    UNSTRING文の処理を開始する。文字位置フィールドが省略された場合のオーバーロード。<br>
+    文字位置(ptr)に整数のダミー引数を受け取って{@link #unstringInit(AbstractCobolField, AbstractCobolField,
+    int)}へ委譲する。
+  en: |-
+    Starts processing of an UNSTRING statement. Overload for when the character position field is omitted.<br>
+    Receives an integer dummy argument as the character position (ptr) and delegates to
+    {@link #unstringInit(AbstractCobolField, AbstractCobolField,
+    int)}.
+- ja: |-
+    分解対象(送り出し元)フィールド
+  en: |-
+    the field to be split (the sending field)
+- ja: |-
+    UNSTRING文の処理を開始する。分解対象フィールドが省略された場合のオーバーロード。<br>
+    分解対象(src)に整数のダミー引数を受け取って{@link #unstringInit(AbstractCobolField, AbstractCobolField,
+    int)}へ委譲する。
+  en: |-
+    Starts processing of an UNSTRING statement. Overload for when the field to be split is omitted.<br>
+    Receives an integer dummy argument as the field to be split (src) and delegates to
+    {@link #unstringInit(AbstractCobolField, AbstractCobolField,
+    int)}.
+- ja: |-
+    UNSTRING文の処理を開始する。<br>
+    分解対象フィールドと文字位置フィールドを保持して内部状態を初期化し、区切り文字を格納するリスト(dlmList)を
+    必要な個数だけ確保する。文字位置が指定されている場合はその値から読み込み開始オフセットを設定し、
+    開始位置が分解対象の範囲外であればオーバーフロー例外を設定する。<br>
+    分解対象が日本語項目の場合はオフセットを2倍(バイト単位)に補正する。
+  en: |-
+    Starts processing of an UNSTRING statement.<br>
+    Retains the field to be split and the character position field, initializes the internal state, and allocates
+    as many entries as needed in the list that stores the delimiters (dlmList). If a character position is
+    specified, sets the read start offset from its value, and if the start position is outside the field to be
+    split, sets an overflow exception.<br>
+    If the field to be split is a national item, doubles the offset (to convert it to bytes).
+- ja: |-
+    区切り文字(DELIMITED BY)の個数
+  en: |-
+    the number of delimiters (DELIMITED BY)
+- ja: |-
+    UNSTRING文の区切り文字を追加する。区切り文字が省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #unstringDelimited(AbstractCobolField, int)}へ委譲する。
+  en: |-
+    Adds a delimiter of the UNSTRING statement. Overload for when the delimiter is omitted.<br>
+    Receives an integer dummy argument and delegates to {@link #unstringDelimited(AbstractCobolField, int)}.
+- ja: |-
+    DELIMITED BY ALL指定の有無を表す値
+  en: |-
+    a value indicating whether DELIMITED BY ALL is specified
+- ja: |-
+    UNSTRING文の区切り文字(DELIMITED BY)を1個、区切り文字リストへ追加する。<br>
+    分解対象が日本語項目の場合は、引用符・空白・ゼロの定数を対応する全角の定数に置き換える。
+    全角空白の場合はさらに全角ブランクの区切り文字も追加する。<br>
+    allが0以外の場合はDELIMITED BY ALL指定であり、連続する区切り文字をまとめて1個の区切りとして扱う。
+  en: |-
+    Adds one delimiter (DELIMITED BY) of the UNSTRING statement to the delimiter list.<br>
+    If the field to be split is a national item, replaces the quote, space, and zero constants with the
+    corresponding full-width constants.
+    For a full-width space, also adds a full-width blank delimiter.<br>
+    If all is non-zero, DELIMITED BY ALL is specified, and consecutive delimiters are treated together as a
+    single delimiter.
+- ja: |-
+    区切り文字フィールド
+  en: |-
+    the delimiter field
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。文字数(COUNT IN)が省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the count (COUNT IN)
+    is omitted.<br>
+    Receives an integer dummy argument and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    受け取り側(INTO)フィールド
+  en: |-
+    the receiving (INTO) field
+- ja: |-
+    区切り文字を格納する(DELIMITER IN)フィールド
+  en: |-
+    the field that stores the delimiter (DELIMITER IN)
+- ja: |-
+    文字数フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the count field is omitted
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。区切り文字格納フィールドが省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the delimiter
+    receiving field is omitted.<br>
+    Receives an integer dummy argument and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    区切り文字格納フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the delimiter receiving field is omitted
+- ja: |-
+    文字数を格納する(COUNT IN)フィールド
+  en: |-
+    the field that stores the count (COUNT IN)
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。区切り文字格納・文字数の両フィールドが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when both the delimiter
+    receiving field and the count field are omitted.<br>
+    Receives integer dummy arguments for both and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。受け取り側・区切り文字格納・文字数のすべてが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the receiving field,
+    the delimiter receiving field, and the count field are all omitted.<br>
+    Receives integer dummy arguments for all of them and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    受け取り側フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the receiving field is omitted
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。受け取り側・文字数フィールドが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the receiving field
+    and the count field are omitted.<br>
+    Receives integer dummy arguments for both and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。受け取り側・区切り文字格納フィールドが省略された場合のオーバーロード。<br>
+    いずれも整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the receiving field
+    and the delimiter receiving field are omitted.<br>
+    Receives integer dummy arguments for both and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    UNSTRING文の分解結果を受け取り側へ格納する。受け取り側フィールドが省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取って{@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}へ委譲する。
+  en: |-
+    Stores the result of the UNSTRING statement in the receiving field. Overload for when the receiving field is
+    omitted.<br>
+    Receives an integer dummy argument and delegates to {@link #unstringInto(AbstractCobolField, AbstractCobolField,
+    AbstractCobolField)}.
+- ja: |-
+    UNSTRING文の分解結果を1個の受け取り側フィールドへ格納する。<br>
+    現在のオフセットから分解対象を走査し、登録された区切り文字のいずれかが見つかればその手前までを、
+    見つからなければ残り全体を受け取り側へ転記する。区切り文字が登録されていない場合は受け取り側の桁数分を転記する。<br>
+    ALL指定の区切り文字では、連続する同一の区切り文字をまとめて読み飛ばす。<br>
+    区切り文字格納フィールドが指定されていれば、一致した区切り文字(なければ数字項目はゼロ、それ以外は空白)を転記する。<br>
+    文字数フィールドが指定されていれば、転記した文字数(日本語項目では文字単位に換算)を設定する。<br>
+    すでに例外が発生している場合、または読み込み位置が分解対象の範囲外の場合は何も行わない。
+  en: |-
+    Stores the result of the UNSTRING statement in one receiving field.<br>
+    Scans the field to be split from the current offset; if any of the registered delimiters is found, moves the
+    part up to just before it to the receiving field, and otherwise moves the entire remainder. If no delimiter is
+    registered, moves as many characters as the size of the receiving field.<br>
+    For a delimiter specified with ALL, consecutive identical delimiters are skipped together.<br>
+    If a delimiter receiving field is specified, moves the matched delimiter to it (if there is none, zero for a
+    numeric item and spaces otherwise).<br>
+    If a count field is specified, sets it to the number of characters moved (counted in characters for a
+    national item).<br>
+    Does nothing if an exception has already occurred or if the read position is outside the field to be split.
+- ja: |-
+    区切り文字を格納する(DELIMITER IN)フィールド。省略時はnull
+  en: |-
+    the field that stores the delimiter (DELIMITER IN), or null if omitted
+- ja: |-
+    転記した文字数を格納する(COUNT IN)フィールド。省略時はnull
+  en: |-
+    the field that stores the number of characters moved (COUNT IN), or null if omitted
+- ja: |-
+    UNSTRING文のTALLYING IN処理。集計先フィールドが省略された場合のオーバーロード。<br>
+    整数のダミー引数を受け取り、何も行わない。
+  en: |-
+    Handles TALLYING IN of the UNSTRING statement. Overload for when the tally field is omitted.<br>
+    Receives an integer dummy argument and does nothing.
+- ja: |-
+    集計先フィールドが省略されたことを表すダミー引数
+  en: |-
+    a dummy argument indicating that the tally field is omitted
+- ja: |-
+    実行が停止された場合
+  en: |-
+    if execution is stopped
+- ja: |-
+    UNSTRING文のTALLYING IN処理を行う。<br>
+    これまでに分解した部分文字列の個数(unstringCount)を、集計先フィールドへ加算する。
+  en: |-
+    Handles TALLYING IN of the UNSTRING statement.<br>
+    Adds the number of substrings split out so far (unstringCount) to the tally field.
+- ja: |-
+    分解した部分文字列の個数を加算する(TALLYING IN)フィールド
+  en: |-
+    the field (TALLYING IN) to which the number of split substrings is added
+- ja: |-
+    UNSTRING文の処理を終了する。<br>
+    分解対象にまだ読み込んでいない部分が残っている場合はオーバーフロー例外を設定する。<br>
+    分解対象が日本語項目の場合は最終オフセットをバイト単位から文字単位に戻し、文字位置(WITH POINTER)フィールドが
+    指定されていれば、次の文字位置(オフセット+1)を書き戻す。
+  en: |-
+    Finishes processing of the UNSTRING statement.<br>
+    If part of the field to be split has not been read yet, sets an overflow exception.<br>
+    If the field to be split is a national item, converts the final offset back from bytes to characters, and if
+    a character position (WITH POINTER) field is specified, writes back the next character position (offset + 1).

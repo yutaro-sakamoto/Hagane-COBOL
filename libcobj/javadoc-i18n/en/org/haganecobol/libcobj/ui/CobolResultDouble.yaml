@@ -1,0 +1,16 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    double型のCALL文の結果を保持する{@link CobolCallResult}のサブクラス
+  en: |-
+    Subclass of {@link CobolCallResult} that holds a CALL statement result of type double.
+- ja: |-
+    指定されたdouble値を保持するCobolResultDoubleを生成する。
+  en: |-
+    Creates a CobolResultDouble holding the given double value.
+- ja: |-
+    保持するdouble値
+  en: |-
+    the double value to hold

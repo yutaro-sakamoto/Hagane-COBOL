@@ -1,0 +1,162 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    cobj-idxコマンドのエントリポイント。<br>
+    コマンドライン引数をパースし、指定されたサブコマンド({@code info} / {@code create} / {@code load} /
+    {@code unload} / {@code migrate} / {@code unlock})を実行する。
+  en: |-
+    Entry point of the cobj-idx command.<br>
+    Parses the command line arguments and executes the specified subcommand ({@code info} /
+    {@code create} / {@code load} / {@code unload} / {@code migrate} / {@code unlock}).
+- ja: |-
+    コマンドラインから入力された引数の配列
+  en: |-
+    the array of arguments entered on the command line
+- ja: |-
+    cobj-idxコマンドのヘルプメッセージを標準出力へ出力する。
+  en: |-
+    Prints the help message of the cobj-idx command to standard output.
+- ja: |-
+    {@code -k}オプション({@code --key})の値をパースし、{@link CobolFileKeyInfo}のリストを返す。<br>
+    キーは{@code offset,size}の組をコロン区切りで並べた文字列で指定され、
+    先頭に{@code d}を付けた{@code dOFFSET,SIZE}は重複キーを意味する。例えば
+    {@code 2,2:5,4:d15,5}は「プライマリキーがオフセット2長さ2、重複なしのオルタネートキーが
+    オフセット5長さ4、重複ありのオルタネートキーがオフセット15長さ5」を表す。
+  en: |-
+    Parses the value of the {@code -k} option ({@code --key}) and returns a list of
+    {@link CobolFileKeyInfo}.<br>
+    Keys are specified as a string of {@code offset,size} pairs separated by colons, and
+    {@code dOFFSET,SIZE}, prefixed with {@code d}, denotes a key that allows duplicates. For example,
+    {@code 2,2:5,4:d15,5} means "the primary key is at offset 2 with length 2, an alternate key without
+    duplicates is at offset 5 with length 4, and an alternate key with duplicates is at offset 15 with
+    length 5".
+- ja: |-
+    パース済みのコマンドライン
+  en: |-
+    the parsed command line
+- ja: |-
+    キー情報のリスト
+  en: |-
+    the list of key information
+- ja: |-
+    キーの指定が不正な場合や、プライマリキーが重複キーとして指定されている場合など
+  en: |-
+    if the key specification is invalid or the primary key is specified as a duplicate key, among other cases
+- ja: |-
+    {@code info}サブコマンドを実行し、インデックスファイルのメタ情報(レコードサイズ、レコード件数、
+    プライマリキー・オルタネートキーの位置など)を標準出力へ出力する。
+  en: |-
+    Executes the {@code info} subcommand, printing the meta information of an indexed file (record size,
+    number of records, positions of the primary key and alternate keys, etc.) to standard output.
+- ja: |-
+    情報を表示する対象のインデックスファイルのパス
+  en: |-
+    the path of the indexed file whose information is displayed
+- ja: |-
+    成功した場合は{@code 0}、失敗した場合は非ゼロの終了コード
+  en: |-
+    {@code 0} on success, or a non-zero exit code on failure
+- ja: |-
+    {@code migrate}サブコマンドの実体。<br>
+    opensource COBOL 4J 1.1.12より前のバージョンで作成されたインデックスファイルを最新形式へ移行する。
+    具体的には{@code file_lock}テーブルを作成し、{@code table0}にファイルロック用の列
+    ({@code locked_by}、{@code process_id}、{@code locked_at})が存在しない場合にそれらを追加する。
+  en: |-
+    Implementation of the {@code migrate} subcommand.<br>
+    Migrates an indexed file created by a version earlier than opensource COBOL 4J 1.1.12 to the latest
+    format.
+    Specifically, it creates the {@code file_lock} table, and adds the file lock columns
+    ({@code locked_by}, {@code process_id}, {@code locked_at}) to {@code table0} if they do not exist.
+- ja: |-
+    移行対象のインデックスファイルのパス
+  en: |-
+    the path of the indexed file to migrate
+- ja: |-
+    インデックスファイルへの接続に失敗した場合
+  en: |-
+    if connecting to the indexed file fails
+- ja: |-
+    {@code unlock}サブコマンドの実体。<br>
+    指定されたインデックスファイルに対してかけられているすべてのロック情報を削除する。
+    {@code file_lock}テーブルのすべての行を削除し、{@code table0}のロック関連列をすべて{@code NULL}に戻す。
+  en: |-
+    Implementation of the {@code unlock} subcommand.<br>
+    Deletes all lock information on the specified indexed file.
+    It deletes all rows of the {@code file_lock} table and resets all lock-related columns of
+    {@code table0} to {@code NULL}.
+- ja: |-
+    ロック解除対象のインデックスファイルのパス
+  en: |-
+    the path of the indexed file to unlock
+- ja: |-
+    {@code load}サブコマンドを実行し、指定された入力ソース(標準入力またはファイル)から読み込んだ
+    データをインデックスファイルに書き込む。
+  en: |-
+    Executes the {@code load} subcommand, writing data read from the specified input source (standard
+    input or a file) to an indexed file.
+- ja: |-
+    ロード先のインデックスファイルのパス
+  en: |-
+    the path of the indexed file to load into
+- ja: |-
+    ロード前に既存のレコードをすべて削除する場合は{@code true}
+  en: |-
+    {@code true} to delete all existing records before loading
+- ja: |-
+    入力データの形式
+  en: |-
+    the format of the input data
+- ja: |-
+    入力データのファイルパス。標準入力から読み込む場合は空の{@link Optional}
+  en: |-
+    the file path of the input data, or an empty {@link Optional} to read from standard input
+- ja: |-
+    {@code unload}サブコマンドを実行し、インデックスファイル内のすべてのレコードを指定された出力先
+    (標準出力またはファイル)に書き出す。
+  en: |-
+    Executes the {@code unload} subcommand, writing all records in an indexed file to the specified
+    destination (standard output or a file).
+- ja: |-
+    アンロード元のインデックスファイルのパス
+  en: |-
+    the path of the indexed file to unload from
+- ja: |-
+    出力データの形式。{@link UserDataFormat#LINE_SEQUENTIAL}の場合、各レコードは
+        改行文字で区切られる。{@link UserDataFormat#SEQUENTIAL}の場合、各レコードは区切り文字なしで
+        連結される
+  en: |-
+    the format of the output data. With {@link UserDataFormat#LINE_SEQUENTIAL}, records are
+        separated by newline characters. With {@link UserDataFormat#SEQUENTIAL}, records are concatenated
+        without separators.
+- ja: |-
+    出力先のファイルパス。標準出力に書き出す場合は空の{@link Optional}
+  en: |-
+    the file path of the output destination, or an empty {@link Optional} to write to standard output
+- ja: |-
+    指定されたパス・レコードサイズ・キー情報から新規に{@link CobolFile}のインスタンスを生成する。<br>
+    {@code create}サブコマンドの実装で、インデックスファイルをこれから作成する際に使用される。
+  en: |-
+    Creates a new {@link CobolFile} instance from the specified path, record size and key
+    information.<br>
+    This is the implementation of the {@code create} subcommand, used when an indexed file is about to be
+    created.
+- ja: |-
+    作成するインデックスファイルのパス
+  en: |-
+    the path of the indexed file to create
+- ja: |-
+    1レコードのバイト数
+  en: |-
+    the number of bytes in one record
+- ja: |-
+    インデックスファイルに設定するキー情報のリスト
+  en: |-
+    the list of key information to set on the indexed file
+- ja: |-
+    生成された{@link CobolFile}インスタンスを含む{@link Optional}。このメソッドは常に値を含む
+        {@link Optional}を返す
+  en: |-
+    an {@link Optional} containing the created {@link CobolFile} instance. This method always returns
+        an {@link Optional} containing a value.

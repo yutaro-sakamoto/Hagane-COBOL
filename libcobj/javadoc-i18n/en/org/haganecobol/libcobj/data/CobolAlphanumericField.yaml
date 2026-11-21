@@ -1,0 +1,44 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PIC 文字列がX(5)やX(9)の変数を表現するクラス.
+  en: |-
+    Represents a variable whose PIC string is like X(5) or X(9).
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト
+  en: |-
+    the object holding various information about the variable
+- ja: |-
+    CobolNumericDisplayからCobolAlphanumericFieldへのMOVEの処理
+  en: |-
+    Performs a MOVE from CobolNumericDisplay to CobolAlphanumericField.
+- ja: |-
+    転記元のCobolNumericDisplay型のフィールド
+  en: |-
+    the source field of type CobolNumericDisplay
+- ja: |-
+    英数字項目から英数字項目へMOVEの処理を行う.
+  en: |-
+    Performs a MOVE from an alphanumeric item to an alphanumeric item.
+- ja: |-
+    転記先の英数字項目
+  en: |-
+    the destination alphanumeric item
+- ja: |-
+    転記元の英数字項目
+  en: |-
+    the source alphanumeric item

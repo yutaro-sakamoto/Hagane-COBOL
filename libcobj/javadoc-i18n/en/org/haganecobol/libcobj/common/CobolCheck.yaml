@@ -1,0 +1,99 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLの実行時境界チェックを行うクラス<br>
+    表(OCCURS)の添字や、OCCURS DEPENDING ONの可変回数が範囲内にあるかを検査する。<br>
+    範囲外の場合は{@link CobolExceptionId#COB_EC_BOUND_SUBSCRIPT}を設定し、実行時エラーを出力して実行を中止する。
+  en: |-
+    Class that performs COBOL runtime bound checks.<br>
+    Checks whether table (OCCURS) subscripts and the variable
+    occurrence count of OCCURS DEPENDING ON are within range.<br>
+    If out of range, sets {@link CobolExceptionId#COB_EC_BOUND_SUBSCRIPT},
+    prints a runtime error, and stops execution.
+- ja: |-
+    表の添字が指定された範囲内にあるかを検査する。<br>
+    範囲外の場合は例外を設定し、実行時エラーメッセージを出力して実行を中止する。
+  en: |-
+    Checks whether a table subscript is within the specified range.<br>
+    If out of range, sets the exception, prints a runtime error message, and stops execution.
+- ja: |-
+    検査対象の添字の値
+  en: |-
+    the subscript value to check
+- ja: |-
+    添字の下限値
+  en: |-
+    the lower bound of the subscript
+- ja: |-
+    添字の上限値
+  en: |-
+    the upper bound of the subscript
+- ja: |-
+    表として参照しているデータ項目の名前(SJISのバイト列)
+  en: |-
+    the name of the data item referenced as a table (as SJIS bytes)
+- ja: |-
+    データ項目名のバイト数
+  en: |-
+    the number of bytes of the data item name
+- ja: |-
+    添字が範囲外で実行が中止された場合
+  en: |-
+    if execution is stopped because the subscript is out of range
+- ja: |-
+    表の添字が指定された範囲内にあるかを検査する({@code long}型の添字を受け取るオーバーロード)。<br>
+    添字をint型に変換した上で{@link #checkSubscript(int, int, int, byte[], int)}に委譲する。
+  en: |-
+    Checks whether a table subscript is within the specified range (overload taking a {@code long} subscript).<br>
+    Converts the subscript to int and delegates to {@link #checkSubscript(int, int, int, byte[], int)}.
+- ja: |-
+    表の添字が指定された範囲内にあるかを検査する({@link CobolDataStorage}で名前を受け取るオーバーロード)。<br>
+    データ項目名をバイト列として取り出した上で{@link #checkSubscript(int, int, int, byte[], int)}に委譲する。
+  en: |-
+    Checks whether a table subscript is within the specified range
+    (overload taking the name as a {@link CobolDataStorage}).<br>
+    Extracts the data item name as a byte array and delegates
+    to {@link #checkSubscript(int, int, int, byte[], int)}.
+- ja: |-
+    表として参照しているデータ項目の名前を保持する記憶領域
+  en: |-
+    the storage holding the name of the data item referenced as a table
+- ja: |-
+    OCCURS DEPENDING ONの可変回数が指定された範囲内にあるかを検査する。<br>
+    範囲外の場合は例外を設定し、実行時エラーメッセージを出力して実行を中止する。
+  en: |-
+    Checks whether the variable occurrence count of OCCURS DEPENDING ON is within the specified range.<br>
+    If out of range, sets the exception, prints a runtime error message, and stops execution.
+- ja: |-
+    検査対象の可変回数の値
+  en: |-
+    the occurrence count value to check
+- ja: |-
+    可変回数の下限値
+  en: |-
+    the lower bound of the occurrence count
+- ja: |-
+    可変回数の上限値
+  en: |-
+    the upper bound of the occurrence count
+- ja: |-
+    OCCURS DEPENDING ONの対象となるデータ項目の名前
+  en: |-
+    the name of the data item subject to OCCURS DEPENDING ON
+- ja: |-
+    可変回数が範囲外で実行が中止された場合
+  en: |-
+    if execution is stopped because the occurrence count is out of range
+- ja: |-
+    OCCURS DEPENDING ONの可変回数が指定された範囲内にあるかを検査する(名前をバイト列で受け取るオーバーロード)。<br>
+    データ項目名をSJISの文字列に変換した上で{@link #checkOdo(int, int, int, String)}に委譲する。
+  en: |-
+    Checks whether the variable occurrence count of OCCURS DEPENDING ON is
+    within the specified range (overload taking the name as a byte array).<br>
+    Converts the data item name to an SJIS string and delegates to {@link #checkOdo(int, int, int, String)}.
+- ja: |-
+    OCCURS DEPENDING ONの対象となるデータ項目の名前(SJISのバイト列)
+  en: |-
+    the name of the data item subject to OCCURS DEPENDING ON (as SJIS bytes)

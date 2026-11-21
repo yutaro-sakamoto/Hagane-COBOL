@@ -1,0 +1,32 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    出力先(ファイル/標準出力)へ1レコードずつ書き込むためのインタフェース。<br>
+    {@code cobj-idx unload}コマンドで、インデックスファイルから読み出したレコードを
+    指定された形式で外部へ書き出すために使用される。
+  en: |-
+    Interface for writing records one at a time to a destination (a file or standard output).<br>
+    Used by the {@code cobj-idx unload} command to write records read from an indexed file to the outside
+    in the specified format.
+- ja: |-
+    出力先をオープンし、書き込み可能な状態にする。
+  en: |-
+    Opens the destination and makes it ready for writing.
+- ja: |-
+    1レコードを出力先に書き込む。
+  en: |-
+    Writes one record to the destination.
+- ja: |-
+    書き込むレコードのバイト列
+  en: |-
+    the bytes of the record to write
+- ja: |-
+    書き込みに成功した場合は{@code true}、失敗した場合は{@code false}
+  en: |-
+    {@code true} if writing succeeds, {@code false} if it fails
+- ja: |-
+    出力先をクローズし、保持しているリソースを解放する。
+  en: |-
+    Closes the destination and releases the resources it holds.

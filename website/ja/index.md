@@ -17,7 +17,7 @@ hero:
       link: /ja/guide/docker
     - theme: alt
       text: APIリファレンス (Javadoc)
-      link: /javadoc/libcobj/index.html
+      link: /ja/javadoc/libcobj/index.html
       target: _self
 
 features:
@@ -39,7 +39,7 @@ features:
   - icon: 📚
     title: APIリファレンス
     details: 生成されたJavaプログラムが使うランタイムライブラリlibcobj.jarのJavadocです。
-    link: /javadoc/libcobj/index.html
+    link: /ja/javadoc/libcobj/index.html
     target: _self
     linkText: Javadocを開く
 ---
