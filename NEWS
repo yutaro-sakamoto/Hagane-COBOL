@@ -18,9 +18,9 @@ Hagane COBOL 2.0.0 drops the names inherited from opensource COBOL 4J: the Java 
   | -- | -- | -- |
   | `libcobj.jar` (Linux) | `<prefix>/lib/opensourcecobol4j/libcobj.jar` | `<prefix>/lib/hagane-cobol/libcobj.jar` |
   | config and copy files (Linux) | `<prefix>/share/opensource-cobol-4j-1.0.0/` | `<prefix>/share/hagane-cobol-2.0.0/` |
-  | Windows | `C:\opensourcecobol4j\` (`bin`, `lib`, `config`, `copy`, `tmp`) | `C:\hagane-cobol\` |
+  | Windows | `C:\opensourcecobol4j\` (`bin`, `lib`, `config`, `copy`) | `C:\hagane-cobol\` |
 
-  `<prefix>` is the one given to `configure --prefix` (`/usr` in the installation guide). The Docker images set `CLASSPATH` to the new path.
+  `<prefix>` is the one given to `configure --prefix` (`/usr` in the installation guide). The Docker images (`ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0`, `2.0.0-utf8` and `latest`) set `CLASSPATH` to the new path.
 (3) The package name used by `configure` (the tarball and `share/` directory name) is now `hagane-cobol-2.0.0` instead of `opensource-cobol-4j-1.0.0`, and bugs are reported to GitHub Issues(https://github.com/yutaro-sakamoto/Hagane-COBOL/issues) instead of the OSS Consortium mail address.
 
 ** Security
