@@ -8,7 +8,7 @@
 
 変更履歴は[CHANGELOG.md](./CHANGELOG.md)をご覧ください。
 
-インストール方法や使い方のガイド、`libcobj.jar`のAPIリファレンスは、Hagane COBOLのWebサイト<https://yutaro-sakamoto.github.io/Hagane-COBOL/ja/>で公開しています。
+インストール方法や使い方のガイド、`libcobj.jar`のAPIリファレンスは、Hagane COBOLのWebサイト<https://haganecobol.org/ja/>で公開しています。
 
 ## opensource COBOL 4JからHagane COBOLへの名称変更
 
@@ -198,7 +198,7 @@ Hagane COBOLは、PostgreSQL向けのEmbedded SQL (`EXEC SQL`) をサポート�
 
 ## ドキュメント
 
-* [ランタイムライブラリ`libcobj.jar`のAPIリファレンス](https://yutaro-sakamoto.github.io/Hagane-COBOL/javadoc/libcobj/index.html)
+* [ランタイムライブラリ`libcobj.jar`のAPIリファレンス](https://haganecobol.org/javadoc/libcobj/index.html)
 * [Hagane COBOL: Java変換解説](./doc/converted_Java_file_JP.md)
 * [configuration-params-JP](./doc/configuration-params-JP.md)
 * [INDEXEDファイルのロックの仕様](./doc/specification-locking-indexed-file_JP.md)
