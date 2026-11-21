@@ -5,13 +5,13 @@ Hagane COBOLをインストールしたDockerイメージを
 
 | イメージ | ソースコードの文字コード |
 | -- | -- |
-| `ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0` | Shift_JIS |
-| `ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0-utf8` | UTF-8 |
+| `ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0` | Shift_JIS |
+| `ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0-utf8` | UTF-8 |
 
 ## サンプルプログラムを動かす
 
 ```bash
-docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0
+docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0
 ```
 
 コンテナの中で次を実行します。
@@ -28,7 +28,7 @@ java HELLO
 カレントディレクトリをコンテナにマウントして、その中のプログラムをコンパイルします。
 
 ```bash
-docker run --rm -v "$PWD":/work -w /work ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0 \
+docker run --rm -v "$PWD":/work -w /work ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0 \
   bash -c 'cobj HELLO.cbl && java HELLO'
 ```
 

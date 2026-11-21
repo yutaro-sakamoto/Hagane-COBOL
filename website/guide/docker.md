@@ -5,13 +5,13 @@ Docker images with Hagane COBOL installed are published on
 
 | Image | Source code encoding |
 | -- | -- |
-| `ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0` | Shift_JIS |
-| `ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0-utf8` | UTF-8 |
+| `ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0` | Shift_JIS |
+| `ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0-utf8` | UTF-8 |
 
 ## Try the sample program
 
 ```bash
-docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0
+docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0
 ```
 
 In the container:
@@ -28,7 +28,7 @@ java HELLO
 Mount the current directory into the container and compile the programs in it:
 
 ```bash
-docker run --rm -v "$PWD":/work -w /work ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0 \
+docker run --rm -v "$PWD":/work -w /work ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0 \
   bash -c 'cobj HELLO.cbl && java HELLO'
 ```
 

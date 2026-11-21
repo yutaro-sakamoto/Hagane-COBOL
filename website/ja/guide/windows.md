@@ -41,10 +41,10 @@ cd win
 
 | ファイル | 配置先 |
 | -- | -- |
-| cobj.exe | `C:\opensourcecobol4j\bin` |
-| libcobj.jar | `C:\opensourcecobol4j\lib` |
-| configファイル | `C:\opensourcecobol4j\config` |
-| copyファイル | `C:\opensourcecobol4j\copy` |
+| cobj.exe | `C:\hagane-cobol\bin` |
+| libcobj.jar | `C:\hagane-cobol\lib` |
+| configファイル | `C:\hagane-cobol\config` |
+| copyファイル | `C:\hagane-cobol\copy` |
 
 ::: tip
 Debug構成でビルドした場合は、`win/make-install.ps1`の`\x64\Release\cobj.exe`を`\x64\Debug\cobj.exe`に書き換えてください。
@@ -52,8 +52,14 @@ Debug構成でビルドした場合は、`win/make-install.ps1`の`\x64\Release\
 
 ## 5. 環境変数の設定
 
-1. `C:\opensourcecobol4j\bin`を環境変数`PATH`に追加します。
-2. 環境変数`CLASSPATH`を`.;C:\opensourcecobol4j\lib\libcobj.jar`にします。カレントディレクトリのプログラムを実行するため、先頭の`.`が必要です。
+1. `C:\hagane-cobol\bin`を環境変数`PATH`に追加します。
+2. 環境変数`CLASSPATH`を`.;C:\hagane-cobol\lib\libcobj.jar`にします。カレントディレクトリのプログラムを実行するため、先頭の`.`が必要です。
+
+::: warning 1.0.0からの移行
+Hagane COBOL 1.0.0のインストール先は`C:\opensourcecobol4j`でした。`PATH`と`CLASSPATH`のこのディレクトリを
+`C:\hagane-cobol`に置き換え、COBOLプログラムの変換とコンパイルをやり直してください。
+`make-install.ps1`は`C:\opensourcecobol4j`を削除しないため、不要であれば手動で削除してください。
+:::
 
 新しいターミナルを開いて、インストールを確認します。
 

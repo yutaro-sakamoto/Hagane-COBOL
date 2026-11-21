@@ -18,15 +18,31 @@ Hagane COBOLは、これまで[opensource COBOL 4J](https://github.com/opensourc
 
 * バージョン番号は1.0.0から数え直します。Hagane COBOL 1.0.0はopensource COBOL 4J 2.1.0をもとにしています。
   opensource COBOL 4J 2.1.0からの変更点は[ReleaseNote.md](./ReleaseNote.md)をご覧ください。
-* コマンド名(`cobj`、`cobj-idx`、`cobj-api`)、ランタイムライブラリ`libcobj.jar`、
-  インストール先(`/usr/lib/opensourcecobol4j/libcobj.jar`、`C:\opensourcecobol4j`)は変わりません。
-  既存のビルドスクリプトや`CLASSPATH`の設定はそのまま使えます。
+* 1.0.0では、コマンド名(`cobj`、`cobj-idx`、`cobj-api`)、ランタイムライブラリ`libcobj.jar`、
+  Javaパッケージ`jp.osscons.opensourcecobol.libcobj`、
+  インストール先(`/usr/lib/opensourcecobol4j/libcobj.jar`、`C:\opensourcecobol4j`)は変わりませんでした。
+* DockerイメージはDocker Hubではなく、GitHub Container Registry(`ghcr.io/yutaro-sakamoto/hagane-cobol`)で配布します。
+
+### 2.0.0での変更
+
+2.0.0では、opensource COBOL 4Jから引き継いでいた名前をHagane COBOLのものに変更しました。
+コマンド名と`libcobj.jar`は変わりません。
+
 * libcobjのJavaパッケージは`jp.osscons.opensourcecobol.libcobj`から`org.haganecobol.libcobj`に変わりました
   (MavenのgroupIdも`jp.osscons.opensourcecobol`から`org.haganecobol`に変わりました)。
-  以前の`cobj`で生成したJavaは変換とコンパイルをやり直す必要があり、libcobjや生成されたプログラムを
+* インストール先が変わりました。`libcobj.jar`は`/usr/lib/hagane-cobol/libcobj.jar`
+  (以前は`/usr/lib/opensourcecobol4j/libcobj.jar`)に、Windowsのインストール先は
+  `C:\hagane-cobol`(以前は`C:\opensourcecobol4j`)になります。
+* `configure`のパッケージ名(tarballや`share/`配下のディレクトリ名)は`hagane-cobol-2.0.0`になりました。
+
+1.0.0から移行する場合は、次の点に注意してください。
+
+* COBOLプログラムの変換とコンパイルをやり直してください。libcobjや生成されたプログラムを
   Javaから直接利用しているコードは`import`文の書き換えが必要です。
-  詳しくは[CHANGELOG.md](./CHANGELOG.md)をご覧ください。
-* DockerイメージはDocker Hubではなく、GitHub Container Registry(`ghcr.io/yutaro-sakamoto/hagane-cobol`)で配布します。
+* 古いインストール先を参照している`CLASSPATH`、`PATH`やスクリプトを更新してください。
+* `make install`は1.0.0でインストールしたファイルを削除しません。不要であれば手動で削除してください。
+
+詳しくは[CHANGELOG.md](./CHANGELOG.md)をご覧ください。
 
 ## ライセンス
 ランタイムライブラリであるlibcobjはLGPL 3、それ以外のソフトウェアやライブラリはGPL 3の下で配布されています。
@@ -60,9 +76,9 @@ dnf install -y java-11-openjdk-devel gcc make bison flex automake autoconf diffu
 
 ### Hagane COBOLのインストール
 ```
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/
 make
 sudo make install
@@ -71,9 +87,9 @@ sudo make install
 UTF-8のCOBOLソースコード対応版コンパイラをインストールする場合は、下記のコマンドを実行する。
 
 ```
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/ --enable-utf8
 touch cobj/*.m4
 make
@@ -81,11 +97,11 @@ sudo make install
 ```
 
 ### $CLASSPATHの設定
-/usr/lib/opensourcecobol4j/libcobj.jarを環境変数$CLASSPATHに追加します。
+/usr/lib/hagane-cobol/libcobj.jarを環境変数$CLASSPATHに追加します。
 例えば、Unix系システムで次のコードを実行します。
 
 ```bash
-export CLASSPATH="$CLASSPATH:/usr/lib/opensourcecobol4j/libcobj.jar"
+export CLASSPATH="$CLASSPATH:/usr/lib/hagane-cobol/libcobj.jar"
 ```
 
 Hagane COBOLの前身であるopensource COBOL 4Jのインストール方法は、[opensource COBOL 4Jのリポジトリ](https://github.com/opensourcecobol/opensourcecobol4j)をご覧ください。
@@ -126,26 +142,26 @@ Windows版のHagane COBOLはVisual Studioに含まれるCLコンパイラを使�
 * 各ファイルは以下の場所に配置されます。
     | ファイル名 | 配置場所 |
     |---|---|
-    | cobj.exe | C:\opensourcecobol4j\bin |
-    | libcobj.jar | C:\opensourcecobol4j\lib |
-    | configファイル | C:\opensourcecobol4j\config |
-    | copyファイル | C:\opensourcecobol4j\copy |
+    | cobj.exe | C:\hagane-cobol\bin |
+    | libcobj.jar | C:\hagane-cobol\lib |
+    | configファイル | C:\hagane-cobol\config |
+    | copyファイル | C:\hagane-cobol\copy |
 
 * ファイルの配置場所を変更したい場合は、`make-install.ps1`に記載してあるパスを編集してください。
 
 ### 環境変数の設定
-1. `C:\opensourcecobol4j\bin`を環境変数PATHに追加する。
-2. 環境変数CLASSPATHを`.;C:\opensourcecobol4j\lib\libcobj.jar`にする(カレントディレクトリのプログラムを実行するため、先頭の`.`が必要)。
+1. `C:\hagane-cobol\bin`を環境変数PATHに追加する。
+2. 環境変数CLASSPATHを`.;C:\hagane-cobol\lib\libcobj.jar`にする(カレントディレクトリのプログラムを実行するため、先頭の`.`が必要)。
 
 ## Dockerを使ったインストール
 Hagane COBOLのDockerコンテナをGitHub Container Registryで配布しています。
 
 ```bash
-docker pull ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0
-docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0
+docker pull ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0
+docker run -it --rm ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0
 ```
 
-UTF-8のCOBOLソースコード向けのコンパイラは、イメージ`ghcr.io/yutaro-sakamoto/hagane-cobol:1.0.0-utf8`に入っています。
+UTF-8のCOBOLソースコード向けのコンパイラは、イメージ`ghcr.io/yutaro-sakamoto/hagane-cobol:2.0.0-utf8`に入っています。
 
 以下のコマンドを実行して、"Hello World"のCOBOLプログラムを実行します。
 

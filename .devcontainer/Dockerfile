@@ -3,7 +3,7 @@ FROM almalinux:9
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # classpath settings
-ENV CLASSPATH=:/usr/lib/opensourcecobol4j/libcobj.jar
+ENV CLASSPATH=:/usr/lib/hagane-cobol/libcobj.jar
 
 # hadolint ignore=DL3041
 RUN dnf update -y \
@@ -27,4 +27,4 @@ RUN dnf update -y \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 
-RUN echo 'export CLASSPATH=:/usr/lib/opensourcecobol4j/libcobj.jar' >> ~/.bashrc
+RUN echo 'export CLASSPATH=:/usr/lib/hagane-cobol/libcobj.jar' >> ~/.bashrc

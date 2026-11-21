@@ -90,7 +90,7 @@ tasks.cyclonedxDirectBom {
     projectType.set(Component.Type.LIBRARY)
     componentGroup.set("org.haganecobol")
     componentName.set("libcobj")
-    componentVersion.set("1.0.0")
+    componentVersion.set("2.0.0")
     schemaVersion.set(CycloneDxVersion.VERSION_16)
     // The plugin always writes both formats, and both are published as release
     // assets. Keep them next to each other instead of in the plugin's default
@@ -119,7 +119,7 @@ publishing {
         register<MavenPublication>("gpr") {
             groupId = "org.haganecobol"
             artifactId = "libcobj"
-            version = "1.0.0"
+            version = "2.0.0"
             from(components["java"])
         }
     }

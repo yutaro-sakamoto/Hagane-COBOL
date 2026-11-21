@@ -45,8 +45,8 @@ RUN microdnf update -y && \
 COPY --from=builder /staging/usr/ /usr/
 
 # classpath settings
-ENV CLASSPATH=:/usr/lib/opensourcecobol4j/libcobj.jar
-RUN echo 'export CLASSPATH=:/usr/lib/opensourcecobol4j/libcobj.jar' >> ~/.bashrc
+ENV CLASSPATH=:/usr/lib/hagane-cobol/libcobj.jar
+RUN echo 'export CLASSPATH=:/usr/lib/hagane-cobol/libcobj.jar' >> ~/.bashrc
 
 # add sample programs
 COPY docker/cobol_sample /root/cobol_sample

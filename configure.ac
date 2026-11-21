@@ -19,7 +19,7 @@
 
 AC_PREREQ(2.59)
 
-AC_INIT([Hagane COBOL],[1.0.0],[ws-opensource-cobol-contact@osscons.jp],[opensource-cobol-4j-1.0.0])
+AC_INIT([Hagane COBOL],[2.0.0],[https://github.com/yutaro-sakamoto/Hagane-COBOL/issues],[hagane-cobol-2.0.0])
 AC_CONFIG_SRCDIR([libcobj.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_TESTDIR([tests])

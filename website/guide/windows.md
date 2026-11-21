@@ -41,10 +41,10 @@ The files are placed as follows:
 
 | File | Location |
 | -- | -- |
-| cobj.exe | `C:\opensourcecobol4j\bin` |
-| libcobj.jar | `C:\opensourcecobol4j\lib` |
-| config files | `C:\opensourcecobol4j\config` |
-| copy files | `C:\opensourcecobol4j\copy` |
+| cobj.exe | `C:\hagane-cobol\bin` |
+| libcobj.jar | `C:\hagane-cobol\lib` |
+| config files | `C:\hagane-cobol\config` |
+| copy files | `C:\hagane-cobol\copy` |
 
 ::: tip
 If you built the Debug configuration, change `\x64\Release\cobj.exe` in `win/make-install.ps1` to `\x64\Debug\cobj.exe`.
@@ -52,8 +52,14 @@ If you built the Debug configuration, change `\x64\Release\cobj.exe` in `win/mak
 
 ## 5. Set the environment variables
 
-1. Add `C:\opensourcecobol4j\bin` to `PATH`.
-2. Set `CLASSPATH` to `.;C:\opensourcecobol4j\lib\libcobj.jar`. The leading `.` is needed to run the programs in the current directory.
+1. Add `C:\hagane-cobol\bin` to `PATH`.
+2. Set `CLASSPATH` to `.;C:\hagane-cobol\lib\libcobj.jar`. The leading `.` is needed to run the programs in the current directory.
+
+::: warning Upgrading from 1.0.0
+Hagane COBOL 1.0.0 was installed in `C:\opensourcecobol4j`. Replace that directory in `PATH` and `CLASSPATH`
+with `C:\hagane-cobol`, and translate and compile your COBOL programs again.
+`make-install.ps1` does not remove `C:\opensourcecobol4j`, so delete it by hand if it is no longer needed.
+:::
 
 Open a new terminal and check the installation:
 

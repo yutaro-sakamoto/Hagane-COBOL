@@ -30,18 +30,18 @@ Download the source code of the [latest release](https://github.com/yutaro-sakam
 ::: code-group
 
 ```bash [Shift_JIS source code (default)]
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/
 make
 sudo make install
 ```
 
 ```bash [UTF-8 source code]
-curl -L -o hagane-cobol-v1.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v1.0.0.tar.gz
-tar zxvf hagane-cobol-v1.0.0.tar.gz
-cd Hagane-COBOL-1.0.0
+curl -L -o hagane-cobol-v2.0.0.tar.gz https://github.com/yutaro-sakamoto/Hagane-COBOL/archive/refs/tags/v2.0.0.tar.gz
+tar zxvf hagane-cobol-v2.0.0.tar.gz
+cd Hagane-COBOL-2.0.0
 ./configure --prefix=/usr/ --enable-utf8
 touch cobj/*.m4
 make
@@ -55,8 +55,14 @@ sudo make install
 Add `libcobj.jar` to the `CLASSPATH` environment variable, for example in `~/.bashrc`:
 
 ```bash
-export CLASSPATH="$CLASSPATH:/usr/lib/opensourcecobol4j/libcobj.jar"
+export CLASSPATH="$CLASSPATH:/usr/lib/hagane-cobol/libcobj.jar"
 ```
+
+::: warning Upgrading from 1.0.0
+Hagane COBOL 1.0.0 installed `libcobj.jar` as `/usr/lib/opensourcecobol4j/libcobj.jar`.
+Replace that path in `CLASSPATH` with the new one, and translate and compile your COBOL programs again.
+`make install` does not remove the files of 1.0.0, so delete them by hand if they are no longer needed.
+:::
 
 ## 4. Check the installation
 

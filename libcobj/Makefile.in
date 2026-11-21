@@ -576,8 +576,8 @@ clean:
 	rm -rf $(TARGET_JAR)
 
 install: $(TARGET_JAR) $(COBJ_IDX) $(COBJ_API)
-	mkdir -p $(DESTDIR)$(prefix)/lib/opensourcecobol4j/
-	install $(TARGET_JAR) $(DESTDIR)$(prefix)/lib/opensourcecobol4j/
+	mkdir -p $(DESTDIR)$(prefix)/lib/hagane-cobol/
+	install $(TARGET_JAR) $(DESTDIR)$(prefix)/lib/hagane-cobol/
 	install $(COBJ_IDX) $(DESTDIR)$(prefix)/bin/
 	install $(COBJ_API) $(DESTDIR)$(prefix)/bin/
 
