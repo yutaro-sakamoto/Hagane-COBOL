@@ -1,0 +1,48 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    CALL文の結果を保持するための基底クラス<br>
+    サブクラスで保持する型に対応するgetメソッドをオーバーライドする。
+    対応しない型のgetメソッドを呼び出した場合は{@link CobolResultSetException}がスローされる。
+  en: |-
+    Base class for holding the result of a CALL statement.<br>
+    Subclasses override the get method corresponding to the type they hold.
+    Calling a get method for an unsupported type throws {@link CobolResultSetException}.
+- ja: |-
+    結果をint型として取得する。
+  en: |-
+    Returns the result as an int.
+- ja: |-
+    int型の結果値
+  en: |-
+    the result value as an int
+- ja: |-
+    結果の型がintでない場合
+  en: |-
+    if the type of the result is not int
+- ja: |-
+    結果をdouble型として取得する。
+  en: |-
+    Returns the result as a double.
+- ja: |-
+    double型の結果値
+  en: |-
+    the result value as a double
+- ja: |-
+    結果の型がdoubleでない場合
+  en: |-
+    if the type of the result is not double
+- ja: |-
+    結果をString型として取得する。
+  en: |-
+    Returns the result as a String.
+- ja: |-
+    String型の結果値
+  en: |-
+    the result value as a String
+- ja: |-
+    結果の型がStringでない場合
+  en: |-
+    if the type of the result is not String

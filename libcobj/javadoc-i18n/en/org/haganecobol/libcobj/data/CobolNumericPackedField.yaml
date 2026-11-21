@@ -1,0 +1,114 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PIC 文字列が9(5) COMP-3などの変数を表現するクラス.
+  en: |-
+    Represents a variable whose PIC string is like 9(5) COMP-3.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    データを格納するバイト配列の長さ
+  en: |-
+    the length of the byte array that stores the data
+- ja: |-
+    データを格納するバイト配列を扱うオブジェクト
+  en: |-
+    the object that handles the byte array storing the data
+- ja: |-
+    変数に関する様々な情報を保持するオブジェクト(符号付か,COMP-3指定かなど)
+  en: |-
+    the object holding various information about the variable (whether it is signed, whether COMP-3
+    is specified, etc.)
+- ja: |-
+    文字列が数字として正しいかどうかを検査する(未実装)
+  en: |-
+    Checks whether a string is valid as a number (not implemented).
+- ja: |-
+    検査対象の文字列
+  en: |-
+    the string to check
+- ja: |-
+    CobolNumericFieldからthisへの代入を行う
+  en: |-
+    Assigns a CobolNumericField to this.
+- ja: |-
+    代入元のデータ(AbstractCobolField型)
+  en: |-
+    the source data (of type AbstractCobolField)
+- ja: |-
+    指定の桁に指定の値を設定する
+  en: |-
+    Sets the specified value to the specified digit.
+- ja: |-
+    桁の
+  en: |-
+    the position of the digit
+- ja: |-
+    設定する値
+  en: |-
+    the value to set
+- ja: |-
+    指定のけたの値を取得する
+  en: |-
+    Returns the value of the specified digit.
+- ja: |-
+    桁
+  en: |-
+    the digit position
+- ja: |-
+    index桁目の値
+  en: |-
+    the value of the index-th digit
+- ja: |-
+    指定した桁の値を取得する
+  en: |-
+    Returns the index of the byte that holds the specified digit.
+- ja: |-
+    取得する桁の位置
+  en: |-
+    the position of the digit
+- ja: |-
+    index番目の桁の値
+  en: |-
+    the index of the byte that holds the index-th digit
+- ja: |-
+    byte型データを右に4回シフトした値を返す CとJavaのビット演算の仕様に差異があるため実装した
+  en: |-
+    Returns the byte value shifted right by 4 bits. Implemented because of differences between C and
+    Java in the specification of bit operations.
+- ja: |-
+    上位4ビットを取り出す対象のバイト値
+  en: |-
+    the byte value from which the upper 4 bits are extracted
+- ja: |-
+    thisの保持する数値データを0に設定する
+  en: |-
+    Sets the numeric data held by this to 0.
+- ja: |-
+    libcob/numeric.cのcob_complement_packedの実装
+  en: |-
+    Implementation of cob_complement_packed in libcob/numeric.c.
+- ja: |-
+    libcob/codegen.hのcob_cmp_packed_intの実装
+  en: |-
+    Implementation of cob_cmp_packed_int in libcob/codegen.h.
+- ja: |-
+    比較対象の整数値
+  en: |-
+    the integer value to compare with
+- ja: |-
+    thisの数値がnより小さければ-1, 大きければ1, 等しければ0
+  en: |-
+    -1 if the value of this is less than n, 1 if greater, 0 if equal
+- ja: |-
+    libcob/numeric.cのcob_cmp_packedの実装
+  en: |-
+    Implementation of cob_cmp_packed in libcob/numeric.c.
+- ja: |-
+    thisの数値がnより小さければ負の値, 大きければ正の値, 等しければ0
+  en: |-
+    a negative value if the value of this is less than n, a positive value if greater, 0 if equal

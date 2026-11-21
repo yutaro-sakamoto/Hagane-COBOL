@@ -1,0 +1,93 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    {@link AbstractCobolEsqlBackend#buildJdbcUrl(DbSpec)} の入力。接続文字列 {@code dbname@host:port} の
+    パース・環境変数フォールバック・末尾空白除去まで適用済みの、DB 非依存な接続情報。
+
+    <p>生成は {@link AbstractCobolEsqlBackend} の接続共通フロー（buildSpec）だけが行う
+    （コンストラクタは package-private）。バックエンド実装は getter で読み取るのみ。
+  en: |-
+    Input to {@link AbstractCobolEsqlBackend#buildJdbcUrl(DbSpec)}. DB-independent connection
+    information to which parsing of the connection string {@code dbname@host:port}, environment
+    variable fallbacks, and trailing-space removal have already been applied.
+
+    <p>It is created only by the common connection flow (buildSpec) of {@link AbstractCobolEsqlBackend}
+    (the constructor is package-private). Backend implementations only read it through the getters.
+- ja: |-
+    各フィールドを {@link AbstractCobolEsqlBackend} の buildSpec が設定する空の接続情報を生成する。
+  en: |-
+    Creates empty connection information whose fields are set by buildSpec of {@link AbstractCobolEsqlBackend}.
+- ja: |-
+    ホスト名（既定 "localhost"）。
+  en: |-
+    Host name (default "localhost").
+- ja: |-
+    ポート（":port" 形式、未指定なら空文字）。
+  en: |-
+    Port (in ":port" form, or an empty string if not specified).
+- ja: |-
+    データベース名。
+  en: |-
+    Database name.
+- ja: |-
+    接続ユーザー名。
+  en: |-
+    User name for the connection.
+- ja: |-
+    接続パスワード。
+  en: |-
+    Password for the connection.
+- ja: |-
+    文字コード（OCDB_DB_CHAR、既定 UTF-8）。
+  en: |-
+    Character encoding (OCDB_DB_CHAR, default UTF-8).
+- ja: |-
+    ホスト名を返す。
+  en: |-
+    Returns the host name.
+- ja: |-
+    ホスト名（既定 "localhost"）
+  en: |-
+    the host name (default "localhost")
+- ja: |-
+    ポートを返す。
+  en: |-
+    Returns the port.
+- ja: |-
+    ":port" 形式のポート。未指定なら空文字
+  en: |-
+    the port in ":port" form, or an empty string if not specified
+- ja: |-
+    データベース名を返す。
+  en: |-
+    Returns the database name.
+- ja: |-
+    データベース名
+  en: |-
+    the database name
+- ja: |-
+    接続ユーザー名を返す。
+  en: |-
+    Returns the user name for the connection.
+- ja: |-
+    接続ユーザー名
+  en: |-
+    the user name for the connection
+- ja: |-
+    接続パスワードを返す。
+  en: |-
+    Returns the password for the connection.
+- ja: |-
+    接続パスワード
+  en: |-
+    the password for the connection
+- ja: |-
+    文字コードを返す。
+  en: |-
+    Returns the character encoding.
+- ja: |-
+    文字コード（OCDB_DB_CHAR、既定 UTF-8）
+  en: |-
+    the character encoding (OCDB_DB_CHAR, default UTF-8)

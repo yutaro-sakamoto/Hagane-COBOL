@@ -1,0 +1,22 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    int型の値を返す処理を遅延実行するための関数型インターフェイス<br>
+    生成されたJavaコード中で、int型の値を後から評価したい箇所(コールバック)を表現するために用いる。
+  en: |-
+    Functional interface for deferred execution of a computation that returns an int value.<br>
+    Used in generated Java code to represent places (callbacks) where an int value is to be evaluated later.
+- ja: |-
+    処理を実行し、結果のint型の値を返す。
+  en: |-
+    Executes the computation and returns the resulting int value.
+- ja: |-
+    処理結果のint型の値
+  en: |-
+    the resulting int value
+- ja: |-
+    処理中にSTOP RUNが実行された場合
+  en: |-
+    if STOP RUN is executed during the computation

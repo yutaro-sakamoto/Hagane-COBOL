@@ -1,0 +1,62 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    環境変数 {@code OCDB_DB_TYPE} を見て {@link CobolEsqlBackendInterface} 実装を 1 つ解決する Factory。
+
+    <p>実装の発見には {@link java.util.ServiceLoader} を使う。各バックエンド実装は
+    {@code META-INF/services/org.haganecobol.libcobj.sql.CobolEsqlBackendInterface} に
+    自身を登録し、{@code OCDB_DB_TYPE} の値（小文字化済み）と {@link CobolEsqlBackendInterface#id()}
+    の一致で選択される。これにより実装はパッケージ・JAR の場所に縛られず、classpath に登録済みの
+    JAR を置くだけで追加できる。未指定（null/空）の場合は後方互換のため PostgreSQL
+    （{@code id() == "postgresql"}）を返す。
+  en: |-
+    Factory that resolves one {@link CobolEsqlBackendInterface} implementation based on the environment
+    variable {@code OCDB_DB_TYPE}.
+
+    <p>Implementations are discovered with {@link java.util.ServiceLoader}. Each backend implementation
+    registers itself in {@code META-INF/services/org.haganecobol.libcobj.sql.CobolEsqlBackendInterface},
+    and is selected when the value of {@code OCDB_DB_TYPE} (lowercased) matches
+    {@link CobolEsqlBackendInterface#id()}. As a result, implementations are not tied to a particular
+    package or JAR location and can be added simply by placing a registered JAR on the classpath. If
+    the value is not specified (null/empty), PostgreSQL ({@code id() == "postgresql"}) is returned for
+    backward compatibility.
+- ja: |-
+    ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。
+  en: |-
+    Private constructor to prevent instantiation of this utility class.
+- ja: |-
+    環境変数 {@code OCDB_DB_TYPE} からバックエンドを解決する。
+  en: |-
+    Resolves the backend from the environment variable {@code OCDB_DB_TYPE}.
+- ja: |-
+    解決された DB バックエンド
+  en: |-
+    the resolved DB backend
+- ja: |-
+    {@code OCDB_DB_TYPE} に対応する実装クラスが無い/生成できない場合
+  en: |-
+    if no implementation class corresponding to {@code OCDB_DB_TYPE} exists or it cannot be instantiated
+- ja: |-
+    渡された値からバックエンドを解決する（{@link #resolve()} の実装本体。環境変数を自分で
+    読まないので、値を直接渡して確かめられる）。未指定（null/空）の場合は後方互換のため
+    PostgreSQL を返す。
+
+    <p>{@link ServiceLoader} が発見した実装のうち、{@link CobolEsqlBackendInterface#id()} が
+    小文字化済みの DB 種別文字列と一致する最初のものを返す。
+  en: |-
+    Resolves the backend from the given value (the actual implementation of {@link #resolve()}; since it
+    does not read the environment variable itself, it can be tested by passing the value directly). If
+    the value is not specified (null/empty), PostgreSQL is returned for backward compatibility.
+
+    <p>Returns the first implementation discovered by {@link ServiceLoader} whose
+    {@link CobolEsqlBackendInterface#id()} matches the lowercased DB type string.
+- ja: |-
+    DB 種別文字列（{@code OCDB_DB_TYPE} の値）
+  en: |-
+    the DB type string (the value of {@code OCDB_DB_TYPE})
+- ja: |-
+    {@code t} に対応する登録済み実装が無い/生成できない場合
+  en: |-
+    if no registered implementation corresponding to {@code t} exists or it cannot be instantiated

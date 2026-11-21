@@ -1,0 +1,28 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    SEQUENTIAL形式で書かれたファイルから1レコードずつ読み込む{@link RecordReader}の実装。<br>
+    入力ファイルはレコード区切りを持たず、{@code recordSize}バイトずつ連続して並んでいることを想定する。
+    末尾に{@code \n}または{@code \r\n}のみが残っている場合は終端として扱う。
+  en: |-
+    Implementation of {@link RecordReader} that reads records one at a time from a file written in
+    SEQUENTIAL format.<br>
+    The input file is assumed to have no record delimiters, with records of {@code recordSize} bytes
+    placed contiguously.
+    If only {@code \n} or {@code \r\n} remains at the end, it is treated as the end of the file.
+- ja: |-
+    新しい{@code FileSeqRecordReader}インスタンスを生成する。<br>
+    この時点ではファイルは開かれず、{@link #open()}の呼び出しによって開かれる。
+  en: |-
+    Creates a new {@code FileSeqRecordReader} instance.<br>
+    The file is not opened at this point; it is opened by calling {@link #open()}.
+- ja: |-
+    1レコードのバイト数
+  en: |-
+    the number of bytes in one record
+- ja: |-
+    読み込み対象のファイルのパス
+  en: |-
+    the path of the file to read

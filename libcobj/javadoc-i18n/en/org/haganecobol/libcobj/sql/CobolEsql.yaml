@@ -1,0 +1,263 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL の埋め込み SQL 操作（CONNECT、EXEC SQL、カーソル、トランザクション）のエントリポイント。
+
+    <p>本クラスは呼び出しを受け取るだけで、実際の処理は環境変数 {@code OCDB_DB_TYPE} から選んだ
+    {@link CobolEsqlBackendInterface} の実装へ渡す。メソッドの形は変えていないので、生成コード
+    （{@code CobolEsql.xxx(...)} という静的呼び出し）はそのままで、DB ごとに実装を入れ替えられる。
+  en: |-
+    Entry point for COBOL embedded SQL operations (CONNECT, EXEC SQL, cursors, transactions).
+
+    <p>This class only receives calls; the actual processing is passed to the implementation of
+    {@link CobolEsqlBackendInterface} selected by the environment variable {@code OCDB_DB_TYPE}. Since
+    the method signatures are unchanged, the generated code (static calls of the form
+    {@code CobolEsql.xxx(...)}) stays the same while the implementation can be swapped per database.
+- ja: |-
+    ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。
+  en: |-
+    Private constructor to prevent instantiation of this utility class.
+- ja: |-
+    実行単位(スレッド)ごとの backend（遅延初期化）。<br>
+    接続・カーソル・prepared statement は backend のインスタンスが保持しており、
+    実行単位はスレッドごとに独立しているため、backend もスレッドごとに生成する。
+  en: |-
+    Backend for each run unit (thread), lazily initialized.<br>
+    Connections, cursors, and prepared statements are held by the backend instance, and since run
+    units are independent per thread, a backend is also created per thread.
+- ja: |-
+    現在のスレッドの backend を遅延初期化して返す。{@code OCDB_DB_TYPE} の解決は
+    スレッドごとの初回アクセス時に行う。
+
+    <p>{@code OCDB_DB_TYPE} に対応する実装が無いのは設定の誤りであり、SQL のエラーとして
+    報告すると接続失敗などと区別がつかない。解決に失敗した場合は
+    {@link CobolEsqlBackendFactory#resolve()} の例外をそのまま伝播させ、実行を打ち切る。
+  en: |-
+    Lazily initializes and returns the backend of the current thread. {@code OCDB_DB_TYPE} is resolved
+    on the first access in each thread.
+
+    <p>The absence of an implementation corresponding to {@code OCDB_DB_TYPE} is a configuration error,
+    and reporting it as an SQL error would make it indistinguishable from a connection failure and the
+    like. If resolution fails, the exception from {@link CobolEsqlBackendFactory#resolve()} is
+    propagated as is, aborting execution.
+- ja: |-
+
+        {@code OCDB_DB_TYPE} に対応する実装が無い/生成できない場合
+  en: |-
+    if no implementation corresponding to {@code OCDB_DB_TYPE} exists or it cannot be instantiated
+- ja: |-
+    現在のスレッドに紐づくESQLの状態を破棄する。実行単位の終了時に呼び出す。<br>
+    DISCONNECTされずに残っている接続は、未確定の更新をロールバックしてクローズされる。
+  en: |-
+    Discards the ESQL state associated with the current thread. Called when the run unit ends.<br>
+    Connections left open without DISCONNECT are closed after rolling back uncommitted updates.
+- ja: |-
+    user、password、dbname を個別のパラメータとして受け取り、データベース接続を確立する。
+  en: |-
+    Establishes a database connection, taking user, password, and dbname as separate parameters.
+- ja: |-
+    ステータス報告用の SQLCA データストレージ
+  en: |-
+    the SQLCA data storage for status reporting
+- ja: |-
+    ユーザー名フィールド
+  en: |-
+    the user name field
+- ja: |-
+    パスワードフィールド
+  en: |-
+    the password field
+- ja: |-
+    データベース名フィールド
+  en: |-
+    the database name field
+- ja: |-
+    commit を実行したうえで、デフォルトのデータベース接続を切断する。
+  en: |-
+    Commits and then disconnects the default database connection.
+- ja: |-
+    ホスト変数パラメータを持たない SQL 文を実行する。
+  en: |-
+    Executes an SQL statement without host variable parameters.
+- ja: |-
+    SQL クエリ文字列
+  en: |-
+    the SQL query string
+- ja: |-
+    COBOL のホスト変数をバインドしたパラメータ付き SQL 文を実行する。
+  en: |-
+    Executes a parameterized SQL statement with COBOL host variables bound.
+- ja: |-
+    '?' プレースホルダを含む SQL クエリ文字列
+  en: |-
+    the SQL query string containing '?' placeholders
+- ja: |-
+    COBOL のホスト変数パラメータ
+  en: |-
+    the COBOL host variable parameters
+- ja: |-
+    WHERE CURRENT OF を伴う UPDATE/DELETE（ホスト変数なし）を実行する。
+  en: |-
+    Executes an UPDATE/DELETE with WHERE CURRENT OF (without host variables).
+- ja: |-
+    末尾が {@code WHERE CURRENT OF} の SQL（カーソル名は含まない）
+  en: |-
+    the SQL ending with {@code WHERE CURRENT OF} (without the cursor name)
+- ja: |-
+    位置付け対象の（修飾済み）カーソル名
+  en: |-
+    the (qualified) name of the cursor to position on
+- ja: |-
+    WHERE CURRENT OF を伴う UPDATE/DELETE（ホスト変数あり）を実行する。
+  en: |-
+    Executes an UPDATE/DELETE with WHERE CURRENT OF (with host variables).
+- ja: |-
+    末尾が {@code WHERE CURRENT OF} の SQL（'?' プレースホルダを含む。カーソル名は含まない）
+  en: |-
+    the SQL ending with {@code WHERE CURRENT OF} (containing '?' placeholders, without the cursor name)
+- ja: |-
+    SELECT INTO 文を実行し、結果を COBOL のホスト変数に書き戻す。
+  en: |-
+    Executes a SELECT INTO statement and writes the results back to COBOL host variables.
+- ja: |-
+    SELECT クエリ文字列
+  en: |-
+    the SELECT query string
+- ja: |-
+    入力のホスト変数パラメータ（WHERE 句のバインド）
+  en: |-
+    the input host variable parameters (bindings for the WHERE clause)
+- ja: |-
+    選択された列の値を受け取る出力ホスト変数
+  en: |-
+    the output host variables that receive the selected column values
+- ja: |-
+    OCCURS 配列に対する SELECT INTO 文を実行し、複数行を書き込む。
+  en: |-
+    Executes a SELECT INTO statement into an OCCURS array, writing multiple rows.
+- ja: |-
+    SQLCA データストレージ
+  en: |-
+    the SQLCA data storage
+- ja: |-
+    OCCURS 要素 1 つあたりのバイト数（ストライド）
+  en: |-
+    the number of bytes per OCCURS element (stride)
+- ja: |-
+    OCCURS 要素の最大数
+  en: |-
+    the maximum number of OCCURS elements
+- ja: |-
+    入力のホスト変数パラメータ
+  en: |-
+    the input host variable parameters
+- ja: |-
+    出力ホスト変数（1 つの OCCURS 要素のフィールド群）
+  en: |-
+    the output host variables (the fields of one OCCURS element)
+- ja: |-
+    パラメータを持たない SQL カーソルを宣言する。
+  en: |-
+    Declares an SQL cursor without parameters.
+- ja: |-
+    カーソル名
+  en: |-
+    the cursor name
+- ja: |-
+    カーソル用の SQL クエリ
+  en: |-
+    the SQL query for the cursor
+- ja: |-
+    ホスト変数パラメータを持つ SQL カーソルを宣言する。
+  en: |-
+    Declares an SQL cursor with host variable parameters.
+- ja: |-
+    カーソルをオープンする際にバインドするホスト変数パラメータ
+  en: |-
+    the host variable parameters to bind when the cursor is opened
+- ja: |-
+    事前に宣言されたカーソルをオープンする。
+  en: |-
+    Opens a previously declared cursor.
+- ja: |-
+    オープンするカーソル名
+  en: |-
+    the name of the cursor to open
+- ja: |-
+    事前に宣言されたカーソルをホスト変数パラメータ付きでオープンする。
+  en: |-
+    Opens a previously declared cursor with host variable parameters.
+- ja: |-
+    カーソルクエリ用のホスト変数パラメータ
+  en: |-
+    the host variable parameters for the cursor query
+- ja: |-
+    オープン済みのカーソルから次の行を取得し、COBOL のホスト変数に格納する。
+  en: |-
+    Fetches the next row from an open cursor and stores it in COBOL host variables.
+- ja: |-
+    fetch 対象のカーソル名
+  en: |-
+    the name of the cursor to fetch from
+- ja: |-
+    列の値を受け取る出力ホスト変数
+  en: |-
+    the output host variables that receive the column values
+- ja: |-
+    カーソルから複数行を取得し、OCCURS 配列フィールドに格納する。
+  en: |-
+    Fetches multiple rows from a cursor and stores them in OCCURS array fields.
+- ja: |-
+    OCCURS 要素 1 つあたりのバイトサイズ
+  en: |-
+    the size in bytes of one OCCURS element
+- ja: |-
+    取得する行の最大数
+  en: |-
+    the maximum number of rows to fetch
+- ja: |-
+    結果パラメータフィールド（列ごとに 1 つ）
+  en: |-
+    the result parameter fields (one per column)
+- ja: |-
+    オープン済みのカーソルをクローズする。
+  en: |-
+    Closes an open cursor.
+- ja: |-
+    クローズするカーソル名
+  en: |-
+    the name of the cursor to close
+- ja: |-
+    SQL 文を prepare し、COBOL のホスト変数参照を '?' プレースホルダに置き換える。
+  en: |-
+    Prepares an SQL statement, replacing references to COBOL host variables with '?' placeholders.
+- ja: |-
+    prepared statement に割り当てる名前
+  en: |-
+    the name to assign to the prepared statement
+- ja: |-
+    SQL クエリ文を保持する COBOL フィールド
+  en: |-
+    the COBOL field holding the SQL query statement
+- ja: |-
+    事前に prepare された statement を実行する。
+  en: |-
+    Executes a previously prepared statement.
+- ja: |-
+    prepared statement の名前
+  en: |-
+    the name of the prepared statement
+- ja: |-
+    バインドするホスト変数パラメータ
+  en: |-
+    the host variable parameters to bind
+- ja: |-
+    デフォルト接続の現在の transaction を commit し、新しい transaction を開始する。
+  en: |-
+    Commits the current transaction of the default connection and starts a new transaction.
+- ja: |-
+    デフォルト接続の現在の transaction を rollback し、新しい transaction を開始する。
+  en: |-
+    Rolls back the current transaction of the default connection and starts a new transaction.

@@ -1,0 +1,33 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    CALL文で呼び出されたプログラムに渡された引数の個数を保持するクラス<br>
+    libcobのcob_call_paramsに対応し、USING句で渡された実引数の個数を表す。<br>
+    呼び出されたプログラム側でこの値を参照することで、省略された引数の判定などに利用する。
+  en: |-
+    Class that holds the number of arguments passed to a program called by a CALL statement.<br>
+    Corresponds to cob_call_params in libcob and represents the
+    number of actual arguments passed in the USING phrase.<br>
+    The called program refers to this value to determine, for example, whether arguments were omitted.
+- ja: |-
+    CALL文で渡された引数の個数(スレッドごとに保持する)
+  en: |-
+    The number of arguments passed by the CALL statement (held per thread).
+- ja: |-
+    現在のスレッドのCALL文で渡された引数の個数を取得する。
+  en: |-
+    Returns the number of arguments passed by the CALL statement of the current thread.
+- ja: |-
+    引数の個数
+  en: |-
+    the number of arguments
+- ja: |-
+    現在のスレッドのCALL文で渡された引数の個数を設定する。
+  en: |-
+    Sets the number of arguments passed by the CALL statement of the current thread.
+- ja: |-
+    現在のスレッドに紐づく値を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the value bound to the current thread. Called when the run unit ends.

@@ -1,0 +1,338 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    順編成・行順編成・相対編成ファイルの、実行単位(スレッド)間およびプロセス間のロックを管理する台帳。
+
+    <p>OSのファイルロック({@link FileChannel#tryLock})はJVM単位で管理されており、 同一JVM内で既にロックされている範囲を別のチャネルでロックしようとすると
+    (共有ロック同士でも){@link OverlappingFileLockException}がスローされる。 そこでOSのロックはファイルごとにこの台帳が1つだけ保持し、
+    同一JVM内のスレッド間の競合は台帳の保持者一覧で、別プロセスとの競合はOSのロックで、 それぞれ別プロセスからのOPENと同じ規則(共有同士は共存、排他が絡めばFILE STATUS
+    61)で判定する。
+
+    <p>OSのロックは、この台帳が専用に開いたチャネル上の、ファイル終端よりはるか先の小さな範囲
+    ({@link #MAIN_POSITION})に取得する。範囲が実データと重ならないため、ロックが必須(mandatory)である
+    Windowsでも保持者自身の読み書きを一切妨げず、また保持者がファイルをクローズしてもロックは
+    台帳のチャネル上で生き続けるので、ロックの引き継ぎ(解放と取り直しの隙間)が存在しない。
+    C版opensource COBOLのfcntlロック(offset 0から無限大)や旧実装の全域ロック([0, Long.MAX_VALUE))は
+    この範囲とも重なるため、それらとの相互検知は保たれる。
+
+    <p>多くのOS(Linuxのfcntlロックなど)では、あるプロセスがファイルに対して持つロックは、そのプロセスが
+    <b>同じファイルを指すどのディスクリプタを閉じても</b>すべて解放される({@link java.nio.channels.FileLock}の
+    Javadocにも明記されている)。このため、ロックを保持している間は、このJVMの誰もそのファイルのチャネルを
+    閉じてはならない。保持者のCLOSEや、FILE STATUS 61で拒否されたOPENが手放すチャネルは、
+    {@link #release(Lease, Closeable)}と{@link #closeFor(String, Closeable)}を通じて台帳が預かり、
+    最後の保持者が解放してOSのロックを手放すときにまとめて閉じる。 保持者が絶えず入れ替わって最後の保持者が
+    現れない場合でも預かるチャネルが増え続けないよう、このJVMでのファイルのオープンは
+    {@link #openChannel}と{@link #openRandomAccessFile}を通して行い、預かっているチャネルのうち
+    同じモードで開いたものがあれば新たに開かずに再利用する。これにより、預かるチャネルの数は
+    そのファイルを同時にオープンしていた実行単位の数を超えない。
+
+    <p>ロックのモード変更(同一実行単位がINPUTとOUTPUTを重ねてオープンした場合の昇格・降格)は、
+    隣接するもう1つの範囲({@link #BRIDGE_POSITION})を橋渡しに使う: 目的のモードでブリッジ範囲を
+    ロックしてから主範囲を取り直す。この台帳の全操作はブリッジ範囲を先にロックする規約なので、
+    主範囲が一瞬解放されている間も、他のJVMや全域ロックを使うプロセスは必ずブリッジ範囲に衝突し、
+    割り込むことができない。
+  en: |-
+    Registry that manages locks between run units (threads) and between processes for sequential, line
+    sequential and relative files.
+
+    <p>OS file locks ({@link FileChannel#tryLock}) are managed per JVM, and attempting to lock, through a
+    different channel, a range that is already locked within the same JVM throws
+    {@link OverlappingFileLockException} (even if both are shared locks). Therefore this registry alone
+    holds the OS lock, one per file; conflicts between threads within the same JVM are decided by the
+    registry's list of holders, and conflicts with other processes by the OS lock, each under the same
+    rules as an OPEN from another process (shared locks coexist; if an exclusive lock is involved, FILE
+    STATUS 61).
+
+    <p>The OS lock is acquired on a small range far beyond the end of the file ({@link #MAIN_POSITION}),
+    on a channel opened by this registry exclusively for that purpose. Since the range does not overlap
+    the actual data, it does not interfere at all with the holders' own reads and writes even on Windows,
+    where locks are mandatory; and since the lock lives on in the registry's channel even after a holder
+    closes the file, there is no handover of the lock (no gap between release and reacquisition). The
+    fcntl lock of the C version of opensource COBOL (from offset 0 to infinity) and the whole-range lock
+    of the old implementation ([0, Long.MAX_VALUE)) also overlap this range, so mutual detection with them
+    is preserved.
+
+    <p>On many OSes (such as fcntl locks on Linux), all locks a process holds on a file are released when
+    the process closes <b>any descriptor referring to the same file</b> (this is also stated in the
+    Javadoc of {@link java.nio.channels.FileLock}). For this reason, while a lock is held, no one in this
+    JVM may close a channel of that file. Channels given up by a holder's CLOSE or by an OPEN rejected
+    with FILE STATUS 61 are kept by the registry through {@link #release(Lease, Closeable)} and
+    {@link #closeFor(String, Closeable)}, and are closed all together when the last holder releases the
+    lock and the OS lock is given up. So that the kept channels do not keep increasing even when holders
+    are constantly replaced and no last holder ever appears, files in this JVM are opened through
+    {@link #openChannel} and {@link #openRandomAccessFile}, and if one of the kept channels was opened in
+    the same mode, it is reused instead of opening a new one. As a result, the number of kept channels
+    does not exceed the number of run units that had the file open at the same time.
+
+    <p>Changing the lock mode (upgrade or downgrade when the same run unit opens a file for both INPUT
+    and OUTPUT) uses another adjacent range ({@link #BRIDGE_POSITION}) as a bridge: the bridge range is
+    locked in the target mode, and then the main range is reacquired. Since by convention every operation
+    of this registry locks the bridge range first, even while the main range is momentarily released,
+    other JVMs and processes using whole-range locks always collide with the bridge range and cannot cut
+    in.
+- ja: |-
+    OSロックを取得する主範囲の開始位置。実データと重ならないよう、ファイル終端よりはるか先に置く。
+  en: |-
+    Start position of the main range on which the OS lock is acquired. Placed far beyond the end of
+    the file so as not to overlap the actual data.
+- ja: |-
+    ロックのモード変更時に橋渡しとして使う範囲の開始位置。
+  en: |-
+    Start position of the range used as a bridge when changing the lock mode.
+- ja: |-
+    ロックする範囲の長さ。
+  en: |-
+    Length of the locked range.
+- ja: |-
+    ロックの保持者に渡す票。クローズ時に{@link #release(Lease, Closeable)}へ渡す。
+  en: |-
+    Lease given to a lock holder. Passed to {@link #release(Lease, Closeable)} on close.
+- ja: |-
+    この票を取得した実行単位(スレッド)
+  en: |-
+    The run unit (thread) that acquired this lease.
+- ja: |-
+    排他ロックとして要求されたかどうか
+  en: |-
+    Whether an exclusive lock was requested.
+- ja: |-
+    ファイルごとのロックの保持状況
+  en: |-
+    Lock holding status per file.
+- ja: |-
+    OSのロックを保持するための、台帳が所有する専用チャネル
+  en: |-
+    Dedicated channel owned by the registry for holding the OS lock.
+- ja: |-
+    主範囲に取得したOSのロック
+  en: |-
+    The OS lock acquired on the main range.
+- ja: |-
+    現在のOSロックが排他かどうか
+  en: |-
+    Whether the current OS lock is exclusive.
+- ja: |-
+    このJVM内での保持者
+  en: |-
+    Holders within this JVM.
+- ja: |-
+    OSのロックを失わないよう、ロックの解放まで閉じずに預かっているチャネル
+  en: |-
+    Channels kept without being closed until the lock is released, so as not to lose the OS lock.
+- ja: |-
+    正規化したパスをキーとするロックの台帳。このクラスのモニタで保護する。
+  en: |-
+    Lock registry keyed by normalized path. Guarded by the monitor of this class.
+- ja: |-
+    再利用できる形で開かれたファイル。預かったチャネルを次のオープンで使い回すために記録する。
+  en: |-
+    A file opened in a reusable form. Recorded so that a kept channel can be reused by the next
+    open.
+- ja: |-
+    開いたときのモード。同じモードのオープンにだけ再利用する
+  en: |-
+    The mode in which it was opened. Reused only for opens in the same mode.
+- ja: |-
+    呼び出し元に返すオブジェクト(FileChannelまたはRandomAccessFile)
+  en: |-
+    The object returned to the caller (a FileChannel or a RandomAccessFile).
+- ja: |-
+    {@link #openChannel}と{@link #openRandomAccessFile}で開いたチャネルと、その開き方の対応。
+    チャネルを閉じるときに取り除く。このクラスのモニタで保護する。
+  en: |-
+    Mapping from channels opened by {@link #openChannel} and {@link #openRandomAccessFile} to how they
+    were opened. An entry is removed when its channel is closed. Guarded by the monitor of this class.
+- ja: |-
+    ファイルのロックを取得する。
+  en: |-
+    Acquires a lock on a file.
+- ja: |-
+    ロックするファイルのパス
+  en: |-
+    the path of the file to lock
+- ja: |-
+    共有ロックならtrue、排他ロックならfalse
+  en: |-
+    true for a shared lock, false for an exclusive lock
+- ja: |-
+    取得したロックの票。同一JVM内の他の実行単位またはほかのプロセスと競合して取得できない場合はnull
+  en: |-
+    the lease of the acquired lock, or null if it cannot be acquired because of a conflict with another
+        run unit in the same JVM or with another process
+- ja: |-
+    書き込みが許可されていないファイルに排他ロックを取得しようとした場合
+  en: |-
+    if an attempt is made to acquire an exclusive lock on a file that is not writable
+- ja: |-
+    チャネルのオープンまたはロックに失敗した場合
+  en: |-
+    if opening or locking the channel fails
+- ja: |-
+    ロックを解放し、保持者が使っていたチャネルを閉じる。<br>
+    このJVM内の最後の保持者が解放したときは、OSのロックを解放してから、預かっていたチャネルと あわせて閉じる。他の保持者が残っている場合は、チャネルを閉じるとOSのロックまで失われるため、
+    閉じずに預かる。 排他を要求していた保持者が解放して共有の保持者だけが残った場合は、OSのロックを共有へ降格する。
+  en: |-
+    Releases the lock and closes the channel the holder was using.<br>
+    When the last holder in this JVM releases the lock, the OS lock is released and then the channel is
+    closed together with the kept channels. If other holders remain, closing the channel would also lose
+    the OS lock, so the channel is kept without being closed. If a holder that requested an exclusive lock
+    releases it and only shared holders remain, the OS lock is downgraded to shared.
+- ja: |-
+    {@link #acquire}で取得した票。nullの場合はresourceを閉じるだけ
+  en: |-
+    the lease acquired by {@link #acquire}; if null, resource is simply closed
+- ja: |-
+    保持者がファイルのI/Oに使っていたチャネル。nullでもよい
+  en: |-
+    the channel the holder was using for the file's I/O; may be null
+- ja: |-
+    ファイルをFileChannelとして開く。そのファイルについて預かっているチャネルのうち、同じオプションで
+    開いたものがあれば、新たに開かずにそれを先頭の位置に戻して返す。
+  en: |-
+    Opens a file as a FileChannel. If one of the channels kept for that file was opened with the same
+    options, it is rewound to the beginning and returned instead of opening a new one.
+- ja: |-
+    開くファイルのパス
+  en: |-
+    the path of the file to open
+- ja: |-
+    {@link FileChannel#open(Path, OpenOption...)}に渡すオプション
+  en: |-
+    the options passed to {@link FileChannel#open(Path, OpenOption...)}
+- ja: |-
+    開いたチャネル
+  en: |-
+    the opened channel
+- ja: |-
+    ファイルを開けなかった場合
+  en: |-
+    if the file cannot be opened
+- ja: |-
+    ファイルをRandomAccessFileとして開く。そのファイルについて預かっているもののうち、同じモードで
+    開いたものがあれば、新たに開かずにそれを先頭の位置に戻して返す。預けるときは{@link
+    RandomAccessFile#getChannel()}のチャネルを渡すこと。
+  en: |-
+    Opens a file as a RandomAccessFile. If one of the objects kept for that file was opened in the same
+    mode, it is rewound to the beginning and returned instead of opening a new one. When handing it over
+    to be kept, pass the channel of {@link RandomAccessFile#getChannel()}.
+- ja: |-
+    {@link RandomAccessFile}のモード("r"や"rw")
+  en: |-
+    the mode of {@link RandomAccessFile} ("r", "rw", etc.)
+- ja: |-
+    開いたファイル
+  en: |-
+    the opened file
+- ja: |-
+    預かっているチャネルから、指定したモードで開いたものを取り出す。なければnull。
+  en: |-
+    Takes out a kept channel that was opened in the specified mode, or null if there is none.
+- ja: |-
+    ロックを取得していないチャネル(FILE STATUS 61で拒否されたOPENのチャネルなど)を閉じる。<br>
+    このJVMがそのファイルのロックを保持している間は、閉じるとOSのロックが失われるため、 ロックの解放まで閉じずに預かる。
+  en: |-
+    Closes a channel that holds no lock (such as the channel of an OPEN rejected with FILE STATUS
+    61).<br>
+    While this JVM holds the lock on that file, closing the channel would lose the OS lock, so it is kept
+    without being closed until the lock is released.
+- ja: |-
+    チャネルが指すファイルのパス
+  en: |-
+    the path of the file the channel refers to
+- ja: |-
+    閉じるチャネル。nullの場合は何もしない
+  en: |-
+    the channel to close; does nothing if null
+- ja: |-
+    指定したファイルについて預かっているチャネルの数を返す(テスト用)。
+  en: |-
+    Returns the number of channels kept for the specified file (for testing).
+- ja: |-
+    ファイルのパス
+  en: |-
+    the path of the file
+- ja: |-
+    預かっているチャネルの数。ロックされていない場合は0
+  en: |-
+    the number of kept channels, or 0 if the file is not locked
+- ja: |-
+    エントリのOSロックのモードを変更する(昇格・降格)。<br>
+    ブリッジ範囲を目的のモードでロックしてから主範囲を取り直すため、変更の間も 他のプロセスが割り込む隙間はない。
+  en: |-
+    Changes the mode of the OS lock of an entry (upgrade or downgrade).<br>
+    Since the bridge range is locked in the target mode before the main range is reacquired, there is no
+    gap for other processes to cut in during the change.
+- ja: |-
+    対象のエントリ
+  en: |-
+    the target entry
+- ja: |-
+    変更後のモード。共有ならtrue
+  en: |-
+    the new mode; true for shared
+- ja: |-
+    変更できた場合はtrue。他のプロセスと競合して変更できない場合はfalse(元のロックは維持される)
+  en: |-
+    true if the mode was changed, or false if it cannot be changed because of a conflict with another
+        process (the original lock is retained)
+- ja: |-
+    ブリッジ範囲を先にロックしてから主範囲をロックする。
+  en: |-
+    Locks the bridge range first, and then locks the main range.
+- ja: |-
+    台帳が所有するチャネル
+  en: |-
+    the channel owned by the registry
+- ja: |-
+    共有ロックならtrue
+  en: |-
+    true for a shared lock
+- ja: |-
+    主範囲のロック。競合して取得できない場合はnull
+  en: |-
+    the lock on the main range, or null if it cannot be acquired because of a conflict
+- ja: |-
+    指定した範囲のロックを試みる。
+  en: |-
+    Tries to lock the specified range.
+- ja: |-
+    対象のチャネル
+  en: |-
+    the target channel
+- ja: |-
+    ロックする範囲の開始位置
+  en: |-
+    the start position of the range to lock
+- ja: |-
+    取得したロック。競合して取得できない場合はnull
+  en: |-
+    the acquired lock, or null if it cannot be acquired because of a conflict
+- ja: |-
+    読み取り専用のチャネルに排他ロックを取得しようとした場合
+  en: |-
+    if an attempt is made to acquire an exclusive lock on a read-only channel
+- ja: |-
+    ロック保持用のチャネルを開く。共有ロックには読み取り、排他ロックには書き込みの許可が要るため、
+    読み書き両用で開き、許可がなければ読み取り専用、書き込み専用の順に代替する。
+  en: |-
+    Opens a channel for holding locks. Since a shared lock requires read permission and an exclusive
+    lock requires write permission, the channel is opened for both reading and writing; if that is not
+    permitted, it falls back to read-only, then write-only.
+- ja: |-
+    対象ファイルのパス
+  en: |-
+    the path of the target file
+- ja: |-
+    どのモードでも開けなかった場合
+  en: |-
+    if the file cannot be opened in any mode
+- ja: |-
+    指定したファイルがこのJVM内でロックされているかどうかを返す(テスト用)。
+  en: |-
+    Returns whether the specified file is locked within this JVM (for testing).
+- ja: |-
+    ロックされていればtrue
+  en: |-
+    true if the file is locked

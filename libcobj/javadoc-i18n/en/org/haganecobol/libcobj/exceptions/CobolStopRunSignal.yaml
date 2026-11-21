@@ -1,0 +1,28 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    CALLされたプログラム内でSTOP RUNが実行されたとき、呼び出し元のCOBOLプログラムへ巻き戻すための非検査例外。<br>
+    {@link org.haganecobol.libcobj.call.CobolRunnable#run}は検査例外を宣言していないため、
+    実行単位のルートに到達するまでの巻き戻しにはこの非検査例外を使用する。 ルートのプログラムが
+    {@link CobolStopRunException#handleAtFrame(int)}で受け取り、実行単位の終了処理を行って正常復帰する。
+  en: |-
+    Unchecked exception used to unwind to the calling COBOL program when STOP RUN is executed in a
+    CALLed program.<br>
+    Since {@link org.haganecobol.libcobj.call.CobolRunnable#run} declares no checked exceptions, this
+    unchecked exception is used to unwind until the root of the run unit is reached. The root program
+    receives it in {@link CobolStopRunException#handleAtFrame(int)}, performs the termination processing
+    of the run unit, and returns normally.
+- ja: |-
+    STOP RUNの返り値
+  en: |-
+    The STOP RUN return value.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    STOP RUNの返り値を取得する。
+  en: |-
+    Returns the STOP RUN return value.

@@ -1,0 +1,16 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    int型のCALL文の結果を保持する{@link CobolCallResult}のサブクラス
+  en: |-
+    Subclass of {@link CobolCallResult} that holds a CALL statement result of type int.
+- ja: |-
+    指定されたint値を保持するCobolResultIntを生成する。
+  en: |-
+    Creates a CobolResultInt holding the given int value.
+- ja: |-
+    保持するint値
+  en: |-
+    the int value to hold

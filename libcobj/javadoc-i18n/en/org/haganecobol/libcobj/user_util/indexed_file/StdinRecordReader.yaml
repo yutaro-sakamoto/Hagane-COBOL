@@ -1,0 +1,73 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    標準入力から1レコードずつ読み込む{@link RecordReader}の基底クラス。<br>
+    具体的な読み込みロジックは入力データ形式ごとに内部クラス
+    ({@link StdinLineSeqReader} / {@link StdinSeqReader})で実装され、
+    {@link #getInstance(UserDataFormat, int)}から対応するインスタンスが取得される。<br>
+    このクラス自体の{@link #read(CobolDataStorage)}は呼び出されることを想定せず、{@code null}を返す。
+  en: |-
+    Base class of {@link RecordReader}s that read records one at a time from standard input.<br>
+    The actual reading logic is implemented in inner classes for each input data format
+    ({@link StdinLineSeqReader} / {@link StdinSeqReader}),
+    and the corresponding instance is obtained from {@link #getInstance(UserDataFormat, int)}.<br>
+    {@link #read(CobolDataStorage)} of this class itself is not expected to be called, and returns
+    {@code null}.
+- ja: |-
+    1レコードのバイト数
+  en: |-
+    The number of bytes in one record.
+- ja: |-
+    標準入力から読み込みを行うScanner
+  en: |-
+    Scanner that reads from standard input.
+- ja: |-
+    新しい{@code StdinRecordReader}インスタンスを生成する。
+  en: |-
+    Creates a new {@code StdinRecordReader} instance.
+- ja: |-
+    標準入力からLINE SEQUENTIAL形式で1レコードずつ読み込む内部クラス。<br>
+    1行を1レコードとして扱い、行のバイト数が{@code recordSize}と一致することを期待する。
+  en: |-
+    Inner class that reads records one at a time from standard input in LINE SEQUENTIAL format.<br>
+    Each line is treated as one record, and the number of bytes of the line is expected to match
+    {@code recordSize}.
+- ja: |-
+    新しい{@code StdinLineSeqReader}インスタンスを生成する。
+  en: |-
+    Creates a new {@code StdinLineSeqReader} instance.
+- ja: |-
+    標準入力からSEQUENTIAL形式で1レコードずつ読み込む内部クラス。<br>
+    実装上は{@link Scanner#next()}で標準入力から空白区切りの1トークンを{@link String}として取得し、
+    そのバイト列を{@code recordSize}バイトずつ区切って1レコードとして扱う。このため、入力全体が
+    空白文字を含まない1つのトークンであり、かつそのバイト長が{@code recordSize}の倍数であることを想定する。
+    1トークン分のバイト長が{@code recordSize}の倍数でない場合は
+    {@link LoadResult#LoadResultDataSizeMismatch}を返す。
+  en: |-
+    Inner class that reads records one at a time from standard input in SEQUENTIAL format.<br>
+    In its implementation, {@link Scanner#next()} obtains one whitespace-delimited token from standard
+    input as a {@link String}, and its bytes are split into chunks of {@code recordSize} bytes, each
+    treated as one record. Therefore, the whole input is assumed to be a single token containing no
+    whitespace characters, and its byte length is assumed to be a multiple of {@code recordSize}.
+    If the byte length of a token is not a multiple of {@code recordSize},
+    {@link LoadResult#LoadResultDataSizeMismatch} is returned.
+- ja: |-
+    新しい{@code StdinSeqReader}インスタンスを生成する。
+  en: |-
+    Creates a new {@code StdinSeqReader} instance.
+- ja: |-
+    指定された入力データ形式に対応する標準入力用の{@link RecordReader}実装を返す。
+  en: |-
+    Returns the {@link RecordReader} implementation for standard input corresponding to the specified
+    input data format.
+- ja: |-
+    入力データの形式
+  en: |-
+    the format of the input data
+- ja: |-
+    入力データ形式に対応する{@code RecordReader}の実装。形式が未対応の場合は{@code null}
+  en: |-
+    the implementation of {@code RecordReader} corresponding to the input data format, or {@code null}
+        if the format is not supported

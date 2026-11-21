@@ -1,0 +1,34 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOLプログラムの実行単位が実装すべきインターフェース
+  en: |-
+    Interface that a COBOL program run unit must implement.
+- ja: |-
+    COBOLプログラムを実行する
+  en: |-
+    Runs the COBOL program.
+- ja: |-
+    プログラムの入力データの可変長引数。CALL等の引数のデータ部分
+  en: |-
+    variable-length arguments for the input data of the program; the data part of the CALL arguments, etc.
+- ja: |-
+    プログラムの終了コード
+  en: |-
+    the exit code of the program
+- ja: |-
+    CANCELのためのメソッド
+  en: |-
+    Method for CANCEL.
+- ja: |-
+    プログラムがCANCEL可能でない状態かどうかを返す。 {@link CobolResolve#cancel(String)}
+    から呼び出され、falseの場合にCANCEL処理が実行される。
+  en: |-
+    Returns whether the program is in a state where it cannot be canceled. Called from
+    {@link CobolResolve#cancel(String)}; the CANCEL processing is performed if this returns false.
+- ja: |-
+    プログラムが実行中などでCANCELできない場合はtrue、CANCEL可能な場合はfalse
+  en: |-
+    true if the program cannot be canceled (e.g. because it is running), false if it can be canceled

@@ -1,0 +1,515 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    INDEXEDファイル（{@code ORGANIZATION IS INDEXED}）向けの{@link CobolFile}の具象実装。
+
+    <p>各INDEXEDファイルは1つのSQLiteデータベースをバックエンドとする（1ファイル＝1データベースであり、xerialの{@code
+    sqlite-jdbc}ドライバ経由でアクセスする）。主キーは{@code table0}テーブルに、各副キーは{@code
+    tableI}に格納される。ファイル全体のロックは{@code file_lock}テーブルで、レコードロックは{@code table0}の{@code
+    locked_by}列で管理する。ファイルのメタデータ（レコードサイズとキーのレイアウト）は{@code metadata_*}テーブルに保持する。
+
+    <p>このクラスは{@link CobolFile}の{@code *_}フックメソッド（{@link #open_}、{@link #read_}、{@link
+    #write_}、{@link #rewrite_}、{@link #delete_}、{@link
+    #start_}など）をオーバーライドし、各COBOLのI/O動詞を対応するSQL操作へ変換する。順次ナビゲーション（{@code READ NEXT}／{@code
+    READ PREVIOUS}）は{@link IndexedCursor}でエミュレートする。
+
+    <p>すべてのSQLは明示的なトランザクション内で実行され（{@code setAutoCommit(false)}、{@code
+    TRANSACTION_SERIALIZABLE}）、各文は成功時にコミット、失敗時にロールバックする。ただし{@code OPEN
+    OUTPUT}されたファイルは例外で、ファイル全体が排他ロックされ他プロセスから読まれることがないため、{@code
+    WRITE}ごとのコミットを行わず、環境変数{@code COB_FILE_IDX_COMMIT_INTERVAL}で指定したレコード数の{@code
+    WRITE}が成功するごとと、{@code CLOSE}時（{@link #close_}）にコミットする（{@code
+    INF}指定時はCLOSE時のみ）。この間の{@code WRITE}失敗はセーブポイントにより当該{@code WRITE}の変更だけを取り消す。
+  en: |-
+    Concrete implementation of {@link CobolFile} for INDEXED files ({@code ORGANIZATION IS INDEXED}).
+
+    <p>Each INDEXED file is backed by one SQLite database (one file = one database, accessed through the
+    xerial {@code sqlite-jdbc} driver). The primary key is stored in the {@code table0} table, and each
+    alternate key in {@code tableI}. Whole-file locks are managed with the {@code file_lock} table, and
+    record locks with the {@code locked_by} column of {@code table0}. The file's metadata (record size and
+    key layout) is kept in the {@code metadata_*} tables.
+
+    <p>This class overrides the {@code *_} hook methods of {@link CobolFile} ({@link #open_},
+    {@link #read_}, {@link #write_}, {@link #rewrite_}, {@link #delete_}, {@link #start_}, and so on), and
+    translates each COBOL I/O verb into the corresponding SQL operations. Sequential navigation
+    ({@code READ NEXT} / {@code READ PREVIOUS}) is emulated with {@link IndexedCursor}.
+
+    <p>All SQL is executed within explicit transactions ({@code setAutoCommit(false)},
+    {@code TRANSACTION_SERIALIZABLE}); each statement is committed on success and rolled back on failure.
+    The exception is a file opened with {@code OPEN OUTPUT}: since the whole file is exclusively locked
+    and never read by other processes, it does not commit on every {@code WRITE}, but instead commits
+    each time the number of successful {@code WRITE}s specified by the environment variable
+    {@code COB_FILE_IDX_COMMIT_INTERVAL} is reached, and at {@code CLOSE} ({@link #close_}) (only at CLOSE
+    when {@code INF} is specified). A {@code WRITE} failure during this period undoes only the changes of
+    that {@code WRITE}, using a savepoint.
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが等しい（{@code =}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is equal ({@code =}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが小さい（{@code <}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is less ({@code <}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが小さいか等しい（{@code <=}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is less or equal ({@code <=}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが大きい（{@code >}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is greater ({@code >}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが大きいか等しい（{@code >=}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is greater or equal ({@code >=}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが等しくない（{@code <>}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is not equal ({@code <>}).
+- ja: |-
+    このJVM(プロセス)を識別するUUID。クラス初期化時に1回だけ生成する。
+  en: |-
+    UUID identifying this JVM (process). Generated only once at class initialization.
+- ja: |-
+    このJVM(プロセス)のプロセスID。
+  en: |-
+    Process ID of this JVM (process).
+- ja: |-
+    実行単位(スレッド)を識別するID。<br>
+    ファイルロックとレコードロックの所有者(locked_by列)はこのIDで区別する。
+    同一JVM内の別スレッドは別の実行単位であり、別プロセスと同じ規則でロックが競合する。
+  en: |-
+    ID identifying the run unit (thread).<br>
+    Owners of file locks and record locks (the locked_by column) are distinguished by this ID. Different
+    threads in the same JVM are different run units, and their locks conflict under the same rules as
+    separate processes.
+- ja: |-
+    現在のスレッドに紐づくロック所有者IDを破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the lock owner ID bound to the current thread. Called when the run unit terminates.
+- ja: |-
+    INDEXEDファイルのインスタンスを構築する。通常このコンストラクタは、生成されたJavaコードから{@link
+    CobolFileFactory#makeCobolFileInstance}を介して間接的に呼び出される。引数はCOBOLの{@code SELECT}／{@code
+    FD}宣言の属性に対応する。
+  en: |-
+    Constructs an instance of an INDEXED file. This constructor is normally invoked indirectly from
+    generated Java code through {@link CobolFileFactory#makeCobolFileInstance}. The arguments correspond
+    to the attributes of the COBOL {@code SELECT} / {@code FD} declarations.
+- ja: |-
+    {@code SELECT}句で指定された名前
+  en: |-
+    the name specified in the {@code SELECT} clause
+- ja: |-
+    COBOLの{@code FILE STATUS}用ストレージ（2バイトのバッファ）
+  en: |-
+    the storage for the COBOL {@code FILE STATUS} (a 2-byte buffer)
+- ja: |-
+    割り当て名（ファイルパス）を保持するフィールド
+  en: |-
+    the field holding the assignment name (file path)
+- ja: |-
+    レコード領域を表すフィールド
+  en: |-
+    the field representing the record area
+- ja: |-
+    現在のレコード長を保持するフィールド
+  en: |-
+    the field holding the current record length
+- ja: |-
+    最小レコード長
+  en: |-
+    the minimum record length
+- ja: |-
+    最大レコード長
+  en: |-
+    the maximum record length
+- ja: |-
+    キーの数（主キー1つと副キーの合計）
+  en: |-
+    the number of keys (one primary key plus the alternate keys)
+- ja: |-
+    キー記述子。インデックス{@code 0}が主キー
+  en: |-
+    the key descriptors; index {@code 0} is the primary key
+- ja: |-
+    ファイル組織（このクラスでは{@code COB_ORG_INDEXED}）
+  en: |-
+    the file organization ({@code COB_ORG_INDEXED} for this class)
+- ja: |-
+    アクセスモード（順次、動的、またはランダム）
+  en: |-
+    the access mode (sequential, dynamic, or random)
+- ja: |-
+    ロックモードフラグ（{@code COB_LOCK_*}）
+  en: |-
+    the lock mode flags ({@code COB_LOCK_*})
+- ja: |-
+    初期オープンモード
+  en: |-
+    the initial open mode
+- ja: |-
+    ファイルが{@code OPTIONAL}と宣言されているか
+  en: |-
+    whether the file is declared {@code OPTIONAL}
+- ja: |-
+    直近のオープンモード
+  en: |-
+    the most recent open mode
+- ja: |-
+    特殊ファイルフラグ
+  en: |-
+    the special file flags
+- ja: |-
+    ファイルが現在存在しないと判明しているか
+  en: |-
+    whether the file is known not to exist currently
+- ja: |-
+    カーソルがファイル終端に位置しているか
+  en: |-
+    whether the cursor is positioned at the end of the file
+- ja: |-
+    カーソルがファイル先頭に位置しているか
+  en: |-
+    whether the cursor is positioned at the beginning of the file
+- ja: |-
+    次の読み込みが最初の読み込みか
+  en: |-
+    whether the next read is the first read
+- ja: |-
+    読み込みが実行済みか
+  en: |-
+    whether a read has been performed
+- ja: |-
+    select機能フラグのOR（{@code FILE STATUS}、{@code LINAGE}、{@code
+        EXTERNAL}）
+  en: |-
+    the OR of select feature flags ({@code FILE STATUS}, {@code LINAGE},
+        {@code EXTERNAL})
+- ja: |-
+    末尾の改行が必要か
+  en: |-
+    whether a trailing newline is needed
+- ja: |-
+    改ページ（先頭出し）が必要か
+  en: |-
+    whether a form feed (advancing to the top of page) is needed
+- ja: |-
+    ディスク上のフォーマットバージョン（{@code COB_FILE_VERSION}）
+  en: |-
+    the on-disk format version ({@code COB_FILE_VERSION})
+- ja: |-
+    ロックの所有者を識別するIDを取得する。プロセスのUUIDと実行単位(スレッド)のUUIDを連結したもの。
+  en: |-
+    Returns the ID identifying the owner of a lock. It is the concatenation of the process UUID and the
+    run unit (thread) UUID.
+- ja: |-
+    現在の実行単位のロック所有者ID
+  en: |-
+    the lock owner ID of the current run unit
+- ja: |-
+    指定したインデックスのキーに対応するSQLiteテーブル名を返す。
+  en: |-
+    Returns the SQLite table name corresponding to the key at the specified index.
+- ja: |-
+    キーのインデックス（主キーは{@code 0}、副キーは{@code 1}以上）
+  en: |-
+    the index of the key ({@code 0} for the primary key, {@code 1} or greater for alternate keys)
+- ja: |-
+    テーブル名（例：{@code "table0"}、{@code "table1"}、…）
+  en: |-
+    the table name (e.g. {@code "table0"}, {@code "table1"}, ...)
+- ja: |-
+    指定したインデックスのキーに対応するカーソル名を返す。
+  en: |-
+    Returns the cursor name corresponding to the key at the specified index.
+- ja: |-
+    キーのインデックス
+  en: |-
+    the index of the key
+- ja: |-
+    カーソル名（例：{@code "cursor0"}、{@code "cursor1"}、…。現在は未使用だが互換性のため残されている）
+  en: |-
+    the cursor name (e.g. {@code "cursor0"}, {@code "cursor1"}, ...; currently unused but kept for
+        compatibility)
+- ja: |-
+    各更新文（{@code WRITE}／{@code REWRITE}／{@code DELETE}）がトランザクションを即座にコミットするかどうかを制御する。
+
+    <p>デフォルトは{@code true}。{@code cobj-idx
+    load}のような一括ローダは、速度のためにレコードごとのコミットを抑制するため{@code false}に設定し、最後に{@link
+    #commitJdbcTransaction()}で一度だけコミットする。
+
+    <p>なお{@code OPEN OUTPUT}されたファイルはこのフラグと無関係に常にコミットを遅延し、{@code
+    CLOSE}時に一括コミットする（{@link #writeDeferred}参照）。そのためOUTPUTモードではこのフラグは参照されない。
+  en: |-
+    Controls whether each update statement ({@code WRITE} / {@code REWRITE} / {@code DELETE}) commits
+    the transaction immediately.
+
+    <p>The default is {@code true}. Bulk loaders such as {@code cobj-idx load} set it to {@code false} to
+    suppress per-record commits for speed, and commit only once at the end with
+    {@link #commitJdbcTransaction()}.
+
+    <p>Note that a file opened with {@code OPEN OUTPUT} always defers commits regardless of this flag and
+    commits them all at once at {@code CLOSE} (see {@link #writeDeferred}). Therefore this flag is not
+    consulted in OUTPUT mode.
+- ja: |-
+    更新のたびにコミットする場合は{@code true}、コミットを遅延させる場合は{@code false}
+  en: |-
+    {@code true} to commit on every update, or {@code false} to defer commits
+- ja: |-
+    指定したキーと比較条件に一致する最初のレコードにカーソルを位置づける。
+
+    <p>キーフィールドのアドレスを宣言済みのキーと照合してどのキー（したがってどのSQLiteテーブル）を使うかを判定し、そのキー向けに新しい{@link
+    IndexedCursor}を生成して、1件のレコードをフェッチする。成功時には現在のキー／レコードバッファ（{@code p.key}／{@code
+    p.data}）が更新される。これは{@link #start_(int,
+    AbstractCobolField)}とランダムな{@link #read_(AbstractCobolField, int)}の共通実装である。
+  en: |-
+    Positions the cursor at the first record matching the specified key and comparison condition.
+
+    <p>It determines which key (and therefore which SQLite table) to use by matching the address of the
+    key field against the declared keys, creates a new {@link IndexedCursor} for that key, and fetches
+    one record. On success, the current key/record buffers ({@code p.key} / {@code p.data}) are updated.
+    This is the common implementation of {@link #start_(int, AbstractCobolField)} and a random
+    {@link #read_(AbstractCobolField, int)}.
+- ja: |-
+    比較条件（{@link #COB_EQ}、{@link #COB_GT}、{@link #COB_GE}、{@link
+        #COB_LT}、{@link #COB_LE}, {@link #COB_NE}のいずれか。
+  en: |-
+    the comparison condition (one of {@link #COB_EQ}, {@link #COB_GT}, {@link #COB_GE},
+        {@link #COB_LT}, {@link #COB_LE}, {@link #COB_NE})
+- ja: |-
+    検索するキー値を保持するフィールド
+  en: |-
+    the field holding the key value to search for
+- ja: |-
+    現在未使用
+  en: |-
+    currently unused
+- ja: |-
+    レコードロックをテストするか（現状このメソッドでは未使用）
+  en: |-
+    whether to test record locks (currently unused in this method)
+- ja: |-
+    condが {@link #COB_NE}の場合 {@code COB_STATUS_23_KEY_NOT_EXISTS}。
+        そうでない場合、レコードが見つかった場合は{@code COB_STATUS_00_SUCCESS}、一致するものがなかった場合は{@code COB_STATUS_23_KEY_NOT_EXISTS}、カーソル生成に失敗した場合は{@code
+        COB_STATUS_30_PERMANENT_ERROR}
+  en: |-
+    {@code COB_STATUS_23_KEY_NOT_EXISTS} if cond is {@link #COB_NE}. Otherwise,
+        {@code COB_STATUS_00_SUCCESS} if a record is found, {@code COB_STATUS_23_KEY_NOT_EXISTS} if no
+        record matches, or {@code COB_STATUS_30_PERMANENT_ERROR} if creating the cursor fails
+- ja: |-
+    主キーのテーブルに指定したキーのレコードが存在するかを調べる。
+
+    <p>{@link #keyExistsInTable}とは異なり、SQLの実行に失敗した場合はfalseを返さずに例外を投げる。
+    DBのエラーを「キーが存在しない」と取り違えないようにするためである。
+  en: |-
+    Checks whether a record with the specified key exists in the primary key table.
+
+    <p>Unlike {@link #keyExistsInTable}, it throws an exception instead of returning false when executing
+    the SQL fails. This is to avoid mistaking a DB error for "the key does not exist".
+- ja: |-
+    主キーの値
+  en: |-
+    the primary key value
+- ja: |-
+    レコードが存在すればtrue
+  en: |-
+    true if the record exists
+- ja: |-
+    SQLの実行に失敗した場合
+  en: |-
+    if executing the SQL fails
+- ja: |-
+    REWRITE/DELETEで{@link #lockRecord}がfalseを返したときのファイル状態を決める。
+
+    <p>レコードが存在しないことを実際に確認できた場合だけ{@code COB_STATUS_23_KEY_NOT_EXISTS}を返す。
+    レコードが存在するのにロックできなかった場合は想定外の状態なので{@code COB_STATUS_30_PERMANENT_ERROR}を返す。
+  en: |-
+    Determines the file status when {@link #lockRecord} returns false in REWRITE/DELETE.
+
+    <p>Returns {@code COB_STATUS_23_KEY_NOT_EXISTS} only if it is actually confirmed that the record does
+    not exist. If the record exists but could not be locked, this is an unexpected state, so
+    {@code COB_STATUS_30_PERMANENT_ERROR} is returned.
+- ja: |-
+    ロックしようとした主キーの値
+  en: |-
+    the primary key value that was to be locked
+- ja: |-
+    ファイル状態
+  en: |-
+    the file status
+- ja: |-
+    存在チェックのSQLの実行に失敗した場合
+  en: |-
+    if executing the SQL for the existence check fails
+- ja: |-
+    SQLの実行時例外をCOBOLのファイルステータスへ変換する。
+
+    <p>参照実装に合わせた対応付けとする。ディスクフルはGnuCOBOLが{@code ENOSPC}に対して返す
+    {@code 34}(境界違反)、一意制約違反はopensource COBOL
+    1.xが書き込み失敗に対して返す{@code 22}(キーが既に存在)、ロック競合は{@code
+    51}(レコードロック)、その他のI/Oエラーは{@code 30}(永続エラー)とする。
+  en: |-
+    Converts an SQL runtime exception into a COBOL file status.
+
+    <p>The mapping follows the reference implementations: a full disk maps to {@code 34} (boundary
+    violation), which GnuCOBOL returns for {@code ENOSPC}; a unique constraint violation maps to
+    {@code 22} (key already exists), which opensource COBOL 1.x returns for a write failure; a lock
+    conflict maps to {@code 51} (record locked); and any other I/O error maps to {@code 30} (permanent
+    error).
+- ja: |-
+    発生した例外
+  en: |-
+    the exception that occurred
+- ja: |-
+    対応するファイルステータス
+  en: |-
+    the corresponding file status
+- ja: |-
+    {@code index}番目のキーのテーブルへレコードを挿入するSQL文を返す。
+  en: |-
+    Returns the SQL statement that inserts a record into the table of the {@code index}-th key.
+- ja: |-
+    OUTPUTモード（遅延コミット中）のWRITE。トランザクション全体をロールバックすると
+    バッファ済みの成功したWRITEまで巻き戻ってしまうため、副キーを持つファイルでは
+    セーブポイントでこのWRITEの変更だけを取り消せるようにする（副キーがなければ
+    WRITEの変更は単一のINSERTだけで部分的な変更が残る失敗は存在しないため、
+    セーブポイント自体を省略する）。コミットは環境変数{@code
+    COB_FILE_IDX_COMMIT_INTERVAL}で指定したレコード数の成功したWRITEがたまるごとに行い（{@code
+    INF}指定時は行わず）、残りはCLOSE時にまとめてコミットする。
+  en: |-
+    WRITE in OUTPUT mode (during deferred commit). Since rolling back the whole transaction would also
+    undo buffered successful WRITEs, for files with alternate keys a savepoint is used so that only the
+    changes of this WRITE can be undone (if there are no alternate keys, a WRITE consists of a single
+    INSERT and no failure can leave partial changes, so the savepoint itself is omitted). A commit is
+    performed each time the number of successful WRITEs specified by the environment variable
+    {@code COB_FILE_IDX_COMMIT_INTERVAL} has accumulated (never when {@code INF} is specified), and the
+    rest are committed together at CLOSE.
+- ja: |-
+    遅延コミット中のWRITEがSQLエラーで失敗したことを記録する。
+
+    <p>SQLiteはディスクフル({@code SQLITE_FULL})やI/Oエラーなどの場合、失敗した文だけでなく
+    トランザクション全体を自動的にロールバックすることがある。その場合、直前のコミット以降に
+    バッファされていたレコードはすべて失われるが、プログラムから見えるのは当該WRITEの
+    エラーだけである。ここで記録しておき、{@link #close_}が成功を返さないようにする。
+  en: |-
+    Records that a WRITE during deferred commit failed with an SQL error.
+
+    <p>In cases such as a full disk ({@code SQLITE_FULL}) or an I/O error, SQLite may automatically roll
+    back the whole transaction, not just the failed statement. In that case all records buffered since
+    the last commit are lost, but the program only sees the error of that WRITE. The failure is recorded
+    here so that {@link #close_} does not return success.
+- ja: |-
+    {@code indexed_write_internal}の結果
+  en: |-
+    the result of {@code indexed_write_internal}
+- ja: |-
+    引数をそのまま返す
+  en: |-
+    the argument as is
+- ja: |-
+    遅延コミット中のWRITEの結果を受け取り、成功したWRITEが{@code
+    COB_FILE_IDX_COMMIT_INTERVAL}で指定した件数たまっていればコミットする。
+
+    <p>コミットに失敗した場合は、そのコミットを引き起こしたWRITE文でエラーを報告する。
+    順編成ファイルの書き込みバッファも、バッファのフラッシュに失敗するとそれを引き起こした
+    WRITE文が{@code 30}を返す({@link CobolSequentialFile})ので、それに倣う。
+    トランザクション自体は無傷でレコードは書き込まれたままなので、カウンタを維持して
+    次に成功したWRITEかCLOSEでコミットを再試行する。
+  en: |-
+    Receives the result of a WRITE during deferred commit, and commits if the number of successful
+    WRITEs specified by {@code COB_FILE_IDX_COMMIT_INTERVAL} has accumulated.
+
+    <p>If the commit fails, the error is reported on the WRITE statement that triggered the commit. This
+    follows the write buffer of sequential files, where the WRITE statement that triggered a failed
+    buffer flush returns {@code 30} ({@link CobolSequentialFile}). Since the transaction itself is intact
+    and the records remain written, the counter is kept and the commit is retried at the next successful
+    WRITE or at CLOSE.
+- ja: |-
+    直前の{@code indexed_write_internal}の結果
+  en: |-
+    the result of the preceding {@code indexed_write_internal}
+- ja: |-
+    WRITEのファイルステータス。途中コミットに失敗した場合はその原因に応じた
+        エラーステータス
+  en: |-
+    the file status of the WRITE; if an intermediate commit fails, an error status depending on its
+        cause
+- ja: |-
+    COBOLの{@code COMMIT}文の処理。接続が有効な限り、遅延中のWRITEの有無や
+    オープンモードによらず現在のトランザクションを無条件にコミットし、
+    その後{@link #unlock_}でこのプロセスが保持するレコードロックを解放する。
+  en: |-
+    Processes the COBOL {@code COMMIT} statement. As long as the connection is valid, it
+    unconditionally commits the current transaction regardless of whether there are deferred WRITEs or of
+    the open mode, and then releases the record locks held by this process with {@link #unlock_}.
+- ja: |-
+    COBOLの{@code ROLLBACK}文の処理。
+
+    <p>OUTPUTモード(遅延コミット中)では、まだコミットしていないWRITEを実際に取り消す。
+    このモードではファイル全体を自プロセスが排他しており、他プロセスが観測できる状態は
+    オープン時のコミット時点のままなので、取り消しても整合性は保たれる。取り消し後は
+    順序チェックの基準となる直前キーも消し、同じキーから書き直せるようにする。
+
+    <p>それ以外のモードでは、参照実装(opensource COBOL 1.xとGnuCOBOL 3.xのcob_rollback。
+    どちらもロック解放しか行わない)と同じくレコードロックの解放だけを行う。これらのモードでは
+    各WRITE/REWRITE/DELETEがその場でコミットされており、取り消せる変更が存在しない。
+  en: |-
+    Processes the COBOL {@code ROLLBACK} statement.
+
+    <p>In OUTPUT mode (during deferred commit), it actually undoes the WRITEs that have not yet been
+    committed. In this mode the whole file is held exclusively by this process, and the state observable
+    by other processes remains as of the commit at open time, so undoing them preserves consistency.
+    After undoing, the previous key used as the basis for the sequence check is also cleared, so that
+    writing can resume from the same key.
+
+    <p>In other modes, like the reference implementations (cob_rollback in opensource COBOL 1.x and
+    GnuCOBOL 3.x, both of which only release locks), it only releases record locks. In these modes each
+    WRITE/REWRITE/DELETE is committed immediately, so there are no changes that can be undone.
+- ja: |-
+    このプロセスが保持しているレコードロックをすべて解放する。COBOLの{@code UNLOCK}文、
+    および{@code COMMIT}/{@code ROLLBACK}文（{@link CobolFile#commit}/{@link
+    CobolFile#rollback}）から呼ばれる。
+
+    <p>参照実装(opensource COBOL 1.xのcob_file_unlock)と同様にレコードロックを解放する。
+    ただしC版と異なりファイルロック（{@code file_lock}テーブルの行）は解放しない。
+    この行はオープン中であることの登録を兼ねており、CLOSE前に消すと他プロセスの{@code OPEN
+    OUTPUT}がテーブルを作り直せてしまうためである。
+
+    <p>レコードロックを保持し得るのはI-Oモードだけなので、それ以外のモードでは何もしない
+    （遅延コミット中のOUTPUTモードでここでコミットすると、未確定のWRITEまで
+    確定させてしまう副作用もあるため、早期returnはその防止も兼ねる）。
+
+    <p>ロック解放を他プロセスから見えるようにするにはコミットが必要だが、これが
+    {@code ROLLBACK}文の意味論と衝突することはない。I-Oモードでは各WRITE/REWRITE/DELETEが
+    その場でコミットされており未確定のユーザデータが存在しないため、ここでのコミットは
+    ロック解放のUPDATEを確定させるだけである。
+  en: |-
+    Releases all record locks held by this process. Called from the COBOL {@code UNLOCK} statement and
+    from the {@code COMMIT}/{@code ROLLBACK} statements ({@link CobolFile#commit}/{@link
+    CobolFile#rollback}).
+
+    <p>Like the reference implementation (cob_file_unlock in opensource COBOL 1.x), it releases record
+    locks. Unlike the C version, however, it does not release the file lock (the row in the
+    {@code file_lock} table). This row also serves as the registration that the file is open, and if it
+    were deleted before CLOSE, an {@code OPEN OUTPUT} by another process could recreate the tables.
+
+    <p>Since only I-O mode can hold record locks, it does nothing in other modes (committing here in
+    OUTPUT mode during deferred commit would have the side effect of also committing pending WRITEs, so
+    the early return also prevents that).
+
+    <p>Making the lock release visible to other processes requires a commit, but this does not conflict
+    with the semantics of the {@code ROLLBACK} statement. In I-O mode each WRITE/REWRITE/DELETE is
+    committed immediately and there is no pending user data, so the commit here only finalizes the
+    UPDATE that releases the locks.
+- ja: |-
+    現在のJDBCトランザクションを明示的にコミットする。
+
+    <p>{@link #setCommitOnModification(boolean)}{@code
+    (false)}と組み合わせて使うことを想定している。文ごとのコミットを抑制した状態で一連の更新を行った後、このメソッドがそれらをまとめて1回のコミットでフラッシュする。
+  en: |-
+    Explicitly commits the current JDBC transaction.
+
+    <p>It is intended to be used together with {@link #setCommitOnModification(boolean)}{@code (false)}.
+    After a series of updates has been performed with per-statement commits suppressed, this method
+    flushes them all with a single commit.

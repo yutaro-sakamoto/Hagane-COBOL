@@ -1,0 +1,84 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    AbstractCobolFieldのサブクラスを生成するためのメソッドを定義するクラス
+  en: |-
+    Defines methods for creating subclasses of AbstractCobolField.
+- ja: |-
+    引数に応じて適切なAbstractCobolFieldクラスのサブクラスを生成する.
+    特にattrに設定された値に応じて適切なAbstractCobolFieldのサブクラスのインスタンスを生成する.
+  en: |-
+    Creates an appropriate subclass of AbstractCobolField according to the arguments.
+    In particular, creates an instance of the appropriate subclass of AbstractCobolField according to
+    the value set in attr.
+- ja: |-
+    データを保存するバイト領域の大きさ
+  en: |-
+    the size of the byte area that stores the data
+- ja: |-
+    データを保存する領域に書き込まれる初期データ
+  en: |-
+    the initial data written to the area that stores the data
+- ja: |-
+    変数の様々な情報を格納するインスタンス
+  en: |-
+    the instance holding various information about the variable
+- ja: |-
+    attrの値に応じてインスタンス化されたAbstractCobolField型のデータ
+  en: |-
+    the AbstractCobolField instantiated according to the value of attr
+- ja: |-
+    引数に応じて適切なAbstractCobolFieldクラスのサブクラスを生成する.
+    バイト配列をCobolDataStorageに変換した上で,attrに設定された値に応じて適切なAbstractCobolFieldのサブクラスのインスタンスを生成する.
+  en: |-
+    Creates an appropriate subclass of AbstractCobolField according to the arguments.
+    Converts the byte array into a CobolDataStorage, then creates an instance of the appropriate
+    subclass of AbstractCobolField according to the value set in attr.
+- ja: |-
+    データを保存する領域に書き込まれる初期データのバイト配列
+  en: |-
+    the byte array of the initial data written to the area that stores the data
+- ja: |-
+    引数に応じて適切なAbstractCobolFieldクラスのサブクラスを生成する.
+    バイト配列をCobolDataStorageに変換し,データを保存するバイト領域の大きさにはバイト配列の長さを用いる.
+  en: |-
+    Creates an appropriate subclass of AbstractCobolField according to the arguments.
+    Converts the byte array into a CobolDataStorage, and uses the length of the byte array as the size
+    of the byte area that stores the data.
+- ja: |-
+    データを保存する領域
+  en: |-
+    the area that stores the data
+- ja: |-
+    引数に応じて適切なAbstractCobolFieldクラスのサブクラスを生成する.
+    long型で渡されたsizeをint型に変換した上で,attrに設定された値に応じて適切なAbstractCobolFieldのサブクラスのインスタンスを生成する.
+  en: |-
+    Creates an appropriate subclass of AbstractCobolField according to the arguments.
+    Converts size, passed as a long, to an int, then creates an instance of the appropriate subclass
+    of AbstractCobolField according to the value set in attr.
+- ja: |-
+    AbstractCobolFieldのインスタンスを生成する
+  en: |-
+    Creates an instance of AbstractCobolField.
+- ja: |-
+    文字列データ
+  en: |-
+    the string data
+- ja: |-
+    strの値を保持するCobolAlphanumericFieldのインスタンス
+  en: |-
+    an instance of CobolAlphanumericField holding the value of str
+- ja: |-
+    CobolNumericFieldのインスタンスを生成する
+  en: |-
+    Creates an instance of CobolNumericField.
+- ja: |-
+    int型整数値
+  en: |-
+    the int value
+- ja: |-
+    nの値を保持するCobolNumericFieldのインスタンス
+  en: |-
+    an instance of CobolNumericField holding the value of n

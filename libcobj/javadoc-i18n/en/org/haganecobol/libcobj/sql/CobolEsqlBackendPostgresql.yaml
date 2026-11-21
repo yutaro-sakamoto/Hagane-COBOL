@@ -1,0 +1,74 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    PostgreSQL 向けの {@link CobolEsqlBackendInterface} 実装。{@link AbstractCobolEsqlBackend} の DB 依存フックを
+    PostgreSQL の流儀（明示 BEGIN によるトランザクション管理、サーバカーソル + {@code FETCH FORWARD}
+    による先読み、SQLSTATE をそのまま使うエラー変換）で実装する。
+
+    <p>{@link java.util.ServiceLoader} 経由で発見されるため public であり、
+    {@code META-INF/services/org.haganecobol.libcobj.sql.CobolEsqlBackendInterface} に
+    登録されている。
+  en: |-
+    {@link CobolEsqlBackendInterface} implementation for PostgreSQL. Implements the DB-specific hooks of
+    {@link AbstractCobolEsqlBackend} in the PostgreSQL way (transaction management with explicit BEGIN,
+    prefetching with a server-side cursor and {@code FETCH FORWARD}, and error mapping that uses SQLSTATE
+    as is).
+
+    <p>It is public because it is discovered via {@link java.util.ServiceLoader}, and it is registered in
+    {@code META-INF/services/org.haganecobol.libcobj.sql.CobolEsqlBackendInterface}.
+- ja: |-
+    カーソル名 → 先読みバッファ。サーバカーソルから {@code FETCH FORWARD} でまとめて取ってくる
+    のは PostgreSQL 側の都合なので、基底クラスが持つカーソルの状態とは別に本クラスで持つ。
+    JDBC 資源は含まないため、破棄はメモリ上の状態を捨てるだけでよい。
+  en: |-
+    Cursor name to prefetch buffer. Fetching rows in batches from a server-side cursor with
+    {@code FETCH FORWARD} is a PostgreSQL-specific concern, so this class holds it separately from the
+    cursor state held by the base class. Since it contains no JDBC resources, discarding it only
+    requires dropping the in-memory state.
+- ja: |-
+    1 カーソルぶんの先読み（バルクフェッチ）状態。OPEN のたびに空の状態へ置き換える。
+  en: |-
+    Prefetch (bulk fetch) state of one cursor. Replaced with an empty state at each OPEN.
+- ja: |-
+    先読みバッファ。各要素は 1 行ぶんの列値配列で、SQL NULL の列は null。
+  en: |-
+    Prefetch buffer. Each element is an array of column values for one row; SQL NULL columns are null.
+- ja: |-
+    {@link #fetchBuffer} 内で次に供給する行の位置。
+  en: |-
+    Position of the next row to supply in {@link #fetchBuffer}.
+- ja: |-
+    直近の先読みが要求件数より少ない行数で終わった（＝結果末尾に達した）かどうか。
+    WHERE CURRENT OF のカーソル位置補正に使う（Open COBOL ESQL 4J の overFetch 相当）。
+  en: |-
+    Whether the last prefetch ended with fewer rows than requested (that is, reached the end of the
+    result). Used to adjust the cursor position for WHERE CURRENT OF (equivalent to overFetch in
+    Open COBOL ESQL 4J).
+- ja: |-
+    まだ COBOL 側へ供給していない（バッファに残っている）先読み行数を返す。
+  en: |-
+    Returns the number of prefetched rows not yet supplied to the COBOL side (remaining in the buffer).
+- ja: |-
+    指定カーソルの先読み状態を返す（未登録なら空の状態を割り当てる）。
+  en: |-
+    Returns the prefetch state of the given cursor (allocating an empty state if not registered).
+- ja: |-
+    {@code COMMIT} を発行する。次のトランザクションを開始するかどうかは呼び出し側が決める。
+  en: |-
+    Issues {@code COMMIT}. Whether to start the next transaction is decided by the caller.
+- ja: |-
+    明示 {@code BEGIN} を発行して新しいトランザクションを開始する（PostgreSQL 固有の流儀）。
+  en: |-
+    Issues an explicit {@code BEGIN} to start a new transaction (the PostgreSQL-specific convention).
+- ja: |-
+    {@code FETCH FORWARD <OCESQL4J_FETCH_RECORDS> FROM name} を実行し、返った全行を
+    先読みバッファへ格納する。
+  en: |-
+    Executes {@code FETCH FORWARD <OCESQL4J_FETCH_RECORDS> FROM name} and stores all returned rows in
+    the prefetch buffer.
+- ja: |-
+    PostgreSQL の SQLSTATE → ECPG コード変換表。
+  en: |-
+    Conversion table from PostgreSQL SQLSTATE to ECPG code.

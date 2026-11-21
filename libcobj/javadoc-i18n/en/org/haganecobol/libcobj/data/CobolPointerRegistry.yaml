@@ -1,0 +1,95 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL USAGE POINTER のアドレス値と CobolDataStorage の対応を管理するレジストリ。
+
+    <p>ポインタ値は long の上位32ビットにバイト配列ID、下位32ビットにオフセット(インデックス)を
+    エンコードする。これにより SET PTR UP/DOWN BY n のポインタ演算が自然に動作する。
+  en: |-
+    Registry that manages the mapping between COBOL USAGE POINTER address values and CobolDataStorage.
+
+    <p>A pointer value encodes a byte array ID in the upper 32 bits of a long and an offset (index) in
+    the lower 32 bits. This makes pointer arithmetic with SET PTR UP/DOWN BY n work naturally.
+- ja: |-
+    実行単位(スレッド)ごとに保持するポインタの登録情報
+  en: |-
+    Pointer registration information held for each run unit (thread).
+- ja: |-
+    次に割り当てるバイト配列IDのカウンタ
+  en: |-
+    Counter for the next byte array ID to assign.
+- ja: |-
+    バイト配列ID → バイト配列の逆引きマップ (resolveで使用)
+  en: |-
+    Reverse lookup map from byte array ID to byte array (used by resolve).
+- ja: |-
+    バイト配列 → バイト配列IDの正引きマップ (registerで使用、IdentityHashMapで参照同一性を比較)
+  en: |-
+    Forward lookup map from byte array to byte array ID (used by register; an IdentityHashMap
+    compares by reference identity).
+- ja: |-
+    バイト配列 → (インデックス → CobolDataStorage) のキャッシュ。同じ配列・同じオフセットのインスタンスを再利用する
+  en: |-
+    Cache from byte array to (index to CobolDataStorage). Reuses instances for the same array and
+    the same offset.
+- ja: |-
+    現在のスレッドのポインタ登録情報。実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    Pointer registration information of the current thread. Since run units are independent per
+    thread, it is held per thread.
+- ja: |-
+    CobolDataStorage を登録し、対応するアドレス値(long)を返す。
+
+    <p>アドレス値は上位32ビットにバイト配列ID、下位32ビットにインデックスをエンコードした値。
+    同じバイト配列・同じインデックスの場合は同じアドレス値を返す。
+  en: |-
+    Registers a CobolDataStorage and returns the corresponding address value (long).
+
+    <p>The address value encodes the byte array ID in the upper 32 bits and the index in the lower
+    32 bits. The same address value is returned for the same byte array and the same index.
+- ja: |-
+    登録する CobolDataStorage (null の場合は 0L を返す)
+  en: |-
+    the CobolDataStorage to register (0L is returned if null)
+- ja: |-
+    アドレス値
+  en: |-
+    the address value
+- ja: |-
+    アドレス値から CobolDataStorage を取得する。
+
+    <p>ポインタ演算 (SET PTR UP/DOWN BY n) された値にも対応する。 上位32ビットからバイト配列IDを、下位32ビットからオフセットを取り出し、
+    対応する CobolDataStorage を返す。キャッシュにヒットした場合は既存インスタンスを再利用する。
+  en: |-
+    Returns the CobolDataStorage for an address value.
+
+    <p>Values modified by pointer arithmetic (SET PTR UP/DOWN BY n) are also supported. Extracts the
+    byte array ID from the upper 32 bits and the offset from the lower 32 bits, and returns the
+    corresponding CobolDataStorage. On a cache hit, the existing instance is reused.
+- ja: |-
+    アドレス値 (0L の場合は null を返す)
+  en: |-
+    the address value (null is returned if 0L)
+- ja: |-
+    対応する CobolDataStorage
+  en: |-
+    the corresponding CobolDataStorage
+- ja: |-
+    未登録のバイト配列IDが指定された場合
+  en: |-
+    if an unregistered byte array ID is specified
+- ja: |-
+    レジストリを初期状態にリセットする。
+
+    <p>STOP RUN 時に呼び出し、登録済みのポインタ情報をすべて解放してメモリリークを防止する。
+  en: |-
+    Resets the registry to its initial state.
+
+    <p>Called at STOP RUN to release all registered pointer information and prevent memory leaks.
+- ja: |-
+    現在のスレッドに紐づくポインタ登録情報を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the pointer registration information bound to the current thread. Called at the end of
+    a run unit.

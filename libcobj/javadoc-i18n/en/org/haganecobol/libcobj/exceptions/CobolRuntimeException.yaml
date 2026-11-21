@@ -1,0 +1,142 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    実行時エラーを示す例外。エラー番号とエラーメッセージを保持する
+  en: |-
+    Exception indicating a runtime error. Holds an error number and an error message.
+- ja: |-
+    現在のエラーコード。16進数のエラーコードが格納される。
+    通常はsetExceptionメソッドによりCobolExceptionTabCode.codeテーブルから設定されるが、
+    CobolFileやCobolLineSequentialFile等からsetExceptionCodeで直接設定される場合もある。
+    主にファイルI/O操作や数値演算のエラー判定に使用される。 実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    The current error code. Holds a hexadecimal error code.
+    It is normally set from the CobolExceptionTabCode.code table by the setException method, but may also
+    be set directly with setExceptionCode from CobolFile, CobolLineSequentialFile, and so on.
+    It is mainly used to detect errors in file I/O operations and arithmetic operations. Since each run
+    unit is independent per thread, it is held per thread.
+- ja: |-
+    スレッドごとに保持する例外の発生箇所情報
+  en: |-
+    Information on where the exception occurred, held per thread.
+- ja: |-
+    重大なエラーを示すエラーコード
+  en: |-
+    Error code indicating a fatal error.
+- ja: |-
+    エラー番号
+  en: |-
+    The error number.
+- ja: |-
+    エラーメッセージ
+  en: |-
+    The error message.
+- ja: |-
+    コンストラクタ
+  en: |-
+    Constructor.
+- ja: |-
+    エラーコード
+  en: |-
+    the error code
+- ja: |-
+    エラーメッセージの文字列表現を返す
+  en: |-
+    Returns the string representation of the error message.
+- ja: |-
+    superのprintStackTraceの拡張
+  en: |-
+    Extension of printStackTrace of the superclass.
+- ja: |-
+    実行時例外を設定する。 エラーIDをベースに、CobolExceptionTabCode.codeテーブルを参照して、対応するエラーコードが設定される。
+    また、エラー発生時のプログラムID、セクション名、パラグラフ名、行番号、ステートメントを取得し、このクラスの静的変数に保持する。
+  en: |-
+    Sets a runtime exception. Based on the error ID, the corresponding error code is set by looking up
+    the CobolExceptionTabCode.code table.
+    It also obtains the program ID, section name, paragraph name, line number and statement at the time
+    the error occurred, and keeps them in static variables of this class.
+- ja: |-
+    エラーID
+  en: |-
+    the error ID
+- ja: |-
+    現在のスレッドのエラーコードを直接設定する。
+  en: |-
+    Directly sets the error code of the current thread.
+- ja: |-
+    設定するエラーコード
+  en: |-
+    the error code to set
+- ja: |-
+    現在のスレッドのエラーコードを0にリセットする。
+  en: |-
+    Resets the error code of the current thread to 0.
+- ja: |-
+    現在のスレッドに紐づく例外情報を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the exception information bound to the current thread. Called when the run unit terminates.
+- ja: |-
+    エラーコード名を取得する
+  en: |-
+    Returns the error code name.
+- ja: |-
+    エラーコードに対応するエラーコード名
+  en: |-
+    the error code name corresponding to the error code
+- ja: |-
+    エラーコードを取得する
+  en: |-
+    Returns the error code.
+- ja: |-
+    例外が設定されたことがあるかどうかを返す。 setExceptionが一度でも呼ばれると1を返し、以降0に戻ることはない。
+    setException(0)を呼ぶとcodeは0にリセットされるが、cobExceptionは1のまま変わらない。
+  en: |-
+    Returns whether an exception has ever been set. Returns 1 once setException has been called even
+    once, and never returns to 0 afterwards.
+    Calling setException(0) resets code to 0, but cobException remains 1.
+- ja: |-
+    setExceptionが呼ばれたことがある場合は1、一度も呼ばれていない場合は0
+  en: |-
+    1 if setException has ever been called, or 0 if it has never been called
+- ja: |-
+    エラー発生時のプログラムIDを取得する
+  en: |-
+    Returns the program ID at the time the error occurred.
+- ja: |-
+    エラー発生時のプログラムID
+  en: |-
+    the program ID at the time the error occurred
+- ja: |-
+    エラー発生時のセクション名を取得する
+  en: |-
+    Returns the section name at the time the error occurred.
+- ja: |-
+    エラー発生時のセクション名
+  en: |-
+    the section name at the time the error occurred
+- ja: |-
+    エラー発生時のパラグラフ名を取得する
+  en: |-
+    Returns the paragraph name at the time the error occurred.
+- ja: |-
+    エラー発生時のパラグラフ名
+  en: |-
+    the paragraph name at the time the error occurred
+- ja: |-
+    エラー発生時の行番号を取得する
+  en: |-
+    Returns the line number at the time the error occurred.
+- ja: |-
+    エラー発生時の行番号
+  en: |-
+    the line number at the time the error occurred
+- ja: |-
+    エラー発生時のステートメントを取得する
+  en: |-
+    Returns the statement at the time the error occurred.
+- ja: |-
+    エラー発生時のステートメント
+  en: |-
+    the statement at the time the error occurred

@@ -1,0 +1,90 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    オープン中の1つのINDEXEDファイルの実行時状態を保持する。
+
+    <p>インスタンスは{@link CobolIndexedFile#open_(String, int, int)}で生成され、オープンの間{@code
+    CobolFile.filei}に保持される。バックエンドのSQLiteデータベースへのJDBC接続に加え、現在のキー／レコードバッファや、COBOLのI/O文を実行する際に使用するその他の管理情報をまとめて保持する。これはパッケージプライベートな単純なデータ保持クラスであり、実際のロジックは{@link
+    CobolIndexedFile}に存在する。
+  en: |-
+    Holds the runtime state of one open INDEXED file.
+
+    <p>An instance is created by {@link CobolIndexedFile#open_(String, int, int)} and held in
+    {@code CobolFile.filei} while the file is open. In addition to the JDBC connection to the backing
+    SQLite database, it holds the current key/record buffers and other bookkeeping information used when
+    executing COBOL I/O statements. This is a package-private plain data holder class; the actual logic
+    resides in {@link CobolIndexedFile}.
+- ja: |-
+    直近に使用されたキー（例：{@code START}で使用）を示すキー配列へのインデックス。
+  en: |-
+    Index into the key array indicating the most recently used key (e.g. by {@code START}).
+- ja: |-
+    直前の{@code WRITE}で書き込まれた主キー値。順次書き込み時の順序チェックに使用する。
+  en: |-
+    The primary key value written by the preceding {@code WRITE}. Used for the sequence check during
+    sequential writes.
+- ja: |-
+    最大のキーを格納できる大きさのスクラッチバッファ。オープン時にサイズが決定される。
+  en: |-
+    Scratch buffer large enough to hold the largest key. Its size is determined at open time.
+- ja: |-
+    このファイルのバックエンドであるSQLiteデータベースへのJDBC接続。
+  en: |-
+    The JDBC connection to the SQLite database backing this file.
+- ja: |-
+    読み書き中の現在のキー値（生のバイト列）。
+  en: |-
+    The current key value being read or written (raw bytes).
+- ja: |-
+    読み書き中の現在のレコード値（生のバイト列）。
+  en: |-
+    The current record value being read or written (raw bytes).
+- ja: |-
+    キーごとの読み込み管理用に予約されているが、現在の実装では実際には使用されていない。
+  en: |-
+    Reserved for per-key read management, but not actually used in the current implementation.
+- ja: |-
+    キーごとの次の重複番号（{@code dupNo}）。OUTPUTモード（遅延コミット中）のWRITEでは、{@code select
+    max(dupNo)}の代わりにこの配列で採番する。それ以外のモードでは確保されるのみで使用されない。
+  en: |-
+    The next duplicate number ({@code dupNo}) per key. In WRITE in OUTPUT mode (during deferred
+    commit), numbers are assigned from this array instead of {@code select max(dupNo)}. In other modes it
+    is only allocated and not used.
+- ja: |-
+    この接続で発行するSQL文のPreparedStatementキャッシュ。接続確立時に生成され、
+    CLOSE時に解放される。
+  en: |-
+    Cache of PreparedStatements for the SQL statements issued on this connection. Created when the
+    connection is established and released at CLOSE.
+- ja: |-
+    REWRITE用のキーごとの状態として予約されているが、オープン時に確保されるのみで、現在の実装では代わりにローカル配列で重複番号を受け渡しており、実際には使用されていない。
+  en: |-
+    Reserved as per-key state for REWRITE; it is only allocated at open time, and the current
+    implementation passes duplicate numbers through a local array instead, so it is not actually
+    used.
+- ja: |-
+    解決済みのSQLiteデータベースファイルのパス。
+  en: |-
+    The path of the resolved SQLite database file.
+- ja: |-
+    レコードロックの管理用に予約されている。
+  en: |-
+    Reserved for record lock management.
+- ja: |-
+    WRITE/REWRITE/DELETE操作中に書き込みカーソルがオープンしている間は{@code true}。
+  en: |-
+    {@code true} while the write cursor is open during a WRITE/REWRITE/DELETE operation.
+- ja: |-
+    予約済みのロック識別子。
+  en: |-
+    Reserved lock identifier.
+- ja: |-
+    現在未使用。予約済み。
+  en: |-
+    Currently unused. Reserved.
+- ja: |-
+    {@link #filename}の文字数。
+  en: |-
+    The number of characters in {@link #filename}.

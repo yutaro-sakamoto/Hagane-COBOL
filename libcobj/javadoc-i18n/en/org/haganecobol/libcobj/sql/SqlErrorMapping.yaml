@@ -1,0 +1,47 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    {@link AbstractCobolEsqlBackend#mapSqlException(SQLException)} の戻り値。JDBC ドライバが投げた
+    {@link SQLException} を、COBOL 側が見る SQLCODE と SQLSTATE の組へ読み替えた結果を保持する。
+  en: |-
+    Return value of {@link AbstractCobolEsqlBackend#mapSqlException(SQLException)}. Holds the result of
+    mapping a {@link SQLException} thrown by the JDBC driver to the pair of SQLCODE and SQLSTATE seen
+    by the COBOL side.
+- ja: |-
+    ECPG が定めるエラーコード（SQLCA の SQLCODE に書かれる）。
+  en: |-
+    Error code defined by ECPG (written to SQLCODE of the SQLCA).
+- ja: |-
+    ECPG が定める SQLSTATE（5 桁、SQLCA の SQLSTATE に書かれる）。{@code null} なら空白を補う。
+  en: |-
+    SQLSTATE defined by ECPG (5 characters, written to SQLSTATE of the SQLCA). If {@code null}, it is filled with spaces.
+- ja: |-
+    エラーコードと SQLSTATE の組を生成する。
+  en: |-
+    Creates a pair of an error code and an SQLSTATE.
+- ja: |-
+    ECPG が定めるエラーコード（SQLCODE）
+  en: |-
+    the error code defined by ECPG (SQLCODE)
+- ja: |-
+    ECPG が定める SQLSTATE（5 桁、{@code null} 可）
+  en: |-
+    the SQLSTATE defined by ECPG (5 characters, may be {@code null})
+- ja: |-
+    エラーコード（SQLCODE）を返す。
+  en: |-
+    Returns the error code (SQLCODE).
+- ja: |-
+    ECPG が定めるエラーコード
+  en: |-
+    the error code defined by ECPG
+- ja: |-
+    SQLSTATE を返す。
+  en: |-
+    Returns the SQLSTATE.
+- ja: |-
+    ECPG が定める SQLSTATE（5 桁）。未設定なら {@code null}
+  en: |-
+    the SQLSTATE defined by ECPG (5 characters), or {@code null} if not set

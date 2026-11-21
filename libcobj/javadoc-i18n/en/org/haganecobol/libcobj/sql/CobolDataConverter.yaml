@@ -1,0 +1,327 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    COBOL ホスト変数のストレージと Java/JDBC 型との間で相互変換を行う。
+
+    <p>{@link #setParam}・{@link #getValueFromResultSet}・{@link #stringToCobol} は、
+    {@link CobolEsqlBackendInterface} 実装（別パッケージで提供されるバックエンドを含む）が利用できる
+    公開 API。それ以外のメンバはパッケージ内部用である。
+  en: |-
+    Converts between the storage of COBOL host variables and Java/JDBC types.
+
+    <p>{@link #setParam}, {@link #getValueFromResultSet}, and {@link #stringToCobol} are public APIs
+    available to {@link CobolEsqlBackendInterface} implementations (including backends provided in other
+    packages). All other members are for internal use within the package.
+- ja: |-
+    ユーティリティクラスのインスタンス化を防ぐための private コンストラクタ。
+  en: |-
+    Private constructor to prevent instantiation of this utility class.
+- ja: |-
+    COBOL ホスト変数の内部分類。CobolFieldAttribute から resolveHvarType で
+    解決され、本クラス内のディスパッチにのみ使われる (公開しない)。
+  en: |-
+    Internal classification of COBOL host variables. Resolved from CobolFieldAttribute by
+    resolveHvarType and used only for dispatching within this class (not public).
+- ja: |-
+    符号なし数値 DISPLAY (USAGE DISPLAY、符号なし)。
+  en: |-
+    Unsigned numeric DISPLAY (USAGE DISPLAY, unsigned).
+- ja: |-
+    末尾に分離符号 (separate sign) 文字を持つ符号付き数値。
+  en: |-
+    Signed numeric with a trailing separate sign character.
+- ja: |-
+    末尾に結合符号 (overpunch) を持つ符号付き数値。
+  en: |-
+    Signed numeric with a trailing combined sign (overpunch).
+- ja: |-
+    先頭に分離符号 (separate sign) 文字を持つ符号付き数値。
+  en: |-
+    Signed numeric with a leading separate sign character.
+- ja: |-
+    先頭に結合符号 (overpunch) を持つ符号付き数値。
+  en: |-
+    Signed numeric with a leading combined sign (overpunch).
+- ja: |-
+    符号なし packed-decimal (COMP-3、符号ニブルなし)。
+  en: |-
+    Unsigned packed decimal (COMP-3, no sign nibble).
+- ja: |-
+    符号付き packed-decimal (COMP-3)。
+  en: |-
+    Signed packed decimal (COMP-3).
+- ja: |-
+    符号なしネイティブ binary (COMP-5、ビッグエンディアン)。
+  en: |-
+    Unsigned native binary (COMP-5, big-endian).
+- ja: |-
+    符号付きネイティブ binary (COMP-5、ビッグエンディアン)。
+  en: |-
+    Signed native binary (COMP-5, big-endian).
+- ja: |-
+    英字 (PIC A)。
+  en: |-
+    Alphabetic (PIC A).
+- ja: |-
+    集団項目 (英数字として扱う)。
+  en: |-
+    Group item (treated as alphanumeric).
+- ja: |-
+    倍精度浮動小数点 (COMP-2)。
+  en: |-
+    Double-precision floating point (COMP-2).
+- ja: |-
+    各国文字 (PIC N)。
+  en: |-
+    National (PIC N).
+- ja: |-
+    英数字の可変長 (varying) 文字列。
+  en: |-
+    Alphanumeric variable-length (varying) string.
+- ja: |-
+    日本語 (DBCS) の可変長 (varying) 文字列。
+  en: |-
+    Japanese (DBCS) variable-length (varying) string.
+- ja: |-
+    Shift-JIS の全角 (表意文字) スペース。National (PIC N) 項目および日本語 VARYING 項目の
+    パディングに使われ、読み取り時にも末尾のこのバイト列を取り除く。
+  en: |-
+    Shift-JIS full-width (ideographic) space. Used for padding national (PIC N) items and Japanese
+    VARYING items, and these trailing bytes are also stripped when reading.
+- ja: |-
+    AbstractCobolField の属性から内部用の HvarType を解決する。
+  en: |-
+    Resolves the internal HvarType from the attributes of an AbstractCobolField.
+- ja: |-
+    COBOL フィールド
+  en: |-
+    the COBOL field
+- ja: |-
+    内部ディスパッチ用の HvarType
+  en: |-
+    the HvarType for internal dispatch
+- ja: |-
+    COBOL ホスト変数を SQL バインド用の文字列表現に変換する。
+  en: |-
+    Converts a COBOL host variable to its string representation for SQL binding.
+- ja: |-
+    COBOL ホスト変数フィールド
+  en: |-
+    the COBOL host variable field
+- ja: |-
+    文字列表現。field が null の場合は空文字列
+  en: |-
+    the string representation. An empty string if field is null.
+- ja: |-
+    PIC 9 DISPLAY (ゾーン10進 zoned decimal) 項目の符号表現。
+  en: |-
+    Sign representation of a PIC 9 DISPLAY (zoned decimal) item.
+- ja: |-
+    演算符号 (operational sign) なし。
+  en: |-
+    No operational sign.
+- ja: |-
+    先頭桁に overpunch された符号。
+  en: |-
+    Sign overpunched on the leading digit.
+- ja: |-
+    末尾桁に overpunch された符号。
+  en: |-
+    Sign overpunched on the trailing digit.
+- ja: |-
+    先頭の分離符号バイト ('+' / '-')。
+  en: |-
+    Leading separate sign byte ('+' / '-').
+- ja: |-
+    末尾の分離符号バイト ('+' / '-')。
+  en: |-
+    Trailing separate sign byte ('+' / '-').
+- ja: |-
+    PIC 9 DISPLAY (ゾーン10進 zoned decimal) の値を読み取る。5 つのバリアント (UNSIGNED、LEADING /
+    TRAILING COMBINED、LEADING / TRAILING SEPARATE) は演算符号 (operational sign) の置かれる
+    位置だけが異なり、符号と桁バイトの並びが特定できれば、同じフォーマット処理パスを共有する。
+  en: |-
+    Reads the value of a PIC 9 DISPLAY (zoned decimal) item. The five variants (UNSIGNED, LEADING /
+    TRAILING COMBINED, LEADING / TRAILING SEPARATE) differ only in where the operational sign is placed;
+    once the sign and the sequence of digit bytes are identified, they share the same formatting path.
+- ja: |-
+    {@code data} 内の {@code digitStart} から始まる {@code digitCount} 個の桁バイトから、
+    (符号なしの) 10進文字列を構築する。作業バッファをゼロ埋めし、{@code scale < 0} のときに
+    小数点を挿入し、先頭のゼロを取り除く。
+
+    <p>fully-fractional な値 (小数桁数 &ge; 桁数。例: {@code PIC SV9(6)}) でも先頭の {@code "0."}
+    を正しく表現できるよう、先頭に 1 バイトのパディングを確保する。それ以外のケースでは、これは
+    単なる先頭のゼロであり、{@link #removeLeadingZeros} によって取り除かれる。
+  en: |-
+    Builds an (unsigned) decimal string from the {@code digitCount} digit bytes starting at
+    {@code digitStart} in {@code data}. Zero-fills a work buffer, inserts a decimal point when
+    {@code scale < 0}, and removes leading zeros.
+
+    <p>One byte of leading padding is reserved so that fully fractional values (scale &ge; number of
+    digits, e.g. {@code PIC SV9(6)}) can correctly be represented with a leading {@code "0."}. In other
+    cases, it is just a leading zero and is removed by {@link #removeLeadingZeros}.
+- ja: |-
+    ゾーン10進 (zoned decimal) のバイトが負の overpunch 符号 (0x70-0x79) を持つ場合に true。
+  en: |-
+    Returns true if the zoned decimal byte has a negative overpunch sign (0x70-0x79).
+- ja: |-
+    ゾーン10進 (zoned decimal) のバイトから overpunch 符号を取り除き、通常の桁に戻す。
+  en: |-
+    Removes the overpunch sign from a zoned decimal byte, restoring it to a plain digit.
+- ja: |-
+    ネイティブバイナリ (COMP-5) の整数値に scale を適用して 10 進文字列にする。scale &lt; 0 の
+    フィールド (例: PIC 9(4)V99) は格納された整数の途中に小数点を挿入する。符号付き・符号なしの
+    両方で同じ処理を使う。
+  en: |-
+    Applies the scale to an integer value of native binary (COMP-5) and converts it to a decimal string.
+    For fields with scale &lt; 0 (e.g. PIC 9(4)V99), a decimal point is inserted in the middle of the
+    stored integer. The same processing is used for both signed and unsigned values.
+- ja: |-
+    ストレージの内部配列を (コピーせずに) ビッグエンディアンの {@link ByteBuffer} としてラップし、
+    {@code index} から始まる {@code length} バイトの範囲に位置付ける。
+  en: |-
+    Wraps the internal array of the storage (without copying) as a big-endian {@link ByteBuffer},
+    positioned at the range of {@code length} bytes starting at {@code index}.
+- ja: |-
+    ストレージの内部配列の {@code index} から始まる {@code length} バイトを、スライスをコピーせずに
+    Shift-JIS としてデコードする。
+  en: |-
+    Decodes the {@code length} bytes starting at {@code index} in the internal array of the storage as
+    Shift-JIS, without copying the slice.
+- ja: |-
+    VARYING ヘッダ (先頭 4 バイト) に格納されたビッグエンディアンの長さを読み取る。
+  en: |-
+    Reads the big-endian length stored in the VARYING header (the first 4 bytes).
+- ja: |-
+    SQL の結果データを COBOL ホスト変数のストレージへ書き戻す。
+  en: |-
+    Writes SQL result data back to the storage of a COBOL host variable.
+- ja: |-
+    書き込み先の COBOL ホスト変数フィールド
+  en: |-
+    the COBOL host variable field to write to
+- ja: |-
+    SQL 結果から得られた生のバイトデータ
+  en: |-
+    the raw byte data obtained from the SQL result
+- ja: |-
+    SQL の結果データを特定の COBOL ストレージ位置へ書き込む。
+    行ごとにストレージのオフセットが変わる OCCURS 配列で使用する。
+  en: |-
+    Writes SQL result data to a specific COBOL storage location.
+    Used for OCCURS arrays, where the storage offset changes for each row.
+- ja: |-
+    COBOL フィールド（型解決用）
+  en: |-
+    the COBOL field (for type resolution)
+- ja: |-
+    書き込み先のストレージ位置
+  en: |-
+    the storage location to write to
+- ja: |-
+    フィールドのバイト長
+  en: |-
+    the byte length of the field
+- ja: |-
+    バイト列としての SQL 結果データ
+  en: |-
+    the SQL result data as a byte array
+- ja: |-
+    SQL の結果データを COBOL ホスト変数フィールドへ書き戻す。
+  en: |-
+    Writes SQL result data back to a COBOL host variable field.
+- ja: |-
+    書き込み先の COBOL フィールド
+  en: |-
+    the COBOL field to write to
+- ja: |-
+    数値 (ASCII 文字列として表現され、必要に応じて先頭の '-' と '.' を伴う) を
+    PIC 9 DISPLAY (ゾーン10進 zoned decimal) フィールドへ書き込む。5 つの符号バリアントは
+    この処理パスを共有し、桁領域の位置と符号の適用方法だけが異なる。
+  en: |-
+    Writes a number (represented as an ASCII string, with an optional leading '-' and '.') to a
+    PIC 9 DISPLAY (zoned decimal) field. The five sign variants share this processing path and differ
+    only in the position of the digit region and how the sign is applied.
+- ja: |-
+    {@code str} の (符号を取り除いた) 桁を {@code finalBuf} の桁領域 [{@code regionStart},
+    {@code regionEnd}) へ配置する。{@code scale} が暗黙の小数位置を与えるよう位置合わせする
+    (scale &lt; 0 は {@code -scale} 個の小数桁を意味し、scale &ge; 0 は整数 / 末尾 P (trailing-P)
+    の値である)。
+  en: |-
+    Places the digits of {@code str} (with the sign removed) into the digit region [{@code regionStart},
+    {@code regionEnd}) of {@code finalBuf}, aligned so that {@code scale} gives the implied decimal
+    position (scale &lt; 0 means {@code -scale} fractional digits, and scale &ge; 0 means an integer or
+    trailing-P value).
+- ja: |-
+    すでにフォーマット済みのゾーン10進 (zoned decimal) バッファに、演算符号 (operational sign) をその場で適用する。
+  en: |-
+    Applies the operational sign in place to an already formatted zoned decimal buffer.
+- ja: |-
+    数値文字列を packed-decimal (COMP-3) ストレージへ書き込む。符号なし (unsigned) と
+    符号付き (signed) の唯一の違いは末尾バイトの符号ニブルである: unsigned は 0x0F、
+    signed は 正 = 0x0C / 負 = 0x0D。桁の配置処理は両者で共通である。
+  en: |-
+    Writes a numeric string to packed decimal (COMP-3) storage. The only difference between unsigned
+    and signed is the sign nibble of the last byte: 0x0F for unsigned, and 0x0C for positive / 0x0D for
+    negative for signed. The digit placement is common to both.
+- ja: |-
+    BCD 桁 {@code digit} ('0'-'9') を packed-decimal ストレージの該当バイトへ OR 書き込みする。
+    {@code dataLen} と {@code index} の偶奇で書き込み先バイトと上位/下位ニブルが決まる。
+    反復ごとの配列割り当てを避けるため、結果を返さずその場で書き込む。
+  en: |-
+    ORs the BCD digit {@code digit} ('0'-'9') into the corresponding byte of the packed decimal storage.
+    The parity of {@code dataLen} and {@code index} determines the target byte and whether the high or
+    low nibble is used. To avoid allocating an array on each iteration, it writes in place instead of
+    returning a result.
+- ja: |-
+    PP (scaling position) フィールド向けに、数値文字列から末尾の桁を取り除く。例えば、
+    count=2 のとき "999900" は "9999" になる。先頭の符号 (任意) も処理する。
+  en: |-
+    Removes trailing digits from a numeric string for PP (scaling position) fields. For example, with
+    count=2, "999900" becomes "9999". Also handles an optional leading sign.
+- ja: |-
+    COBOL ホスト変数の値を JDBC PreparedStatement のパラメータにバインドする。
+  en: |-
+    Binds the value of a COBOL host variable to a parameter of a JDBC PreparedStatement.
+- ja: |-
+    JDBC の PreparedStatement
+  en: |-
+    the JDBC PreparedStatement
+- ja: |-
+    1 始まりのパラメータインデックス
+  en: |-
+    the 1-based parameter index
+- ja: |-
+    型推論用のパラメータメタデータ (null の場合がある)
+  en: |-
+    the parameter metadata for type inference (may be null)
+- ja: |-
+    バインド対象の COBOL ホスト変数フィールド
+  en: |-
+    the COBOL host variable field to bind
+- ja: |-
+    JDBC エラーが発生した場合
+  en: |-
+    if a JDBC error occurs
+- ja: |-
+    ResultSet からカラムの値を SHIFT-JIS でエンコードしたバイト列として取り出す。
+  en: |-
+    Extracts a column value from a ResultSet as a byte array encoded in SHIFT-JIS.
+- ja: |-
+    現在の行に位置付けられた JDBC result set
+  en: |-
+    the JDBC result set positioned on the current row
+- ja: |-
+    1 始まりのカラムインデックス
+  en: |-
+    the 1-based column index
+- ja: |-
+    カラムの値をバイト配列として返す。値が SQL NULL の場合は null
+  en: |-
+    the column value as a byte array, or null if the value is SQL NULL
+- ja: |-
+    列値の取得・変換に失敗した場合 (実エラーを NULL に潰さず呼び出し元へ伝播する)
+  en: |-
+    if retrieving or converting the column value fails (the actual error is propagated to the caller instead of being collapsed into NULL)

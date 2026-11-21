@@ -1,0 +1,371 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    BigDecimalを扱うクラス<br>
+    COMPUTE等で計算をするときに使用する
+  en: |-
+    Handles BigDecimal values.<br>
+    Used for calculations in COMPUTE and similar statements.
+- ja: |-
+    数値が非数(NaN)であることを示すスケール値
+  en: |-
+    Scale value indicating that the number is not a number (NaN).
+- ja: |-
+    格納時に四捨五入を行うことを示すオプションフラグ
+  en: |-
+    Option flag indicating that rounding is performed when storing.
+- ja: |-
+    桁あふれが発生した場合に格納先の値を変更しないことを示すオプションフラグ
+  en: |-
+    Option flag indicating that the destination value is left unchanged when an overflow occurs.
+- ja: |-
+    桁あふれが発生した場合に値を切り捨てて格納することを示すオプションフラグ
+  en: |-
+    Option flag indicating that the value is truncated when stored if an overflow occurs.
+- ja: |-
+    2進数フィールドで扱うことのできる最大桁数
+  en: |-
+    Maximum number of digits that a binary field can handle.
+- ja: |-
+    計算用に使用する作業用のCobolDecimalインスタンス。<br>
+    DIVIDE文のREMAINDER句のために、divQuotientからdivRemainderまで剰余を保持する。
+    実行単位はスレッドごとに独立しているため、スレッドごとに保持する。
+  en: |-
+    Work CobolDecimal instance used for calculations.<br>
+    Holds the remainder from divQuotient until divRemainder for the REMAINDER phrase of the DIVIDE
+    statement. Since run units are independent per thread, it is held per thread.
+- ja: |-
+    10のべき乗の値をあらかじめ計算して保持する配列(変更不可)
+  en: |-
+    Array holding precomputed powers of 10 (immutable).
+- ja: |-
+    パック10進数の比較に使用する作業用バッファ(スレッドごとに保持する)
+  en: |-
+    Work buffer used for comparing packed decimals (held per thread).
+- ja: |-
+    パック10進数の値を保持する作業用バッファ
+  en: |-
+    Work buffer holding a packed decimal value.
+- ja: |-
+    packedValueに展開済みの整数値
+  en: |-
+    Integer value already expanded into packedValue.
+- ja: |-
+    現在のスレッドのパック10進数比較用バッファを取得する
+  en: |-
+    Returns the packed decimal comparison buffer of the current thread.
+- ja: |-
+    作業用バッファ
+  en: |-
+    the work buffer
+- ja: |-
+    現在のスレッドの剰余保持用のCobolDecimalを取得する
+  en: |-
+    Returns the CobolDecimal used to hold the remainder for the current thread.
+- ja: |-
+    剰余保持用のCobolDecimal
+  en: |-
+    the CobolDecimal used to hold the remainder
+- ja: |-
+    数値演算で使用するスレッドごとの作業領域を初期化する。<br>
+    10のべき乗テーブルはクラス初期化時に構築済みのため、ここでは作業領域のリセットのみを行う。
+  en: |-
+    Initializes the per-thread work area used in numeric operations.<br>
+    Since the table of powers of 10 is built at class initialization, this only resets the work area.
+- ja: |-
+    現在のスレッドに紐づく作業領域を破棄する。実行単位の終了時に呼び出す。
+  en: |-
+    Discards the work area bound to the current thread. Called at the end of a run unit.
+- ja: |-
+    保持する数値データ
+  en: |-
+    The numeric data held.
+- ja: |-
+    保持する数値の小数点以下の桁数(スケール)
+  en: |-
+    The number of decimal places (scale) of the number held.
+- ja: |-
+    値とスケールは0に設定する
+  en: |-
+    Sets both the value and the scale to 0.
+- ja: |-
+    値はvalueを指定し,スケールは0に設定する
+  en: |-
+    Sets the value to value and the scale to 0.
+- ja: |-
+    設定する値
+  en: |-
+    the value to set
+- ja: |-
+    値とスケールを指定する
+  en: |-
+    Specifies the value and the scale.
+- ja: |-
+    設定するスケール
+  en: |-
+    the scale to set
+- ja: |-
+    値を指定し,スケールは0に設定する
+  en: |-
+    Specifies the value and sets the scale to 0.
+- ja: |-
+    値を設定し,スケールは0に設定する
+  en: |-
+    Sets the value and sets the scale to 0.
+- ja: |-
+    コピーコンストラクタ
+  en: |-
+    Copy constructor.
+- ja: |-
+    コピー元のCobolDecimalインスタンス
+  en: |-
+    the CobolDecimal instance to copy from
+- ja: |-
+    このオブジェクトの値を取得する
+  en: |-
+    Returns the value of this object.
+- ja: |-
+    このオブジェクトの値
+  en: |-
+    the value of this object
+- ja: |-
+    このオブジェクトの値を0に初期化する
+  en: |-
+    Initializes the value of this object to 0.
+- ja: |-
+    このオブジェクトの値を設定する
+  en: |-
+    Sets the value of this object.
+- ja: |-
+    このオブジェクトに設定する値
+  en: |-
+    the value to set to this object
+- ja: |-
+    this.valueの値を0にする
+  en: |-
+    Sets this.value to 0.
+- ja: |-
+    このオブジェクトのスケールを設定する
+  en: |-
+    Sets the scale of this object.
+- ja: |-
+    このオブジェクトに設定するスケール
+  en: |-
+    the scale to set to this object
+- ja: |-
+    このオブジェクトのスケールを取得する
+  en: |-
+    Returns the scale of this object.
+- ja: |-
+    このオブジェクトのスケール
+  en: |-
+    the scale of this object
+- ja: |-
+    このオブジェクトの値を設定し、スケールは0に設定する
+  en: |-
+    Sets the value of this object and sets the scale to 0.
+- ja: |-
+    このオブジェクトの値とスケールを,指定されたCobolDecimalの値とスケールで設定する
+  en: |-
+    Sets the value and scale of this object to the value and scale of the specified CobolDecimal.
+- ja: |-
+    設定元のCobolDecimalインスタンス
+  en: |-
+    the CobolDecimal instance to copy from
+- ja: |-
+    指定されたCOBOLフィールドの値とスケールを,このオブジェクトに設定する
+  en: |-
+    Sets the value and scale of the specified COBOL field to this object.
+- ja: |-
+    設定元のCOBOLフィールド
+  en: |-
+    the COBOL field to copy from
+- ja: |-
+    2つのCobolDecimalのいずれかが非数(NaN)であるかを判定する.いずれかが非数の場合はd1のスケールを非数に設定する
+  en: |-
+    Determines whether either of two CobolDecimals is not a number (NaN). If either is NaN, sets the
+    scale of d1 to NaN.
+- ja: |-
+    判定対象のCobolDecimalインスタンス(演算結果の格納先)
+  en: |-
+    the CobolDecimal instance to check (where the result of the operation is stored)
+- ja: |-
+    判定対象のCobolDecimalインスタンス
+  en: |-
+    the CobolDecimal instance to check
+- ja: |-
+    いずれかが非数の場合はtrue,そうでない場合はfalse
+  en: |-
+    true if either is NaN, false otherwise
+- ja: |-
+    このオブジェクトの示す数値に対して加算を行う
+  en: |-
+    Adds to the number represented by this object.
+- ja: |-
+    このオブジェクトに加算する値
+  en: |-
+    the value to add to this object
+- ja: |-
+    このオブジェクトの示す数値に対して減算を行う
+  en: |-
+    Subtracts from the number represented by this object.
+- ja: |-
+    このオブジェクトの示す数値から減算する値
+  en: |-
+    the value to subtract from the number represented by this object
+- ja: |-
+    このオブジェクトの示す数値に対して乗算を行う
+  en: |-
+    Multiplies the number represented by this object.
+- ja: |-
+    このオブジェクトの示す数値に乗算する値
+  en: |-
+    the value by which to multiply the number represented by this object
+- ja: |-
+    このオブジェクトの示す数値に対して除算を行う
+  en: |-
+    Divides the number represented by this object.
+- ja: |-
+    このオブジェクトの示す数値を除算する値
+  en: |-
+    the value by which to divide the number represented by this object
+- ja: |-
+    0除算が検出され,かつ実行時エラーで終了する設定の場合にスローされる
+  en: |-
+    thrown if division by zero is detected and the setting is to terminate with a runtime error
+- ja: |-
+    このオブジェクトの示す数値に対して累乗を行う
+  en: |-
+    Raises the number represented by this object to a power.
+- ja: |-
+    このオブジェクトの示す数値を累乗する値
+  en: |-
+    the exponent to which the number represented by this object is raised
+- ja: |-
+    倍精度浮動小数点数の値を,スケール9のCobolDecimalの値として設定する
+  en: |-
+    Sets a double-precision floating-point value as the value of this CobolDecimal with scale 9.
+- ja: |-
+    設定する倍精度浮動小数点数の値
+  en: |-
+    the double-precision floating-point value to set
+- ja: |-
+    このオブジェクトの値を,指定されたCOBOLフィールドの属性(型・桁数・スケール)に合わせて格納する
+  en: |-
+    Stores the value of this object according to the attributes (type, digits, scale) of the specified
+    COBOL field.
+- ja: |-
+    値の格納先となるCOBOLフィールド
+  en: |-
+    the COBOL field in which the value is stored
+- ja: |-
+    格納方法を指定するオプションフラグ(丸めや桁あふれ時の動作などを指定する)
+  en: |-
+    option flags specifying how to store the value (rounding, behavior on overflow, etc.)
+- ja: |-
+    格納処理の結果を示す例外コード.正常終了の場合は0
+  en: |-
+    the exception code indicating the result of storing, or 0 on success
+- ja: |-
+    格納処理の途中で実行停止が発生した場合にスローされる
+  en: |-
+    thrown if a stop of execution occurs during storing
+- ja: |-
+    このオブジェクトの値を倍精度浮動小数点数に変換し,指定されたCOBOLフィールドに格納する
+  en: |-
+    Converts the value of this object to a double-precision floating-point number and stores it in the
+    specified COBOL field.
+- ja: |-
+    格納方法を指定するオプションフラグ
+  en: |-
+    option flags specifying how to store the value
+- ja: |-
+    格納処理の結果を示すコード.正常終了の場合は0
+  en: |-
+    the code indicating the result of storing, or 0 on success
+- ja: |-
+    このオブジェクトの値を10のn乗倍して小数点位置をずらし,スケールをnだけ増加させる.nが正の場合は乗算,負の場合は除算を行う
+  en: |-
+    Multiplies the value of this object by 10 to the n-th power to shift the decimal point, and increases
+    the scale by n. Multiplies if n is positive and divides if n is negative.
+- ja: |-
+    小数点をずらす桁数.正の値で値を10倍方向に,負の値で1/10方向にシフトする
+  en: |-
+    the number of digits to shift the decimal point. A positive value shifts the value toward
+    multiplying by 10, and a negative value toward dividing by 10.
+- ja: |-
+    2つのCobolDecimalのスケールを揃える.スケールの小さい方をシフトして,両者のスケールを大きい方に合わせる
+  en: |-
+    Aligns the scales of two CobolDecimals. Shifts the one with the smaller scale so that both have
+    the larger scale.
+- ja: |-
+    スケールを揃える対象のCobolDecimalインスタンス
+  en: |-
+    the CobolDecimal instance whose scale is to be aligned
+- ja: |-
+    このオブジェクトの値と,指定されたCobolDecimalの値を比較する
+  en: |-
+    Compares the value of this object with the value of the specified CobolDecimal.
+- ja: |-
+    比較対象のCobolDecimalインスタンス
+  en: |-
+    the CobolDecimal instance to compare with
+- ja: |-
+    このオブジェクトの値が大きい場合は正,等しい場合は0,小さい場合は負の値
+  en: |-
+    a positive value if the value of this object is greater, 0 if equal, a negative value if less
+- ja: |-
+    このオブジェクトの値を表示用数字(USAGE DISPLAY)形式に変換し,指定されたCOBOLフィールドに格納する
+  en: |-
+    Converts the value of this object to display numeric (USAGE DISPLAY) format and stores it in the
+    specified COBOL field.
+- ja: |-
+    格納方法を指定するオプションフラグ(桁あふれ時の動作などを指定する)
+  en: |-
+    option flags specifying how to store the value (behavior on overflow, etc.)
+- ja: |-
+    格納処理の結果を示すコード.正常終了の場合は0,桁あふれ発生時は対応する例外コード
+  en: |-
+    the code indicating the result of storing: 0 on success, or the corresponding exception code
+    if an overflow occurs
+- ja: |-
+    このオブジェクトの値をパック10進数(USAGE COMP-3)形式に変換し,指定されたCOBOLフィールドに格納する
+  en: |-
+    Converts the value of this object to packed decimal (USAGE COMP-3) format and stores it in the
+    specified COBOL field.
+- ja: |-
+    このオブジェクトの値を2進数(USAGE COMP)形式に変換し,指定されたCOBOLフィールドに格納する
+  en: |-
+    Converts the value of this object to binary (USAGE COMP) format and stores it in the specified
+    COBOL field.
+- ja: |-
+    格納方法を指定するオプションフラグ(桁あふれ時の動作や切り捨ての有無などを指定する)
+  en: |-
+    option flags specifying how to store the value (behavior on overflow, whether to truncate, etc.)
+- ja: |-
+    コピー元のデータ領域から指定したバイト数を,コピー先のデータ領域へ1バイトずつコピーする
+  en: |-
+    Copies the specified number of bytes, one byte at a time, from the source data area to the
+    destination data area.
+- ja: |-
+    コピー先のデータ領域
+  en: |-
+    the destination data area
+- ja: |-
+    コピー先の開始インデックス
+  en: |-
+    the start index in the destination
+- ja: |-
+    コピー元のデータ領域
+  en: |-
+    the source data area
+- ja: |-
+    コピー元の開始インデックス
+  en: |-
+    the start index in the source
+- ja: |-
+    コピーするバイト数
+  en: |-
+    the number of bytes to copy

@@ -1,0 +1,127 @@
+# Translations of the Javadoc comments. Generated and updated by
+# `./gradlew syncJavadocTranslations` in libcobj/.
+# Fill in `en` for each `ja`. Do not edit `ja` by hand:
+# it must match the Japanese text in the source file.
+- ja: |-
+    例外コードを定義するクラス
+  en: |-
+    Class that defines exception codes.
+- ja: |-
+    この例外コードは使用されない
+  en: |-
+    This exception code is not used.
+- ja: |-
+    COBOL例外EC-ARGUMENTに対応する例外コード。引数に関するエラーのカテゴリを示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-ARGUMENT.
+    Indicates the category of errors related to arguments.
+- ja: |-
+    COBOL例外EC-ARGUMENT-FUNCTIONに対応する例外コード。組み込み関数に不正な引数が渡された場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-ARGUMENT-FUNCTION.
+    Used when an invalid argument is passed to an intrinsic function.
+- ja: |-
+    COBOL例外EC-BOUND-PTRに対応する例外コード。ポインタの境界違反を示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-BOUND-PTR.
+    Indicates a pointer boundary violation.
+- ja: |-
+    COBOL例外EC-BOUND-REF-MODに対応する例外コード。参照変更のオフセットや長さが範囲外の場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-BOUND-REF-MOD.
+    Used when the offset or length of a reference modification is out of range.
+- ja: |-
+    COBOL例外EC-BOUND-SUBSCRIPTに対応する例外コード。配列の添え字が範囲外の場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-BOUND-SUBSCRIPT.
+    Used when a table subscript is out of range.
+- ja: |-
+    COBOL例外EC-I-Oに対応する例外コード。ファイルI/O操作に関するエラーのカテゴリを示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O.
+    Indicates the category of errors related to file I/O operations.
+- ja: |-
+    COBOL例外EC-I-O-AT-ENDに対応する例外コード。ファイルの終端に達した場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-AT-END.
+    Used when the end of a file is reached.
+- ja: |-
+    COBOL例外EC-I-O-EOPに対応する例外コード。ページの終端に達した場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-EOP.
+    Used when the end of a page is reached.
+- ja: |-
+    COBOL例外EC-I-O-FILE-SHARINGに対応する例外コード。ファイル共有の競合が発生した場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-FILE-SHARING.
+    Used when a file sharing conflict occurs.
+- ja: |-
+    COBOL例外EC-I-O-IMPに対応する例外コード。実装固有のI/Oエラーを示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-IMP.
+    Indicates an implementation-specific I/O error.
+- ja: |-
+    COBOL例外EC-I-O-INVALID-KEYに対応する例外コード。不正なキーによるファイルアクセスの場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-INVALID-KEY.
+    Used for a file access with an invalid key.
+- ja: |-
+    COBOL例外EC-I-O-LOGIC-ERRORに対応する例外コード。ファイル操作の論理エラーの場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-LOGIC-ERROR.
+    Used for a logic error in a file operation.
+- ja: |-
+    COBOL例外EC-I-O-PERMANENT-ERRORに対応する例外コード。回復不能なI/Oエラーの場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-PERMANENT-ERROR.
+    Used for an unrecoverable I/O error.
+- ja: |-
+    COBOL例外EC-I-O-RECORD-OPERATIONに対応する例外コード。レコード操作に関するエラーの場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-I-O-RECORD-OPERATION.
+    Used for an error related to a record operation.
+- ja: |-
+    COBOL例外EC-IMPに対応する例外コード。実装固有のエラーのカテゴリを示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-IMP.
+    Indicates the category of implementation-specific errors.
+- ja: |-
+    COBOL例外EC-IMP-ACCEPTに対応する例外コード。ACCEPT文で環境変数が見つからない場合などに使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-IMP-ACCEPT.
+    Used, for example, when an environment variable is not found in an ACCEPT statement.
+- ja: |-
+    COBOL例外EC-IMP-DISPLAYに対応する例外コード。DISPLAY文で環境変数が未設定の場合などに使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-IMP-DISPLAY.
+    Used, for example, when an environment variable is not set in a DISPLAY statement.
+- ja: |-
+    COBOL例外EC-OVERFLOWに対応する例外コード。オーバーフローに関するエラーのカテゴリを示す。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-OVERFLOW.
+    Indicates the category of errors related to overflow.
+- ja: |-
+    COBOL例外EC-OVERFLOW-STRINGに対応する例外コード。STRING文でポインタが範囲外、またはデータが領域を超えた場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-OVERFLOW-STRING.
+    Used when the pointer is out of range or the data exceeds the area in a STRING statement.
+- ja: |-
+    COBOL例外EC-OVERFLOW-UNSTRINGに対応する例外コード。UNSTRING文でポインタが範囲外、またはデータが領域を超えた場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-OVERFLOW-UNSTRING.
+    Used when the pointer is out of range or the data exceeds the area in an UNSTRING statement.
+- ja: |-
+    COBOL例外EC-PROGRAM-NOT-FOUNDに対応する例外コード。CALL文で呼び出し先のプログラムが見つからない場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-PROGRAM-NOT-FOUND.
+    Used when the called program is not found in a CALL statement.
+- ja: |-
+    COBOL例外EC-RANGE-INSPECT-SIZEに対応する例外コード。INSPECT文でオペランドのフィールドサイズが不正な場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-RANGE-INSPECT-SIZE.
+    Used when the field size of an operand is invalid in an INSPECT statement.
+- ja: |-
+    COBOL例外EC-SIZE-OVERFLOWに対応する例外コード。数値演算の結果がフィールドの桁数を超えた場合に使用される。
+  en: |-
+    Exception code corresponding to the COBOL exception EC-SIZE-OVERFLOW.
+    Used when the result of an arithmetic operation exceeds the number of digits of the field.
