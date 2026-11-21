@@ -42,7 +42,7 @@
     and reporting it as an SQL error would make it indistinguishable from a connection failure and the
     like. If resolution fails, the exception from {@link CobolEsqlBackendFactory#resolve()} is
     propagated as is, aborting execution.
-- ja: |-
+- ja: |4-
 
         {@code OCDB_DB_TYPE} に対応する実装が無い/生成できない場合
   en: |-

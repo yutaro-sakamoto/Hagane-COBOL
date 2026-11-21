@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,7 +108,7 @@ public final class JavadocTranslator {
             String text = new String(Files.readAllBytes(src), StandardCharsets.UTF_8);
             String translated = translateSource(rel, text, translations, report);
             Path dest = opts.output.resolve(rel.toString());
-            Files.createDirectories(dest.getParent());
+            Files.createDirectories(Objects.requireNonNull(dest.getParent()));
             Files.write(dest, translated.getBytes(StandardCharsets.UTF_8));
         }
         // package.html、overview.htmlやdoc-files/などJava以外のファイルはそのままコピーする。
@@ -116,7 +117,7 @@ public final class JavadocTranslator {
                 continue;
             }
             Path dest = opts.output.resolve(opts.source.relativize(src).toString());
-            Files.createDirectories(dest.getParent());
+            Files.createDirectories(Objects.requireNonNull(dest.getParent()));
             Files.copy(src, dest, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         }
         report.printSummary(System.out, false);
@@ -139,6 +140,11 @@ public final class JavadocTranslator {
     }
 
     private static int sync(Options opts) throws IOException {
+        if (listFiles(opts.source, ".java").isEmpty()) {
+            // パスの誤りで翻訳ファイルを全て削除してしまわないように、何もせずに終了する。
+            System.err.println("sync: no Java source files found in " + opts.source);
+            return 1;
+        }
         Translations translations = Translations.load(opts.translations);
         int added = 0;
         int kept = 0;
@@ -172,7 +178,7 @@ public final class JavadocTranslator {
             String content = Translations.render(new ArrayList<>(entries.values()));
             byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
             if (!Files.exists(yaml) || !java.util.Arrays.equals(Files.readAllBytes(yaml), bytes)) {
-                Files.createDirectories(yaml.getParent());
+                Files.createDirectories(Objects.requireNonNull(yaml.getParent()));
                 Files.write(yaml, bytes);
                 written++;
             }
@@ -217,15 +223,24 @@ public final class JavadocTranslator {
                 String en = translations.lookup(rel, normalize(unit.text));
                 int line = lineNumber(text, comment.start);
                 if (en == null || en.trim().isEmpty()) {
-                    report.missing(rel, line, unit.text);
+                    report.addMissing(rel, line, unit.text);
                     continue;
                 }
                 if (en.contains("*/")) {
-                    report.error(rel, line, "translation contains \"*/\": " + oneLine(en));
+                    report.addError(rel, line, "translation contains \"*/\": " + oneLine(en));
+                    continue;
+                }
+                if (hasBlockTagLine(en)) {
+                    report.addError(
+                            rel,
+                            line,
+                            "a line after the first one starts with @ and would become a block tag:"
+                                    + " "
+                                    + oneLine(en));
                     continue;
                 }
                 if (containsJapanese(en)) {
-                    report.warning(rel, line, "translation contains Japanese: " + oneLine(en));
+                    report.addWarning(rel, line, "translation contains Japanese: " + oneLine(en));
                 }
                 unit.replacement = en;
                 changed = true;
@@ -613,7 +628,9 @@ public final class JavadocTranslator {
                 sb.append("\"\"\n");
                 return;
             }
-            sb.append(value.startsWith(" ") ? "|4-" : "|-").append('\n');
+            // 最初の空でない行が字下げされていると、YAMLがそこから字下げの幅を決めてしまい、
+            // それより浅い後続の行を読めなくなる。その場合は字下げの幅を明示する。
+            sb.append(firstNonEmptyLineIsIndented(value) ? "|4-" : "|-").append('\n');
             for (String line : value.split("\n", -1)) {
                 sb.append(line.isEmpty() ? "" : "    " + line).append('\n');
             }
@@ -635,15 +652,15 @@ public final class JavadocTranslator {
             translated++;
         }
 
-        void missing(Path rel, int line, String text) {
+        void addMissing(Path rel, int line, String text) {
             missing.add(rel + ":" + line + ": " + oneLine(text));
         }
 
-        void error(Path rel, int line, String message) {
+        void addError(Path rel, int line, String message) {
             errors.add(rel + ":" + line + ": " + message);
         }
 
-        void warning(Path rel, int line, String message) {
+        void addWarning(Path rel, int line, String message) {
             warnings.add(rel + ":" + line + ": " + message);
         }
 
@@ -822,6 +839,26 @@ public final class JavadocTranslator {
             start++;
         }
         return s.substring(start);
+    }
+
+    private static boolean firstNonEmptyLineIsIndented(String value) {
+        for (String line : value.split("\n", -1)) {
+            if (!line.isEmpty()) {
+                return Character.isWhitespace(line.charAt(0));
+            }
+        }
+        return false;
+    }
+
+    /** 2行目以降に、ブロックタグとして解釈されてしまう{@code @}で始まる行があるかどうかを判定する。 */
+    private static boolean hasBlockTagLine(String text) {
+        String[] lines = text.split("\n", -1);
+        for (int i = 1; i < lines.length; i++) {
+            if (BLOCK_TAG_LINE.matcher(lines[i]).find()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String oneLine(String text) {

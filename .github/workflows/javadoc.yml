@@ -32,6 +32,14 @@ jobs:
         working-directory: libcobj
         run: ./gradlew checkJavadocTranslations
 
+      # A broken translation (HTML, {@link ...}) shows up as a Javadoc warning.
+      # The English Javadoc must not have more warnings than the Japanese one.
       - name: Build the English Javadoc
         working-directory: libcobj
-        run: ./gradlew javadocEn
+        run: |
+          ./gradlew javadoc --rerun 2>&1 | tee javadoc-ja.log
+          ./gradlew javadocEn --rerun 2>&1 | tee javadoc-en.log
+          ja=$(grep -c ': warning:' javadoc-ja.log || true)
+          en=$(grep -c ': warning:' javadoc-en.log || true)
+          echo "Javadoc warnings: Japanese $ja, English $en"
+          test "$en" -le "$ja"

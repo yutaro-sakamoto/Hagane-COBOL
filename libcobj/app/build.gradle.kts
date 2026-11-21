@@ -69,13 +69,15 @@ tasks {
     register<Javadoc>("javadocEn") {
         description = "Generates the English Javadoc of libcobj into build/docs/javadoc-en."
         group = "documentation"
-        dependsOn(translateJavadocEn)
-        source(javadocSourcesEn)
+        source(translateJavadocEn)
         include("**/*.java")
         classpath = sourceSets.main.get().compileClasspath
         setDestinationDir(layout.buildDirectory.dir("docs/javadoc-en").get().asFile)
         (options as StandardJavadocDocletOptions).configureLibcobjJavadoc(
-            "en_US", "<a href=\"$javadocUrlJa\">日本語</a>")
+            "en_US",
+            // "日本語" as character references, so that the option file does not
+            // depend on the platform encoding.
+            "<a href=\"$javadocUrlJa\">&#26085;&#26412;&#35486;</a>")
     }
 
     register<JavaExec>("syncJavadocTranslations") {
