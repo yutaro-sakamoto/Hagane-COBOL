@@ -60,8 +60,8 @@ To list the untranslated units:
 ```
 
 With `-PfailOnMissingTranslation`, the task fails when untranslated units exist.
-In CI (the `Javadoc` workflow) untranslated units are reported only as a
-warning.
+CI (the `Javadoc` workflow) runs it this way, so a pull request that adds or
+changes Japanese Javadoc text must also update the translations.
 
 The tool is `app/src/javadocI18n/java/org/haganecobol/javadoci18n/JavadocTranslator.java`.
 It is not part of `libcobj.jar`.
@@ -124,7 +124,7 @@ Javadocコメントを変更したら、`libcobj/`で以下を実行します。
 ```
 
 `-PfailOnMissingTranslation`を付けると、未翻訳の単位がある場合にタスクが失敗します。
-CI(`Javadoc`ワークフロー)では、未翻訳の単位は警告として報告するだけです。
+CI(`Javadoc`ワークフロー)はこの指定で実行するため、Javadocの日本語を追加・変更するPull Requestでは訳文も更新する必要があります。
 
 ツールの実体は`app/src/javadocI18n/java/org/haganecobol/javadoci18n/JavadocTranslator.java`です。
 `libcobj.jar`には含まれません。

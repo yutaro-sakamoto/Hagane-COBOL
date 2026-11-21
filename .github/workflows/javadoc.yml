@@ -26,11 +26,11 @@ jobs:
           test "$(grep '[1-9][0-9]* warning' javadoc.log)" = ""
 
       # The English Javadoc is built from the translations in
-      # libcobj/javadoc-i18n/en/. Untranslated texts are reported as a warning
-      # and stay in Japanese, so they do not fail the build.
+      # libcobj/javadoc-i18n/en/. Every Japanese text in the Javadoc must have a
+      # translation, so untranslated texts fail the build.
       - name: Check the English translations of Javadoc
         working-directory: libcobj
-        run: ./gradlew checkJavadocTranslations
+        run: ./gradlew checkJavadocTranslations -PfailOnMissingTranslation
 
       # A broken translation (HTML, {@link ...}) shows up as a Javadoc warning.
       # The English Javadoc must not have more warnings than the Japanese one.

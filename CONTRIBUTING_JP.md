@@ -74,5 +74,5 @@ Hagane COBOLのlibcobj/ディレクトリで下記のコマンドを実行して
 ```
 
 Javadocコメントを追加・変更したときは、`./gradlew syncJavadocTranslations`を実行し、空の`en`を埋めてください。
-未翻訳の文言は英語版のJavadocでも日本語のまま表示されます。CIでは警告として報告されるのみです。
+Javadocの日本語に英訳が無いものが1つでもあると、CIは失敗します。
 詳細は[libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md)を参照してください。

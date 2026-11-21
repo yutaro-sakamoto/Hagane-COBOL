@@ -73,5 +73,5 @@ Run the following commands in libcobj/ directory:
 ```
 
 When you add or change Javadoc comments, run `./gradlew syncJavadocTranslations` and fill in the empty `en` entries.
-Untranslated texts stay in Japanese in the English Javadoc; CI reports them only as a warning.
+CI fails if any Japanese text in the Javadoc has no English translation.
 See [libcobj/javadoc-i18n/README.md](./libcobj/javadoc-i18n/README.md) for details.

@@ -1,5 +1,7 @@
 package org.haganecobol.javadoci18n;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -66,6 +68,9 @@ public final class JavadocTranslator {
      * @throws IOException ファイルの読み書きに失敗した場合
      */
     public static void main(String[] args) throws IOException {
+        // 未翻訳の原文などの日本語を、プラットフォームの文字コードによらずに出力する。
+        System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8"));
+        System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err), true, "UTF-8"));
         Options opts = Options.parse(args);
         if (opts == null) {
             System.err.println(USAGE);
@@ -120,7 +125,7 @@ public final class JavadocTranslator {
             Files.createDirectories(Objects.requireNonNull(dest.getParent()));
             Files.copy(src, dest, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
         }
-        report.printSummary(System.out, false);
+        report.printSummary(System.out, false, opts.failOnMissing);
         return opts.failOnMissing && report.missingCount() > 0 ? 1 : 0;
     }
 
@@ -132,8 +137,8 @@ public final class JavadocTranslator {
             String text = new String(Files.readAllBytes(src), StandardCharsets.UTF_8);
             translateSource(rel, text, translations, report);
         }
-        report.printDetails(System.out, opts.githubActions);
-        report.printSummary(System.out, opts.githubActions);
+        report.printDetails(System.out, opts.githubActions, opts.failOnMissing);
+        report.printSummary(System.out, opts.githubActions, opts.failOnMissing);
         boolean failed =
                 report.errorCount() > 0 || (opts.failOnMissing && report.missingCount() > 0);
         return failed ? 1 : 0;
@@ -672,9 +677,12 @@ public final class JavadocTranslator {
             return errors.size();
         }
 
-        void printDetails(PrintStream out, boolean githubActions) {
+        void printDetails(PrintStream out, boolean githubActions, boolean failOnMissing) {
+            // 未翻訳を失敗として扱う場合、GitHub Actionsではエラーの注釈として出力する。
+            String missingPrefix =
+                    githubActions && failOnMissing ? "::error::untranslated: " : "untranslated: ";
             for (String m : missing) {
-                out.println("untranslated: " + m);
+                out.println(missingPrefix + m);
             }
             for (String w : warnings) {
                 out.println("warning: " + w);
@@ -684,15 +692,20 @@ public final class JavadocTranslator {
             }
         }
 
-        void printSummary(PrintStream out, boolean githubActions) {
+        void printSummary(PrintStream out, boolean githubActions, boolean failOnMissing) {
             int total = translated + missing.size();
             String summary =
                     String.format(
                             "Javadoc translation: %d of %d units translated, %d untranslated,"
                                     + " %d errors, %d warnings",
                             translated, total, missing.size(), errors.size(), warnings.size());
+            if (!missing.isEmpty() && failOnMissing) {
+                summary +=
+                        ". Run ./gradlew syncJavadocTranslations in libcobj/ and fill in the empty"
+                                + " `en` fields in libcobj/javadoc-i18n/en/";
+            }
             if (githubActions && !missing.isEmpty()) {
-                out.println("::warning::" + summary);
+                out.println((failOnMissing ? "::error::" : "::warning::") + summary);
             } else {
                 out.println(summary);
             }
