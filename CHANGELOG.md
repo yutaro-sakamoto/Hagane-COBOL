@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- libcobj is published to [Maven Central](https://central.sonatype.com/artifact/org.haganecobol/libcobj) as `org.haganecobol:libcobj` on every release, so Maven and Gradle projects can depend on it without installing Hagane COBOL. Unlike the `libcobj.jar` installed by `make install` or attached to the GitHub releases, the artifact on Maven Central does not bundle its dependencies; Maven and Gradle resolve them from its POM. See "Use libcobj.jar from Maven Central" in README.md.
+
 ## [2.0.0] - 2026-11-21
 
 Hagane COBOL 2.0.0 drops the names inherited from opensource COBOL 4J: the Java package, the install paths and the package name used by `configure` now belong to Hagane COBOL. Programs translated by 1.0.0 must be translated and compiled again.

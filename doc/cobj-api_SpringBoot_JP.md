@@ -180,6 +180,10 @@ pom.xmlに以下の依存関係を追加する。
         	<systemPath>${basedir}/lib/libcobj.jar</systemPath>
     	</dependency>
     ```
+    * プロジェクトにlibcobj.jarを配置する(手順5)代わりに、Maven Centralから`org.haganecobol:libcobj`としてlibcobjを取得することもできる。バージョンはcobjと揃えること。
+      * Gradleの場合は、`implementation files('lib/libcobj.jar')`の代わりに`implementation 'org.haganecobol:libcobj:<cobjのバージョン>'`と書く。
+      * Mavenの場合は、`<groupId>`を`org.haganecobol`にし、`<scope>`と`<systemPath>`を削除する。
+      * slf4j-simpleがlibcobjの依存ライブラリとして取り込まれるため、"spring-boot-starter-logging"の除外はこの場合も必要である。
 7. Spring Bootプロジェクトをビルド及び起動する。
    プロジェクトのルートディレクトリで、以下のコマンドを実行する。
 * Gradleの場合

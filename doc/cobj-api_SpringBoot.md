@@ -179,6 +179,10 @@ In this procedure, they will be placed in "src/main/java/com/example/cobj_api_te
         	<systemPath>${basedir}/lib/libcobj.jar</systemPath>
     </dependency>
     ```
+    * Instead of placing libcobj.jar in the project (step 5), you can also get libcobj from Maven Central as `org.haganecobol:libcobj`. Use the same version as cobj.
+      * For Gradle, use `implementation 'org.haganecobol:libcobj:<version of cobj>'` instead of `implementation files('lib/libcobj.jar')`.
+      * For Maven, use `<groupId>org.haganecobol</groupId>` and remove `<scope>` and `<systemPath>`.
+      * Excluding "spring-boot-starter-logging" is still required, because slf4j-simple comes in as a dependency of libcobj.
 7. Build and launch the Spring Boot project.   
    Run the following command in the root directory of the project.
 * For Gradle
