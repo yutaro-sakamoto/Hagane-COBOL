@@ -9,7 +9,9 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.diffplug.spotless") version "7.2.1"
     id("java")
-    id("com.vanniktech.maven.publish") version "0.37.0"
+    // 0.36.0 and later require Gradle to run on Java 17, but libcobj is also
+    // built with Java 11 (AlmaLinux 9). Dependabot does not raise it past 0.35.x.
+    id("com.vanniktech.maven.publish") version "0.35.0"
     pmd
     id("com.github.spotbugs") version "6.5.13"
     jacoco
