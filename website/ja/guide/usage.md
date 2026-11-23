@@ -41,6 +41,7 @@ cobj *.cbl
 ランタイムライブラリlibcobjは、`org.haganecobol:libcobj`として[Maven Central](https://central.sonatype.com/artifact/org.haganecobol/libcobj)に公開しています。
 MavenやGradleのプロジェクトは、Hagane COBOLをインストールしなくても、これを依存関係に加えることで`cobj`が生成したJavaプログラムをビルド・実行できます。
 バージョンは、プログラムを変換した`cobj`(`cobj --version`で確認できます)と揃えてください。
+Maven Centralにあるのは、Maven Centralへの公開を始めた後のリリースだけです。公開済みのバージョンは[バージョン一覧](https://central.sonatype.com/artifact/org.haganecobol/libcobj/versions)で確認できます。
 
 ```kotlin
 dependencies {

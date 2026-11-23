@@ -201,6 +201,7 @@ dependencies {
 ```
 
 libcobjのバージョンは、COBOLプログラムを変換した`cobj`のバージョンと揃えてください。
+Maven Centralにあるのは、Maven Centralへの公開を始めた後のリリースだけです。公開済みのバージョンは[バージョン一覧](https://central.sonatype.com/artifact/org.haganecobol/libcobj/versions)で確認できます。
 `make install`でインストールされる`libcobj.jar`やGitHubのリリースに添付される`libcobj.jar`は依存ライブラリを同梱していますが、Maven Centralのものはlibcobj本体だけを含みます。依存ライブラリ(PostgreSQLのJDBCドライバやSQLite JDBCなど)はMavenやGradleが自動的にダウンロードします。
 
 ## 使い方

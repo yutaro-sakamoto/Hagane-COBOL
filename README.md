@@ -216,6 +216,8 @@ dependencies {
 ```
 
 Use the same version of libcobj as the `cobj` that translated your COBOL programs.
+Only the releases made after publishing to Maven Central was introduced are available there;
+see [the list of versions](https://central.sonatype.com/artifact/org.haganecobol/libcobj/versions).
 Unlike the `libcobj.jar` installed by `make install` or attached to the GitHub releases, which bundles the libraries it depends on,
 the artifact on Maven Central contains only libcobj itself. Maven and Gradle download its dependencies (such as the PostgreSQL JDBC driver and SQLite JDBC) automatically.
 
