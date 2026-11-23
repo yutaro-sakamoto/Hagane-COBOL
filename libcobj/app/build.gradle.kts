@@ -209,7 +209,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.14")
 
     // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
-    "javadocI18nImplementation"("org.yaml:snakeyaml:2.5")
+    "javadocI18nImplementation"("org.yaml:snakeyaml:2.7")
     "javadocI18nTestImplementation"("org.junit.jupiter:junit-jupiter:5.14.4")
     "javadocI18nTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
 }
