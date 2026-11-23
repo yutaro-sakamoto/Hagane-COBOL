@@ -195,7 +195,7 @@ dependencies {
     implementation("com.google.guava:guava:33.8.0-jre")
     implementation("org.xerial:sqlite-jdbc:3.54.1.0")
     implementation("commons-cli:commons-cli:1.11.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.14.4")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.3")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.testcontainers:testcontainers:2.0.5")
     testImplementation("org.testcontainers:junit-jupiter:1.21.4")
@@ -210,7 +210,7 @@ dependencies {
 
     // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
     "javadocI18nImplementation"("org.yaml:snakeyaml:2.7")
-    "javadocI18nTestImplementation"("org.junit.jupiter:junit-jupiter:5.14.4")
+    "javadocI18nTestImplementation"("org.junit.jupiter:junit-jupiter:6.1.3")
     "javadocI18nTestRuntimeOnly"("org.junit.platform:junit-platform-launcher")
 }
 
