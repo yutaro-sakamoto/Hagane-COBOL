@@ -11,7 +11,7 @@ plugins {
     pmd
     id("com.github.spotbugs") version "6.5.13"
     jacoco
-    id("org.cyclonedx.bom") version "3.4.1"
+    id("org.cyclonedx.bom") version "3.6.1"
 }
 
 repositories {
