@@ -235,8 +235,22 @@ public class CobolInspect {
      *
      * @param var INSPECTの対象となるフィールド
      * @param replacing REPLACING(置換)を行う場合は0以外、TALLYING(計数)の場合は0
+     * @deprecated 以前のcobjが生成したコードとの互換性のために残している。{@link #init(AbstractCobolField,
+     *     boolean)}を使うこと。
      */
+    @Deprecated
     public static void init(AbstractCobolField var, int replacing) {
+        init(var, replacing != 0);
+    }
+
+    /**
+     * libcob/strings.cのcob_inspect_initの実装。<br>
+     * INSPECT文の処理を開始し、対象フィールドや処理状況を記録する各種状態を初期化する。
+     *
+     * @param var INSPECTの対象となるフィールド
+     * @param replacing REPLACING(置換)を行う場合はtrue、TALLYING(計数)の場合はfalse
+     */
+    public static void init(AbstractCobolField var, boolean replacing) {
         State st = state.get();
         st.inspectVarCopy = var;
         st.inspectVar = st.inspectVarCopy;
@@ -246,7 +260,7 @@ public class CobolInspect {
             st.inspectVar.putSign(1);
         }
 
-        st.inspectReplacing = replacing;
+        st.inspectReplacing = replacing ? 1 : 0;
         st.inspectSize = var.getFieldSize();
         st.inspectData = var.getDataStorage();
         st.inspectStart = -1;

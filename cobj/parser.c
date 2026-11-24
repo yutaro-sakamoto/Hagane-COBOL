@@ -7705,13 +7705,13 @@ yyreduce:
 
   case 450: /* ascending_or_descending: ASCENDING  */
 #line 3087 "parser.y"
-                                { yyval = cb_int (COB_ASCENDING); }
+                                { yyval = cb_int_flag (COB_ASCENDING, CB_INT_FLAG_SORT_DIR); }
 #line 7710 "parser.c"
     break;
 
   case 451: /* ascending_or_descending: DESCENDING  */
 #line 3088 "parser.y"
-                                { yyval = cb_int (COB_DESCENDING); }
+                                { yyval = cb_int_flag (COB_DESCENDING, CB_INT_FLAG_SORT_DIR); }
 #line 7716 "parser.c"
     break;
 
@@ -11205,7 +11205,7 @@ yyreduce:
 
   case 1089: /* @84: %empty  */
 #line 5844 "parser.y"
-                                { yyval = cb_int (COB_EQ); }
+                                { yyval = cb_int_flag (COB_EQ, CB_INT_FLAG_START); }
 #line 11210 "parser.c"
     break;
 
@@ -11245,31 +11245,31 @@ yyreduce:
 
   case 1093: /* start_op: flag_not eq  */
 #line 5873 "parser.y"
-                        { yyval = cb_int ((yyvsp[-1] == cb_int1) ? COB_NE : COB_EQ); }
+                        { yyval = cb_int_flag ((yyvsp[-1] == cb_int1) ? COB_NE : COB_EQ, CB_INT_FLAG_START); }
 #line 11250 "parser.c"
     break;
 
   case 1094: /* start_op: flag_not gt  */
 #line 5874 "parser.y"
-                        { yyval = cb_int ((yyvsp[-1] == cb_int1) ? COB_LE : COB_GT); }
+                        { yyval = cb_int_flag ((yyvsp[-1] == cb_int1) ? COB_LE : COB_GT, CB_INT_FLAG_START); }
 #line 11256 "parser.c"
     break;
 
   case 1095: /* start_op: flag_not lt  */
 #line 5875 "parser.y"
-                        { yyval = cb_int ((yyvsp[-1] == cb_int1) ? COB_GE : COB_LT); }
+                        { yyval = cb_int_flag ((yyvsp[-1] == cb_int1) ? COB_GE : COB_LT, CB_INT_FLAG_START); }
 #line 11262 "parser.c"
     break;
 
   case 1096: /* start_op: flag_not ge  */
 #line 5876 "parser.y"
-                        { yyval = cb_int ((yyvsp[-1] == cb_int1) ? COB_LT : COB_GE); }
+                        { yyval = cb_int_flag ((yyvsp[-1] == cb_int1) ? COB_LT : COB_GE, CB_INT_FLAG_START); }
 #line 11268 "parser.c"
     break;
 
   case 1097: /* start_op: flag_not le  */
 #line 5877 "parser.y"
-                        { yyval = cb_int ((yyvsp[-1] == cb_int1) ? COB_GT : COB_LE); }
+                        { yyval = cb_int_flag ((yyvsp[-1] == cb_int1) ? COB_GT : COB_LE, CB_INT_FLAG_START); }
 #line 11274 "parser.c"
     break;
 

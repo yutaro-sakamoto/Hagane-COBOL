@@ -411,12 +411,26 @@ public class CobolString {
 
     /**
      * UNSTRING文の区切り文字を追加する。区切り文字が省略された場合のオーバーロード。<br>
-     * 整数のダミー引数を受け取って{@link #unstringDelimited(AbstractCobolField, int)}へ委譲する。
+     * 整数のダミー引数を受け取って{@link #unstringDelimited(AbstractCobolField, boolean)}へ委譲する。
      *
      * @param dlm 区切り文字が省略されたことを表すダミー引数
      * @param all DELIMITED BY ALL指定の有無を表す値
+     * @deprecated 以前のcobjが生成したコードとの互換性のために残している。{@link #unstringDelimited(int,
+     *     boolean)}を使うこと。
      */
+    @Deprecated
     public static void unstringDelimited(int dlm, int all) {
+        unstringDelimited(null, all != 0);
+    }
+
+    /**
+     * UNSTRING文の区切り文字を追加する。区切り文字が省略された場合のオーバーロード。<br>
+     * 整数のダミー引数を受け取って{@link #unstringDelimited(AbstractCobolField, boolean)}へ委譲する。
+     *
+     * @param dlm 区切り文字が省略されたことを表すダミー引数
+     * @param all DELIMITED BY ALL指定がある場合はtrue
+     */
+    public static void unstringDelimited(int dlm, boolean all) {
         unstringDelimited(null, all);
     }
 
@@ -428,8 +442,25 @@ public class CobolString {
      *
      * @param dlm 区切り文字フィールド
      * @param all DELIMITED BY ALL指定の有無を表す値
+     * @deprecated 以前のcobjが生成したコードとの互換性のために残している。{@link
+     *     #unstringDelimited(AbstractCobolField, boolean)}を使うこと。
      */
+    @Deprecated
     public static void unstringDelimited(AbstractCobolField dlm, int all) {
+        unstringDelimited(dlm, all != 0);
+    }
+
+    /**
+     * UNSTRING文の区切り文字(DELIMITED BY)を1個、区切り文字リストへ追加する。<br>
+     * 分解対象が日本語項目の場合は、引用符・空白・ゼロの定数を対応する全角の定数に置き換える。
+     * 全角空白の場合はさらに全角ブランクの区切り文字も追加する。<br>
+     * allがtrueの場合はDELIMITED BY ALL指定であり、連続する区切り文字をまとめて1個の区切りとして扱う。
+     *
+     * @param dlm 区切り文字フィールド
+     * @param all DELIMITED BY ALL指定がある場合はtrue
+     */
+    public static void unstringDelimited(AbstractCobolField dlm, boolean all) {
+        int allFlag = all ? 1 : 0;
         State st = state.get();
         AbstractCobolField addDlm = null;
 
@@ -450,12 +481,12 @@ public class CobolString {
         }
 
         st.dlmList[st.unstringNdlms].dlm = dlm;
-        st.dlmList[st.unstringNdlms].all = all;
+        st.dlmList[st.unstringNdlms].all = allFlag;
         st.unstringNdlms++;
 
         if (addDlm != null) {
             st.dlmList[st.unstringNdlms].dlm = addDlm;
-            st.dlmList[st.unstringNdlms].all = all;
+            st.dlmList[st.unstringNdlms].all = allFlag;
             st.unstringNdlms++;
         }
     }

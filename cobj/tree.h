@@ -378,7 +378,10 @@ enum cb_int_flag_kind {
   CB_INT_FLAG_READ,     /* CobolFile.COB_READ_* (bit mask) */
   CB_INT_FLAG_WRITE,    /* CobolFile.COB_WRITE_* (bit mask + line/channel) */
   CB_INT_FLAG_OPEN,     /* CobolFile.COB_OPEN_* (single value) */
-  CB_INT_FLAG_CLOSE     /* CobolFile.COB_CLOSE_* (single value) */
+  CB_INT_FLAG_CLOSE,    /* CobolFile.COB_CLOSE_* (single value) */
+  CB_INT_FLAG_START,    /* CobolFile.COB_EQ etc. (single value) */
+  CB_INT_FLAG_SORT_DIR, /* CobolFileSort.COB_ASCENDING/DESCENDING */
+  CB_INT_FLAG_BOOLEAN   /* true (non-zero) or false (zero) */
 };
 
 struct cb_integer {

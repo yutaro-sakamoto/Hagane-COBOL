@@ -28,21 +28,6 @@ import org.haganecobol.libcobj.data.AbstractCobolField;
 /** TODO: 準備中 */
 public class CobolRelativeFile extends CobolFile {
 
-    /** TODO: 準備中 */
-    protected static final int COB_EQ = 1;
-
-    /** TODO: 準備中 */
-    protected static final int COB_LT = 2;
-
-    /** TODO: 準備中 */
-    protected static final int COB_LE = 3;
-
-    /** TODO: 準備中 */
-    protected static final int COB_GT = 4;
-
-    /** TODO: 準備中 */
-    protected static final int COB_GE = 5;
-
     RandomAccessFile fp;
     byte[] size = new byte[8];
 

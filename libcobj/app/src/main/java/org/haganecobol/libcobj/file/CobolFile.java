@@ -42,32 +42,32 @@ import org.haganecobol.libcobj.exceptions.CobolStopRunException;
 
 /** INDEXED, RELATIVE, SEQUENTIAL, LINE SEQUENTIAL等のCOBOLの ファイルを実装するための基底クラス */
 public class CobolFile {
-    /** TODO: 準備中 */
-    protected static final int COB_ORG_SEQUENTIAL = 0;
+    /** 編成：順編成（{@code ORGANIZATION SEQUENTIAL}）。 */
+    public static final int COB_ORG_SEQUENTIAL = 0;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ORG_LINE_SEQUENTIAL = 1;
+    /** 編成：行順編成（{@code ORGANIZATION LINE SEQUENTIAL}）。 */
+    public static final int COB_ORG_LINE_SEQUENTIAL = 1;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ORG_RELATIVE = 2;
+    /** 編成：相対編成（{@code ORGANIZATION RELATIVE}）。 */
+    public static final int COB_ORG_RELATIVE = 2;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ORG_INDEXED = 3;
+    /** 編成：索引編成（{@code ORGANIZATION INDEXED}）。 */
+    public static final int COB_ORG_INDEXED = 3;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ORG_SORT = 4;
+    /** 編成：整列併合用ファイル（{@code SD}で定義したファイル）。 */
+    public static final int COB_ORG_SORT = 4;
 
     /** TODO: 準備中 */
     protected static final int COB_ORG_MAX = 5;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ACCESS_SEQUENTIAL = 1;
+    /** アクセスモード：順次アクセス（{@code ACCESS MODE SEQUENTIAL}）。 */
+    public static final int COB_ACCESS_SEQUENTIAL = 1;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ACCESS_DYNAMIC = 2;
+    /** アクセスモード：動的アクセス（{@code ACCESS MODE DYNAMIC}）。 */
+    public static final int COB_ACCESS_DYNAMIC = 2;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ACCESS_RANDOM = 3;
+    /** アクセスモード：乱アクセス（{@code ACCESS MODE RANDOM}）。 */
+    public static final int COB_ACCESS_RANDOM = 3;
 
     /** TODO: 準備中 */
     protected static final int COB_IO_OPEN = 0;
@@ -321,6 +321,33 @@ public class CobolFile {
     /** TODO: 準備中 */
     protected static final int COB_NOT_CONFIGURED = 32768;
 
+    /** 特殊ファイルの種類：特殊ファイルではない通常のファイル。 */
+    public static final int COB_SPECIAL_NONE = 0;
+
+    /** 特殊ファイルの種類：標準入力に割り当てたファイル（{@code ASSIGN TO KEYBOARD}）。 */
+    public static final int COB_SPECIAL_KEYBOARD = 1;
+
+    /** 特殊ファイルの種類：標準出力に割り当てたファイル（{@code ASSIGN TO DISPLAY}）。 */
+    public static final int COB_SPECIAL_DISPLAY = 2;
+
+    /** {@code START}/{@code READ}の比較条件：キーが等しい（{@code =}）。 */
+    public static final int COB_EQ = 1;
+
+    /** {@code START}/{@code READ}の比較条件：キーが小さい（{@code <}）。 */
+    public static final int COB_LT = 2;
+
+    /** {@code START}/{@code READ}の比較条件：キーが小さいか等しい（{@code <=}）。 */
+    public static final int COB_LE = 3;
+
+    /** {@code START}/{@code READ}の比較条件：キーが大きい（{@code >}）。 */
+    public static final int COB_GT = 4;
+
+    /** {@code START}/{@code READ}の比較条件：キーが大きいか等しい（{@code >=}）。 */
+    public static final int COB_GE = 5;
+
+    /** {@code START}/{@code READ}の比較条件：キーが等しくない（{@code <>}）。 */
+    public static final int COB_NE = 6;
+
     /** TODO: 準備中 */
     public static final int COB_SELECT_FILE_STATUS = 0x01;
 
@@ -354,17 +381,17 @@ public class CobolFile {
     /** TODO: 準備中 */
     protected static final int COB_SMALL_MAX = COB_SMALL_BUFF - 1;
 
-    /** TODO: 準備中 */
-    protected static final int COB_LOCK_EXCLUSIVE = 1;
+    /** ロックモード：排他（{@code LOCK MODE EXCLUSIVE}）。 */
+    public static final int COB_LOCK_EXCLUSIVE = 1;
 
-    /** TODO: 準備中 */
-    protected static final int COB_LOCK_MANUAL = 2;
+    /** ロックモード：手動ロック（{@code LOCK MODE MANUAL}）。 */
+    public static final int COB_LOCK_MANUAL = 2;
 
-    /** TODO: 準備中 */
-    protected static final int COB_LOCK_AUTOMATIC = 4;
+    /** ロックモード：自動ロック（{@code LOCK MODE AUTOMATIC}）。 */
+    public static final int COB_LOCK_AUTOMATIC = 4;
 
-    /** TODO: 準備中 */
-    protected static final int COB_LOCK_MULTIPLE = 8;
+    /** ロックモード：複数レコードのロック（{@code WITH LOCK ON MULTIPLE RECORDS}）。他のロックモードと論理和で組み合わせる。 */
+    public static final int COB_LOCK_MULTIPLE = 8;
 
     /** TODO: 準備中 */
     protected static final int COB_LOCK_MASK = 0x7;
@@ -1009,7 +1036,7 @@ public class CobolFile {
         this.flag_first_read = 2;
 
         if (this.special != 0) {
-            if (this.special == 1) {
+            if (this.special == COB_SPECIAL_KEYBOARD) {
                 if (mode != COB_OPEN_INPUT) {
                     saveStatus(COB_STATUS_30_PERMANENT_ERROR, fnstatus);
                     return;

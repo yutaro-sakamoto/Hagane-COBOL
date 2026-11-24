@@ -1374,10 +1374,60 @@ static const struct int_flag_name write_flag_names[] = {
     {0, NULL}};
 
 static const struct int_flag_name open_mode_names[] = {
+    {COB_OPEN_CLOSED, "CobolFile.COB_OPEN_CLOSED"},
     {COB_OPEN_INPUT, "CobolFile.COB_OPEN_INPUT"},
     {COB_OPEN_OUTPUT, "CobolFile.COB_OPEN_OUTPUT"},
     {COB_OPEN_I_O, "CobolFile.COB_OPEN_I_O"},
     {COB_OPEN_EXTEND, "CobolFile.COB_OPEN_EXTEND"},
+    {0, NULL}};
+
+static const struct int_flag_name start_cond_names[] = {
+    {COB_EQ, "CobolFile.COB_EQ"},
+    {COB_LT, "CobolFile.COB_LT"},
+    {COB_LE, "CobolFile.COB_LE"},
+    {COB_GT, "CobolFile.COB_GT"},
+    {COB_GE, "CobolFile.COB_GE"},
+    {COB_NE, "CobolFile.COB_NE"},
+    {0, NULL}};
+
+static const struct int_flag_name sort_dir_names[] = {
+    {COB_ASCENDING, "CobolFileSort.COB_ASCENDING"},
+    {COB_DESCENDING, "CobolFileSort.COB_DESCENDING"},
+    {0, NULL}};
+
+static const struct int_flag_name file_org_names[] = {
+    {COB_ORG_SEQUENTIAL, "CobolFile.COB_ORG_SEQUENTIAL"},
+    {COB_ORG_LINE_SEQUENTIAL, "CobolFile.COB_ORG_LINE_SEQUENTIAL"},
+    {COB_ORG_RELATIVE, "CobolFile.COB_ORG_RELATIVE"},
+    {COB_ORG_INDEXED, "CobolFile.COB_ORG_INDEXED"},
+    {COB_ORG_SORT, "CobolFile.COB_ORG_SORT"},
+    {0, NULL}};
+
+static const struct int_flag_name file_access_names[] = {
+    {COB_ACCESS_SEQUENTIAL, "CobolFile.COB_ACCESS_SEQUENTIAL"},
+    {COB_ACCESS_DYNAMIC, "CobolFile.COB_ACCESS_DYNAMIC"},
+    {COB_ACCESS_RANDOM, "CobolFile.COB_ACCESS_RANDOM"},
+    {0, NULL}};
+
+static const struct int_flag_name file_lock_names[] = {
+    {COB_LOCK_EXCLUSIVE, "CobolFile.COB_LOCK_EXCLUSIVE"},
+    {COB_LOCK_MANUAL, "CobolFile.COB_LOCK_MANUAL"},
+    {COB_LOCK_AUTOMATIC, "CobolFile.COB_LOCK_AUTOMATIC"},
+    {COB_LOCK_MULTIPLE, "CobolFile.COB_LOCK_MULTIPLE"},
+    {0, NULL}};
+
+/* values of cb_file.special (see cb_build_assignment_name) */
+static const struct int_flag_name file_special_names[] = {
+    {0, "CobolFile.COB_SPECIAL_NONE"},
+    {1, "CobolFile.COB_SPECIAL_KEYBOARD"},
+    {2, "CobolFile.COB_SPECIAL_DISPLAY"},
+    {0, NULL}};
+
+static const struct int_flag_name file_select_names[] = {
+    {COB_SELECT_FILE_STATUS, "CobolFile.COB_SELECT_FILE_STATUS"},
+    {COB_SELECT_EXTERNAL, "CobolFile.COB_SELECT_EXTERNAL"},
+    {COB_SELECT_LINAGE, "CobolFile.COB_SELECT_LINAGE"},
+    {COB_SELECT_SPLITKEY, "CobolFile.COB_SELECT_SPLITKEY"},
     {0, NULL}};
 
 static const struct int_flag_name close_option_names[] = {
@@ -1461,10 +1511,37 @@ static void joutput_int_flag(struct cb_integer *p) {
   case CB_INT_FLAG_CLOSE:
     joutput_int_enum(p->val, close_option_names);
     break;
+  case CB_INT_FLAG_START:
+    joutput_int_enum(p->val, start_cond_names);
+    break;
+  case CB_INT_FLAG_SORT_DIR:
+    joutput_int_enum(p->val, sort_dir_names);
+    break;
+  case CB_INT_FLAG_BOOLEAN:
+    joutput("%s", p->val ? "true" : "false");
+    break;
   default:
     joutput("%d", p->val);
     break;
   }
+}
+
+/*
+ * Output a char argument of the CobolFile constructor as a cast of
+ * named constants, e.g. "(char)CobolFile.COB_ORG_INDEXED"
+ */
+static void joutput_file_char_param(const char *name, int val,
+                                    const struct int_flag_name *names,
+                                    int is_bits) {
+  joutput_prefix();
+  joutput("/* %s = */ (char)", name);
+  if (is_bits) {
+    joutput_int_bits(val, names);
+  } else {
+    joutput_int_enum(val, names);
+  }
+  joutput(",");
+  joutput_newline();
 }
 
 /*
@@ -4825,22 +4902,24 @@ static void joutput_file_initialization(struct cb_file *f) {
   }
   // joutput_line ("/* file = */ null,", CB_PREFIX_FILE, f->cname);
 
-  joutput_line("/* organization = */ (char)%d,", f->organization);
-  joutput_line("/* access_mode = */ (char)%d,", f->access_mode);
-  joutput_line("/* lock_mode = */ (char)%d,", f->lock_mode);
-  joutput_line("/* open_mode = */ (char)0,");
+  joutput_file_char_param("organization", f->organization, file_org_names, 0);
+  joutput_file_char_param("access_mode", f->access_mode, file_access_names, 0);
+  joutput_file_char_param("lock_mode", f->lock_mode, file_lock_names, 1);
+  joutput_file_char_param("open_mode", COB_OPEN_CLOSED, open_mode_names, 0);
   joutput_line("/* flag_optional = */ %s,", f->optional ? "true" : "false");
-  joutput_line("/* last_open_mode = */ (char)0,");
-  joutput_line("/* special = */ (char)%d,", f->special);
+  joutput_file_char_param("last_open_mode", COB_OPEN_CLOSED, open_mode_names,
+                          0);
+  joutput_file_char_param("special", f->special, file_special_names, 0);
   joutput_line("/* flag_nonexistent = */ false,");
   joutput_line("/* flag_end_of_file = */ false,");
   joutput_line("/* flag_begin_of_file = */ false,");
   joutput_line("/* flag_first_read = */ (char)0,");
   joutput_line("/* flag_read_done = */ false,");
-  joutput_line("/* flag_select_features = */ (char)%d,",
-               ((f->file_status ? COB_SELECT_FILE_STATUS : 0) |
-                (f->linage ? COB_SELECT_LINAGE : 0) |
-                (f->external_assign ? COB_SELECT_EXTERNAL : 0)));
+  joutput_file_char_param("flag_select_features",
+                          ((f->file_status ? COB_SELECT_FILE_STATUS : 0) |
+                           (f->linage ? COB_SELECT_LINAGE : 0) |
+                           (f->external_assign ? COB_SELECT_EXTERNAL : 0)),
+                          file_select_names, 1);
   joutput_line("/* flag_needs_nl = */ false,");
   joutput_line("/* flag_needs_top = */ false,");
   joutput_line("/* file_version = */ (char)%d", COB_FILE_VERSION);
