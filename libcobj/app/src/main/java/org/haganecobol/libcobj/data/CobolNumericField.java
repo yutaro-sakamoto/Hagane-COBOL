@@ -770,6 +770,10 @@ public class CobolNumericField extends AbstractCobolField {
         /* carry up */
         while (--sp >= firstDataIndex) {
             byte val = data.getByte(sp);
+            if (val >= 0x70) {
+                // SIGN LEADINGの符号のオーバーパンチを外す
+                val -= 0x40;
+            }
             data.setByte(sp, (byte) (val + 1));
             if (val + 1 <= '9') {
                 return 0;
@@ -817,6 +821,10 @@ public class CobolNumericField extends AbstractCobolField {
         /* carry up */
         while (--sp >= firstDataIndex) {
             byte val = data.getByte(sp);
+            if (val >= 0x70) {
+                // SIGN LEADINGの符号のオーバーパンチを外す
+                val -= 0x40;
+            }
             data.setByte(sp, (byte) (val - 1));
             if (val - 1 >= '0') {
                 return 0;
