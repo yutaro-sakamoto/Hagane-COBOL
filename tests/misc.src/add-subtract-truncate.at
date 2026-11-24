@@ -1,0 +1,55 @@
+AT_SETUP([ADD/SUBTRACT truncate high-order digits on overflow])
+
+AT_DATA([prog.cbl], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 A PIC 9(2) VALUE 99.
+       01 B PIC S9(2) VALUE -99.
+       01 C PIC 9(2) VALUE 99.
+       01 D PIC S9(2) VALUE -99.
+       01 E PIC 9(2) VALUE 99.
+       01 F PIC S9(2) VALUE -99.
+       01 G PIC 9(2) VALUE 99.
+       01 H PIC S9(2) VALUE -99.
+       01 N PIC 9(2) VALUE 20.
+       PROCEDURE DIVISION.
+           ADD 20 TO A.
+           DISPLAY "A: " A.
+           SUBTRACT 20 FROM B.
+           DISPLAY "B: " B.
+           ADD N TO C.
+           DISPLAY "C: " C.
+           SUBTRACT N FROM D.
+           DISPLAY "D: " D.
+           ADD 12345 TO G.
+           DISPLAY "G: " G.
+           SUBTRACT 1 FROM H.
+           DISPLAY "H: " H.
+           ADD 20 TO E
+             ON SIZE ERROR DISPLAY "E: SIZE ERROR"
+           END-ADD.
+           DISPLAY "E: " E.
+           SUBTRACT 20 FROM F
+             ON SIZE ERROR DISPLAY "F: SIZE ERROR"
+           END-SUBTRACT.
+           DISPLAY "F: " F.
+           STOP RUN.
+])
+
+AT_CHECK([${COBJ} prog.cbl])
+AT_CHECK([java prog], [0],
+[A: 19
+B: -19
+C: 19
+D: -19
+G: 44
+H: +00
+E: SIZE ERROR
+E: 99
+F: SIZE ERROR
+F: -99
+])
+
+AT_CLEANUP
