@@ -5,7 +5,7 @@ import org.cyclonedx.model.Component
 plugins {
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "7.2.1"
+    id("com.diffplug.spotless") version "8.12.0"
     id("java")
     id("maven-publish")
     pmd
