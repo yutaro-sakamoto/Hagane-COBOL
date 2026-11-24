@@ -304,20 +304,18 @@
     true if DELIMITED BY ALL is specified
 - ja: |-
     UNSTRING文の区切り文字(DELIMITED BY)を1個、区切り文字リストへ追加する。<br>
-    分解対象が日本語項目の場合は、引用符・空白・ゼロの定数を対応する全角の定数に置き換える。
-    全角空白の場合はさらに全角ブランクの区切り文字も追加する。<br>
-    allが0以外の場合はDELIMITED BY ALL指定であり、連続する区切り文字をまとめて1個の区切りとして扱う。
+    allを整数で受け取る版。{@link #unstringDelimited(AbstractCobolField, boolean)}へ委譲する。
   en: |-
     Adds one delimiter (DELIMITED BY) of the UNSTRING statement to the delimiter list.<br>
-    If the field to be split is a national item, replaces the quote, space, and zero constants with the
-    corresponding full-width constants.
-    For a full-width space, also adds a full-width blank delimiter.<br>
-    If all is non-zero, DELIMITED BY ALL is specified, and consecutive delimiters are treated together as a
-    single delimiter.
+    Version that takes all as an integer. Delegates to {@link #unstringDelimited(AbstractCobolField, boolean)}.
 - ja: |-
     区切り文字フィールド
   en: |-
     the delimiter field
+- ja: |-
+    DELIMITED BY ALL指定がある場合は0以外
+  en: |-
+    non-zero if DELIMITED BY ALL is specified
 - ja: |-
     以前のcobjが生成したコードとの互換性のために残している。{@link
         #unstringDelimited(AbstractCobolField, boolean)}を使うこと。

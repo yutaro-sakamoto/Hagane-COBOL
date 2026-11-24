@@ -436,12 +436,10 @@ public class CobolString {
 
     /**
      * UNSTRING文の区切り文字(DELIMITED BY)を1個、区切り文字リストへ追加する。<br>
-     * 分解対象が日本語項目の場合は、引用符・空白・ゼロの定数を対応する全角の定数に置き換える。
-     * 全角空白の場合はさらに全角ブランクの区切り文字も追加する。<br>
-     * allが0以外の場合はDELIMITED BY ALL指定であり、連続する区切り文字をまとめて1個の区切りとして扱う。
+     * allを整数で受け取る版。{@link #unstringDelimited(AbstractCobolField, boolean)}へ委譲する。
      *
      * @param dlm 区切り文字フィールド
-     * @param all DELIMITED BY ALL指定の有無を表す値
+     * @param all DELIMITED BY ALL指定がある場合は0以外
      * @deprecated 以前のcobjが生成したコードとの互換性のために残している。{@link
      *     #unstringDelimited(AbstractCobolField, boolean)}を使うこと。
      */
