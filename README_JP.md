@@ -177,6 +177,33 @@ $ java HELLO
 HELLO WORLD!
 ```
 
+## Maven Centralからlibcobj.jarを利用する
+
+ランタイムライブラリ`libcobj.jar`は、リリースのたびに`org.haganecobol:libcobj`として[Maven Central](https://central.sonatype.com/artifact/org.haganecobol/libcobj)に公開しています。
+MavenやGradleでビルドするJavaプロジェクトは、Hagane COBOLをインストールしなくても、これを依存関係に加えることで、`cobj`が生成したJavaプログラムをコンパイル・実行したり、Javaから呼び出したりできます。
+
+Maven (`pom.xml`):
+
+```xml
+<dependency>
+  <groupId>org.haganecobol</groupId>
+  <artifactId>libcobj</artifactId>
+  <version>2.0.0</version>
+</dependency>
+```
+
+Gradle (`build.gradle.kts`):
+
+```kotlin
+dependencies {
+    implementation("org.haganecobol:libcobj:2.0.0")
+}
+```
+
+libcobjのバージョンは、COBOLプログラムを変換した`cobj`のバージョンと揃えてください。
+Maven Centralにあるのは、Maven Centralへの公開を始めた後のリリースだけです。公開済みのバージョンは[バージョン一覧](https://central.sonatype.com/artifact/org.haganecobol/libcobj/versions)で確認できます。
+`make install`でインストールされる`libcobj.jar`やGitHubのリリースに添付される`libcobj.jar`は依存ライブラリを同梱していますが、Maven Centralのものはlibcobj本体だけを含みます。依存ライブラリ(PostgreSQLのJDBCドライバやSQLite JDBCなど)はMavenやGradleが自動的にダウンロードします。
+
 ## 使い方
 コンパイルします。
 ```bash

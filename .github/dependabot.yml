@@ -8,6 +8,13 @@ updates:
     directory: "/libcobj"
     schedule:
       interval: "daily"
+    ignore:
+      # 0.36.0 and later require Gradle to run on Java 17, but libcobj is also
+      # built with Java 11. See libcobj/app/build.gradle.kts.
+      - dependency-name: "com.vanniktech.maven.publish"
+        versions: [">= 0.36.0"]
+      - dependency-name: "com.vanniktech:gradle-maven-publish-plugin"
+        versions: [">= 0.36.0"]
   - package-ecosystem: "npm"
     directory: "/website"
     schedule:
