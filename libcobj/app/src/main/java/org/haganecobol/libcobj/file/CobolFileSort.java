@@ -50,11 +50,11 @@ public class CobolFileSort {
     /** TODO: 準備中 */
     protected static final int COBSORTNOTOPEN = 4;
 
-    /** TODO: 準備中 */
-    protected static final int COB_ASCENDING = 0;
+    /** 整列キーの順序：昇順（{@code ASCENDING KEY}）。 */
+    public static final int COB_ASCENDING = 0;
 
-    /** TODO: 準備中 */
-    protected static final int COB_DESCENDING = 1;
+    /** 整列キーの順序：降順（{@code DESCENDING KEY}）。 */
+    public static final int COB_DESCENDING = 1;
 
     @SuppressWarnings("PMD.AvoidUsingVolatile")
     private static volatile String cob_process_id = "";

@@ -8,9 +8,77 @@
     Base class for implementing COBOL files such as INDEXED, RELATIVE, SEQUENTIAL and LINE SEQUENTIAL
     files.
 - ja: |-
+    編成：順編成（{@code ORGANIZATION SEQUENTIAL}）。
+  en: |-
+    Organization: sequential ({@code ORGANIZATION SEQUENTIAL}).
+- ja: |-
+    編成：行順編成（{@code ORGANIZATION LINE SEQUENTIAL}）。
+  en: |-
+    Organization: line sequential ({@code ORGANIZATION LINE SEQUENTIAL}).
+- ja: |-
+    編成：相対編成（{@code ORGANIZATION RELATIVE}）。
+  en: |-
+    Organization: relative ({@code ORGANIZATION RELATIVE}).
+- ja: |-
+    編成：索引編成（{@code ORGANIZATION INDEXED}）。
+  en: |-
+    Organization: indexed ({@code ORGANIZATION INDEXED}).
+- ja: |-
+    編成：整列併合用ファイル（{@code SD}で定義したファイル）。
+  en: |-
+    Organization: sort-merge file (a file defined with {@code SD}).
+- ja: |-
     TODO: 準備中
   en: |-
     TODO: Not documented yet.
+- ja: |-
+    アクセスモード：順次アクセス（{@code ACCESS MODE SEQUENTIAL}）。
+  en: |-
+    Access mode: sequential ({@code ACCESS MODE SEQUENTIAL}).
+- ja: |-
+    アクセスモード：動的アクセス（{@code ACCESS MODE DYNAMIC}）。
+  en: |-
+    Access mode: dynamic ({@code ACCESS MODE DYNAMIC}).
+- ja: |-
+    アクセスモード：乱アクセス（{@code ACCESS MODE RANDOM}）。
+  en: |-
+    Access mode: random ({@code ACCESS MODE RANDOM}).
+- ja: |-
+    特殊ファイルの種類：特殊ファイルではない通常のファイル。
+  en: |-
+    Kind of special file: an ordinary file, not a special file.
+- ja: |-
+    特殊ファイルの種類：標準入力に割り当てたファイル（{@code ASSIGN TO KEYBOARD}）。
+  en: |-
+    Kind of special file: a file assigned to the standard input ({@code ASSIGN TO KEYBOARD}).
+- ja: |-
+    特殊ファイルの種類：標準出力に割り当てたファイル（{@code ASSIGN TO DISPLAY}）。
+  en: |-
+    Kind of special file: a file assigned to the standard output ({@code ASSIGN TO DISPLAY}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが等しい（{@code =}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is equal ({@code =}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが小さい（{@code <}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is less ({@code <}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが小さいか等しい（{@code <=}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is less or equal ({@code <=}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが大きい（{@code >}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is greater ({@code >}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが大きいか等しい（{@code >=}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is greater or equal ({@code >=}).
+- ja: |-
+    {@code START}/{@code READ}の比較条件：キーが等しくない（{@code <>}）。
+  en: |-
+    Comparison condition for {@code START}/{@code READ}: the key is not equal ({@code <>}).
 - ja: |-
     現在のスレッドで直近にI/Oステータスが設定されたファイルを取得する。
   en: |-
@@ -19,6 +87,22 @@
     直近にI/Oが行われたファイル。まだI/Oが行われていない場合はnull
   en: |-
     the file on which I/O was most recently performed, or null if no I/O has been performed yet
+- ja: |-
+    ロックモード：排他（{@code LOCK MODE EXCLUSIVE}）。
+  en: |-
+    Lock mode: exclusive ({@code LOCK MODE EXCLUSIVE}).
+- ja: |-
+    ロックモード：手動ロック（{@code LOCK MODE MANUAL}）。
+  en: |-
+    Lock mode: manual ({@code LOCK MODE MANUAL}).
+- ja: |-
+    ロックモード：自動ロック（{@code LOCK MODE AUTOMATIC}）。
+  en: |-
+    Lock mode: automatic ({@code LOCK MODE AUTOMATIC}).
+- ja: |-
+    ロックモード：複数レコードのロック（{@code WITH LOCK ON MULTIPLE RECORDS}）。他のロックモードと論理和で組み合わせる。
+  en: |-
+    Lock mode: locks on multiple records ({@code WITH LOCK ON MULTIPLE RECORDS}). Combined with another lock mode by bitwise OR.
 - ja: |-
     改ページ(EOP)が発生したことを示すフラグ(スレッドごとに保持する)
   en: |-

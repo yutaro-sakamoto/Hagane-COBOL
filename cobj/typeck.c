@@ -3978,7 +3978,7 @@ void cb_emit_initialize(cb_tree vars, const cb_tree fillinit, cb_tree value,
  * INSPECT statement
  */
 
-void cb_emit_inspect(cb_tree var, cb_tree body, cb_tree replacing,
+void cb_emit_inspect(cb_tree var, cb_tree body, const cb_tree replacing,
                      int replconv) {
   switch (CB_TREE_TAG(var)) {
   case CB_TAG_REFERENCE:
@@ -4003,7 +4003,9 @@ void cb_emit_inspect(cb_tree var, cb_tree body, cb_tree replacing,
   if (replconv && sending_id) {
     cb_error(_("Invalid target for REPLACING/CONVERTING"));
   }
-  cb_emit(cb_build_funcall_2("CobolInspect.init", var, replacing));
+  cb_emit(cb_build_funcall_2(
+      "CobolInspect.init", var,
+      cb_int_flag(replacing != cb_int0, CB_INT_FLAG_BOOLEAN)));
   cb_emit_list(body);
   cb_emit(cb_build_funcall_0("CobolInspect.finish"));
 }
@@ -7267,11 +7269,12 @@ void cb_emit_unstring(cb_tree name, cb_tree delimited, cb_tree into,
   cb_emit(cb_build_funcall_0("CobolString.unstringFinish"));
 }
 
-cb_tree cb_build_unstring_delimited(cb_tree all, cb_tree value) {
+cb_tree cb_build_unstring_delimited(const cb_tree all, cb_tree value) {
   if (cb_validate_one(value)) {
     return cb_error_node;
   }
-  return cb_build_funcall_2("CobolString.unstringDelimited", value, all);
+  return cb_build_funcall_2("CobolString.unstringDelimited", value,
+                            cb_int_flag(all != cb_int0, CB_INT_FLAG_BOOLEAN));
 }
 
 cb_tree cb_build_unstring_into(cb_tree name, cb_tree delimiter, cb_tree count) {

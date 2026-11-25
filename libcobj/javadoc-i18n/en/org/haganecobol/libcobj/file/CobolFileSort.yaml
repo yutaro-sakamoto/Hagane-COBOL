@@ -7,6 +7,14 @@
   en: |-
     TODO: Not documented yet.
 - ja: |-
+    整列キーの順序：昇順（{@code ASCENDING KEY}）。
+  en: |-
+    Order of a sort key: ascending ({@code ASCENDING KEY}).
+- ja: |-
+    整列キーの順序：降順（{@code DESCENDING KEY}）。
+  en: |-
+    Order of a sort key: descending ({@code DESCENDING KEY}).
+- ja: |-
     実行単位(スレッド)ごとに保持する作業状態。<br>
     文の処理は複数のメソッド呼び出しにまたがって状態を共有するため、スレッドごとに独立させる。
   en: |-

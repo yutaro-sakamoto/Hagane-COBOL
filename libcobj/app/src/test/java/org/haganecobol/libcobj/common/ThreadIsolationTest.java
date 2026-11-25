@@ -213,7 +213,7 @@ class ThreadIsolationTest {
                             for (int i = 0; i < ITERATIONS; i++) {
                                 AbstractCobolField var = makeAlnum(sb.toString(), 24);
                                 AbstractCobolField counter = makeNumeric(0, 4);
-                                CobolInspect.init(var, 0);
+                                CobolInspect.init(var, false);
                                 CobolInspect.start();
                                 Thread.yield();
                                 CobolInspect.all(counter, makeAlnum(pattern, pattern.length()));

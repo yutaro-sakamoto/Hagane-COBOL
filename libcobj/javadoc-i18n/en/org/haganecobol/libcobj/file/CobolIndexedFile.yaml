@@ -44,30 +44,6 @@
     when {@code INF} is specified). A {@code WRITE} failure during this period undoes only the changes of
     that {@code WRITE}, using a savepoint.
 - ja: |-
-    {@code START}/{@code READ}の比較条件：キーが等しい（{@code =}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is equal ({@code =}).
-- ja: |-
-    {@code START}/{@code READ}の比較条件：キーが小さい（{@code <}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is less ({@code <}).
-- ja: |-
-    {@code START}/{@code READ}の比較条件：キーが小さいか等しい（{@code <=}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is less or equal ({@code <=}).
-- ja: |-
-    {@code START}/{@code READ}の比較条件：キーが大きい（{@code >}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is greater ({@code >}).
-- ja: |-
-    {@code START}/{@code READ}の比較条件：キーが大きいか等しい（{@code >=}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is greater or equal ({@code >=}).
-- ja: |-
-    {@code START}/{@code READ}の比較条件：キーが等しくない（{@code <>}）。
-  en: |-
-    Comparison condition for {@code START}/{@code READ}: the key is not equal ({@code <>}).
-- ja: |-
     このJVM(プロセス)を識別するUUID。クラス初期化時に1回だけ生成する。
   en: |-
     UUID identifying this JVM (process). Generated only once at class initialization.

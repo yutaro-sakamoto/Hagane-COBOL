@@ -66,24 +66,6 @@ public class CobolIndexedFile extends CobolFile {
     private int fetchKeyIndex = -1;
     private byte[] previousLockedRecordKey = null;
 
-    /** {@code START}/{@code READ}の比較条件：キーが等しい（{@code =}）。 */
-    public static final int COB_EQ = 1;
-
-    /** {@code START}/{@code READ}の比較条件：キーが小さい（{@code <}）。 */
-    public static final int COB_LT = 2;
-
-    /** {@code START}/{@code READ}の比較条件：キーが小さいか等しい（{@code <=}）。 */
-    public static final int COB_LE = 3;
-
-    /** {@code START}/{@code READ}の比較条件：キーが大きい（{@code >}）。 */
-    public static final int COB_GT = 4;
-
-    /** {@code START}/{@code READ}の比較条件：キーが大きいか等しい（{@code >=}）。 */
-    public static final int COB_GE = 5;
-
-    /** {@code START}/{@code READ}の比較条件：キーが等しくない（{@code <>}）。 */
-    public static final int COB_NE = 6;
-
     /** このJVM(プロセス)を識別するUUID。クラス初期化時に1回だけ生成する。 */
     private static final String PROCESS_UUID = java.util.UUID.randomUUID().toString();
 

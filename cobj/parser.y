@@ -3084,8 +3084,8 @@ occurs_key_list:
 ;
 
 ascending_or_descending:
-  ASCENDING			{ $$ = cb_int (COB_ASCENDING); }
-| DESCENDING			{ $$ = cb_int (COB_DESCENDING); }
+  ASCENDING			{ $$ = cb_int_flag (COB_ASCENDING, CB_INT_FLAG_SORT_DIR); }
+| DESCENDING			{ $$ = cb_int_flag (COB_DESCENDING, CB_INT_FLAG_SORT_DIR); }
 ;
 
 _occurs_indexed: | occurs_indexed;
@@ -5841,7 +5841,7 @@ sort_output:
 
 start_statement:
   START				{ BEGIN_STATEMENT ("START", TERM_START); }
-  file_name			{ $$ = cb_int (COB_EQ); }
+  file_name			{ $$ = cb_int_flag (COB_EQ, CB_INT_FLAG_START); }
   start_key opt_invalid_key
   end_start
   {
@@ -5870,11 +5870,11 @@ start_key:
 ;
 
 start_op:
-  flag_not eq		{ $$ = cb_int (($1 == cb_int1) ? COB_NE : COB_EQ); }
-| flag_not gt		{ $$ = cb_int (($1 == cb_int1) ? COB_LE : COB_GT); }
-| flag_not lt		{ $$ = cb_int (($1 == cb_int1) ? COB_GE : COB_LT); }
-| flag_not ge		{ $$ = cb_int (($1 == cb_int1) ? COB_LT : COB_GE); }
-| flag_not le		{ $$ = cb_int (($1 == cb_int1) ? COB_GT : COB_LE); }
+  flag_not eq		{ $$ = cb_int_flag (($1 == cb_int1) ? COB_NE : COB_EQ, CB_INT_FLAG_START); }
+| flag_not gt		{ $$ = cb_int_flag (($1 == cb_int1) ? COB_LE : COB_GT, CB_INT_FLAG_START); }
+| flag_not lt		{ $$ = cb_int_flag (($1 == cb_int1) ? COB_GE : COB_LT, CB_INT_FLAG_START); }
+| flag_not ge		{ $$ = cb_int_flag (($1 == cb_int1) ? COB_LT : COB_GE, CB_INT_FLAG_START); }
+| flag_not le		{ $$ = cb_int_flag (($1 == cb_int1) ? COB_GT : COB_LE, CB_INT_FLAG_START); }
 ;
 
 end_start:
