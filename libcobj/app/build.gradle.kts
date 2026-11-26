@@ -206,7 +206,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.20")
     runtimeOnly("org.slf4j:slf4j-simple:2.0.20")
     testImplementation("com.github.valfirst:slf4j-test:3.0.3")
-    implementation("org.postgresql:postgresql:42.7.14")
+    implementation("org.postgresql:postgresql:42.7.15")
 
     // Only used by the tool that translates the Javadoc. Not part of libcobj.jar.
     "javadocI18nImplementation"("org.yaml:snakeyaml:2.7")
