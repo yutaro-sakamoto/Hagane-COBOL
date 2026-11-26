@@ -1,0 +1,79 @@
+AT_SETUP([ADD/SUBTRACT truncate high-order digits on overflow])
+
+AT_DATA([prog.cbl], [
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. prog.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 A PIC 9(2) VALUE 99.
+       01 B PIC S9(2) VALUE -99.
+       01 C PIC 9(2) VALUE 99.
+       01 D PIC S9(2) VALUE -99.
+       01 E PIC 9(2) VALUE 99.
+       01 F PIC S9(2) VALUE -99.
+       01 G PIC 9(2) VALUE 99.
+       01 H PIC S9(2) VALUE -99.
+       01 N PIC 9(2) VALUE 20.
+       01 P PIC 9(2) COMP-3 VALUE 99.
+       01 Q PIC 9(2) COMP VALUE 99.
+       01 L1 PIC S9(2) SIGN LEADING VALUE -19.
+       01 L2 PIC S9(2) SIGN LEADING VALUE -05.
+       01 L3 PIC S9(2) SIGN LEADING VALUE -99.
+       01 L4 PIC S9(2) SIGN LEADING SEPARATE VALUE -99.
+       PROCEDURE DIVISION.
+           ADD 20 TO A.
+           DISPLAY "A: " A.
+           SUBTRACT 20 FROM B.
+           DISPLAY "B: " B.
+           ADD N TO C.
+           DISPLAY "C: " C.
+           SUBTRACT N FROM D.
+           DISPLAY "D: " D.
+           ADD 12345 TO G.
+           DISPLAY "G: " G.
+           SUBTRACT 1 FROM H.
+           DISPLAY "H: " H.
+           ADD 20 TO P.
+           DISPLAY "P: " P.
+           ADD 20 TO Q.
+           DISPLAY "Q: " Q.
+           SUBTRACT 1 FROM L1.
+           DISPLAY "L1: " L1.
+           ADD 6 TO L2.
+           DISPLAY "L2: " L2.
+           SUBTRACT 20 FROM L3.
+           DISPLAY "L3: " L3.
+           SUBTRACT 20 FROM L4.
+           DISPLAY "L4: " L4.
+           ADD 20 TO E
+             ON SIZE ERROR DISPLAY "E: SIZE ERROR"
+           END-ADD.
+           DISPLAY "E: " E.
+           SUBTRACT 20 FROM F
+             ON SIZE ERROR DISPLAY "F: SIZE ERROR"
+           END-SUBTRACT.
+           DISPLAY "F: " F.
+           STOP RUN.
+])
+
+AT_CHECK([${COBJ} prog.cbl])
+AT_CHECK([java prog], [0],
+[A: 19
+B: -19
+C: 19
+D: -19
+G: 44
+H: +00
+P: 19
+Q: 19
+L1: -20
+L2: +01
+L3: -19
+L4: -19
+E: SIZE ERROR
+E: 99
+F: SIZE ERROR
+F: -99
+])
+
+AT_CLEANUP
